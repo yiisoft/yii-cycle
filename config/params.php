@@ -23,7 +23,7 @@ return [
         'connections' => [
             'sqlite' => [
                 'driver' => SQLiteDriver::class,
-                'connection' => 'sqlite:runtime/database.db',
+                'connection' => 'sqlite:@runtime/database.db',
                 'username' => '',
                 'password' => '',
             ]
@@ -40,7 +40,7 @@ return [
     // migration config
     'cycle.migrations' => [
         'directory' => '@root/migrations',
-        'namespace' => 'App\\Console\\Migration',
+        'namespace' => 'App\\Migration',
         'table' => 'migration',
         'safe' => false,
     ],
