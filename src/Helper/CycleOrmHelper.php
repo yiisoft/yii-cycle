@@ -20,7 +20,7 @@ use Spiral\Migrations\Migrator;
 use Spiral\Tokenizer\ClassLocator;
 use Symfony\Component\Finder\Finder;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Cache\CacheInterface;
+use Psr\SimpleCache\CacheInterface;
 
 class CycleOrmHelper
 {
@@ -106,12 +106,14 @@ class CycleOrmHelper
         };
 
         if ($fromCache) {
-            return $this->cache->getOrSet($this->cacheKey, $getSchemaArray);
-        } else {
-            $schema = $getSchemaArray();
-            $this->cache->set($this->cacheKey, $schema);
-            return $schema;
+            $schema = $this->cache->get($this->cacheKey);
+            if (is_array($schema)) {
+                return $schema;
+            }
         }
+        $schema = $getSchemaArray();
+        $this->cache->set($this->cacheKey, $schema);
+        return $schema;
     }
 
     private function getEntityClassLocator(): ClassLocator
