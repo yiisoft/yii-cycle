@@ -14,17 +14,17 @@ use Cycle\Schema\Generator\SyncTables;
 use Cycle\Schema\Generator\ValidateEntities;
 use Cycle\Schema\Registry;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Spiral\Database;
+use Spiral\Database\DatabaseManager;
 use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\Migrator;
 use Spiral\Tokenizer\ClassLocator;
 use Symfony\Component\Finder\Finder;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Cache\CacheInterface;
+use Psr\SimpleCache\CacheInterface;
 
 class CycleOrmHelper
 {
-    /** @var Database\DatabaseManager $dbal */
+    /** @var DatabaseManager $dbal */
     private $dbal;
 
     /** @var Aliases */
@@ -42,7 +42,7 @@ class CycleOrmHelper
     /** @var int */
     private $tableNaming = Annotated\Entities::TABLE_NAMING_SINGULAR;
 
-    public function __construct(Database\DatabaseManager $dbal, Aliases $aliases, CacheInterface $cache)
+    public function __construct(DatabaseManager $dbal, Aliases $aliases, CacheInterface $cache)
     {
         $this->aliases = $aliases;
         $this->dbal = $dbal;
@@ -85,10 +85,6 @@ class CycleOrmHelper
         ]);
     }
 
-    public function generateEmptyMigration(Migrator $migrator, MigrationConfig $config): void
-    {
-    }
-
     public function getCurrentSchemaArray($fromCache = true): array
     {
         $getSchemaArray = function () {
@@ -110,12 +106,14 @@ class CycleOrmHelper
         };
 
         if ($fromCache) {
-            return $this->cache->getOrSet($this->cacheKey, $getSchemaArray);
-        } else {
-            $schema = $getSchemaArray();
-            $this->cache->set($this->cacheKey, $schema);
-            return $schema;
+            $schema = $this->cache->get($this->cacheKey);
+            if (is_array($schema)) {
+                return $schema;
+            }
         }
+        $schema = $getSchemaArray();
+        $this->cache->set($this->cacheKey, $schema);
+        return $schema;
     }
 
     private function getEntityClassLocator(): ClassLocator

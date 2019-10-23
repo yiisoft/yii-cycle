@@ -19,7 +19,7 @@ return [
     CycleOrmHelper::class => [
         '__class' => CycleOrmHelper::class,
         'addEntityPaths()' => [
-            'paths' => $params['cycle.locator']['entityPaths'],
+            'paths' => $params['cycle.common']['entityPaths'],
         ],
     ],
 
