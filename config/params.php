@@ -15,26 +15,15 @@ return [
 
     // DBAL config
     'cycle.dbal' => [
-        'default' => 'default',
+        'default' => null,
         'aliases' => [],
-        'databases' => [
-            'default' => ['connection' => 'sqlite']
-        ],
-        'connections' => [
-            'sqlite' => [
-                'driver' => SQLiteDriver::class,
-                'connection' => 'sqlite:@runtime/database.db',
-                'username' => '',
-                'password' => '',
-            ]
-        ],
+        'databases' => [],
+        'connections' => [],
     ],
 
-    // common paths config
-    'cycle.locator' => [
-        'entityPaths' => [
-            '@src/Entity'
-        ],
+    // common config
+    'cycle.common' => [
+        'entityPaths' => [],
     ],
 
     // migration config

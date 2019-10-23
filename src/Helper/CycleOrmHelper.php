@@ -14,7 +14,7 @@ use Cycle\Schema\Generator\SyncTables;
 use Cycle\Schema\Generator\ValidateEntities;
 use Cycle\Schema\Registry;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Spiral\Database;
+use Spiral\Database\DatabaseManager;
 use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\Migrator;
 use Spiral\Tokenizer\ClassLocator;
@@ -24,7 +24,7 @@ use Yiisoft\Cache\CacheInterface;
 
 class CycleOrmHelper
 {
-    /** @var Database\DatabaseManager $dbal */
+    /** @var DatabaseManager $dbal */
     private $dbal;
 
     /** @var Aliases */
@@ -42,7 +42,7 @@ class CycleOrmHelper
     /** @var int */
     private $tableNaming = Annotated\Entities::TABLE_NAMING_SINGULAR;
 
-    public function __construct(Database\DatabaseManager $dbal, Aliases $aliases, CacheInterface $cache)
+    public function __construct(DatabaseManager $dbal, Aliases $aliases, CacheInterface $cache)
     {
         $this->aliases = $aliases;
         $this->dbal = $dbal;
@@ -83,10 +83,6 @@ class CycleOrmHelper
             new GenerateMigrations($migrator->getRepository(), $config), // generate migrations
             // new GenerateTypecast(),                    // typecast non string columns
         ]);
-    }
-
-    public function generateEmptyMigration(Migrator $migrator, MigrationConfig $config): void
-    {
     }
 
     public function getCurrentSchemaArray($fromCache = true): array

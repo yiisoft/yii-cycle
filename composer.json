@@ -18,7 +18,8 @@
         "cycle/annotated": "^2.0",
         "cycle/migrations": "^1.0",
         "hiqdev/composer-config-plugin": "^1.0@dev",
-        "symfony/console": "^4.3"
+        "symfony/console": "^4.3",
+        "yiisoft/cache": "^3.0@dev"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.2",
