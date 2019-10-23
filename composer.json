@@ -1,19 +1,24 @@
 {
-    "name": "yiisoft/_____",
+    "name": "yiisoft/yii-cycle",
     "type": "library",
-    "description": "_____",
-    "keywords": ["_____"],
+    "description": "Cycle ORM support",
+    "keywords": ["yii", "cycle", "orm", "migrations"],
     "homepage": "http://www.yiiframework.com/",
     "license": "BSD-3-Clause",
     "support": {
-        "issues": "https://github.com/yiisoft/_____/issues?state=open",
+        "issues": "https://github.com/yiisoft/yii-cycle/issues?state=open",
         "forum": "http://www.yiiframework.com/forum/",
         "wiki": "http://www.yiiframework.com/wiki/",
         "irc": "irc://irc.freenode.net/yii",
-        "source": "https://github.com/yiisoft/_____"
+        "source": "https://github.com/yiisoft/yii-cycle"
     },
     "require": {
-        "php": "^7.2"
+        "php": "^7.2",
+        "cycle/orm": "^1.1",
+        "cycle/annotated": "^2.0",
+        "cycle/migrations": "^1.0",
+        "hiqdev/composer-config-plugin": "^1.0@dev",
+        "symfony/console": "^4.3"
     },
     "require-dev": {
         "phpunit/phpunit": "^8.2",
@@ -21,17 +26,25 @@
     },
     "autoload": {
         "psr-4": {
-            "Yiisoft\\_____\\": "src"
+            "Yiisoft\\Yii\\Cycle\\": "src"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yiisoft\\_____\\Tests\\": "tests"
+            "Yiisoft\\Yii\\Cycle\\Tests\\": "tests"
         }
     },
     "extra": {
         "branch-alias": {
             "dev-master": "3.0.x-dev"
+        },
+        "config-plugin": {
+            "params": "config/params.php",
+            "common": "config/common.php",
+            "console": "config/console.php"
+        },
+        "config-plugin-dev": {
+            "tests": ["$common", "$console", "config/tests.php"]
         }
     },
     "scripts": {
