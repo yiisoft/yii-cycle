@@ -75,13 +75,15 @@ class CycleOrmHelper
         (new Compiler())->compile(new Registry($this->dbal), [
             new Annotated\Embeddings($classLocator),   // register embeddable entities
             new Annotated\Entities($classLocator, null, $this->tableNaming), // register annotated entities
+            new Annotated\MergeColumns(),              // add @Table column declarations
             new ResetTables(),                         // re-declared table schemas (remove columns)
             new GenerateRelations(),                   // generate entity relations
             new ValidateEntities(),                    // make sure all entity schemas are correct
             new RenderTables(),                        // declare table schemas
             new RenderRelations(),                     // declare relation keys and indexes
+            new Annotated\MergeIndexes(),              // add @Table column declarations
             new GenerateMigrations($migrator->getRepository(), $config), // generate migrations
-            // new GenerateTypecast(),                    // typecast non string columns
+            new GenerateTypecast(),                    // typecast non string columns
         ]);
     }
 
@@ -95,11 +97,13 @@ class CycleOrmHelper
             return (new Compiler())->compile(new Registry($this->dbal), [
                 new Annotated\Embeddings($classLocator),    // register embeddable entities
                 new Annotated\Entities($classLocator, null, $this->tableNaming), // register annotated entities
+                new Annotated\MergeColumns(),               // add @Table column declarations
                 new ResetTables(),                          // re-declared table schemas (remove columns)
                 new GenerateRelations(),                    // generate entity relations
                 new ValidateEntities(),                     // make sure all entity schemas are correct
                 new RenderTables(),                         // declare table schemas
                 new RenderRelations(),                      // declare relation keys and indexes
+                new Annotated\MergeIndexes(),               // add @Table column declarations
                 new SyncTables(),                           // sync table changes to database
                 new GenerateTypecast(),                     // typecast non string columns
             ]);
