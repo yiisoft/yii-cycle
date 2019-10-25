@@ -5,13 +5,7 @@ namespace Yiisoft\Yii\Cycle\Helper;
 use Cycle\Migrations\GenerateMigrations;
 use Cycle\Annotated;
 use Cycle\Schema\Compiler;
-use Cycle\Schema\Generator\GenerateRelations;
-use Cycle\Schema\Generator\GenerateTypecast;
-use Cycle\Schema\Generator\RenderRelations;
-use Cycle\Schema\Generator\RenderTables;
-use Cycle\Schema\Generator\ResetTables;
-use Cycle\Schema\Generator\SyncTables;
-use Cycle\Schema\Generator\ValidateEntities;
+use Cycle\Schema\Generator;
 use Cycle\Schema\Registry;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Spiral\Database\DatabaseManager;
@@ -21,6 +15,8 @@ use Spiral\Tokenizer\ClassLocator;
 use Symfony\Component\Finder\Finder;
 use Yiisoft\Aliases\Aliases;
 use Psr\SimpleCache\CacheInterface;
+use Yiisoft\Yii\Cycle\Model\SchemaConveyor;
+use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 class CycleOrmHelper
 {
@@ -42,11 +38,19 @@ class CycleOrmHelper
     /** @var int */
     private $tableNaming = Annotated\Entities::TABLE_NAMING_SINGULAR;
 
-    public function __construct(DatabaseManager $dbal, Aliases $aliases, CacheInterface $cache)
-    {
+    /** @var SchemaConveyorInterface */
+    private $schemaConveyor;
+
+    public function __construct(
+        DatabaseManager $dbal,
+        Aliases $aliases,
+        CacheInterface $cache,
+        SchemaConveyorInterface $schemaConveyor
+    ) {
         $this->aliases = $aliases;
         $this->dbal = $dbal;
         $this->cache = $cache;
+        $this->schemaConveyor = $schemaConveyor;
     }
 
     /**
@@ -65,48 +69,51 @@ class CycleOrmHelper
         $this->cache->delete($this->cacheKey);
     }
 
-    public function generateMigrations(Migrator $migrator, MigrationConfig $config): void
+    protected function annotateConveyor()
     {
         $classLocator = $this->getEntityClassLocator();
 
+        // register embeddable entities
+        $this->schemaConveyor->addGenerator(
+            SchemaConveyor::STAGE_INDEX,
+            new Annotated\Embeddings($classLocator)
+        );
+        // register annotated entities
+        $this->schemaConveyor->addGenerator(
+            SchemaConveyor::STAGE_INDEX,
+            new Annotated\Entities($classLocator, null, $this->tableNaming)
+        );
+        // add @Table column declarations
+        $this->schemaConveyor->addGenerator(SchemaConveyor::STAGE_INDEX, Annotated\MergeColumns::class);
+        // add @Table(indexes) column declarations
+        $this->schemaConveyor->addGenerator(SchemaConveyor::STAGE_RENDER, Annotated\MergeIndexes::class);
+    }
+
+    public function generateMigrations(Migrator $migrator, MigrationConfig $config, ?array $generators = []): void
+    {
         // autoload annotations
         AnnotationRegistry::registerLoader('class_exists');
 
-        (new Compiler())->compile(new Registry($this->dbal), [
-            new Annotated\Embeddings($classLocator),   // register embeddable entities
-            new Annotated\Entities($classLocator, null, $this->tableNaming), // register annotated entities
-            new Annotated\MergeColumns(),              // add @Table column declarations
-            new ResetTables(),                         // re-declared table schemas (remove columns)
-            new GenerateRelations(),                   // generate entity relations
-            new ValidateEntities(),                    // make sure all entity schemas are correct
-            new RenderTables(),                        // declare table schemas
-            new RenderRelations(),                     // declare relation keys and indexes
-            new Annotated\MergeIndexes(),              // add @Table column declarations
-            new GenerateMigrations($migrator->getRepository(), $config), // generate migrations
-            new GenerateTypecast(),                    // typecast non string columns
-        ]);
+        $this->annotateConveyor();
+
+        // add migrations generator
+        $migrate = new GenerateMigrations($migrator->getRepository(), $config);
+        $this->schemaConveyor->addGenerator(SchemaConveyor::STAGE_USERLAND, $migrate);
+
+        $conveyor = $this->schemaConveyor->getConveyor();
+
+        (new Compiler())->compile(new Registry($this->dbal), $conveyor);
     }
 
     public function getCurrentSchemaArray($fromCache = true): array
     {
         $getSchemaArray = function () {
-            $classLocator = $this->getEntityClassLocator();
             // autoload annotations
             AnnotationRegistry::registerLoader('class_exists');
-
-            return (new Compiler())->compile(new Registry($this->dbal), [
-                new Annotated\Embeddings($classLocator),    // register embeddable entities
-                new Annotated\Entities($classLocator, null, $this->tableNaming), // register annotated entities
-                new Annotated\MergeColumns(),               // add @Table column declarations
-                new ResetTables(),                          // re-declared table schemas (remove columns)
-                new GenerateRelations(),                    // generate entity relations
-                new ValidateEntities(),                     // make sure all entity schemas are correct
-                new RenderTables(),                         // declare table schemas
-                new RenderRelations(),                      // declare relation keys and indexes
-                new Annotated\MergeIndexes(),               // add @Table column declarations
-                new SyncTables(),                           // sync table changes to database
-                new GenerateTypecast(),                     // typecast non string columns
-            ]);
+            // sync table changes to database
+            $this->schemaConveyor->addGenerator(SchemaConveyor::STAGE_RENDER, Generator\SyncTables::class);
+            $conveyor = $this->schemaConveyor->getConveyor();
+            return (new Compiler())->compile(new Registry($this->dbal), $conveyor);
         };
 
         if ($fromCache) {
