@@ -2,12 +2,10 @@
 
 namespace Yiisoft\Yii\Cycle\Model;
 
-use Cycle\Annotated;
-use Cycle\Migrations\GenerateMigrations;
 use Cycle\Schema\Generator;
-use Cycle\Schema\Generator\SyncTables;
 use Cycle\Schema\GeneratorInterface;
 use Psr\Container\ContainerInterface;
+use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 class SchemaConveyor implements SchemaConveyorInterface
@@ -49,16 +47,25 @@ class SchemaConveyor implements SchemaConveyorInterface
     /**
      * @inheritDoc
      */
-    public function getConveyor(): array
+    public function getGenerators(): array
     {
         $result = [];
         foreach ($this->conveyor as $group) {
             foreach ($group as $generator) {
-                if (is_object($generator) && $generator instanceof GeneratorInterface) {
+                $g = null;
+                if (is_string($generator)) {
+                    $g = $this->container->get($generator);
+                } elseif (is_object($generator) && $generator instanceof GeneratorInterface) {
                     $result[] = $generator;
-                } else {
-                    $result[] = $this->container->get($generator);
+                    continue;
+                } elseif (is_object($generator) && method_exists($generator, '__invoke')) {
+                    $g = $generator($this->container);
                 }
+                if ($g instanceof GeneratorInterface) {
+                    $result[] = $g;
+                    continue;
+                }
+                throw new BadDeclarationException();
             }
         }
         return $result;

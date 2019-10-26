@@ -3,6 +3,7 @@
 namespace Yiisoft\Yii\Cycle;
 
 use Cycle\Schema\GeneratorInterface;
+use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 
 interface SchemaConveyorInterface
 {
@@ -18,6 +19,7 @@ interface SchemaConveyorInterface
     public function addGenerator(string $stage, $generator): void;
     /**
      * @return GeneratorInterface[]
+     * @throws BadDeclarationException
      */
-    public function getConveyor(): array;
+    public function getGenerators(): array;
 }
