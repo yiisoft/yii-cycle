@@ -22,7 +22,7 @@ Specify config file in `params` section for `composer-config-plugin`\
 <?php
 return [
     // cycle DBAL config
-    'cycle.dbal' => [
+    \Yiisoft\Yii\Cycle\DbalConfig::class => [
         'default' => 'default',
         'aliases' => [],
         'databases' => [
@@ -39,7 +39,7 @@ return [
     ],
     
     // cycle common config
-    'cycle.common' => [
+    \Yiisoft\Yii\Cycle\CommonConfig::class => [
         'entityPaths' => [
             '@src/Entity'
         ],

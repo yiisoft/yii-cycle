@@ -1,7 +1,7 @@
 <?php
 
-use Spiral\Database\Driver\SQLite\SQLiteDriver;
 use Yiisoft\Yii\Cycle\Command;
+use Yiisoft\Yii\Cycle;
 
 return [
     // Console commands
@@ -14,7 +14,7 @@ return [
     ],
 
     // DBAL config
-    'cycle.dbal' => [
+    Cycle\DbalConfig::class => [
         'default' => null,
         'aliases' => [],
         'databases' => [],
@@ -22,12 +22,13 @@ return [
     ],
 
     // common config
-    'cycle.common' => [
+    Cycle\CommonConfig::class => [
         'entityPaths' => [],
+        'cacheKey' => 'Cycle-ORM-Schema',
     ],
 
     // migration config
-    'cycle.migrations' => [
+    Cycle\MigrationConfig::class => [
         'directory' => '@root/migrations',
         'namespace' => 'App\\Migration',
         'table' => 'migration',
