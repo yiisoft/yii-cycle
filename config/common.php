@@ -5,7 +5,7 @@ use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
-use Yiisoft\Yii\Cycle\Model\AnnotatedSchemaConveyor;
+use Yiisoft\Yii\Cycle\Generator\AnnotatedSchemaConveyor;
 use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 /**

@@ -1,8 +1,9 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Model;
+namespace Yiisoft\Yii\Cycle\Generator;
 
 use Cycle\Annotated;
+use Doctrine\Common\Annotations\AnnotationRegistry;
 use Psr\Container\ContainerInterface;
 use Spiral\Tokenizer\ClassLocator;
 use Symfony\Component\Finder\Finder;
@@ -52,6 +53,9 @@ class AnnotatedSchemaConveyor extends SchemaConveyor
         if ($this->isAnnotated) {
             return;
         }
+        // autoload annotations
+        AnnotationRegistry::registerLoader('class_exists');
+
         $this->isAnnotated = true;
         $classLocator = $this->getEntityClassLocator();
 

@@ -6,12 +6,10 @@ use Cycle\Migrations\GenerateMigrations;
 use Cycle\Schema\Compiler;
 use Cycle\Schema\Generator;
 use Cycle\Schema\Registry;
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Spiral\Database\DatabaseManager;
 use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\Migrator;
 use Psr\SimpleCache\CacheInterface;
-use Yiisoft\Yii\Cycle\Model\SchemaConveyor;
 use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 class CycleOrmHelper
@@ -43,14 +41,15 @@ class CycleOrmHelper
         $this->cache->delete($this->cacheKey);
     }
 
-    public function generateMigrations(Migrator $migrator, MigrationConfig $config, ?array $generators = []): void
+    public function generateMigrations(Migrator $migrator, MigrationConfig $config, array $generators = []): void
     {
-        // autoload annotations
-        AnnotationRegistry::registerLoader('class_exists');
-
         // add migrations generator
         $migrate = new GenerateMigrations($migrator->getRepository(), $config);
-        $this->schemaConveyor->addGenerator(SchemaConveyor::STAGE_USERLAND, $migrate);
+        $this->schemaConveyor->addGenerator($this->schemaConveyor::STAGE_USERLAND, $migrate);
+        // add custom generators
+        foreach ($generators as $generator) {
+            $this->schemaConveyor->addGenerator($this->schemaConveyor::STAGE_USERLAND, $generator);
+        }
 
         $conveyor = $this->schemaConveyor->getGenerators();
 
@@ -65,10 +64,8 @@ class CycleOrmHelper
                 return $schema;
             }
         }
-        // autoload annotations
-        AnnotationRegistry::registerLoader('class_exists');
         // sync table changes to database
-        $this->schemaConveyor->addGenerator(SchemaConveyor::STAGE_RENDER, Generator\SyncTables::class);
+        $this->schemaConveyor->addGenerator($this->schemaConveyor::STAGE_RENDER, Generator\SyncTables::class);
         // compile schema array
         $conveyor = $this->schemaConveyor->getGenerators();
         $schema = (new Compiler())->compile(new Registry($this->dbal), $conveyor);
