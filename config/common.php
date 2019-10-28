@@ -4,6 +4,7 @@ use Cycle\ORM\ORMInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
 use Yiisoft\Yii\Cycle;
+use Yiisoft\Yii\Cycle\Config\Params;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Generator\AnnotatedSchemaConveyor;
@@ -25,18 +26,5 @@ return [
         return $conveyor;
     },
 
-    Cycle\DbalConfig::class => [
-        '__class' => Cycle\DbalConfig::class,
-        'configure()' => [$params[Cycle\DbalConfig::class]],
-    ],
-
-    Cycle\CommonConfig::class => [
-        '__class' => Cycle\CommonConfig::class,
-        'configure()' => [$params[Cycle\CommonConfig::class]],
-    ],
-
-    Cycle\MigrationConfig::class => [
-        '__class' => Cycle\MigrationConfig::class,
-        'configure()' => [$params[Cycle\MigrationConfig::class]],
-    ],
+    Params::class => new Params($params),
 ];

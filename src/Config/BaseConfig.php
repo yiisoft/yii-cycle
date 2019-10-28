@@ -6,6 +6,11 @@ class BaseConfig
 {
     protected $data = [];
 
+    public function __construct(Params $params)
+    {
+        $this->configure($params->get(static::class, []));
+    }
+
     public function __get($name)
     {
         $getter = 'get' . ucfirst($name);
