@@ -19,10 +19,6 @@ class AnnotatedSchemaConveyor extends SchemaConveyor
 
     protected $isAnnotated = false;
 
-    public function __construct(ContainerInterface $container) {
-        parent::__construct($container);
-    }
-
     public function setTableNaming(int $type): void
     {
         $this->tableNaming = $type;
