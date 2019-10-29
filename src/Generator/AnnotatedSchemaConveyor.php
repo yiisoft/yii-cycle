@@ -4,10 +4,10 @@ namespace Yiisoft\Yii\Cycle\Generator;
 
 use Cycle\Annotated;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Psr\Container\ContainerInterface;
 use Spiral\Tokenizer\ClassLocator;
 use Symfony\Component\Finder\Finder;
 use Yiisoft\Aliases\Aliases;
+use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 
 class AnnotatedSchemaConveyor extends SchemaConveyor
 {
@@ -75,6 +75,11 @@ class AnnotatedSchemaConveyor extends SchemaConveyor
         foreach ($this->entityPaths as $path) {
             $list[] = $aliases->get($path);
         }
+
+        if (!count($list)) {
+            throw new EmptyEntityPathsException();
+        }
+
         $finder = (new Finder())
             ->files()
             ->in($list);

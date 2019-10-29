@@ -5,7 +5,7 @@ namespace Yiisoft\Yii\Cycle\Generator;
 use Cycle\Schema\Generator;
 use Cycle\Schema\GeneratorInterface;
 use Psr\Container\ContainerInterface;
-use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
+use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 class SchemaConveyor implements SchemaConveyorInterface
@@ -57,7 +57,7 @@ class SchemaConveyor implements SchemaConveyorInterface
                     $result[] = $generator;
                     continue;
                 }
-                throw new BadDeclarationException();
+                throw new BadGeneratorDeclarationException();
             }
         }
         return $result;

@@ -4,7 +4,7 @@ namespace Yiisoft\Yii\Cycle;
 
 use Closure;
 use Cycle\Schema\GeneratorInterface;
-use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
+use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 
 interface SchemaConveyorInterface
 {
@@ -24,7 +24,7 @@ interface SchemaConveyorInterface
     public function addGenerator(string $stage, $generator): void;
     /**
      * @return GeneratorInterface[]
-     * @throws BadDeclarationException
+     * @throws BadGeneratorDeclarationException
      */
     public function getGenerators(): array;
 }
