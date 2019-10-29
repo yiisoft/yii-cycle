@@ -9,7 +9,7 @@ use Symfony\Component\Finder\Finder;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 
-class AnnotatedSchemaConveyor extends SchemaConveyor
+final class AnnotatedSchemaConveyor extends SchemaConveyor
 {
     /** @var string[] */
     protected $entityPaths = [];
@@ -17,7 +17,7 @@ class AnnotatedSchemaConveyor extends SchemaConveyor
     /** @var int */
     protected $tableNaming = Annotated\Entities::TABLE_NAMING_SINGULAR;
 
-    protected $isAnnotated = false;
+    protected $isAddedAnnotated = false;
 
     public function setTableNaming(int $type): void
     {
@@ -49,13 +49,13 @@ class AnnotatedSchemaConveyor extends SchemaConveyor
      */
     protected function addAnnotatedGenerators()
     {
-        if ($this->isAnnotated) {
+        if ($this->isAddedAnnotated) {
             return;
         }
         // autoload annotations
         AnnotationRegistry::registerLoader('class_exists');
 
-        $this->isAnnotated = true;
+        $this->isAddedAnnotated = true;
         $classLocator = $this->getEntityClassLocator();
 
         // register embeddable entities
