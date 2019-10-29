@@ -30,21 +30,24 @@ class AnnotatedSchemaConveyor extends SchemaConveyor
     }
 
     /**
-     * @param string|string[] $paths
+     * @param string[] $paths
      */
-    public function addEntityPaths($paths): void
+    public function addEntityPaths(array $paths): void
     {
-        $paths = (array)$paths;
         $this->entityPaths = array_merge($this->entityPaths, $paths);
     }
 
     public function getGenerators(): array
     {
-        $this->annotateConveyor();
+        $this->addAnnotatedGenerators();
         return parent::getGenerators();
     }
 
-    protected function annotateConveyor()
+    /**
+     * Add some generators in this conveyor into the INDEX stage
+     * Added generators will search for entity classes and read their annotations
+     */
+    protected function addAnnotatedGenerators()
     {
         if ($this->isAnnotated) {
             return;

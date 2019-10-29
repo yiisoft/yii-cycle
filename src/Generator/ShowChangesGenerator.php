@@ -25,13 +25,13 @@ final class ShowChangesGenerator implements GeneratorInterface
     {
         $this->output->writeln('<info>Detecting schema changes:</info>');
         $this->changes = [];
-        foreach ($registry->getIterator() as $e) {
-            if ($registry->hasTable($e)) {
-                $table = $registry->getTableSchema($e);
+        foreach ($registry->getIterator() as $entity) {
+            if ($registry->hasTable($entity)) {
+                $table = $registry->getTableSchema($entity);
                 if ($table->getComparator()->hasChanges()) {
                     $this->changes[] = [
-                        'database' => $registry->getDatabase($e),
-                        'table'    => $registry->getTable($e),
+                        'database' => $registry->getDatabase($entity),
+                        'table'    => $registry->getTable($entity),
                         'schema'   => $table,
                     ];
                 }

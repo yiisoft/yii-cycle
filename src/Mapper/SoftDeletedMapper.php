@@ -12,6 +12,9 @@ use Cycle\ORM\Heap\State;
 use Cycle\ORM\Mapper\Mapper;
 
 /**
+ * You can use the annotated entities extension to automatically declare the needed columns from inside your mapper
+ * @See https://github.com/cycle/docs/blob/master/advanced/soft-deletes.md
+ *
  * @Table(
  *      columns={"deleted_at": @Column(type="datetime", nullable=true)}
  * )
@@ -24,7 +27,7 @@ class SoftDeletedMapper extends Mapper
         $state->setStatus(Node::SCHEDULED_DELETE);
         $state->decClaim();
 
-        $cmd = new Update(
+        $command = new Update(
             $this->source->getDatabase(),
             $this->source->getTable(),
             ['deleted_at' => new \DateTimeImmutable()]
@@ -33,15 +36,15 @@ class SoftDeletedMapper extends Mapper
         // forward primaryKey value from entity state
         // this sequence is only required if the entity is created and deleted
         // within one transaction
-        $cmd->waitScope($this->primaryColumn);
+        $command->waitScope($this->primaryColumn);
         $state->forward(
             $this->primaryKey,
-            $cmd,
+            $command,
             $this->primaryColumn,
             true,
             ConsumerInterface::SCOPE
         );
 
-        return $cmd;
+        return $command;
     }
 }
