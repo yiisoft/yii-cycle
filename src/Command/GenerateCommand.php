@@ -7,6 +7,7 @@ use Spiral\Migrations\State;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Yiisoft\Yii\Cycle\Generator\ShowChangesGenerator;
 use Yiisoft\Yii\Cycle\Helper\CycleOrmHelper;
 
 class GenerateCommand extends Command
@@ -49,7 +50,9 @@ class GenerateCommand extends Command
             }
         }
         // run generator
-        $this->cycleHelper->generateMigrations($this->migrator, $this->config);
+        $this->cycleHelper->generateMigrations($this->migrator, $this->config, [
+            new ShowChangesGenerator($output),
+        ]);
 
         $listBefore = $this->migrator->getMigrations();
         $added = count($listBefore) - count($listAfter);
