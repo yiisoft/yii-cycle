@@ -8,8 +8,8 @@ use Yiisoft\Yii\Cycle\Config\BaseConfig;
  * Class CommonConfig
  * @package Yiisoft\Yii\Cycle\Config
  *
- * @property-read array  $entityPaths
- * @property-read string $cacheKey
+ * @property array  $entityPaths
+ * @property string $cacheKey
  */
 class CommonConfig extends BaseConfig
 {

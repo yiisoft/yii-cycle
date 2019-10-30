@@ -11,10 +11,10 @@ use Yiisoft\Yii\Cycle\Config\Params;
  * Class CommonConfig
  * @package Yiisoft\Yii\Cycle\Config
  *
- * @property-read string $directory
- * @property-read string $namespace
- * @property-read string $table
- * @property-read bool   $safe
+ * @property string $directory
+ * @property string $namespace
+ * @property string $table
+ * @property bool   $safe
  */
 class MigrationConfig extends BaseConfig
 {

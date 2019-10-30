@@ -11,10 +11,10 @@ use Yiisoft\Yii\Cycle\Config\Params;
  * Class CommonConfig
  * @package Yiisoft\Yii\Cycle\Config
  *
- * @property-read string $default
- * @property-read array  $aliases
- * @property-read array  $databases
- * @property-read array  $connections
+ * @property string $default
+ * @property array  $aliases
+ * @property array  $databases
+ * @property array  $connections
  */
 class DbalConfig extends BaseConfig
 {
