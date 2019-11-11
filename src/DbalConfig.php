@@ -8,20 +8,19 @@ use Yiisoft\Yii\Cycle\Config\BaseConfig;
 use Yiisoft\Yii\Cycle\Config\Params;
 
 /**
- * @property string $default
- * @property array  $aliases
- * @property array  $databases
- * @property array  $connections
+ * @property-read string $default
+ * @property-read array  $aliases
+ * @property-read array  $databases
+ * @property-read array  $connections
  */
 class DbalConfig extends BaseConfig
 {
-    protected $data = [
-        'default'     => '',
-        'aliases'     => [],
-        'databases'   => [],
-        'connections' => [],
-    ];
+    protected $default     = '';
+    protected $aliases     = [];
+    protected $databases   = [];
+    protected $connections = [];
 
+    // private property will be ignored in toArray() method
     /** @var Aliases */
     private $objAliases;
 
@@ -33,13 +32,13 @@ class DbalConfig extends BaseConfig
 
     public function prepareConfig(): DatabaseConfig
     {
-        return new DatabaseConfig($this->data);
+        return new DatabaseConfig($this->toArray());
     }
 
     protected function setConnections($data): void
     {
-        $this->data['connections'] = $data;
-        foreach ($this->data['connections'] as &$connection) {
+        $this->connections = $data;
+        foreach ($this->connections as &$connection) {
             // if connection option contain alias in path
             if (isset($connection['connection']) && preg_match('/^(?<proto>\w+:)?@/', $connection['connection'], $m)) {
                 $proto = $m['proto'];

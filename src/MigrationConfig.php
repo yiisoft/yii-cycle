@@ -7,19 +7,17 @@ use Yiisoft\Yii\Cycle\Config\BaseConfig;
 use Yiisoft\Yii\Cycle\Config\Params;
 
 /**
- * @property string $directory
- * @property string $namespace
- * @property string $table
- * @property bool   $safe
+ * @property-read string $directory
+ * @property-read string $namespace
+ * @property-read string $table
+ * @property-read bool   $safe
  */
 class MigrationConfig extends BaseConfig
 {
-    protected $data = [
-        'directory' => '@root/migrations',
-        'namespace' => 'App\\Migration',
-        'table'     => 'migration',
-        'safe'      => false,
-    ];
+    protected $directory = '@root/migrations';
+    protected $namespace = 'App\\Migration';
+    protected $table = 'migration';
+    protected $safe = false;
 
     /** @var Aliases */
     private $objAliases;
@@ -32,7 +30,7 @@ class MigrationConfig extends BaseConfig
 
     protected function getDirectory(): string
     {
-        return $this->getAlias($this->data['directory']);
+        return $this->getAlias($this->directory);
     }
 
     protected function getAlias(string $alias): string
