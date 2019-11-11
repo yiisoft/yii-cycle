@@ -1,8 +1,6 @@
 <?php
 
-
 namespace Yiisoft\Yii\Cycle\Config\Exception;
-
 
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 

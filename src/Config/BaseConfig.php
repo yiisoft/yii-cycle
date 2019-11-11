@@ -20,7 +20,7 @@ class BaseConfig
         if (property_exists($this, $name)) {
             return $this->$name;
         }
-        throw new PropertyNotFoundException("Not found the property `$name` in a " . static::class . " object");
+        throw new PropertyNotFoundException("The `$name` property not found in a " . static::class . " object");
     }
 
     public function __call($name, $arguments)
@@ -29,7 +29,7 @@ class BaseConfig
         if ($prefix === 'get') {
             $prop = lcfirst(substr($name, 3));
             if (!property_exists($this, $prop)) {
-                throw new PropertyNotFoundException("The property `$prop` was not found when the `$name` method was called");
+                throw new PropertyNotFoundException("The `$name` property was not found when the `$name` method was called");
             }
             return $this->$prop;
         }
@@ -45,11 +45,17 @@ class BaseConfig
             } elseif (property_exists($this, $name)) {
                 $this->$name = $value;
             } else {
-                throw new PropertyNotFoundException("Not found the property `$name` when configure " . static::class . " object");
+                throw new PropertyNotFoundException("The `$name` property not found when configure " . static::class . " object");
             }
         }
     }
 
+    /**
+     * Return all public and protected properties as array
+     * Note: all private properties will be ignored!
+     * @return array
+     * @throws PropertyNotFoundException
+     */
     public function toArray(): array
     {
         $result = [];
