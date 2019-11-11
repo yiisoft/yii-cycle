@@ -4,7 +4,6 @@ namespace Yiisoft\Yii\Cycle;
 
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Config\BaseConfig;
-use Yiisoft\Yii\Cycle\Config\Params;
 
 /**
  * @property-read string $directory
@@ -22,10 +21,9 @@ class MigrationConfig extends BaseConfig
     /** @var Aliases */
     private $objAliases;
 
-    public function __construct(Params $params, Aliases $aliases)
+    public function __construct(Aliases $aliases)
     {
         $this->objAliases = $aliases;
-        parent::__construct($params);
     }
 
     protected function getDirectory(): string

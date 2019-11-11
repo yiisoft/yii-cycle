@@ -4,7 +4,6 @@ use Cycle\ORM\ORMInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
 use Yiisoft\Yii\Cycle;
-use Yiisoft\Yii\Cycle\Config\Params;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Generator\AnnotatedSchemaConveyor;
@@ -25,6 +24,4 @@ return [
         $conveyor->addEntityPaths($container->get(Cycle\CommonConfig::class)->entityPaths);
         return $conveyor;
     },
-
-    Params::class => new Params($params),
-];
+] + (new Cycle\Config\DIConfigGenerator($params))->generate();
