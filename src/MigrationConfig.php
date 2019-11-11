@@ -30,10 +30,10 @@ class MigrationConfig extends BaseConfig
 
     protected function getDirectory(): string
     {
-        return $this->getAlias($this->directory);
+        return $this->convertAlias($this->directory);
     }
 
-    protected function getAlias(string $alias): string
+    protected function convertAlias(string $alias): string
     {
         return $this->objAliases->get($alias, true);
     }

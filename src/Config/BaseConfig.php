@@ -51,7 +51,8 @@ class BaseConfig
     }
 
     /**
-     * Return all public and protected properties as array
+     * Return all public and protected properties as array.
+     * Property values will be obtained using getter methods.
      * Note: all private properties will be ignored!
      * @return array
      * @throws PropertyNotFoundException

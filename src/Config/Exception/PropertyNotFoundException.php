@@ -6,7 +6,6 @@ use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
 class PropertyNotFoundException extends \Exception implements FriendlyExceptionInterface
 {
-
     public function getName(): string
     {
         return 'Unsupported property';
