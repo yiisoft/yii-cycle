@@ -8,9 +8,6 @@ use Yiisoft\Yii\Cycle\Config\BaseConfig;
 use Yiisoft\Yii\Cycle\Config\Params;
 
 /**
- * Class CommonConfig
- * @package Yiisoft\Yii\Cycle\Config
- *
  * @property string $default
  * @property array  $aliases
  * @property array  $databases

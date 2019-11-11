@@ -5,9 +5,6 @@ namespace Yiisoft\Yii\Cycle;
 use Yiisoft\Yii\Cycle\Config\BaseConfig;
 
 /**
- * Class CommonConfig
- * @package Yiisoft\Yii\Cycle\Config
- *
  * @property array  $entityPaths
  * @property string $cacheKey
  */

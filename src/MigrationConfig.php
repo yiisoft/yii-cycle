@@ -2,15 +2,11 @@
 
 namespace Yiisoft\Yii\Cycle;
 
-use Spiral\Database\Config\DatabaseConfig;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Config\BaseConfig;
 use Yiisoft\Yii\Cycle\Config\Params;
 
 /**
- * Class CommonConfig
- * @package Yiisoft\Yii\Cycle\Config
- *
  * @property string $directory
  * @property string $namespace
  * @property string $table
