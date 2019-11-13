@@ -8,9 +8,14 @@ use Yiisoft\Yii\Cycle\Config\BaseConfig;
 
 /**
  * @property-read string $default
- * @property-read array  $aliases
- * @property-read array  $databases
- * @property-read array  $connections
+ * @property-read array $aliases
+ * @property-read array $databases
+ * @property-read array $connections
+ *
+ * @method string getDefault()
+ * @method array getAliases()
+ * @method array getDatabases()
+ * @method array getConnections()
  */
 class CycleDbalConfig extends BaseConfig
 {
@@ -40,13 +45,13 @@ class CycleDbalConfig extends BaseConfig
             // if connection option contain alias in path
             if (isset($connection['connection']) && preg_match('/^(?<proto>\w+:)?@/', $connection['connection'], $m)) {
                 $proto = $m['proto'];
-                $path = $this->getAlias(substr($connection['connection'], strlen($proto)));
+                $path = $this->convertAlias(substr($connection['connection'], strlen($proto)));
                 $connection['connection'] = $proto . $path;
             }
         }
     }
 
-    protected function getAlias(string $alias): string
+    protected function convertAlias(string $alias): string
     {
         return $this->objAliases->get($alias, true);
     }

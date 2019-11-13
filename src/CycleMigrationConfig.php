@@ -10,6 +10,10 @@ use Yiisoft\Yii\Cycle\Config\BaseConfig;
  * @property-read string $namespace
  * @property-read string $table
  * @property-read bool   $safe
+ *
+ * @method string getNamespace()
+ * @method string getTable()
+ * @method bool getSafe()
  */
 class CycleMigrationConfig extends BaseConfig
 {
