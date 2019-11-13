@@ -21,7 +21,7 @@ return [
 
     SchemaConveyorInterface::class => static function (ContainerInterface $container) {
         $conveyor = new AnnotatedSchemaConveyor($container);
-        $conveyor->addEntityPaths($container->get(Cycle\CommonConfig::class)->entityPaths);
+        $conveyor->addEntityPaths($container->get(Cycle\CycleCommonConfig::class)->entityPaths);
         return $conveyor;
     },
 ] + (new Cycle\Config\DIConfigGenerator($params))->generate();

@@ -11,7 +11,7 @@ use Yiisoft\Yii\Cycle\Config\BaseConfig;
  * @property-read string $table
  * @property-read bool   $safe
  */
-class MigrationConfig extends BaseConfig
+class CycleMigrationConfig extends BaseConfig
 {
     protected $directory = '@root/migrations';
     protected $namespace = 'App\\Migration';

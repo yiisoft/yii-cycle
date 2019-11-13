@@ -12,7 +12,7 @@ use Yiisoft\Yii\Cycle\Config\BaseConfig;
  * @property-read array  $databases
  * @property-read array  $connections
  */
-class DbalConfig extends BaseConfig
+class CycleDbalConfig extends BaseConfig
 {
     protected $default     = '';
     protected $aliases     = [];

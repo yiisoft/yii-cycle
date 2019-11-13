@@ -20,9 +20,13 @@ Specify config file in `params` section for `composer-config-plugin`\
 [How to configure connections](https://github.com/cycle/docs/blob/master/basic/connect.md)
 ```php
 <?php
+use Yiisoft\Yii\Cycle\CycleDbalConfig;
+use Yiisoft\Yii\Cycle\CycleCommonConfig;
+use Yiisoft\Yii\Cycle\CycleMigrationConfig;
+
 return [
     // cycle DBAL config
-    \Yiisoft\Yii\Cycle\DbalConfig::class => [
+    CycleDbalConfig::class => [
         'default' => 'default',
         'aliases' => [],
         'databases' => [
@@ -39,14 +43,14 @@ return [
     ],
     
     // cycle common config
-    \Yiisoft\Yii\Cycle\CommonConfig::class => [
+    CycleCommonConfig::class => [
         'entityPaths' => [
             '@src/Entity'
         ],
     ],
     
     // cycle migration config
-    'cycle.migrations' => [
+    CycleMigrationConfig::class => [
         'directory' => '@root/migrations',
         'namespace' => 'App\\Migration',
         'table' => 'migration',

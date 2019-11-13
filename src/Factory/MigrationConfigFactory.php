@@ -10,7 +10,7 @@ class MigrationConfigFactory
 {
     public function __invoke(ContainerInterface $container)
     {
-        $conf = $container->get(Cycle\MigrationConfig::class);
+        $conf = $container->get(Cycle\CycleMigrationConfig::class);
         return new MigrationConfig($conf->toArray());
     }
 }

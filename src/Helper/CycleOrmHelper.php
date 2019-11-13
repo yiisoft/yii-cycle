@@ -10,7 +10,7 @@ use Spiral\Database\DatabaseManager;
 use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\Migrator;
 use Psr\SimpleCache\CacheInterface;
-use Yiisoft\Yii\Cycle\CommonConfig;
+use Yiisoft\Yii\Cycle\CycleCommonConfig;
 use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 class CycleOrmHelper
@@ -27,14 +27,14 @@ class CycleOrmHelper
     /** @var SchemaConveyorInterface */
     private $schemaConveyor;
 
-    /** @var CommonConfig */
+    /** @var CycleCommonConfig */
     private $config;
 
     public function __construct(
         DatabaseManager $dbal,
         CacheInterface $cache,
         SchemaConveyorInterface $schemaConveyor,
-        CommonConfig $config
+        CycleCommonConfig $config
     ) {
         $this->dbal = $dbal;
         $this->cache = $cache;

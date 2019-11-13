@@ -4,12 +4,11 @@ namespace Yiisoft\Yii\Cycle\Config;
 
 class DIConfigGenerator
 {
-    /** @var array */
     private $params;
 
-    public function __construct(&$params)
+    public function __construct(array &$params)
     {
-        $this->params = $params;
+        $this->params = &$params;
     }
 
     public function generate(): array

@@ -14,7 +14,7 @@ return [
     ],
 
     // DBAL config
-    Cycle\DbalConfig::class => [
+    Cycle\CycleDbalConfig::class => [
         'default' => null,
         'aliases' => [],
         'databases' => [],
@@ -22,13 +22,13 @@ return [
     ],
 
     // common config
-    Cycle\CommonConfig::class => [
+    Cycle\CycleCommonConfig::class => [
         'entityPaths' => [],
         'cacheKey' => 'Cycle-ORM-Schema',
     ],
 
     // migration config
-    Cycle\MigrationConfig::class => [
+    Cycle\CycleMigrationConfig::class => [
         'directory' => '@root/migrations',
         'namespace' => 'App\\Migration',
         'table' => 'migration',
