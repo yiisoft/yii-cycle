@@ -67,7 +67,7 @@ class DownCommand extends Command
             $output->writeln($state->getName() . ': ' . ($statuses[$status] ?? $status));
         } catch (\Throwable $e) {
             $output->writeln([
-                '<fg=red>Error!</fg=red>',
+                '<fg=red>Error!</>',
                 $e->getMessage(),
             ]);
             return;
