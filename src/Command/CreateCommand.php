@@ -1,18 +1,15 @@
 <?php
 namespace Yiisoft\Yii\Cycle\Command;
 
+use Cycle\Migrations\MigrationImage;
 use Spiral\Database\DatabaseManager;
 use Spiral\Migrations\Exception\RepositoryException;
-use Spiral\Migrations\Migration;
 use Spiral\Migrations\Migrator;
 use Spiral\Migrations\Config\MigrationConfig;
-use Spiral\Reactor\ClassDeclaration;
-use Spiral\Reactor\FileDeclaration;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yiisoft\Yii\Cycle\Helper\CycleOrmHelper;
 
 class CreateCommand extends Command
 {
@@ -20,9 +17,6 @@ class CreateCommand extends Command
 
     /** @var DatabaseManager */
     private $dbal;
-
-    /** @var CycleOrmHelper */
-    private $cycleHelper;
 
     /** @var MigrationConfig */
     private $config;
@@ -33,13 +27,11 @@ class CreateCommand extends Command
     public function __construct(
         DatabaseManager $dbal,
         MigrationConfig $conf,
-        CycleOrmHelper $cycleHelper,
         Migrator $migrator
     ) {
         parent::__construct();
         $this->dbal = $dbal;
         $this->config = $conf;
-        $this->cycleHelper = $cycleHelper;
         $this->migrator = $migrator;
     }
 
@@ -53,36 +45,24 @@ class CreateCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): void
     {
         $customName = $input->getArgument('name');
+        // get default database
         $databaseName = $this->dbal->database()->getName();
 
-        // unique class name for the migration
-        $name = sprintf(
-            'orm_%s_%s',
-            $databaseName,
-            md5(microtime(true) . microtime(false))
-        );
-
-        $class = new ClassDeclaration($name, 'Migration');
-        $class->constant('DATABASE')->setProtected()->setValue($databaseName);
-        $class->method('up')->setPublic();
-        $class->method('down')->setPublic();
-
-        $file = new FileDeclaration($this->config->getNamespace());
-        $file->addUse(Migration::class);
-        $file->addElement($class);
-
-        $fileName = substr(sprintf('%s_%s', $databaseName, $customName), 0, 128);
+        $migrationSkeleton = new MigrationImage($this->config, $databaseName);
+        $migrationSkeleton->setName($customName);
 
         try {
-            $migrationFile = $this->migrator->getRepository()
-                                            ->registerMigration($fileName, $class->getName(), $file->render());
+            $migrationFile = $this->migrator->getRepository()->registerMigration(
+                $migrationSkeleton->buildFileName(),
+                $migrationSkeleton->getClass()->getName(),
+                $migrationSkeleton->getFile()->render()
+            );
         } catch (RepositoryException $e) {
             $output->writeln('<fg=yellow>Can not create migration</>');
             $output->writeln('<fg=red>' . $e->getMessage() . '</>');
             return;
         }
-        $output->writeln('<info>' . basename($migrationFile) . ' has been created in '
-            . $this->config->getDirectory() . '</info>');
-
+        $output->writeln('<info>New migration file has been created</info>');
+        $output->writeln("<fg=cyan>{$migrationFile}</>");
     }
 }
