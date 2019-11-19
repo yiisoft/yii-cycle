@@ -1,38 +1,15 @@
 <?php
 namespace Yiisoft\Yii\Cycle\Command;
 
-use Spiral\Migrations\Migrator;
-use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\State;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\StreamableInputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Cycle\Generator\ShowChangesGenerator;
-use Yiisoft\Yii\Cycle\Helper\CycleOrmHelper;
 
-class GenerateCommand extends Command
+class GenerateCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/generate';
-
-    /** @var Migrator */
-    private $migrator;
-
-    /** @var CycleOrmHelper */
-    private $cycleHelper;
-
-    /** @var MigrationConfig */
-    private $config;
-
-    public function __construct(
-        Migrator $migrator,
-        MigrationConfig $conf,
-        CycleOrmHelper $cycleHelper
-    ) {
-        parent::__construct();
-        $this->migrator = $migrator;
-        $this->config = $conf;
-        $this->cycleHelper = $cycleHelper;
-    }
 
     public function configure(): void
     {
@@ -50,7 +27,7 @@ class GenerateCommand extends Command
             }
         }
         // run generator
-        $this->cycleHelper->generateMigrations($this->migrator, $this->config, [
+        $this->cycleOrmHelper->generateMigrations($this->migrator, $this->config, [
             new ShowChangesGenerator($output),
         ]);
 
@@ -66,16 +43,24 @@ class GenerateCommand extends Command
                 }
             }
         } else {
-            $output->write('<info>If you want to create empty migration, use <fg=yellow>migrate/create</></info>');
+            $output->writeln('<info>If you want to create new empty migration, use <fg=yellow>migrate/create</></info>');
 
-            // if ($input->isInteractive() && $input instanceof StreamableInputInterface) {
-            //     $output->write('Would you like to create empty migration? (Y/n): ');
-            //     $answer = fgets($input->getStream() ?? STDIN);
-            //     if (in_array(strtolower(trim($answer)), ['yes', 'y'])) {
-            //         // create empty migration
-            //         $this->cycleHelper->generateEmptyMigration($this->migrator, $this->config);
-            //     }
-            // }
+            if ($input->isInteractive() && $input instanceof StreamableInputInterface) {
+                $output->write('Would you like to create empty migration right now? (Y/n): ');
+                $answer = fgets($input->getStream() ?? STDIN);
+                if (!empty(trim($answer)) && !in_array(strtolower(trim($answer)), ['yes', 'y'])) {
+                    return;
+                }
+                // get the name for a new migration
+                $output->write('Please enter an unique name for the new migration: ');
+                $name = trim(fgets($input->getStream() ?? STDIN));
+                if (empty($name)) {
+                    $output->writeln('<fg=red>You entered an empty name. Exit</>');
+                    return;
+                }
+                // create an empty migration
+                $this->createEmptyMigration($output, $name);
+            }
         }
     }
 }
