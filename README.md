@@ -17,7 +17,7 @@ WIP
 ## Configuration
 
 Specify config file in `params` section for `composer-config-plugin`\
-[How to configure dbal connections](https://github.com/cycle/docs/blob/master/basic/connect.md)
+[How to configure DBAL connections](https://github.com/cycle/docs/blob/master/basic/connect.md)
 ```php
 <?php
 return [

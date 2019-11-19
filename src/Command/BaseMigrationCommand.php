@@ -46,7 +46,7 @@ abstract class BaseMigrationCommand extends Command
 
     protected function createEmptyMigration(OutputInterface $output, string $name, ?string $database = null): ?MigrationImage
     {
-        if (is_null($database)) {
+        if ($database === null) {
             // get default database
             $database = $this->dbal->database()->getName();
         }
