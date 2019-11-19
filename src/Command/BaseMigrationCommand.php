@@ -79,5 +79,4 @@ abstract class BaseMigrationCommand extends Command
         $output->writeln('<info>' . count($list) . ' migration(s) found in ' . $this->config->getDirectory() . '</info>');
         return $list;
     }
-
 }
