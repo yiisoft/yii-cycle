@@ -45,7 +45,7 @@ class GenerateCommand extends Command
         $listAfter = $this->migrator->getMigrations();
         foreach ($listAfter as $migration) {
             if ($migration->getState()->getStatus() !== State::STATUS_EXECUTED) {
-                $output->writeln('<fg=red>Outstanding migrations found, run `migrate/up` first.</fg=red>');
+                $output->writeln('<fg=red>Outstanding migrations found, run `migrate/up` first.</>');
                 return;
             }
         }
@@ -66,7 +66,7 @@ class GenerateCommand extends Command
                 }
             }
         } else {
-            $output->write('<info>If you want to create empty migration, use <fg=yellow>migrate/create</fg=yellow></info>');
+            $output->write('<info>If you want to create empty migration, use <fg=yellow>migrate/create</></info>');
 
             // if ($input->isInteractive() && $input instanceof StreamableInputInterface) {
             //     $output->write('Would you like to create empty migration? (Y/n): ');

@@ -70,7 +70,7 @@ class UpCommand extends Command
             } while (--$limit > 0);
         } catch (\Throwable $e) {
             $output->writeln([
-                '<fg=red>Error!</fg=red>',
+                '<fg=red>Error!</>',
                 $e->getMessage(),
             ]);
             return;
