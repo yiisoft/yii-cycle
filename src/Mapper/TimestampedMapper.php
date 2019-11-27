@@ -12,7 +12,7 @@ use Cycle\ORM\Mapper\Mapper;
 
 /**
  * You can use the annotated entities extension to automatically declare the needed columns from inside your mapper
- * @See https://github.com/cycle/docs/blob/master/advanced/timestamp.md#automatically-define-columns
+ * @see https://github.com/cycle/docs/blob/master/advanced/timestamp.md#automatically-define-columns
  *
  * @Table(
  *      columns={"created_at": @Column(type="datetime"), "updated_at": @Column(type="datetime")}

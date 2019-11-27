@@ -1,38 +1,17 @@
 <?php
 namespace Yiisoft\Yii\Cycle\Command;
 
-use Spiral\Migrations\Migrator;
-use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\State;
-use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Input\StreamableInputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 use Yiisoft\Yii\Cycle\Generator\ShowChangesGenerator;
-use Yiisoft\Yii\Cycle\Helper\CycleOrmHelper;
 
-class GenerateCommand extends Command
+class GenerateCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/generate';
-
-    /** @var Migrator */
-    private $migrator;
-
-    /** @var CycleOrmHelper */
-    private $cycleHelper;
-
-    /** @var MigrationConfig */
-    private $config;
-
-    public function __construct(
-        Migrator $migrator,
-        MigrationConfig $conf,
-        CycleOrmHelper $cycleHelper
-    ) {
-        parent::__construct();
-        $this->migrator = $migrator;
-        $this->config = $conf;
-        $this->cycleHelper = $cycleHelper;
-    }
 
     public function configure(): void
     {
@@ -45,12 +24,12 @@ class GenerateCommand extends Command
         $listAfter = $this->migrator->getMigrations();
         foreach ($listAfter as $migration) {
             if ($migration->getState()->getStatus() !== State::STATUS_EXECUTED) {
-                $output->writeln('<fg=red>Outstanding migrations found, run `migrate/up` first.</fg=red>');
+                $output->writeln('<fg=red>Outstanding migrations found, run `migrate/up` first.</>');
                 return;
             }
         }
         // run generator
-        $this->cycleHelper->generateMigrations($this->migrator, $this->config, [
+        $this->cycleOrmHelper->generateMigrations($this->migrator, $this->config, [
             new ShowChangesGenerator($output),
         ]);
 
@@ -66,16 +45,27 @@ class GenerateCommand extends Command
                 }
             }
         } else {
-            $output->write('<info>If you want to create empty migration, use <fg=yellow>migrate/create</fg=yellow></info>');
+            $output->writeln('<info>If you want to create new empty migration, use <fg=yellow>migrate/create</></info>');
 
-            // if ($input->isInteractive() && $input instanceof StreamableInputInterface) {
-            //     $output->write('Would you like to create empty migration? (Y/n): ');
-            //     $answer = fgets($input->getStream() ?? STDIN);
-            //     if (in_array(strtolower(trim($answer)), ['yes', 'y'])) {
-            //         // create empty migration
-            //         $this->cycleHelper->generateEmptyMigration($this->migrator, $this->config);
-            //     }
-            // }
+
+            $qaHelper = $this->getHelper('question');
+
+            if ($input->isInteractive() && $input instanceof StreamableInputInterface) {
+                $question = new ConfirmationQuestion('Would you like to create empty migration right now? (Y/n)', true);
+                $answer = $qaHelper->ask($input, $output, $question);
+                if (!$answer) {
+                    return;
+                }
+                // get the name for a new migration
+                $question = new Question('Please enter an unique name for the new migration: ');
+                $name = $qaHelper->ask($input, $output, $question);
+                if (empty($name)) {
+                    $output->writeln('<fg=red>You entered an empty name. Exit</>');
+                    return;
+                }
+                // create an empty migration
+                $this->createEmptyMigration($output, $name);
+            }
         }
     }
 }

@@ -17,7 +17,7 @@ WIP
 ## Configuration
 
 Specify config file in `params` section for `composer-config-plugin`\
-[How to configure connections](https://github.com/cycle/docs/blob/master/basic/connect.md)
+[How to configure DBAL connections](https://github.com/cycle/docs/blob/master/basic/connect.md)
 ```php
 <?php
 use Yiisoft\Yii\Cycle\CycleDbalConfig;
@@ -63,6 +63,7 @@ return [
 
 ```bash
 migrate/list
+migrate/create
 migrate/generate
 migrate/up
 migrate/down

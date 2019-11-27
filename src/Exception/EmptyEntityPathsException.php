@@ -13,6 +13,6 @@ class EmptyEntityPathsException extends Exception implements FriendlyExceptionIn
     }
     public function getSolution(): ?string
     {
-        return 'There must be at least one entry in the path list';
+        return 'There must be at least one entry in the path list.';
     }
 }
