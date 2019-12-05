@@ -8,13 +8,10 @@ env:
 
 matrix:
   include:
-    - php: '7.2'
-      env:
-        - TASK_TESTS_COVERAGE=1
-    - php: '7.3'
+    - php: "7.4"
       env:
         - TASK_STATIC_ANALYSIS=0 # set to 1 to enable static analysis
-    - php: '7.4snapshot'
+        - TASK_TESTS_COVERAGE=1
 
 # faster builds on new travis setup not using sudo
 sudo: false
