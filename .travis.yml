@@ -8,13 +8,10 @@ env:
 
 matrix:
   include:
-    - php: '7.2'
-      env:
-        - TASK_TESTS_COVERAGE=1
-    - php: '7.3'
+    - php: "7.4"
       env:
         - TASK_STATIC_ANALYSIS=0 # set to 1 to enable static analysis
-    - php: '7.4snapshot'
+        - TASK_TESTS_COVERAGE=1
 
 # faster builds on new travis setup not using sudo
 sudo: false
@@ -62,3 +59,20 @@ after_script:
       travis_retry wget https://scrutinizer-ci.com/ocular.phar
       php ocular.phar code-coverage:upload --format=php-clover coverage.clover
     fi
+
+notifications:
+  slack:
+    -
+      rooms:
+        -
+          secure: IE3kLPvZj0rVUfHqpZb8uWksrAS0Qo3GCY5svLanQ+RqkPpJQBhwjsS+zgnvOLJmehiLQkg9VUZGLG/8sW9SkBFbAuB0fXHUf4sy4QnboejM1jzjBfftYmv1Oawurh/EqSru3g+OR0dEc9r5x5qPFcN/GMgrOQ/0hVvBs3oKicw2fj5EE15qVK2nZOZ/bPEd3mgssRWHPqt9lbVNW/HPkTbVbwzxbhIaOr4Nh00JSRPbXd7nS3p9Vi2x4xDSPqHRuC2s2qnmLWKLpl9JfAu7wXjmM7QeKKbzGUyIH+cYGnVHNdDyhtft8a7p3GkKHpipLnMAn6El6fLlSPxvewHHjyXxmE4jkNWkV5L9H+EvUQbWYKC4M57ONUzn1JxL/zHCed+izWAdO/NhWAOtiz4V4nFZ5XtHJAL3280yNQK/sKu95B94fzKoc7t/YCpI1u589BRQMnNuz/qHacymBbOWlSgQVxF8tG4IXhiwR0msZT8U48oPEBrKfuYh35O6eMXuIbgpP8EE5lIDwKQifUORdlUBxG3cIZocWsFERIWKaN9B0BNcXE4zqCDZe2qRb2CLfDRyetJ3HZeOg29STvNu3Ff00bJT0s6uAq/ylb2RfUCEL49x9JTFze5G1Hbc5yhwwQ0vKvWf82AA2VRE2BMDCAJlc3dNJA5ndaQZksO4E4E=
+      on_success: always
+      on_failure: never
+      on_pull_requests: false
+    -
+      rooms:
+        -
+          secure: WKus87PxYoRwbRjpsdpD7iBDsKUcnf3cyqcpJ1mAWamXgjqboVzIQGDknu56JlL2zh+uJQuY7gaf2aWiv6AG2XUFMeQ+n32vBFU4WzzqJsL7QbTPn8/gcLshrrdyBrukYm1hqBH0Sfmv7c0/o1zFdKhU4dnF8ENToPKLPSBPoecQrto8qIftHm0WYoC5JNWUlQuweeh2NKB11smGid/+n9ZTSRF9PFyEq+0olIUPrzwkeubB1cgUVRpNr3W4+ZjhJwcdkqWeFH9L3sI3x0o1zyHdEKOwHWEHT4B1D/8w8+fgikq8Io6oxhcL4/7t4Air9bUOEsoIz6or28KeJJtzgoD9m0OyL7S+fXSSU7PpyXGdZ7uIN591UFEzwgg5h22UPWIKPHI/LDqiolE2vGCHE+F5GxPJOIOxrtr2gk01XE+Byjbo3Ev7x65XJqEBnOvFL9cCmQykjDNMN8VVcDoiWbSj3JIwe1KRLaSAXzO+4l9gFIeVMgKoETs+AgDwtYgz8HbZTz0aQlshDah4vJFxHx7C8CZ/2RckUjmqVfdnF28U+u3q+rkXIc3VErSMX8ID7bjDPJh3tqS/E1K8YLH24m0Ho//JLbs+qUM6JY3HC4GKofbv+31JcNx5vy2jWMfp7p+HbQvYbY5a3TU1CwoSdtBpKhxGoFDJPFdr6QM5AO8=
+      on_success: never
+      on_failure: always
+      on_pull_requests: false

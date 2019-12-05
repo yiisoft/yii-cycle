@@ -2,7 +2,12 @@
     "name": "yiisoft/yii-cycle",
     "type": "library",
     "description": "Cycle ORM support",
-    "keywords": ["yii", "cycle", "orm", "migrations"],
+    "keywords": [
+        "yii",
+        "cycle",
+        "orm",
+        "migrations"
+    ],
     "homepage": "http://www.yiiframework.com/",
     "license": "BSD-3-Clause",
     "support": {
@@ -13,7 +18,7 @@
         "source": "https://github.com/yiisoft/yii-cycle"
     },
     "require": {
-        "php": "^7.2",
+        "php": "^7.4",
         "cycle/annotated": "^2.0",
         "cycle/migrations": "^1.0",
         "cycle/orm": "^1.1",
@@ -23,7 +28,7 @@
         "yiisoft/yii-console": "^3.0@dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.2"
+        "phpunit/phpunit": "^8.4"
     },
     "autoload": {
         "psr-4": {
@@ -45,10 +50,17 @@
             "console": "config/console.php"
         },
         "config-plugin-dev": {
-            "tests": ["$common", "$console", "config/tests.php"]
+            "tests": [
+                "$common",
+                "$console",
+                "config/tests.php"
+            ]
         }
     },
     "scripts": {
         "phan": "phan --progress-bar -o analysis.txt"
+    },
+    "config": {
+        "sort-packages": true
     }
 }
