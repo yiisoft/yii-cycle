@@ -14,17 +14,16 @@
     },
     "require": {
         "php": "^7.2",
-        "cycle/orm": "^1.1",
         "cycle/annotated": "^2.0",
         "cycle/migrations": "^1.0",
+        "cycle/orm": "^1.1",
         "hiqdev/composer-config-plugin": "^1.0@dev",
-        "symfony/console": "^4.3",
         "yiisoft/aliases": "@dev",
-        "yiisoft/friendly-exception": "@dev"
+        "yiisoft/friendly-exception": "@dev",
+        "yiisoft/yii-console": "^3.0@dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.2",
-        "phan/phan": "^2.2"
+        "phpunit/phpunit": "^8.2"
     },
     "autoload": {
         "psr-4": {
