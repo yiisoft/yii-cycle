@@ -18,14 +18,14 @@ class GenerateCommand extends BaseMigrationCommand
         $this->setDescription('Generates a migration');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // check existing unapplied migrations
         $listAfter = $this->migrator->getMigrations();
         foreach ($listAfter as $migration) {
             if ($migration->getState()->getStatus() !== State::STATUS_EXECUTED) {
                 $output->writeln('<fg=red>Outstanding migrations found, run `migrate/up` first.</>');
-                return;
+                return 0;
             }
         }
         // run generator
@@ -54,18 +54,19 @@ class GenerateCommand extends BaseMigrationCommand
                 $question = new ConfirmationQuestion('Would you like to create empty migration right now? (Y/n)', true);
                 $answer = $qaHelper->ask($input, $output, $question);
                 if (!$answer) {
-                    return;
+                    return 0;
                 }
                 // get the name for a new migration
                 $question = new Question('Please enter an unique name for the new migration: ');
                 $name = $qaHelper->ask($input, $output, $question);
                 if (empty($name)) {
                     $output->writeln('<fg=red>You entered an empty name. Exit</>');
-                    return;
+                    return 0;
                 }
                 // create an empty migration
                 $this->createEmptyMigration($output, $name);
             }
         }
+        return 0;
     }
 }

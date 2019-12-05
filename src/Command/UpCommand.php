@@ -15,7 +15,7 @@ class UpCommand extends BaseMigrationCommand
             ->setDescription('Execute all new migrations');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // drop cached schema
         $this->cycleOrmHelper->dropCurrentSchemaCache();
@@ -40,7 +40,9 @@ class UpCommand extends BaseMigrationCommand
                 '<fg=red>Error!</>',
                 $e->getMessage(),
             ]);
-            return;
+            $code = $e->getCode();
+            return is_numeric($code) ? (int)$code : 0;
         }
+        return 0;
     }
 }

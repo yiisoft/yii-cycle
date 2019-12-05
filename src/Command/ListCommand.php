@@ -14,7 +14,7 @@ class ListCommand extends BaseMigrationCommand
             ->setDescription('Print list of all migrations');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $list = $this->findMigrations($output);
 
@@ -23,5 +23,6 @@ class ListCommand extends BaseMigrationCommand
             $output->writeln('<fg=cyan>' . $state->getName() . '</> '
                 . '<fg=yellow>[' . (static::$migrationStatus[$state->getStatus()] ?? '?') . ']</>');
         }
+        return 0;
     }
 }

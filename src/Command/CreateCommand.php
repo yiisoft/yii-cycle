@@ -16,10 +16,12 @@ class CreateCommand extends BaseMigrationCommand
              ->addArgument('name', InputArgument::REQUIRED, 'Migration name');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output): void
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $customName = $input->getArgument('name');
 
         $this->createEmptyMigration($output, $customName);
+
+        return 0;
     }
 }

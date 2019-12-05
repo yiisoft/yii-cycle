@@ -3,9 +3,6 @@
 namespace Yiisoft\Yii\Cycle\Factory;
 
 use Psr\Container\ContainerInterface;
-use Spiral\Database\Config\DatabaseConfig;
-use Spiral\Database\DatabaseManager;
-use Spiral\Database\Driver\SQLite\SQLiteDriver;
 use Spiral\Migrations\Config\MigrationConfig;
 use Yiisoft\Aliases\Aliases;
 

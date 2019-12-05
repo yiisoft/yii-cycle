@@ -10,8 +10,7 @@ use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 class SchemaConveyor implements SchemaConveyorInterface
 {
-    /** @var array */
-    protected $conveyor = [
+    protected array $conveyor = [
         self::STAGE_INDEX => [],
         self::STAGE_RENDER => [
             Generator\ResetTables::class,       // re-declared table schemas (remove columns)
@@ -26,8 +25,7 @@ class SchemaConveyor implements SchemaConveyorInterface
         ],
     ];
 
-    /** @var ContainerInterface */
-    protected $container;
+    protected ContainerInterface $container;
 
     public function __construct(ContainerInterface $container)
     {

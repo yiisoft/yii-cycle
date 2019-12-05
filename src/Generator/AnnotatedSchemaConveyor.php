@@ -12,12 +12,11 @@ use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 final class AnnotatedSchemaConveyor extends SchemaConveyor
 {
     /** @var string[] */
-    protected $entityPaths = [];
+    protected array $entityPaths = [];
 
-    /** @var int */
-    protected $tableNaming = Annotated\Entities::TABLE_NAMING_SINGULAR;
+    protected int $tableNaming = Annotated\Entities::TABLE_NAMING_SINGULAR;
 
-    protected $isAddedAnnotated = false;
+    protected bool $isAddedAnnotated = false;
 
     public function setTableNaming(int $type): void
     {
@@ -47,7 +46,7 @@ final class AnnotatedSchemaConveyor extends SchemaConveyor
      * Add some generators in this conveyor into the INDEX stage
      * Added generators will search for entity classes and read their annotations
      */
-    protected function addAnnotatedGenerators()
+    protected function addAnnotatedGenerators(): void
     {
         if ($this->isAddedAnnotated) {
             return;
