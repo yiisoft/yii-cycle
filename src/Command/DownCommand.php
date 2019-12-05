@@ -4,6 +4,7 @@ namespace Yiisoft\Yii\Cycle\Command;
 use Spiral\Migrations\MigrationInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Yiisoft\Yii\Console\ExitCode;
 
 class DownCommand extends BaseMigrationCommand
 {
@@ -36,9 +37,8 @@ class DownCommand extends BaseMigrationCommand
                 '<fg=red>Error!</>',
                 $e->getMessage(),
             ]);
-            $code = $e->getCode();
-            return is_numeric($code) ? (int)$code : 0;
+            return $e->getCode() ?: ExitCode::UNSPECIFIED_ERROR;
         }
-        return 0;
+        return ExitCode::OK;
     }
 }
