@@ -10,11 +10,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class ShowChangesGenerator implements GeneratorInterface
 {
-    /** @var OutputInterface */
-    private $output;
+    private OutputInterface $output;
 
-    /** @var array */
-    private $changes = [];
+    private array $changes = [];
 
     public function __construct(OutputInterface $output)
     {

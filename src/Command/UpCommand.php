@@ -4,6 +4,7 @@ namespace Yiisoft\Yii\Cycle\Command;
 use Spiral\Migrations\MigrationInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Yiisoft\Yii\Console\ExitCode;
 
 class UpCommand extends BaseMigrationCommand
 {
@@ -15,7 +16,7 @@ class UpCommand extends BaseMigrationCommand
             ->setDescription('Execute all new migrations');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // drop cached schema
         $this->cycleOrmHelper->dropCurrentSchemaCache();
@@ -40,7 +41,8 @@ class UpCommand extends BaseMigrationCommand
                 '<fg=red>Error!</>',
                 $e->getMessage(),
             ]);
-            return;
+            return $e->getCode() ?: ExitCode::UNSPECIFIED_ERROR;
         }
+        return ExitCode::OK;
     }
 }

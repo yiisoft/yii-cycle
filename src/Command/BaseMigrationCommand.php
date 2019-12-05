@@ -16,14 +16,10 @@ use Yiisoft\Yii\Cycle\Helper\CycleOrmHelper;
 abstract class BaseMigrationCommand extends Command
 {
 
-    /** @var DatabaseManager */
-    protected $dbal;
-    /** @var MigrationConfig */
-    protected $config;
-    /** @var Migrator */
-    protected $migrator;
-    /** @var CycleOrmHelper */
-    protected $cycleOrmHelper;
+    protected DatabaseManager $dbal;
+    protected MigrationConfig $config;
+    protected Migrator $migrator;
+    protected CycleOrmHelper $cycleOrmHelper;
 
     protected static $migrationStatus = [
         State::STATUS_UNDEFINED => 'undefined',

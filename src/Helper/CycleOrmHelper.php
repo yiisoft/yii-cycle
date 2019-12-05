@@ -14,17 +14,13 @@ use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 class CycleOrmHelper
 {
-    /** @var DatabaseManager $dbal */
-    private $dbal;
+    private DatabaseManager $dbal;
 
-    /** @var CacheInterface */
-    private $cache;
+    private CacheInterface $cache;
 
-    /** @var string */
-    private $cacheKey = 'Cycle-ORM-Schema';
+    private string $cacheKey = 'Cycle-ORM-Schema';
 
-    /** @var SchemaConveyorInterface */
-    private $schemaConveyor;
+    private SchemaConveyorInterface $schemaConveyor;
 
     public function __construct(
         DatabaseManager $dbal,

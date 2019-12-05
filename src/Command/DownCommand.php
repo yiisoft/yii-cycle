@@ -4,6 +4,7 @@ namespace Yiisoft\Yii\Cycle\Command;
 use Spiral\Migrations\MigrationInterface;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Yiisoft\Yii\Console\ExitCode;
 
 class DownCommand extends BaseMigrationCommand
 {
@@ -15,7 +16,7 @@ class DownCommand extends BaseMigrationCommand
             ->setDescription('Rollback last migration');
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         // drop cached schema
         $this->cycleOrmHelper->dropCurrentSchemaCache();
@@ -36,7 +37,8 @@ class DownCommand extends BaseMigrationCommand
                 '<fg=red>Error!</>',
                 $e->getMessage(),
             ]);
-            return;
+            return $e->getCode() ?: ExitCode::UNSPECIFIED_ERROR;
         }
+        return ExitCode::OK;
     }
 }

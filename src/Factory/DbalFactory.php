@@ -11,8 +11,7 @@ class DbalFactory
 {
     private $params;
 
-    /** @var ContainerInterface */
-    protected $container;
+    protected ContainerInterface $container;
 
     public function __construct($params)
     {
