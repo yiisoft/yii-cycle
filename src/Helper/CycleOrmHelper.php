@@ -9,7 +9,7 @@ use Cycle\Schema\Registry;
 use Spiral\Database\DatabaseManager;
 use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\Migrator;
-use Psr\SimpleCache\CacheInterface;
+use Yiisoft\Cache\CacheInterface;
 use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 class CycleOrmHelper
