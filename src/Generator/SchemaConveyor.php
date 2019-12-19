@@ -11,9 +11,10 @@ use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 class SchemaConveyor implements SchemaConveyorInterface
 {
     protected array $conveyor = [
-        self::STAGE_INDEX => [],
-        self::STAGE_RENDER => [
+        self::STAGE_INDEX => [
             Generator\ResetTables::class,       // re-declared table schemas (remove columns)
+        ],
+        self::STAGE_RENDER => [
             Generator\GenerateRelations::class, // generate entity relations
             Generator\ValidateEntities::class,  // make sure all entity schemas are correct
             Generator\RenderTables::class,      // declare table schemas
