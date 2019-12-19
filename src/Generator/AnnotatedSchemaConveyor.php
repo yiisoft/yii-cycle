@@ -64,7 +64,7 @@ final class AnnotatedSchemaConveyor extends SchemaConveyor
         // add @Table(columns) declarations
         $this->conveyor[SchemaConveyor::STAGE_INDEX][] = Annotated\MergeColumns::class;
         // add @Table(indexes) declarations
-        $this->conveyor[SchemaConveyor::STAGE_RENDER][] = Annotated\MergeIndexes::class;
+        array_unshift($this->conveyor[SchemaConveyor::STAGE_RENDER], Annotated\MergeIndexes::class);
     }
 
     protected function getEntityClassLocator(): ClassLocator
