@@ -3,6 +3,7 @@
 namespace Yiisoft\Yii\Cycle\Tests\Generator;
 
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 use Yiisoft\Yii\Cycle\Generator\AnnotatedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Tests\Generator\Stub\FakeContainer;
 use Yiisoft\Yii\Cycle\Tests\Generator\Stub\FakeGenerator;
@@ -59,6 +60,15 @@ class AnnotatedSchemaConveyorTest extends TestCase
             'Cycle\Schema\Generator\SyncTables',
             'Cycle\Schema\Generator\GenerateTypecast',
         ], $generators);
+    }
+
+    public function testEmptyEntityPaths()
+    {
+        $conveyor = $this->createConveyor([]);
+
+        $this->expectException(EmptyEntityPathsException::class);
+
+        $conveyor->getGenerators();
     }
 
     public function createConveyor($entityPaths = ['@test-dir']): AnnotatedSchemaConveyor
