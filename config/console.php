@@ -12,5 +12,4 @@ use Spiral\Migrations\Migrator;
 return [
     Migrator::class => new MigratorFactory(),
     MigrationConfig::class => new MigrationConfigFactory($params['cycle.migrations']),
-
 ];

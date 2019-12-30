@@ -1,6 +1,5 @@
 <?php
 
-use Spiral\Database\Driver\SQLite\SQLiteDriver;
 use Yiisoft\Yii\Cycle\Command;
 
 return [
@@ -24,6 +23,8 @@ return [
     // common config
     'cycle.common' => [
         'entityPaths' => [],
+        'cacheKey' => 'Cycle-ORM-Schema',
+        'generators' => [],
     ],
 
     // migration config

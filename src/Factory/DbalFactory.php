@@ -7,12 +7,16 @@ use Spiral\Database\Config\DatabaseConfig;
 use Spiral\Database\DatabaseManager;
 use Yiisoft\Aliases\Aliases;
 
-class DbalFactory
+final class DbalFactory
 {
+    /** @var array|DatabaseConfig */
     private $params;
 
     protected ContainerInterface $container;
 
+    /**
+     * @param array|DatabaseConfig $params
+     */
     public function __construct($params)
     {
         $this->params = $params;
@@ -25,6 +29,10 @@ class DbalFactory
         return new DatabaseManager($conf);
     }
 
+    /**
+     * @param array|DatabaseConfig $params
+     * @return DatabaseConfig
+     */
     protected function prepareConfig($params): DatabaseConfig
     {
         if ($params instanceof DatabaseConfig) {
