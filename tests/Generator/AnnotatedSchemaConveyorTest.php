@@ -17,7 +17,7 @@ class AnnotatedSchemaConveyorTest extends TestCase
         // get generators list
         /** @var string[] $generators */
         $generators = array_map(
-            fn($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
+            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
             $conveyor->getGenerators()
         );
 
@@ -43,7 +43,7 @@ class AnnotatedSchemaConveyorTest extends TestCase
         // get generators list
         /** @var string[] $generators */
         $generators = array_map(
-            fn($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
+            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
             $conveyor->getGenerators()
         );
 

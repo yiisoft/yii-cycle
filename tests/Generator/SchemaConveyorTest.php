@@ -19,7 +19,7 @@ class SchemaConveyorTest extends TestCase
         // get generators list
         /** @var string[] $generators */
         $generators = array_map(
-            fn($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
+            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
             $conveyor->getGenerators()
         );
 
@@ -51,7 +51,7 @@ class SchemaConveyorTest extends TestCase
         // get generators list
         /** @var string[] $generators */
         $generators = array_map(
-            fn($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
+            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
             $conveyor->getGenerators()
         );
 
@@ -80,7 +80,7 @@ class SchemaConveyorTest extends TestCase
         // get generators list
         /** @var string[] $generators */
         $generators = array_map(
-            fn($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
+            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
             $conveyor->getGenerators()
         );
 
@@ -103,7 +103,7 @@ class SchemaConveyorTest extends TestCase
         return [
             [\stdClass::class],
             [new \DateTimeImmutable()],
-            [fn(ContainerInterface $container) => new \DateTime()],
+            [fn (ContainerInterface $container) => new \DateTime()],
         ];
     }
 
