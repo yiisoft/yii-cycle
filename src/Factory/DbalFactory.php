@@ -7,12 +7,16 @@ use Spiral\Database\Config\DatabaseConfig;
 use Spiral\Database\DatabaseManager;
 use Yiisoft\Aliases\Aliases;
 
-class DbalFactory
+final class DbalFactory
 {
+    /** @var array|DatabaseConfig */
     private $params;
 
-    protected ContainerInterface $container;
+    private ContainerInterface $container;
 
+    /**
+     * @param array|DatabaseConfig $params
+     */
     public function __construct($params)
     {
         $this->params = $params;
@@ -25,7 +29,11 @@ class DbalFactory
         return new DatabaseManager($conf);
     }
 
-    protected function prepareConfig($params): DatabaseConfig
+    /**
+     * @param array|DatabaseConfig $params
+     * @return DatabaseConfig
+     */
+    private function prepareConfig($params): DatabaseConfig
     {
         if ($params instanceof DatabaseConfig) {
             return $params;
@@ -40,7 +48,7 @@ class DbalFactory
         return new DatabaseConfig($params);
     }
 
-    protected function prepareConnection(array $connection): array
+    private function prepareConnection(array $connection): array
     {
         // if connection option contain alias in path
         if (isset($connection['connection']) && preg_match('/^(?<proto>\w+:)?@/', $connection['connection'], $m)) {
@@ -51,7 +59,7 @@ class DbalFactory
         return $connection;
     }
 
-    protected function getAlias(string $alias): string
+    private function getAlias(string $alias): string
     {
         return $this->container->get(Aliases::class)->get($alias, true);
     }

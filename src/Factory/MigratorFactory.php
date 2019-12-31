@@ -8,7 +8,7 @@ use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\FileRepository;
 use Spiral\Migrations\Migrator;
 
-class MigratorFactory
+final class MigratorFactory
 {
     public function __invoke(ContainerInterface $container)
     {

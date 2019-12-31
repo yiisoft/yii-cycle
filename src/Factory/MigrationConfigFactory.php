@@ -6,7 +6,7 @@ use Psr\Container\ContainerInterface;
 use Spiral\Migrations\Config\MigrationConfig;
 use Yiisoft\Aliases\Aliases;
 
-class MigrationConfigFactory
+final class MigrationConfigFactory
 {
     private $params;
 

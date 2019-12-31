@@ -51,7 +51,7 @@ final class ShowChangesGenerator implements GeneratorInterface
         return $this->changes !== [];
     }
 
-    protected function describeChanges(AbstractTable $table): void
+    private function describeChanges(AbstractTable $table): void
     {
         if (!$this->output->isVerbose()) {
             $this->output->writeln(sprintf(
@@ -74,7 +74,7 @@ final class ShowChangesGenerator implements GeneratorInterface
         $this->describeFKs($cmp);
     }
 
-    protected function describeColumns(Comparator $cmp): void
+    private function describeColumns(Comparator $cmp): void
     {
         foreach ($cmp->addedColumns() as $column) {
             $this->output->writeln("    - add column <fg=yellow>{$column->getName()}</fg=yellow>");
@@ -88,7 +88,7 @@ final class ShowChangesGenerator implements GeneratorInterface
         }
     }
 
-    protected function describeIndexes(Comparator $cmp): void
+    private function describeIndexes(Comparator $cmp): void
     {
         foreach ($cmp->addedIndexes() as $index) {
             $index = join(', ', $index->getColumns());
@@ -105,7 +105,7 @@ final class ShowChangesGenerator implements GeneratorInterface
         }
     }
 
-    protected function describeFKs(Comparator $cmp): void
+    private function describeFKs(Comparator $cmp): void
     {
         foreach ($cmp->addedForeignKeys() as $fk) {
             $fkColumns = join(', ', $fk->getColumns());
@@ -122,7 +122,7 @@ final class ShowChangesGenerator implements GeneratorInterface
         }
     }
 
-    protected function numChanges(AbstractTable $table): int
+    private function numChanges(AbstractTable $table): int
     {
         $cmp = $table->getComparator();
         return count($cmp->addedColumns())
