@@ -12,11 +12,11 @@ use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 final class AnnotatedSchemaConveyor extends SchemaConveyor
 {
     /** @var string[] */
-    protected array $entityPaths = [];
+    private array $entityPaths = [];
 
-    protected int $tableNaming = Annotated\Entities::TABLE_NAMING_SINGULAR;
+    private int $tableNaming = Annotated\Entities::TABLE_NAMING_SINGULAR;
 
-    protected bool $isAddedAnnotated = false;
+    private bool $isAddedAnnotated = false;
 
     public function setTableNaming(int $type): void
     {
@@ -46,7 +46,7 @@ final class AnnotatedSchemaConveyor extends SchemaConveyor
      * Add some generators in this conveyor into the INDEX stage
      * Added generators will search for entity classes and read their annotations
      */
-    protected function addAnnotatedGenerators(): void
+    private function addAnnotatedGenerators(): void
     {
         if ($this->isAddedAnnotated) {
             return;
@@ -64,10 +64,10 @@ final class AnnotatedSchemaConveyor extends SchemaConveyor
         // add @Table(columns) declarations
         $this->conveyor[SchemaConveyor::STAGE_INDEX][] = Annotated\MergeColumns::class;
         // add @Table(indexes) declarations
-        $this->conveyor[SchemaConveyor::STAGE_RENDER][]= Annotated\MergeIndexes::class;
+        $this->conveyor[SchemaConveyor::STAGE_RENDER][] = Annotated\MergeIndexes::class;
     }
 
-    protected function getEntityClassLocator(): ClassLocator
+    private function getEntityClassLocator(): ClassLocator
     {
         $aliases = $this->container->get(Aliases::class);
         $list = [];

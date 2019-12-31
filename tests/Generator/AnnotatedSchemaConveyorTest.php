@@ -10,7 +10,7 @@ use Yiisoft\Yii\Cycle\Tests\Generator\Stub\FakeGenerator;
 
 class AnnotatedSchemaConveyorTest extends TestCase
 {
-    public function testDefaultGeneratorsOrder()
+    public function testDefaultGeneratorsOrder(): void
     {
         $conveyor = $this->createConveyor();
 
@@ -35,7 +35,7 @@ class AnnotatedSchemaConveyorTest extends TestCase
         ], $generators);
     }
 
-    public function testAddCustomGenerator()
+    public function testAddCustomGenerator(): void
     {
         $conveyor = $this->createConveyor();
         $conveyor->addGenerator($conveyor::STAGE_USERLAND, \Cycle\Schema\Generator\SyncTables::class);
@@ -62,7 +62,7 @@ class AnnotatedSchemaConveyorTest extends TestCase
         ], $generators);
     }
 
-    public function testEmptyEntityPaths()
+    public function testEmptyEntityPaths(): void
     {
         $conveyor = $this->createConveyor([]);
 

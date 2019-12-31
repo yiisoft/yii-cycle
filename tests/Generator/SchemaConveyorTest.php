@@ -12,7 +12,7 @@ use Yiisoft\Yii\Cycle\Tests\Generator\Stub\FakeGenerator;
 
 class SchemaConveyorTest extends TestCase
 {
-    public function testDefaultGeneratorsList()
+    public function testDefaultGeneratorsList(): void
     {
         $conveyor = $this->createConveyor();
 
@@ -37,12 +37,12 @@ class SchemaConveyorTest extends TestCase
     {
         $conveyor = $this->createConveyor();
         $conveyor->addGenerator($conveyor::STAGE_POSTPROCESS, new class {
-            public function __invoke(ContainerInterface $container): GeneratorInterface
+            public function __invoke(): GeneratorInterface
             {
                 return new FakeGenerator('FakeGenerator-from-invocable-object');
             }
         });
-        $conveyor->addGenerator($conveyor::STAGE_USERLAND, function (ContainerInterface $container) {
+        $conveyor->addGenerator($conveyor::STAGE_USERLAND, static function () {
             return new FakeGenerator('FakeGenerator-from-closure');
         });
         $conveyor->addGenerator($conveyor::STAGE_RENDER, \Cycle\Schema\Generator\SyncTables::class);
@@ -103,7 +103,7 @@ class SchemaConveyorTest extends TestCase
         return [
             [\stdClass::class],
             [new \DateTimeImmutable()],
-            [fn (ContainerInterface $container) => new \DateTime()],
+            [fn () => new \DateTime()],
         ];
     }
 
@@ -120,10 +120,8 @@ class SchemaConveyorTest extends TestCase
         $conveyor->getGenerators();
     }
 
-    public function createConveyor($entityPaths = ['@test-dir']): SchemaConveyor
+    public function createConveyor(): SchemaConveyor
     {
-        $conveyor = new SchemaConveyor(new FakeContainer($this));
-
-        return $conveyor;
+        return new SchemaConveyor(new FakeContainer($this));
     }
 }

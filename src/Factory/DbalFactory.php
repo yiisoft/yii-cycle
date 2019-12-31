@@ -12,7 +12,7 @@ final class DbalFactory
     /** @var array|DatabaseConfig */
     private $params;
 
-    protected ContainerInterface $container;
+    private ContainerInterface $container;
 
     /**
      * @param array|DatabaseConfig $params
@@ -33,7 +33,7 @@ final class DbalFactory
      * @param array|DatabaseConfig $params
      * @return DatabaseConfig
      */
-    protected function prepareConfig($params): DatabaseConfig
+    private function prepareConfig($params): DatabaseConfig
     {
         if ($params instanceof DatabaseConfig) {
             return $params;
@@ -48,7 +48,7 @@ final class DbalFactory
         return new DatabaseConfig($params);
     }
 
-    protected function prepareConnection(array $connection): array
+    private function prepareConnection(array $connection): array
     {
         // if connection option contain alias in path
         if (isset($connection['connection']) && preg_match('/^(?<proto>\w+:)?@/', $connection['connection'], $m)) {
@@ -59,7 +59,7 @@ final class DbalFactory
         return $connection;
     }
 
-    protected function getAlias(string $alias): string
+    private function getAlias(string $alias): string
     {
         return $this->container->get(Aliases::class)->get($alias, true);
     }
