@@ -15,7 +15,6 @@ use Yiisoft\Yii\Cycle\Helper\CycleOrmHelper;
 
 abstract class BaseMigrationCommand extends Command
 {
-
     protected DatabaseManager $dbal;
     protected MigrationConfig $config;
     protected Migrator $migrator;
