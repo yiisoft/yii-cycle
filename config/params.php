@@ -24,7 +24,10 @@ return [
     'cycle.common' => [
         'entityPaths' => [],
         'cacheKey' => 'Cycle-ORM-Schema',
+        // List of definitions of \Cycle\Schema\GeneratorInterface implementations
         'generators' => [],
+        // Class name or Object instance of \Cycle\ORM\PromiseFactoryInterface
+        'promiseFactory' => null,
     ],
 
     // migration config

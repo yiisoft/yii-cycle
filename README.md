@@ -16,10 +16,11 @@ WIP
 
 ## Configuration
 
-Specify config file in `params` section for `composer-config-plugin`\
-[How to configure DBAL connections](https://github.com/cycle/docs/blob/master/basic/connect.md)
+Specify config file in `params` section for `composer-config-plugin`
 ```php
 <?php
+use Cycle\Schema\Generator;
+
 return [
     // cycle DBAL config
     'cycle.dbal' => [
@@ -37,14 +38,21 @@ return [
             ]
         ],
     ],
-    
+
     // cycle common config
     'cycle.common' => [
         'entityPaths' => [
             '@src/Entity'
         ],
+        'cacheKey' => 'Cycle-ORM-Schema',
+        'generators' => [
+            // sync table changes to database
+            Generator\SyncTables::class,
+        ],
+        // cycle/proxy-factory extension required
+        'promiseFactory' => \Cycle\ORM\Promise\ProxyFactory::class,
     ],
-    
+
     // cycle migration config
     'cycle.migrations' => [
         'directory' => '@root/migrations',
@@ -54,6 +62,7 @@ return [
     ],
 ];
 ```
+[About DBAL connections configuration](https://github.com/cycle/docs/blob/master/basic/connect.md)
 
 ## Commands
 
