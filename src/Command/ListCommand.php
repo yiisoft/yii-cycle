@@ -1,4 +1,5 @@
 <?php
+
 namespace Yiisoft\Yii\Cycle\Command;
 
 use Symfony\Component\Console\Input\InputInterface;

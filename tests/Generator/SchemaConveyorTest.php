@@ -36,7 +36,7 @@ class SchemaConveyorTest extends TestCase
     public function testAddCustomGenerators(): void
     {
         $conveyor = $this->createConveyor();
-        $conveyor->addGenerator($conveyor::STAGE_POSTPROCESS, new class {
+        $conveyor->addGenerator($conveyor::STAGE_POSTPROCESS, new class() {
             public function __invoke(): GeneratorInterface
             {
                 return new FakeGenerator('FakeGenerator-from-invocable-object');
