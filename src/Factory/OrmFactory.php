@@ -2,13 +2,11 @@
 
 namespace Yiisoft\Yii\Cycle\Factory;
 
-use Cycle\ORM\Factory;
+use Cycle\ORM\FactoryInterface;
 use Cycle\ORM\ORM;
 use Cycle\ORM\PromiseFactoryInterface;
-use Cycle\ORM\Schema;
+use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
-use Spiral\Database\DatabaseManager;
-use Yiisoft\Yii\Cycle\Helper\CycleOrmHelper;
 
 final class OrmFactory
 {
@@ -21,13 +19,11 @@ final class OrmFactory
 
     public function __invoke(ContainerInterface $container)
     {
-        $dbal = $container->get(DatabaseManager::class);
+        $schema = $container->get(SchemaInterface::class);
+        $factory = $container->get(FactoryInterface::class);
 
-        $schema = new Schema(
-            $container->get(CycleOrmHelper::class)->getCurrentSchemaArray(true, $this->params['generators'] ?? [])
-        );
+        $orm = new ORM($factory, $schema);
 
-        $orm = (new ORM(new Factory($dbal)))->withSchema($schema);
         // Promise factory
         $promiseFactory = $this->params['promiseFactory'] ?? null;
         if ($promiseFactory) {

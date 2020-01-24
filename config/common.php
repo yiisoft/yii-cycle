@@ -1,6 +1,10 @@
 <?php
 
+use Cycle\ORM\Factory;
+use Cycle\ORM\FactoryInterface;
 use Cycle\ORM\ORMInterface;
+use Cycle\ORM\Schema;
+use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
@@ -19,6 +23,16 @@ return [
     DatabaseManager::class => new DbalFactory($params['cycle.dbal']),
     // Cycle ORM
     ORMInterface::class => new OrmFactory($params['cycle.common']),
+    // Factory for Cycle ORM
+    FactoryInterface::class => function (ContainerInterface $c) {
+        return new Factory($c->get(DatabaseManager::class));
+    },
+    // Schema from annotations
+    SchemaInterface::class => static function (ContainerInterface $container) use (&$params) {
+        return new Schema(
+            $container->get(CycleOrmHelper::class)->getCurrentSchemaArray(true, $params['cycle.common']['generators'] ?? [])
+        );
+    },
     // Annotated Schema Conveyor
     SchemaConveyorInterface::class => static function (ContainerInterface $container) use (&$params) {
         $conveyor = new AnnotatedSchemaConveyor($container);
