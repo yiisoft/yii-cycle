@@ -33,11 +33,6 @@ class CycleOrmHelper
         $this->schemaConveyor = $schemaConveyor;
     }
 
-    public function dropCurrentSchemaCache(): void
-    {
-        $this->cache->delete($this->cacheKey);
-    }
-
     /**
      * @param Migrator $migrator
      * @param MigrationConfig $config
@@ -59,36 +54,4 @@ class CycleOrmHelper
         (new Compiler())->compile(new Registry($this->dbal), $conveyor);
     }
 
-    /**
-     * @param bool $fromCache
-     * @param GeneratorInterface[]|string[]|Closure[] $generators Additional generators
-     * @return array
-     * @throws \Psr\SimpleCache\InvalidArgumentException
-     * @throws \Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException
-     */
-    public function getCurrentSchemaArray($fromCache = true, array $generators = []): array
-    {
-        if ($fromCache) {
-            $schema = $this->cache->get($this->cacheKey);
-            if (is_array($schema)) {
-                return $schema;
-            }
-        }
-        // add generators to userland
-        foreach ($generators as $generator) {
-            $this->schemaConveyor->addGenerator($this->schemaConveyor::STAGE_USERLAND, $generator);
-        }
-        // compile schema array
-        $conveyor = $this->schemaConveyor->getGenerators();
-
-        $schema = (new Compiler())->compile(new Registry($this->dbal), $conveyor);
-
-        $this->cache->set($this->cacheKey, $schema);
-        return $schema;
-    }
-
-    public function setCacheKey(string $cacheKey): void
-    {
-        $this->cacheKey = $cacheKey;
-    }
 }

@@ -19,8 +19,8 @@ class DownCommand extends BaseMigrationCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        // drop cached schema
-        $this->cycleOrmHelper->dropCurrentSchemaCache();
+        // todo: drop cached schema
+        // $this->cycleOrmHelper->dropCurrentSchemaCache();
 
         $this->findMigrations($output);
 

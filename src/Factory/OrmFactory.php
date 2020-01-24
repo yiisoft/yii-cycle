@@ -11,10 +11,16 @@ use Psr\Container\ContainerInterface;
 final class OrmFactory
 {
     private array $params;
+    /** @var null|PromiseFactoryInterface|string  */
+    private $promiseFactory = null;
 
-    public function __construct(array $params)
+    /**
+     * OrmFactory constructor.
+     * @param null|PromiseFactoryInterface|string $promiseFactory
+     */
+    public function __construct($promiseFactory = null)
     {
-        $this->params = $params;
+        $this->promiseFactory = $promiseFactory;
     }
 
     public function __invoke(ContainerInterface $container)
@@ -25,12 +31,11 @@ final class OrmFactory
         $orm = new ORM($factory, $schema);
 
         // Promise factory
-        $promiseFactory = $this->params['promiseFactory'] ?? null;
-        if ($promiseFactory) {
-            if (!$promiseFactory instanceof PromiseFactoryInterface) {
-                $promiseFactory = $container->get($promiseFactory);
+        if ($this->promiseFactory !== null) {
+            if (!$this->promiseFactory instanceof PromiseFactoryInterface) {
+                $this->promiseFactory = $container->get($this->promiseFactory);
             }
-            $orm = $orm->withPromiseFactory($promiseFactory);
+            $orm = $orm->withPromiseFactory($this->promiseFactory);
         }
 
         return $orm;

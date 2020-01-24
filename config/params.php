@@ -23,6 +23,7 @@ return [
     // common config
     'cycle.common' => [
         'entityPaths' => [],
+        'cacheEnabled' => true,
         'cacheKey' => 'Cycle-ORM-Schema',
         // List of definitions of \Cycle\Schema\GeneratorInterface implementations
         'generators' => [],

@@ -25,10 +25,6 @@ final class HelperFactory
             $container->get(SchemaConveyorInterface::class)
         );
 
-        if (isset($this->params['cacheKey'])) {
-            $helper->setCacheKey($this->params['cacheKey']);
-        }
-
         return $helper;
     }
 }
