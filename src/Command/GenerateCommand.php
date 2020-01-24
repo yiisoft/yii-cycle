@@ -47,7 +47,9 @@ class GenerateCommand extends BaseMigrationCommand
                 }
             }
         } else {
-            $output->writeln('<info>If you want to create new empty migration, use <fg=yellow>migrate/create</></info>');
+            $output->writeln(
+                '<info>If you want to create new empty migration, use <fg=yellow>migrate/create</></info>'
+            );
 
 
             $qaHelper = $this->getHelper('question');

@@ -32,7 +32,9 @@ class DownCommand extends BaseMigrationCommand
 
             $state = $migration->getState();
             $status = $state->getStatus();
-            $output->writeln('<fg=cyan>' . $state->getName() . '</>: ' . (static::$migrationStatus[$status] ?? $status));
+            $output->writeln(
+                sprintf('<fg=cyan>%s</>: %s', $state->getName(), static::$migrationStatus[$status] ?? $status)
+            );
         } catch (\Throwable $e) {
             $output->writeln([
                 '<fg=red>Error!</>',

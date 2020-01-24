@@ -39,8 +39,11 @@ abstract class BaseMigrationCommand extends Command
         $this->cycleOrmHelper = $cycleOrmHelper;
     }
 
-    protected function createEmptyMigration(OutputInterface $output, string $name, ?string $database = null): ?MigrationImage
-    {
+    protected function createEmptyMigration(
+        OutputInterface $output,
+        string $name,
+        ?string $database = null
+    ): ?MigrationImage {
         if ($database === null) {
             // get default database
             $database = $this->dbal->database()->getName();
@@ -71,7 +74,9 @@ abstract class BaseMigrationCommand extends Command
     protected function findMigrations(OutputInterface $output): array
     {
         $list = $this->migrator->getMigrations();
-        $output->writeln('<info>' . count($list) . ' migration(s) found in ' . $this->config->getDirectory() . '</info>');
+        $output->writeln(
+            sprintf('<info>%d migration(s) found in %s</info>', count($list), $this->config->getDirectory())
+        );
         return $list;
     }
 }

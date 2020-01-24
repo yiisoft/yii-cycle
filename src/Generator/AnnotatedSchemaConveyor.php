@@ -2,7 +2,10 @@
 
 namespace Yiisoft\Yii\Cycle\Generator;
 
-use Cycle\Annotated;
+use Cycle\Annotated\Embeddings;
+use Cycle\Annotated\Entities;
+use Cycle\Annotated\MergeColumns;
+use Cycle\Annotated\MergeIndexes;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Spiral\Tokenizer\ClassLocator;
 use Symfony\Component\Finder\Finder;
@@ -14,7 +17,7 @@ final class AnnotatedSchemaConveyor extends SchemaConveyor
     /** @var string[] */
     private array $entityPaths = [];
 
-    private int $tableNaming = Annotated\Entities::TABLE_NAMING_SINGULAR;
+    private int $tableNaming = Entities::TABLE_NAMING_SINGULAR;
 
     private bool $isAddedAnnotated = false;
 
@@ -58,13 +61,13 @@ final class AnnotatedSchemaConveyor extends SchemaConveyor
         $classLocator = $this->getEntityClassLocator();
 
         // register embeddable entities
-        $this->conveyor[SchemaConveyor::STAGE_INDEX][] = new Annotated\Embeddings($classLocator);
+        $this->conveyor[SchemaConveyor::STAGE_INDEX][] = new Embeddings($classLocator);
         // register annotated entities
-        $this->conveyor[SchemaConveyor::STAGE_INDEX][] = new Annotated\Entities($classLocator, null, $this->tableNaming);
+        $this->conveyor[SchemaConveyor::STAGE_INDEX][] = new Entities($classLocator, null, $this->tableNaming);
         // add @Table(columns) declarations
-        $this->conveyor[SchemaConveyor::STAGE_INDEX][] = Annotated\MergeColumns::class;
+        $this->conveyor[SchemaConveyor::STAGE_INDEX][] = MergeColumns::class;
         // add @Table(indexes) declarations
-        $this->conveyor[SchemaConveyor::STAGE_RENDER][] = Annotated\MergeIndexes::class;
+        $this->conveyor[SchemaConveyor::STAGE_RENDER][] = MergeIndexes::class;
     }
 
     private function getEntityClassLocator(): ClassLocator
