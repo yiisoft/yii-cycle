@@ -29,6 +29,8 @@ return [
         'generators' => [],
         // Class name or Object instance of \Cycle\ORM\PromiseFactoryInterface
         'promiseFactory' => null,
+        // Classname or instance of \Psr\Log\LoggerInterface::class
+        'queryLogger' => null,
     ],
 
     // migration config

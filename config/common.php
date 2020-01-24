@@ -21,7 +21,7 @@ use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 return [
     // Cycle DBAL
-    DatabaseManager::class => new DbalFactory($params['cycle.dbal']),
+    DatabaseManager::class => new DbalFactory($params['cycle.dbal'], $params['cycle.common']['queryLogger']),
     // Cycle ORM
     ORMInterface::class => new OrmFactory($params['cycle.common']['promiseFactory']),
     // Factory for Cycle ORM
