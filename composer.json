@@ -29,7 +29,8 @@
         "yiisoft/yii-console": "^3.0@dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.4"
+        "phpunit/phpunit": "^8.4",
+        "yiisoft/di": "@dev"
     },
     "autoload": {
         "psr-4": {
