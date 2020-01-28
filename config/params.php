@@ -4,13 +4,15 @@ use Yiisoft\Yii\Cycle\Command;
 
 return [
     // Console commands
-    'commands' => [
-        'cycle/schema' => Command\SchemaCommand::class,
-        'migrate/create' => Command\CreateCommand::class,
-        'migrate/generate' => Command\GenerateCommand::class,
-        'migrate/up' => Command\UpCommand::class,
-        'migrate/down' => Command\DownCommand::class,
-        'migrate/list' => Command\ListCommand::class,
+    'console' => [
+        'commands' => [
+            'cycle/schema' => Command\SchemaCommand::class,
+            'migrate/create' => Command\CreateCommand::class,
+            'migrate/generate' => Command\GenerateCommand::class,
+            'migrate/up' => Command\UpCommand::class,
+            'migrate/down' => Command\DownCommand::class,
+            'migrate/list' => Command\ListCommand::class,
+        ],
     ],
 
     // DBAL config
