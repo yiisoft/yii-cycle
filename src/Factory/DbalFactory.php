@@ -35,6 +35,7 @@ final class DbalFactory
             if (!$this->logger instanceof LoggerInterface) {
                 $this->logger = $container->get($this->logger);
             }
+            $dbal->setLogger($this->logger);
             foreach ($dbal->getDrivers() as $driver) {
                 $driver->setLogger($this->logger);
             }

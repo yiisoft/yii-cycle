@@ -5,6 +5,7 @@ use Yiisoft\Yii\Cycle\Command;
 return [
     // Console commands
     'commands' => [
+        'cycle/schema' => Command\SchemaCommand::class,
         'migrate/create' => Command\CreateCommand::class,
         'migrate/generate' => Command\GenerateCommand::class,
         'migrate/up' => Command\UpCommand::class,
@@ -25,11 +26,11 @@ return [
         'entityPaths' => [],
         'cacheEnabled' => true,
         'cacheKey' => 'Cycle-ORM-Schema',
-        // List of definitions of \Cycle\Schema\GeneratorInterface implementations
+        // List of \Cycle\Schema\GeneratorInterface definitions
         'generators' => [],
-        // Classname or instance of \Cycle\ORM\PromiseFactoryInterface
+        // \Cycle\ORM\PromiseFactoryInterface definition
         'promiseFactory' => null,
-        // Classname or instance of \Psr\Log\LoggerInterface::class
+        // \Psr\Log\LoggerInterface definition
         'queryLogger' => null,
     ],
 
