@@ -2,6 +2,12 @@
 
 namespace Yiisoft\Yii\Cycle\Command;
 
+use Cycle\Migrations\GenerateMigrations;
+use Cycle\Schema\Compiler;
+use Cycle\Schema\Registry;
+use Spiral\Database\DatabaseManager;
+use Spiral\Migrations\Config\MigrationConfig;
+use Spiral\Migrations\Migrator;
 use Spiral\Migrations\State;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StreamableInputInterface;
@@ -10,10 +16,22 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Generator\ShowChanges;
+use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 class GenerateCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/generate';
+    private SchemaConveyorInterface $conveyor;
+
+    public function __construct(
+        DatabaseManager $dbal,
+        MigrationConfig $conf,
+        Migrator $migrator,
+        SchemaConveyorInterface $conveyor
+    ) {
+        parent::__construct($dbal, $conf, $migrator);
+        $this->conveyor = clone $conveyor;
+    }
 
     public function configure(): void
     {
@@ -30,11 +48,18 @@ class GenerateCommand extends BaseMigrationCommand
                 return ExitCode::OK;
             }
         }
-        // run generator
-        $this->cycleOrmHelper->generateMigrations($this->migrator, $this->config, [
-            new ShowChanges($output),
-        ]);
 
+        // migrations generator
+        $this->conveyor->addGenerator(
+            SchemaConveyorInterface::STAGE_USERLAND,
+            new GenerateMigrations($this->migrator->getRepository(), $this->config)
+        );
+        // show DB changes
+        $this->conveyor->addGenerator(SchemaConveyorInterface::STAGE_USERLAND, new ShowChanges($output));
+        // compile schema and convert diffs to new migrations
+        (new Compiler())->compile(new Registry($this->dbal), $this->conveyor->getGenerators());
+
+        // compare migrations list before and after
         $listBefore = $this->migrator->getMigrations();
         $added = count($listBefore) - count($listAfter);
         $output->writeln("<info>Added {$added} file(s)</info>");
@@ -50,7 +75,6 @@ class GenerateCommand extends BaseMigrationCommand
             $output->writeln(
                 '<info>If you want to create new empty migration, use <fg=yellow>migrate/create</></info>'
             );
-
 
             $qaHelper = $this->getHelper('question');
 

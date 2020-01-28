@@ -3,16 +3,13 @@
 use Cycle\ORM\Factory;
 use Cycle\ORM\FactoryInterface;
 use Cycle\ORM\ORMInterface;
-use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
-use Yiisoft\Yii\Cycle\Factory\HelperFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Factory\SchemaFromGeneratorFactory;
 use Yiisoft\Yii\Cycle\Conveyor\AnnotatedSchemaConveyor;
-use Yiisoft\Yii\Cycle\Helper\CycleOrmHelper;
 use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
 /**
@@ -41,6 +38,4 @@ return [
         $conveyor->addEntityPaths($params['cycle.common']['entityPaths']);
         return $conveyor;
     },
-
-    CycleOrmHelper::class => new HelperFactory($params['cycle.common']),
 ];
