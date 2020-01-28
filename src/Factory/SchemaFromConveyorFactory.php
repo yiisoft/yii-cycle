@@ -3,7 +3,6 @@
 namespace Yiisoft\Yii\Cycle\Factory;
 
 use Closure;
-use Cycle\ORM\PromiseFactoryInterface;
 use Cycle\ORM\Schema;
 use Cycle\Schema\Compiler;
 use Cycle\Schema\GeneratorInterface;
@@ -13,7 +12,7 @@ use Psr\SimpleCache\CacheInterface;
 use Spiral\Database\DatabaseManager;
 use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyorInterface;
 
-final class SchemaFromGeneratorFactory
+final class SchemaFromConveyorFactory
 {
     public string $cacheKey;
     public bool $cacheEnabled;

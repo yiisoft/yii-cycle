@@ -15,8 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Yiisoft\Yii\Console\ExitCode;
-use Yiisoft\Yii\Cycle\Generator\PrintChanges;
 use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyorInterface;
+use Yiisoft\Yii\Cycle\Generator\PrintChanges;
 
 class GenerateCommand extends BaseMigrationCommand
 {

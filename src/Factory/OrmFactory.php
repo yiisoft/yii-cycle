@@ -10,7 +10,6 @@ use Psr\Container\ContainerInterface;
 
 final class OrmFactory
 {
-    private array $params;
     /** @var null|PromiseFactoryInterface|string  */
     private $promiseFactory = null;
 

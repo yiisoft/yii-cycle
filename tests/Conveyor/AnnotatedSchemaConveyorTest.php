@@ -3,8 +3,8 @@
 namespace Yiisoft\Yii\Cycle\Tests\Conveyor;
 
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 use Yiisoft\Yii\Cycle\Conveyor\AnnotatedSchemaConveyor;
+use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 use Yiisoft\Yii\Cycle\Tests\Conveyor\Stub\FakeContainer;
 use Yiisoft\Yii\Cycle\Tests\Conveyor\Stub\FakeGenerator;
 

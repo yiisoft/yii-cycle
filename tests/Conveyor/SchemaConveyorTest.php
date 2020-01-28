@@ -4,8 +4,8 @@ namespace Yiisoft\Yii\Cycle\Tests\Conveyor;
 
 use Cycle\Schema\GeneratorInterface;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyor;
+use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 use Yiisoft\Yii\Cycle\Tests\Conveyor\Stub\FakeContainer;
 use Yiisoft\Yii\Cycle\Tests\Conveyor\Stub\FakeGenerator;
 

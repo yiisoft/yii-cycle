@@ -8,9 +8,9 @@ use Yiisoft\Aliases\Aliases;
 
 final class MigrationConfigFactory
 {
-    private $params;
+    private array $params;
 
-    public function __construct($params)
+    public function __construct(array $params)
     {
         $this->params = $params;
     }

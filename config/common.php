@@ -6,11 +6,11 @@ use Cycle\ORM\ORMInterface;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
-use Yiisoft\Yii\Cycle\Factory\DbalFactory;
-use Yiisoft\Yii\Cycle\Factory\OrmFactory;
-use Yiisoft\Yii\Cycle\Factory\SchemaFromGeneratorFactory;
 use Yiisoft\Yii\Cycle\Conveyor\AnnotatedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyorInterface;
+use Yiisoft\Yii\Cycle\Factory\DbalFactory;
+use Yiisoft\Yii\Cycle\Factory\OrmFactory;
+use Yiisoft\Yii\Cycle\Factory\SchemaFromConveyorFactory;
 
 /**
  * @var array $params
@@ -26,7 +26,7 @@ return [
         return new Factory($c->get(DatabaseManager::class));
     },
     // Schema from generators
-    SchemaInterface::class => new SchemaFromGeneratorFactory(
+    SchemaInterface::class => new SchemaFromConveyorFactory(
         $params['cycle.common']['cacheEnabled'],
         $params['cycle.common']['cacheKey'],
         $params['cycle.common']['generators']
