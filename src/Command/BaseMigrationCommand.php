@@ -71,7 +71,7 @@ abstract class BaseMigrationCommand extends Command
     {
         $list = $this->migrator->getMigrations();
         $output->writeln(
-            sprintf('<info>%d migration(s) found in %s</info>', count($list), $this->config->getDirectory())
+            sprintf('<info>Total %d migration(s) found in %s</info>', count($list), $this->config->getDirectory())
         );
         return $list;
     }
