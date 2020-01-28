@@ -81,9 +81,9 @@ class SchemaCommand extends BaseMigrationCommand
             $output->write('   Repository : ');
             $output->writeln($repository === null ? '<fg=red>no repository</>' : "<fg=cyan>{$repository}</>");
             // PK
-            $output->writeln('   Primary key: <fg=cyan>' . ($this->schema->define($role, Schema::PRIMARY_KEY) ?? 'no PK') . '</>');
-            // $output->writeln('   Find by: <fg=cyan>' . implode(',', $this->schema->define($role, Schema::FIND_BY_KEYS) ?? []) . '</>');
-
+            $pk = $this->schema->define($role, Schema::PRIMARY_KEY) ?? null;
+            $output->write('   Primary key: ');
+            $output->writeln($pk === null ? '<fg=red>no repository</>' : "<fg=cyan>{$pk}</>");
             // Fields
             $columns = $this->schema->define($role, Schema::COLUMNS);
             $output->writeln('   Fields: (entity.property -> db.field -> typecast)');
@@ -140,7 +140,6 @@ class SchemaCommand extends BaseMigrationCommand
             } else {
                 $output->writeln('   No relations');
             }
-
         }
 
         return ExitCode::OK;

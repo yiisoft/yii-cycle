@@ -25,8 +25,7 @@ class UpCommand extends BaseMigrationCommand
         MigrationConfig $conf,
         Migrator $migrator,
         EventDispatcherInterface $eventDispatcher
-    )
-    {
+    ) {
         parent::__construct($dbal, $conf, $migrator);
         $this->eventDispatcher = $eventDispatcher;
     }
