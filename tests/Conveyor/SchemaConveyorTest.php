@@ -1,14 +1,13 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Tests\Generator;
+namespace Yiisoft\Yii\Cycle\Tests\Conveyor;
 
 use Cycle\Schema\GeneratorInterface;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
 use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
-use Yiisoft\Yii\Cycle\Generator\SchemaConveyor;
-use Yiisoft\Yii\Cycle\Tests\Generator\Stub\FakeContainer;
-use Yiisoft\Yii\Cycle\Tests\Generator\Stub\FakeGenerator;
+use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyor;
+use Yiisoft\Yii\Cycle\Tests\Conveyor\Stub\FakeContainer;
+use Yiisoft\Yii\Cycle\Tests\Conveyor\Stub\FakeGenerator;
 
 class SchemaConveyorTest extends TestCase
 {

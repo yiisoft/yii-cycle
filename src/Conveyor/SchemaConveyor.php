@@ -1,6 +1,6 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Generator;
+namespace Yiisoft\Yii\Cycle\Conveyor;
 
 use Cycle\Schema\Generator;
 use Cycle\Schema\GeneratorInterface;

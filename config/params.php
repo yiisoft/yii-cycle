@@ -27,7 +27,7 @@ return [
         'cacheKey' => 'Cycle-ORM-Schema',
         // List of definitions of \Cycle\Schema\GeneratorInterface implementations
         'generators' => [],
-        // Class name or Object instance of \Cycle\ORM\PromiseFactoryInterface
+        // Classname or instance of \Cycle\ORM\PromiseFactoryInterface
         'promiseFactory' => null,
         // Classname or instance of \Psr\Log\LoggerInterface::class
         'queryLogger' => null,

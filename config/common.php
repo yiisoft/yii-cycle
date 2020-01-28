@@ -11,7 +11,7 @@ use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\HelperFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Factory\SchemaFromGeneratorFactory;
-use Yiisoft\Yii\Cycle\Generator\AnnotatedSchemaConveyor;
+use Yiisoft\Yii\Cycle\Conveyor\AnnotatedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Helper\CycleOrmHelper;
 use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
 
@@ -31,17 +31,14 @@ return [
     // Schema from generators
     SchemaInterface::class => new SchemaFromGeneratorFactory(
         $params['cycle.common']['cacheEnabled'],
-        $params['cycle.common']['cacheKey']
+        $params['cycle.common']['cacheKey'],
+        $params['cycle.common']['generators']
     ),
 
     // Annotated Schema Conveyor
     SchemaConveyorInterface::class => static function (ContainerInterface $container) use (&$params) {
         $conveyor = new AnnotatedSchemaConveyor($container);
         $conveyor->addEntityPaths($params['cycle.common']['entityPaths']);
-        // add generators to userland
-        foreach ($params['cycle.common']['generators'] as $generator) {
-            $conveyor->addGenerator(SchemaConveyorInterface::STAGE_USERLAND, $generator);
-        }
         return $conveyor;
     },
 

@@ -9,7 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Yiisoft\Yii\Console\ExitCode;
-use Yiisoft\Yii\Cycle\Generator\ShowChangesGenerator;
+use Yiisoft\Yii\Cycle\Generator\ShowChanges;
 
 class GenerateCommand extends BaseMigrationCommand
 {
@@ -32,7 +32,7 @@ class GenerateCommand extends BaseMigrationCommand
         }
         // run generator
         $this->cycleOrmHelper->generateMigrations($this->migrator, $this->config, [
-            new ShowChangesGenerator($output),
+            new ShowChanges($output),
         ]);
 
         $listBefore = $this->migrator->getMigrations();

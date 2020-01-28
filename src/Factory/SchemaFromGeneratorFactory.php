@@ -17,11 +17,17 @@ final class SchemaFromGeneratorFactory
 {
     public string $cacheKey;
     public bool $cacheEnabled;
+    /** @var GeneratorInterface[]|string[]|Closure[] */
+    private array $generators;
 
-    public function __construct(bool $cacheEnabled = true, string $cacheKey = 'Cycle-ORM-Schema')
-    {
+    public function __construct(
+        bool $cacheEnabled = true,
+        string $cacheKey = 'Cycle-ORM-Schema',
+        array $generators = []
+    ) {
         $this->cacheEnabled = $cacheEnabled;
         $this->cacheKey = $cacheKey;
+        $this->generators = $generators;
     }
 
     /**
@@ -56,8 +62,12 @@ final class SchemaFromGeneratorFactory
      */
     private function generateSchemaArray(SchemaConveyorInterface $conveyor, DatabaseManager $dbal): array
     {
+        // add generators to userland stage
+        foreach ($this->generators as $generator) {
+            $conveyor->addGenerator(SchemaConveyorInterface::STAGE_USERLAND, $generator);
+        }
         // compile schema array
-        $conveyor = $conveyor->getGenerators();
-        return (new Compiler())->compile(new Registry($dbal), $conveyor);
+        $generators = $conveyor->getGenerators();
+        return (new Compiler())->compile(new Registry($dbal), $generators);
     }
 }
