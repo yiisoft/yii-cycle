@@ -15,8 +15,8 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Yiisoft\Yii\Console\ExitCode;
-use Yiisoft\Yii\Cycle\Generator\ShowChanges;
-use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
+use Yiisoft\Yii\Cycle\Generator\PrintChanges;
+use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyorInterface;
 
 class GenerateCommand extends BaseMigrationCommand
 {
@@ -55,7 +55,7 @@ class GenerateCommand extends BaseMigrationCommand
             new GenerateMigrations($this->migrator->getRepository(), $this->config)
         );
         // show DB changes
-        $this->conveyor->addGenerator(SchemaConveyorInterface::STAGE_USERLAND, new ShowChanges($output));
+        $this->conveyor->addGenerator(SchemaConveyorInterface::STAGE_USERLAND, new PrintChanges($output));
         // compile schema and convert diffs to new migrations
         (new Compiler())->compile(new Registry($this->dbal), $this->conveyor->getGenerators());
 

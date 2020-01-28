@@ -11,7 +11,7 @@ use Cycle\Schema\Registry;
 use Psr\Container\ContainerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Spiral\Database\DatabaseManager;
-use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
+use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyorInterface;
 
 final class SchemaFromGeneratorFactory
 {

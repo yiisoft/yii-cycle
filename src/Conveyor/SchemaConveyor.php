@@ -6,7 +6,7 @@ use Cycle\Schema\Generator;
 use Cycle\Schema\GeneratorInterface;
 use Psr\Container\ContainerInterface;
 use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
-use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
+use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyorInterface;
 
 class SchemaConveyor implements SchemaConveyorInterface
 {

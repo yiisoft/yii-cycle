@@ -10,7 +10,7 @@ use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Factory\SchemaFromGeneratorFactory;
 use Yiisoft\Yii\Cycle\Conveyor\AnnotatedSchemaConveyor;
-use Yiisoft\Yii\Cycle\SchemaConveyorInterface;
+use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyorInterface;
 
 /**
  * @var array $params

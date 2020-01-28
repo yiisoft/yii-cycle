@@ -8,7 +8,7 @@ use Spiral\Database\Schema\AbstractTable;
 use Spiral\Database\Schema\Comparator;
 use Symfony\Component\Console\Output\OutputInterface;
 
-final class ShowChanges implements GeneratorInterface
+final class PrintChanges implements GeneratorInterface
 {
     private OutputInterface $output;
 
