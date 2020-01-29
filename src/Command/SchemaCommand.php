@@ -117,6 +117,7 @@ class SchemaCommand extends BaseMigrationCommand
                     $cascadeStr = $cascade ? 'cascaded' : 'not cascaded';
                     $nullable = $relSchema[Relation::NULLABLE] ?? null;
                     $nullableStr = $nullable ? 'nullable' : ($nullable === false ? 'not null' : 'n/a');
+                    $morphKey = $relSchema[Relation::MORPH_KEY] ?? null;
                     // Many-To-Many relation(s) options
                     $mmInnerKey = $relSchema[Relation::THROUGH_INNER_KEY] ?? '?';
                     $mmOuterKey = $relSchema[Relation::THROUGH_OUTER_KEY] ?? '?';
@@ -127,6 +128,9 @@ class SchemaCommand extends BaseMigrationCommand
                         "     <fg=magenta>{$role}</>-><fg=cyan>{$field}</> "
                         . "{$type} <fg=magenta>{$target}</> {$loading} load"
                     );
+                    if ($morphKey !== null) {
+                        $output->writeln("       Morphed key: <fg=green>{$morphKey}</>");
+                    }
                     $output->writeln(" <fg=yellow>{$cascadeStr}</>");
                     $output->write("       {$nullableStr} <fg=green>{$table}</>.<fg=green>{$innerKey}</> <=");
                     if ($mmEntity !== null) {
