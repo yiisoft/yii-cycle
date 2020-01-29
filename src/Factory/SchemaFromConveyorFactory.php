@@ -39,7 +39,7 @@ final class SchemaFromConveyorFactory
     {
         $schemaArray = null;
         if ($this->cacheEnabled) {
-            $container->get(CacheInterface::class)->get($this->cacheKey);
+            $schemaArray = $container->get(CacheInterface::class)->get($this->cacheKey);
         }
         if (!is_array($schemaArray)) {
             $schemaArray = $this->generateSchemaArray(

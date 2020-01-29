@@ -17,16 +17,19 @@ class SchemaCommand extends BaseMigrationCommand
     protected static $defaultName = 'cycle/schema';
 
     private SchemaInterface $schema;
-    private array $strRelations = [
-        Relation::HAS_ONE      => 'has one',
-        Relation::HAS_MANY     => 'has many',
-        Relation::BELONGS_TO   => 'belongs to',
-        Relation::REFERS_TO    => 'refers to',
+    private const STR_RELATION      = [
+        Relation::HAS_ONE => 'has one',
+        Relation::HAS_MANY => 'has many',
+        Relation::BELONGS_TO => 'belongs to',
+        Relation::REFERS_TO => 'refers to',
         Relation::MANY_TO_MANY => 'many to many',
+        Relation::BELONGS_TO_MORPHED => 'belongs to morphed',
+        Relation::MORPHED_HAS_ONE => 'morphed has one',
+        Relation::MORPHED_HAS_MANY => 'morphed has many',
     ];
-    private array $strPreFetchMode = [
+    private const STR_PREFETCH_MODE = [
         Relation::LOAD_PROMISE => 'promise',
-        Relation::LOAD_EAGER   => 'eager',
+        Relation::LOAD_EAGER => 'eager',
     ];
 
     public function __construct(
@@ -58,41 +61,41 @@ class SchemaCommand extends BaseMigrationCommand
 
             // database
             $database = $this->schema->define($role, Schema::DATABASE);
+            $table = $this->schema->define($role, Schema::TABLE);
             if ($database !== null) {
-                $table = $this->schema->define($role, Schema::TABLE);
                 $output->write(" :: <fg=green>{$database}</>.<fg=green>{$table}</>");
             }
             $output->writeln('');
 
             // Entity
-            $entity = $this->schema->define($role, Schema::ENTITY) ?? null;
+            $entity = $this->schema->define($role, Schema::ENTITY);
             $output->write('   Entity     : ');
-            $output->writeln($entity === null ? '<fg=red>no entity</>' : "<fg=cyan>{$entity}</>");
+            $output->writeln($entity === null ? 'no entity' : "<fg=blue>{$entity}</>");
             // Mapper
-            $mapper = $this->schema->define($role, Schema::MAPPER) ?? null;
+            $mapper = $this->schema->define($role, Schema::MAPPER);
             $output->write('   Mapper     : ');
-            $output->writeln($mapper === null ? '<fg=red>no mapper</>' : "<fg=cyan>{$mapper}</>");
+            $output->writeln($mapper === null ? 'no mapper' : "<fg=blue>{$mapper}</>");
             // Constrain
-            $constrain = $this->schema->define($role, Schema::CONSTRAIN) ?? null;
+            $constrain = $this->schema->define($role, Schema::CONSTRAIN);
             $output->write('   Constrain  : ');
-            $output->writeln($constrain === null ? '<fg=red>no constrain</>' : "<fg=cyan>{$constrain}</>");
+            $output->writeln($constrain === null ? 'no constrain' : "<fg=blue>{$constrain}</>");
             // Repository
-            $repository = $this->schema->define($role, Schema::REPOSITORY) ?? null;
+            $repository = $this->schema->define($role, Schema::REPOSITORY);
             $output->write('   Repository : ');
-            $output->writeln($repository === null ? '<fg=red>no repository</>' : "<fg=cyan>{$repository}</>");
+            $output->writeln($repository === null ? 'no repository' : "<fg=blue>{$repository}</>");
             // PK
-            $pk = $this->schema->define($role, Schema::PRIMARY_KEY) ?? null;
+            $pk = $this->schema->define($role, Schema::PRIMARY_KEY);
             $output->write('   Primary key: ');
-            $output->writeln($pk === null ? '<fg=red>no repository</>' : "<fg=cyan>{$pk}</>");
+            $output->writeln($pk === null ? 'no primary key' : "<fg=green>{$pk}</>");
             // Fields
             $columns = $this->schema->define($role, Schema::COLUMNS);
-            $output->writeln('   Fields: (entity.property -> db.field -> typecast)');
+            $output->writeln('   Fields: (<fg=cyan>entity.property</> -> <fg=green>db.field</> -> <fg=blue>typecast</>)');
             $types = $this->schema->define($role, Schema::TYPECAST);
             foreach ($columns as $property => $field) {
                 $typecast = $types[$property] ?? $types[$field] ?? null;
-                $output->write("     <fg=cyan>{$property}</> -> <fg=cyan>{$field}</>");
+                $output->write("     <fg=cyan>{$property}</> -> <fg=green>{$field}</>");
                 if ($typecast !== null) {
-                    $output->write(" -> <fg=green>{$typecast}</>");
+                    $output->write(" -> <fg=blue>{$typecast}</>");
                 }
                 $output->writeln('');
             }
@@ -102,9 +105,9 @@ class SchemaCommand extends BaseMigrationCommand
             if (count($relations) > 0) {
                 $output->writeln('   Relations:');
                 foreach ($relations as $field => $relation) {
-                    $type = $this->strRelations[$relation[Relation::TYPE] ?? ''] ?? '?';
+                    $type = self::STR_RELATION[$relation[Relation::TYPE] ?? ''] ?? '?';
                     $target = $relation[Relation::TARGET] ?? '?';
-                    $loading = $this->strPreFetchMode[$relation[Relation::LOAD] ?? ''] ?? '?';
+                    $loading = self::STR_PREFETCH_MODE[$relation[Relation::LOAD] ?? ''] ?? '?';
                     $relSchema = $relation[Relation::SCHEMA];
                     $innerKey = $relSchema[Relation::INNER_KEY] ?? '?';
                     $outerKey = $relSchema[Relation::OUTER_KEY] ?? '?';
@@ -119,22 +122,22 @@ class SchemaCommand extends BaseMigrationCommand
                     $mmEntity = $relSchema[Relation::THROUGH_ENTITY] ?? null;
                     $mmWhere = $relSchema[Relation::THROUGH_WHERE] ?? [];
                     // print
-                    $output->write("     <fg=cyan>{$field}</> {$type} <fg=cyan>{$target}</> {$loading} load");
+                    $output->write("     <fg=red>{$role}</>-><fg=cyan>{$field}</> {$type} <fg=red>{$target}</> {$loading} load");
                     $output->writeln(" <fg=yellow>{$cascadeStr}</>");
-                    $output->write("       {$nullableStr} <fg=cyan>{$role}</>.<fg=cyan>{$innerKey}</> <=");
+                    $output->write("       {$nullableStr} <fg=green>{$table}</>.<fg=green>{$innerKey}</> <=");
                     if ($mmEntity !== null) {
-                        $output->write(" <fg=yellow>{$mmEntity}</>.<fg=yellow>{$mmInnerKey}</>");
+                        $output->write(" <fg=red>{$mmEntity}</>.<fg=green>{$mmInnerKey}</>");
                         $output->write("|");
-                        $output->write("<fg=yellow>{$mmEntity}</>.<fg=yellow>{$mmOuterKey}</> ");
+                        $output->write("<fg=red>{$mmEntity}</>.<fg=green>{$mmOuterKey}</> ");
                     }
-                    $output->writeln("=> <fg=cyan>{$target}</>.<fg=cyan>{$outerKey}</> ");
+                    $output->writeln("=> <fg=red>{$target}</>.<fg=green>{$outerKey}</> ");
                     if (count($where)) {
-                        $output->writeln("       Where: ");
-                        $output->writeln('       ' . str_replace(["\r\n", "\n"], "\n       ", print_r($where, 1)));
+                        $output->write("       Where:");
+                        $output->writeln(str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($where, 1)));
                     }
                     if (count($mmWhere)) {
-                        $output->writeln("       Through where: ");
-                        $output->writeln('       ' . str_replace(["\r\n", "\n"], "\n       ", print_r($mmWhere, 1)));
+                        $output->write("       Through where:");
+                        $output->writeln(str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($mmWhere, 1)));
                     }
                 }
             } else {
