@@ -22,8 +22,8 @@ return [
     // Cycle ORM
     ORMInterface::class => new OrmFactory($params['cycle.common']['promiseFactory']),
     // Factory for Cycle ORM
-    FactoryInterface::class => function (ContainerInterface $c) {
-        return new Factory($c->get(DatabaseManager::class));
+    FactoryInterface::class => function (ContainerInterface $container) {
+        return new Factory($container->get(DatabaseManager::class), null, null, $container);
     },
     // Schema from generators
     SchemaInterface::class => new SchemaFromConveyorFactory(
