@@ -50,14 +50,14 @@ class SchemaCommand extends BaseMigrationCommand
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         foreach ($this->schema->getRoles() as $role) {
-            $output->write("<fg=red>[{$role}</>");
+            $output->write("<fg=magenta>[{$role}</>");
             $alias = $this->schema->resolveAlias($role);
             // alias
             if ($alias !== null && $alias !== $role) {
-                $output->write("=><fg=red>{$alias}</>");
+                $output->write("=><fg=magenta>{$alias}</>");
             }
             // table
-            $output->write("<fg=red>]</>");
+            $output->write("<fg=magenta>]</>");
 
             // database
             $database = $this->schema->define($role, Schema::DATABASE);
@@ -123,15 +123,18 @@ class SchemaCommand extends BaseMigrationCommand
                     $mmEntity = $relSchema[Relation::THROUGH_ENTITY] ?? null;
                     $mmWhere = $relSchema[Relation::THROUGH_WHERE] ?? [];
                     // print
-                    $output->write("     <fg=red>{$role}</>-><fg=cyan>{$field}</> {$type} <fg=red>{$target}</> {$loading} load");
+                    $output->write(
+                        "     <fg=magenta>{$role}</>-><fg=cyan>{$field}</> "
+                        . "{$type} <fg=magenta>{$target}</> {$loading} load"
+                    );
                     $output->writeln(" <fg=yellow>{$cascadeStr}</>");
                     $output->write("       {$nullableStr} <fg=green>{$table}</>.<fg=green>{$innerKey}</> <=");
                     if ($mmEntity !== null) {
-                        $output->write(" <fg=red>{$mmEntity}</>.<fg=green>{$mmInnerKey}</>");
+                        $output->write(" <fg=magenta>{$mmEntity}</>.<fg=green>{$mmInnerKey}</>");
                         $output->write("|");
-                        $output->write("<fg=red>{$mmEntity}</>.<fg=green>{$mmOuterKey}</> ");
+                        $output->write("<fg=magenta>{$mmEntity}</>.<fg=green>{$mmOuterKey}</> ");
                     }
-                    $output->writeln("=> <fg=red>{$target}</>.<fg=green>{$outerKey}</> ");
+                    $output->writeln("=> <fg=magenta>{$target}</>.<fg=green>{$outerKey}</> ");
                     if (count($where)) {
                         $output->write("       Where:");
                         $output->writeln(str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($where, 1)));
@@ -145,7 +148,6 @@ class SchemaCommand extends BaseMigrationCommand
                 $output->writeln('   No relations');
             }
         }
-
         return ExitCode::OK;
     }
 }
