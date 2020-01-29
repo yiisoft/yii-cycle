@@ -17,7 +17,7 @@ class SchemaCommand extends BaseMigrationCommand
     protected static $defaultName = 'cycle/schema';
 
     private SchemaInterface $schema;
-    private const STR_RELATION      = [
+    private const STR_RELATION = [
         Relation::HAS_ONE => 'has one',
         Relation::HAS_MANY => 'has many',
         Relation::BELONGS_TO => 'belongs to',
@@ -89,7 +89,8 @@ class SchemaCommand extends BaseMigrationCommand
             $output->writeln($pk === null ? 'no primary key' : "<fg=green>{$pk}</>");
             // Fields
             $columns = $this->schema->define($role, Schema::COLUMNS);
-            $output->writeln('   Fields: (<fg=cyan>entity.property</> -> <fg=green>db.field</> -> <fg=blue>typecast</>)');
+            $output->writeln("   Fields     :");
+            $output->writeln("     (<fg=cyan>property</> -> <fg=green>db.field</> -> <fg=blue>typecast</>)");
             $types = $this->schema->define($role, Schema::TYPECAST);
             foreach ($columns as $property => $field) {
                 $typecast = $types[$property] ?? $types[$field] ?? null;
@@ -103,7 +104,7 @@ class SchemaCommand extends BaseMigrationCommand
             // Relations
             $relations = $this->schema->define($role, Schema::RELATIONS);
             if (count($relations) > 0) {
-                $output->writeln('   Relations:');
+                $output->writeln('   Relations  :');
                 foreach ($relations as $field => $relation) {
                     $type = self::STR_RELATION[$relation[Relation::TYPE] ?? ''] ?? '?';
                     $target = $relation[Relation::TARGET] ?? '?';
