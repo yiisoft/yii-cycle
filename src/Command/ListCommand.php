@@ -6,7 +6,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Console\ExitCode;
 
-class ListCommand extends BaseMigrationCommand
+final class ListCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/list';
 
@@ -23,7 +23,7 @@ class ListCommand extends BaseMigrationCommand
         foreach ($list as $migration) {
             $state = $migration->getState();
             $output->writeln('<fg=cyan>' . $state->getName() . '</> '
-                . '<fg=yellow>[' . (static::$migrationStatus[$state->getStatus()] ?? '?') . ']</>');
+                . '<fg=yellow>[' . (static::MIGRATION_STATUS[$state->getStatus()] ?? '?') . ']</>');
         }
         return ExitCode::OK;
     }

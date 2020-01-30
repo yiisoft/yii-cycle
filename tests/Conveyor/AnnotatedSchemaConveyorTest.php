@@ -1,12 +1,12 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Tests\Generator;
+namespace Yiisoft\Yii\Cycle\Tests\Conveyor;
 
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Yii\Cycle\Conveyor\AnnotatedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
-use Yiisoft\Yii\Cycle\Generator\AnnotatedSchemaConveyor;
-use Yiisoft\Yii\Cycle\Tests\Generator\Stub\FakeContainer;
-use Yiisoft\Yii\Cycle\Tests\Generator\Stub\FakeGenerator;
+use Yiisoft\Yii\Cycle\Tests\Conveyor\Stub\FakeContainer;
+use Yiisoft\Yii\Cycle\Tests\Conveyor\Stub\FakeGenerator;
 
 class AnnotatedSchemaConveyorTest extends TestCase
 {

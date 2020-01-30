@@ -6,6 +6,7 @@ return [
     // Console commands
     'console' => [
         'commands' => [
+            'cycle/schema' => Command\SchemaCommand::class,
             'migrate/create' => Command\CreateCommand::class,
             'migrate/generate' => Command\GenerateCommand::class,
             'migrate/up' => Command\UpCommand::class,
@@ -25,11 +26,14 @@ return [
     // common config
     'cycle.common' => [
         'entityPaths' => [],
+        'cacheEnabled' => true,
         'cacheKey' => 'Cycle-ORM-Schema',
-        // List of definitions of \Cycle\Schema\GeneratorInterface implementations
+        // List of \Cycle\Schema\GeneratorInterface definitions
         'generators' => [],
-        // Class name or Object instance of \Cycle\ORM\PromiseFactoryInterface
+        // \Cycle\ORM\PromiseFactoryInterface definition
         'promiseFactory' => null,
+        // \Psr\Log\LoggerInterface definition
+        'queryLogger' => null,
     ],
 
     // migration config

@@ -13,7 +13,6 @@ final class MigratorFactory
     public function __invoke(ContainerInterface $container)
     {
         $migConf = $container->get(MigrationConfig::class);
-
         $dbal = $container->get(DatabaseManager::class);
 
         $migrator = new Migrator($migConf, $dbal, new FileRepository($migConf));

@@ -11,16 +11,14 @@ use Spiral\Migrations\Migrator;
 use Spiral\Migrations\State;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yiisoft\Yii\Cycle\Helper\CycleOrmHelper;
 
 abstract class BaseMigrationCommand extends Command
 {
     protected DatabaseManager $dbal;
     protected MigrationConfig $config;
     protected Migrator $migrator;
-    protected CycleOrmHelper $cycleOrmHelper;
 
-    protected static $migrationStatus = [
+    protected const MIGRATION_STATUS = [
         State::STATUS_UNDEFINED => 'undefined',
         State::STATUS_PENDING => 'pending',
         State::STATUS_EXECUTED => 'executed',
@@ -29,18 +27,19 @@ abstract class BaseMigrationCommand extends Command
     public function __construct(
         DatabaseManager $dbal,
         MigrationConfig $conf,
-        Migrator $migrator,
-        CycleOrmHelper $cycleOrmHelper
+        Migrator $migrator
     ) {
         parent::__construct();
         $this->dbal = $dbal;
         $this->config = $conf;
         $this->migrator = $migrator;
-        $this->cycleOrmHelper = $cycleOrmHelper;
     }
 
-    protected function createEmptyMigration(OutputInterface $output, string $name, ?string $database = null): ?MigrationImage
-    {
+    protected function createEmptyMigration(
+        OutputInterface $output,
+        string $name,
+        ?string $database = null
+    ): ?MigrationImage {
         if ($database === null) {
             // get default database
             $database = $this->dbal->database()->getName();
@@ -71,7 +70,9 @@ abstract class BaseMigrationCommand extends Command
     protected function findMigrations(OutputInterface $output): array
     {
         $list = $this->migrator->getMigrations();
-        $output->writeln('<info>' . count($list) . ' migration(s) found in ' . $this->config->getDirectory() . '</info>');
+        $output->writeln(
+            sprintf('<info>Total %d migration(s) found in %s</info>', count($list), $this->config->getDirectory())
+        );
         return $list;
     }
 }

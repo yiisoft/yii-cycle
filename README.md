@@ -51,6 +51,8 @@ return [
         ],
         // cycle/proxy-factory extension required
         'promiseFactory' => \Cycle\ORM\Promise\ProxyFactory::class,
+        // \Psr\Log\LoggerInterface definition
+        'queryLogger' => null,
     ],
 
     // cycle migration config
@@ -67,6 +69,7 @@ return [
 ## Commands
 
 ```bash
+cycle/schema
 migrate/list
 migrate/create
 migrate/generate

@@ -1,14 +1,13 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Tests\Generator;
+namespace Yiisoft\Yii\Cycle\Tests\Conveyor;
 
 use Cycle\Schema\GeneratorInterface;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerInterface;
+use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyor;
 use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
-use Yiisoft\Yii\Cycle\Generator\SchemaConveyor;
-use Yiisoft\Yii\Cycle\Tests\Generator\Stub\FakeContainer;
-use Yiisoft\Yii\Cycle\Tests\Generator\Stub\FakeGenerator;
+use Yiisoft\Yii\Cycle\Tests\Conveyor\Stub\FakeContainer;
+use Yiisoft\Yii\Cycle\Tests\Conveyor\Stub\FakeGenerator;
 
 class SchemaConveyorTest extends TestCase
 {
@@ -36,17 +35,20 @@ class SchemaConveyorTest extends TestCase
     public function testAddCustomGenerators(): void
     {
         $conveyor = $this->createConveyor();
-        $conveyor->addGenerator($conveyor::STAGE_POSTPROCESS, new class() {
-            public function __invoke(): GeneratorInterface
-            {
-                return new FakeGenerator('FakeGenerator-from-invocable-object');
+        $conveyor->addGenerator(
+            $conveyor::STAGE_POSTPROCESS,
+            new class() {
+                public function __invoke(): GeneratorInterface
+                {
+                    return new FakeGenerator('FakeGenerator-from-invocable-object');
+                }
             }
-        });
+        );
         $conveyor->addGenerator($conveyor::STAGE_USERLAND, static function () {
             return new FakeGenerator('FakeGenerator-from-closure');
         });
         $conveyor->addGenerator($conveyor::STAGE_RENDER, \Cycle\Schema\Generator\SyncTables::class);
-        $conveyor->addGenerator($conveyor::STAGE_INDEX, new FakeGenerator('FakeGenerator-from-object'));
+        $conveyor->addGenerator($conveyor::STAGE_INDEX, new FakeGenerator('FakeGenerator-object'));
 
         // get generators list
         /** @var string[] $generators */
@@ -57,7 +59,7 @@ class SchemaConveyorTest extends TestCase
 
         $this->assertEquals([
             'Cycle\Schema\Generator\ResetTables',
-            'FakeGenerator-from-object',
+            'FakeGenerator-object',
             'Cycle\Schema\Generator\GenerateRelations',
             'Cycle\Schema\Generator\ValidateEntities',
             'Cycle\Schema\Generator\RenderTables',
