@@ -14,7 +14,7 @@ use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 
-class DownCommand extends BaseMigrationCommand
+final class DownCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/down';
 
@@ -62,7 +62,7 @@ class DownCommand extends BaseMigrationCommand
             $state = $migration->getState();
             $status = $state->getStatus();
             $output->writeln(
-                sprintf('<fg=cyan>%s</>: %s', $state->getName(), static::$migrationStatus[$status] ?? $status)
+                sprintf('<fg=cyan>%s</>: %s', $state->getName(), static::MIGRATION_STATUS[$status] ?? $status)
             );
         } finally {
             $this->eventDispatcher->dispatch(new AfterMigrate());

@@ -12,7 +12,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Console\ExitCode;
 
-class SchemaCommand extends BaseMigrationCommand
+final class SchemaCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'cycle/schema';
 

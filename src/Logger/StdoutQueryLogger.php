@@ -12,7 +12,7 @@ use Psr\Log\LogLevel;
  * Temporary LoggerInterface class
  * Slightly adapted for SQL queries
  * @package Yiisoft\Yii\Cycle\Logger
- * @deprecated should be replaced
+ * @deprecated In the future StdoutLogger will be removed (when we will have debug-tools)
  */
 class StdoutQueryLogger implements LoggerInterface
 {

@@ -18,7 +18,7 @@ use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Generator\PrintChanges;
 
-class GenerateCommand extends BaseMigrationCommand
+final class GenerateCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/generate';
     private SchemaConveyorInterface $conveyor;

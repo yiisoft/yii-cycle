@@ -18,7 +18,7 @@ abstract class BaseMigrationCommand extends Command
     protected MigrationConfig $config;
     protected Migrator $migrator;
 
-    protected static $migrationStatus = [
+    protected const MIGRATION_STATUS = [
         State::STATUS_UNDEFINED => 'undefined',
         State::STATUS_PENDING => 'pending',
         State::STATUS_EXECUTED => 'executed',

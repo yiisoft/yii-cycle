@@ -14,7 +14,7 @@ use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 
-class UpCommand extends BaseMigrationCommand
+final class UpCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/up';
 
@@ -64,7 +64,7 @@ class UpCommand extends BaseMigrationCommand
                 $state = $migration->getState();
                 $status = $state->getStatus();
                 $output->writeln('<fg=cyan>' . $state->getName() . '</>: '
-                    . (static::$migrationStatus[$status] ?? $status));
+                    . (static::MIGRATION_STATUS[$status] ?? $status));
             } while (--$limit > 0);
         } finally {
             $this->eventDispatcher->dispatch(new AfterMigrate());

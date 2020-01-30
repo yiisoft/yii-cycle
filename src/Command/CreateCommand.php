@@ -7,7 +7,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Console\ExitCode;
 
-class CreateCommand extends BaseMigrationCommand
+final class CreateCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/create';
 
