@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Cycle\DataReader;
 use Countable;
 use Cycle\ORM\Select;
 use InvalidArgumentException;
-use Spiral\Database\Query\QueryInterface;
 use Spiral\Database\Query\SelectQuery;
 use Spiral\Pagination\PaginableInterface;
 use Yiisoft\Data\Reader\CountableDataInterface;
