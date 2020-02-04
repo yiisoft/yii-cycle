@@ -29,10 +29,10 @@ abstract class BaseMigrationCommand extends Command
         MigrationConfig $conf,
         Migrator $migrator
     ) {
-        parent::__construct();
         $this->dbal = $dbal;
         $this->config = $conf;
         $this->migrator = $migrator;
+        parent::__construct();
     }
 
     protected function createEmptyMigration(

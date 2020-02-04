@@ -26,8 +26,8 @@ final class DownCommand extends BaseMigrationCommand
         Migrator $migrator,
         EventDispatcherInterface $eventDispatcher
     ) {
-        parent::__construct($dbal, $conf, $migrator);
         $this->eventDispatcher = $eventDispatcher;
+        parent::__construct($dbal, $conf, $migrator);
     }
 
     public function configure(): void
