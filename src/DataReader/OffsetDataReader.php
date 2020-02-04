@@ -1,11 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Cycle\DataReader;
 
 use Countable;
 use Cycle\ORM\Select;
 use InvalidArgumentException;
 use Spiral\Database\Query\QueryInterface;
+use Spiral\Database\Query\SelectQuery;
 use Spiral\Pagination\PaginableInterface;
 use Yiisoft\Data\Reader\CountableDataInterface;
 use Yiisoft\Data\Reader\DataReaderInterface;
@@ -23,7 +26,7 @@ final class OffsetDataReader implements DataReaderInterface, OffsetableDataInter
     private CachedCollection $itemsCache;
 
     /**
-     * @param Select|QueryInterface $query
+     * @param Select|SelectQuery $query
      */
     public function __construct($query)
     {
