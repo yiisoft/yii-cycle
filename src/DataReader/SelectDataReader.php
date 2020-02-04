@@ -13,15 +13,22 @@ use Spiral\Pagination\PaginableInterface;
 use Yiisoft\Data\Reader\CountableDataInterface;
 use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\OffsetableDataInterface;
+use Yiisoft\Data\Reader\Sort;
+use Yiisoft\Data\Reader\SortableDataInterface;
 use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCount;
 use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCollection;
 
-final class OffsetDataReader implements DataReaderInterface, OffsetableDataInterface, CountableDataInterface
+final class SelectDataReader implements
+    DataReaderInterface,
+    OffsetableDataInterface,
+    CountableDataInterface,
+    SortableDataInterface
 {
-    /** @var QueryInterface|Select */
+    /** @var Select|SelectQuery */
     private $query;
     private ?int $limit = null;
     private ?int $offset = null;
+    private ?Sort $sorting = null;
     private CachedCount $countCache;
     private CachedCollection $itemsCache;
 
@@ -42,22 +49,38 @@ final class OffsetDataReader implements DataReaderInterface, OffsetableDataInter
         $this->countCache = new CachedCount($this->query);
         $this->itemsCache = new CachedCollection();
     }
+
+    public function getSort(): ?Sort
+    {
+        return $this->sorting;
+    }
+
     public function withLimit(int $limit): self
     {
         $clone = clone $this;
         $clone->setLimit($limit);
         return $clone;
     }
+
     public function withOffset(int $offset): self
     {
         $clone = clone $this;
         $clone->setOffset($offset);
         return $clone;
     }
+
+    public function withSort(?Sort $sorting): self
+    {
+        $clone = clone $this;
+        $clone->setSort($sorting);
+        return $clone;
+    }
+
     public function count(): int
     {
         return $this->countCache->getCount();
     }
+
     public function read(): iterable
     {
         if ($this->itemsCache->getCollection() !== null) {
@@ -67,11 +90,22 @@ final class OffsetDataReader implements DataReaderInterface, OffsetableDataInter
         if ($this->offset !== null) {
             $newQuery->offset($this->offset);
         }
+        if ($this->sorting !== null) {
+            $newQuery->orderBy($this->sorting->getOrder());
+        }
         if ($this->limit !== null) {
             $newQuery->limit($this->limit);
         }
         $this->itemsCache->setCollection($newQuery->fetchAll());
         return $this->itemsCache->getCollection();
+    }
+
+    private function setSort(?Sort $sorting): void
+    {
+        if ($this->sorting !== $sorting) {
+            $this->sorting = $sorting;
+            $this->itemsCache = new CachedCollection();
+        }
     }
 
     private function setLimit(?int $limit): void
@@ -81,6 +115,7 @@ final class OffsetDataReader implements DataReaderInterface, OffsetableDataInter
             $this->itemsCache = new CachedCollection();
         }
     }
+
     private function setOffset(?int $offset): void
     {
         if ($this->offset !== $offset) {
