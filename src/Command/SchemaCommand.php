@@ -8,11 +8,12 @@ use Cycle\ORM\SchemaInterface;
 use Spiral\Database\DatabaseManager;
 use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\Migrator;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Console\ExitCode;
 
-final class SchemaCommand extends BaseMigrationCommand
+final class SchemaCommand extends Command
 {
     protected static $defaultName = 'cycle/schema';
 
@@ -32,14 +33,10 @@ final class SchemaCommand extends BaseMigrationCommand
         Relation::LOAD_EAGER => 'eager',
     ];
 
-    public function __construct(
-        DatabaseManager $dbal,
-        MigrationConfig $conf,
-        Migrator $migrator,
-        SchemaInterface $schema
-    ) {
-        parent::__construct($dbal, $conf, $migrator);
+    public function __construct(SchemaInterface $schema)
+    {
         $this->schema = $schema;
+        parent::__construct();
     }
 
     public function configure(): void
