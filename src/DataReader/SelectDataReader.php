@@ -88,17 +88,8 @@ final class SelectDataReader implements
         if ($this->itemsCache->getCollection() !== null) {
             return $this->itemsCache->getCollection();
         }
-        $newQuery = clone $this->query;
-        if ($this->offset !== null) {
-            $newQuery->offset($this->offset);
-        }
-        if ($this->sorting !== null) {
-            $newQuery->orderBy($this->sorting->getOrder());
-        }
-        if ($this->limit !== null) {
-            $newQuery->limit($this->limit);
-        }
-        $this->itemsCache->setCollection($newQuery->fetchAll());
+        $query = $this->buildQuery();
+        $this->itemsCache->setCollection($query->fetchAll());
         return $this->itemsCache->getCollection();
     }
 
@@ -126,8 +117,31 @@ final class SelectDataReader implements
         }
     }
 
+    /**
+     * Get Iterator without caching
+     * @return Traversable
+     * @throws \Exception
+     */
     public function getIterator(): Traversable
     {
-        yield from $this->read();
+        return $this->buildQuery()->getIterator();
+    }
+
+    /**
+     * @return Select|SelectQuery
+     */
+    private function buildQuery()
+    {
+        $newQuery = clone $this->query;
+        if ($this->offset !== null) {
+            $newQuery->offset($this->offset);
+        }
+        if ($this->sorting !== null) {
+            $newQuery->orderBy($this->sorting->getOrder());
+        }
+        if ($this->limit !== null) {
+            $newQuery->limit($this->limit);
+        }
+        return $newQuery;
     }
 }
