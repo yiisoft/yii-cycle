@@ -124,7 +124,11 @@ final class SelectDataReader implements
      */
     public function getIterator(): Traversable
     {
-        return $this->buildQuery()->getIterator();
+        if ($this->itemsCache->getCollection() !== null) {
+            yield from $this->itemsCache->getCollection();
+        } else {
+            yield from $this->buildQuery()->getIterator();
+        }
     }
 
     /**
