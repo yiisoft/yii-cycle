@@ -7,8 +7,10 @@ namespace Yiisoft\Yii\Cycle\DataReader;
 use Countable;
 use Cycle\ORM\Select;
 use InvalidArgumentException;
+use IteratorAggregate;
 use Spiral\Database\Query\SelectQuery;
 use Spiral\Pagination\PaginableInterface;
+use Traversable;
 use Yiisoft\Data\Reader\CountableDataInterface;
 use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\OffsetableDataInterface;
@@ -21,7 +23,8 @@ final class SelectDataReader implements
     DataReaderInterface,
     OffsetableDataInterface,
     CountableDataInterface,
-    SortableDataInterface
+    SortableDataInterface,
+    IteratorAggregate
 {
     /** @var Select|SelectQuery */
     private $query;
@@ -121,5 +124,10 @@ final class SelectDataReader implements
             $this->offset = $offset;
             $this->itemsCache = new CachedCollection();
         }
+    }
+
+    public function getIterator(): Traversable
+    {
+        yield from $this->read();
     }
 }
