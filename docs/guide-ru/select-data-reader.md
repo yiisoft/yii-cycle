@@ -78,7 +78,7 @@ foreach ($paginator->read() as $article) {
 }
 ```
 
-А тепрь сделаем запрос на 20 последних опубликованных статей
+А тепрь сделаем запрос на 20 последних опубликованных статей, а потом на 20 первых.
 
 ```php
 /**
@@ -96,7 +96,28 @@ $sort = (new \Yiisoft\Data\Reader\Sort([]))->withOrder(['published_at' => 'desc'
 // Применяем правила сортировки и не забываем об иммутабельности
 $lastPublicReader = $lastPublicReader->withSort($sort);
 
-printf("Последние %d опубликованных статей:", $lastPublicReader->count());
+printf(
+    "Последние %d опубликованных статей из %d:",
+    count($lastPublicReader->read()),
+    $lastPublicReader->count()
+);
+foreach ($lastPublicReader->read() as $article) {
+    // ...
+}
+
+// Теперь получим 20 первых опубликованных статей
+$sort = $lastPublicReader->getSort()->withOrder(['published_at' => 'asc']);
+
+// Ввиду своей иммутабельности, зпрошенный объект Sort не будет зменён,
+// и текущие настройки сортировки $lastPublicReader останутся без изменения.
+// Для того, чтобы применить новые правила сортировки нужно снова вызвать метод withSort():
+$lastPublicReader = $lastPublicReader->withSort($sort);
+
+printf(
+    "Первые %d опубликованных статей из %d:",
+    count($lastPublicReader->read()),
+    $lastPublicReader->count()
+);
 foreach ($lastPublicReader->read() as $article) {
     // ...
 }

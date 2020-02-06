@@ -52,13 +52,6 @@ final class SelectDataReader implements
         $this->itemsCache = new CachedCollection();
     }
 
-    public function __clone()
-    {
-        if ($this->sorting !== null) {
-            $this->sorting = clone $this->sorting;
-        }
-    }
-
     public function getSort(): ?Sort
     {
         return $this->sorting;
