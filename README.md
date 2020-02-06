@@ -66,6 +66,11 @@ return [
 ```
 [About DBAL connections configuration](https://github.com/cycle/docs/blob/master/basic/connect.md)
 
+## Documentation
+
+[English](docs/guide-en/README.md) \
+[Russian](docs/guide-ru/README.md)
+
 ## Commands
 
 ```bash
