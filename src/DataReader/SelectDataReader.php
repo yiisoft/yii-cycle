@@ -52,6 +52,13 @@ final class SelectDataReader implements
         $this->itemsCache = new CachedCollection();
     }
 
+    public function __clone()
+    {
+        if ($this->sorting !== null) {
+            $this->sorting = clone $this->sorting;
+        }
+    }
+
     public function getSort(): ?Sort
     {
         return $this->sorting;
@@ -93,6 +100,20 @@ final class SelectDataReader implements
         return $this->itemsCache->getCollection();
     }
 
+    /**
+     * Get Iterator without caching
+     * @return Traversable
+     * @throws \Exception
+     */
+    public function getIterator(): Traversable
+    {
+        if ($this->itemsCache->getCollection() !== null) {
+            yield from $this->itemsCache->getCollection();
+        } else {
+            yield from $this->buildQuery()->getIterator();
+        }
+    }
+
     private function setSort(?Sort $sorting): void
     {
         if ($this->sorting !== $sorting) {
@@ -114,20 +135,6 @@ final class SelectDataReader implements
         if ($this->offset !== $offset) {
             $this->offset = $offset;
             $this->itemsCache = new CachedCollection();
-        }
-    }
-
-    /**
-     * Get Iterator without caching
-     * @return Traversable
-     * @throws \Exception
-     */
-    public function getIterator(): Traversable
-    {
-        if ($this->itemsCache->getCollection() !== null) {
-            yield from $this->itemsCache->getCollection();
-        } else {
-            yield from $this->buildQuery()->getIterator();
         }
     }
 
