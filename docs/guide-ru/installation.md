@@ -52,15 +52,17 @@ return [
             // \Cycle\Schema\Generator\SyncTables::class,
         ],
 
-        # Для использования фабрики ProxyFactory необходимо подключить пакет cycle/proxy-factory
         # Определение класса \Cycle\ORM\PromiseFactoryInterface
+        'promiseFactory' => null, # использовать объекты Promise
+        # Для использования фабрики ProxyFactory необходимо подключить пакет cycle/proxy-factory
         // 'promiseFactory' => \Cycle\ORM\Promise\ProxyFactory::class,
 
         # Логгер SQL запросов
-        # Вы можете использовать класс \Yiisoft\Yii\Cycle\Logger\StdoutQueryLogger
-        # чтобы выводить SQL лог в stdout
         # Определение класса \Psr\Log\LoggerInterface
         'queryLogger' => null,
+        # Вы можете использовать класс \Yiisoft\Yii\Cycle\Logger\StdoutQueryLogger
+        # чтобы выводить SQL лог в stdout
+        // 'queryLogger' => \Yiisoft\Yii\Cycle\Logger\StdoutQueryLogger::class,
     ],
 
     # Конфиг миграций
@@ -75,4 +77,4 @@ return [
 Документация Cycle:
 
 - [Конфигурирование подключений](https://github.com/cycle/docs/blob/master/basic/connect.md)
-- [О Promise Factory](https://github.com/cycle/docs/blob/master/advanced/promise.md)
+- [О Promise и Proxy](https://github.com/cycle/docs/blob/master/advanced/promise.md)

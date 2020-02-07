@@ -46,6 +46,7 @@ return [
         ],
 
         # \Cycle\ORM\PromiseFactoryInterface definition
+        'promiseFactory' => null, # use Promise objects
         # ProxyFactory require a cycle/proxy-factory extension
         // 'promiseFactory' => \Cycle\ORM\Promise\ProxyFactory::class,
 
