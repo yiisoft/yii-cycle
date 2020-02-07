@@ -33,7 +33,7 @@
         "yiisoft/yii-console": "@dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "^8.4",
+        "phpunit/phpunit": "^8.4 || ^9.0",
         "yiisoft/di": "@dev"
     },
     "autoload": {
