@@ -13,7 +13,7 @@
   - Выставлять `Limit` и `Offset` вручную или с помощью `OffsetPaginator`
   - Задавать сортировку. Но учтите, что сортировка `SelectDataReader`
     не заменяет сортировку в исходном запросе, а лишь дополняет её.
-    Однако последовательный вызов метода `withSort()` будет заменять настройки
+    Однако каждый следующий вызов метода `withSort()` будет заменять настройки
     сортровки объекта `SelectDataReader`
 * `SelectDataReader` не позволяет применять фильтрацию — её следует настраивать в репозитории.
 * `SelectDataReader` не вытягивает данные из БД сразу.
@@ -120,5 +120,41 @@ printf(
 );
 foreach ($lastPublicReader->read() as $article) {
     // ...
+}
+```
+
+Одна из особенностей сортировки запроса через `SelectDataReader` заключается в том, что
+она не заменяет сортировку в исходном select-запросе, а лишь дополняет её. \
+Бывает так, что нужно задать сортировку по умолчанию в методе репозитория, но при этом
+иметь возможность изменить её в коде контроллера. Добиться этого можно следующим образом:
+```php
+use Yiisoft\Data\Reader\DataReaderInterface;
+use Yiisoft\Data\Reader\Sort;
+use Yiisoft\Yii\Cycle\DataReader\SelectDataReader;
+
+class ArticleRepository extends \Cycle\ORM\Select\Repository
+{
+    /**
+     * @return SelectDataReader
+     */
+    public function findPublic(): DataReaderInterface
+    {
+        $sort = (new Sort([]))->withOrder(['published_at' => 'desc']);
+        return (new SelectDataReader($this->select()->where(['public' => true])))->withSort($sort);
+    }
+}
+
+// class SiteController ... {
+
+function index(\Cycle\ORM\ORMInterface $orm)
+{
+    /** @var ArticleRepository $repository */
+    $repository = $orm->getRepository(Article::class);
+
+    $articlesReader = $repository
+        // получаем объект SelectDataReader
+        ->findPublic()
+        // применяем новое правило сортировки
+        ->withSort((new Sort([]))->withOrder(['published_at' => 'asc']));
 }
 ```

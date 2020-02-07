@@ -7,4 +7,6 @@ Cycle — это DataMapper ORM,
 
 Расширение Yii-Cycle упрощает интеграцию Cycle ORM с приложением на базе Yii.
 
-* [Select Data Reader](select-data-reader.md)
+* [Установка и настройка](installation.md)
+* [Консольные команды](console-commands.md)
+* [Класс SelectDataReader](select-data-reader.md)
