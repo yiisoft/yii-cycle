@@ -2,7 +2,7 @@
 
 `SelectDataReader` является полезным инструментом для безопасной передачи select-запросов
 из репозитория в пользовательскую среду выполнения.
-Под select-запросом подразумевается сущность одного из
+Под select-запросом подразумевается экземпляр одного из
 классов: `\Cycle\ORM\Select` или `\Spiral\Database\Query\SelectQuery`.
 
 Что нужно знать о `SelectDataReader`:
@@ -108,7 +108,7 @@ foreach ($lastPublicReader->read() as $article) {
 // Теперь получим 20 первых опубликованных статей
 $sort = $lastPublicReader->getSort()->withOrder(['published_at' => 'asc']);
 
-// Ввиду своей иммутабельности, зпрошенный объект Sort не будет зменён,
+// Ввиду своей иммутабельности, зпрошенный объект Sort не будет изменён,
 // и текущие настройки сортировки $lastPublicReader останутся без изменения.
 // Для того, чтобы применить новые правила сортировки нужно снова вызвать метод withSort():
 $lastPublicReader = $lastPublicReader->withSort($sort);

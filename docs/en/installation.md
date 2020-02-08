@@ -1,6 +1,6 @@
 # Installation
 
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/).
+The preferred way to install this extension is through [composer](http://getcomposer.org/download/):
 
 ```
 composer require yiisoft/yii-cycle
@@ -8,7 +8,8 @@ composer require yiisoft/yii-cycle
 
 ## Configuring extension
 
-File `config/params.php`:
+If you use Yii with `composer-config-plugin`, Yii-Cycle settings could be specified in `config/params.php`:
+
 ```php
 <?php
 return [
@@ -31,25 +32,28 @@ return [
 
     # Cycle common config
     'cycle.common' => [
+        # Migration directories list
         'entityPaths' => [
             '@src/Entity'
         ],
-        # Cache
+        # Turn on cache usage for getting DB schema
         'cacheEnabled' => true,
+        # Key to use for cache
         'cacheKey' => 'Cycle-ORM-Schema',
 
-        # Дополнительные генераторы, запускаемые при расчёте схемы
-        # Массив определений \Cycle\Schema\GeneratorInterface
+        # Additional generators, launched when computing schema
+        # Array of \Cycle\Schema\GeneratorInterface definitions
         'generators' => [
-            # sync table changes to database
+            # The following generator allows to apply schema changes to DB without migrations
             // \Cycle\Schema\Generator\SyncTables::class,
         ],
 
         # \Cycle\ORM\PromiseFactoryInterface definition
         'promiseFactory' => null, # use Promise objects
-        # ProxyFactory require a cycle/proxy-factory extension
+        # ProxyFactory requires cycle/proxy-factory package
         // 'promiseFactory' => \Cycle\ORM\Promise\ProxyFactory::class,
 
+        # SQL query logger
         # \Psr\Log\LoggerInterface definition
         'queryLogger' => null,
     ],
@@ -63,7 +67,8 @@ return [
     ],
 ];
 ```
-Read more in the Cycle documentation:
+
+Read more in Cycle documentation:
 
 - [Connect to Database](https://github.com/cycle/docs/blob/master/basic/connect.md)
 - [References and Proxies](https://github.com/cycle/docs/blob/master/advanced/promise.md)

@@ -1,8 +1,7 @@
 # Установка
 
-Предпочтительнее установить это расширение через [composer](http://getcomposer.org/download/).
+Предпочтительнее установить это расширение через [composer](http://getcomposer.org/download/):
 
-Просто запустите
 ```
 composer require yiisoft/yii-cycle
 ```
@@ -11,6 +10,7 @@ composer require yiisoft/yii-cycle
 
 Если вы используете Yii с плагином `composer-config-plugin`, то настройки Yii-Cycle
 можете указать в файле `config/params.php`:
+
 ```php
 <?php
 use Cycle\Schema\Generator;
@@ -40,7 +40,7 @@ return [
             '@src/Entity'
         ],
 
-        # Включить использование кеша при получении схемы ORM
+        # Включить использование кеша при получении схемы БД
         'cacheEnabled' => true,
         # Ключ, используемый при кешировании схемы
         'cacheKey' => 'Cycle-ORM-Schema',
@@ -74,7 +74,8 @@ return [
     ],
 ];
 ```
+
 Документация Cycle:
 
 - [Конфигурирование подключений](https://github.com/cycle/docs/blob/master/basic/connect.md)
-- [О Promise и Proxy](https://github.com/cycle/docs/blob/master/advanced/promise.md)
+- [О Reference и Proxy](https://github.com/cycle/docs/blob/master/advanced/promise.md)
