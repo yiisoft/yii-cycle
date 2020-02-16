@@ -31,7 +31,6 @@ return [
         $params['cycle.common']['cacheKey'],
         $params['cycle.common']['generators']
     ),
-
     // Annotated Schema Conveyor
     SchemaConveyorInterface::class => static function (ContainerInterface $container) use (&$params) {
         $conveyor = new AnnotatedSchemaConveyor($container);

@@ -1,13 +1,12 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Command;
+declare(strict_types=1);
+
+namespace Yiisoft\Yii\Cycle\Command\Migration;
 
 use Cycle\Migrations\GenerateMigrations;
 use Cycle\Schema\Compiler;
 use Cycle\Schema\Registry;
-use Spiral\Database\DatabaseManager;
-use Spiral\Migrations\Config\MigrationConfig;
-use Spiral\Migrations\Migrator;
 use Spiral\Migrations\State;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StreamableInputInterface;
@@ -21,17 +20,6 @@ use Yiisoft\Yii\Cycle\Generator\PrintChanges;
 final class GenerateCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/generate';
-    private SchemaConveyorInterface $conveyor;
-
-    public function __construct(
-        DatabaseManager $dbal,
-        MigrationConfig $conf,
-        Migrator $migrator,
-        SchemaConveyorInterface $conveyor
-    ) {
-        parent::__construct($dbal, $conf, $migrator);
-        $this->conveyor = clone $conveyor;
-    }
 
     public function configure(): void
     {
@@ -40,27 +28,29 @@ final class GenerateCommand extends BaseMigrationCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $migrator = $this->promise->getMigrator();
         // check existing unapplied migrations
-        $listAfter = $this->migrator->getMigrations();
+        $listAfter = $migrator->getMigrations();
         foreach ($listAfter as $migration) {
             if ($migration->getState()->getStatus() !== State::STATUS_EXECUTED) {
                 $output->writeln('<fg=red>Outstanding migrations found, run `migrate/up` first.</>');
                 return ExitCode::OK;
             }
         }
+        $conveyor = $this->promise->getSchemaConveyor();
 
         // migrations generator
-        $this->conveyor->addGenerator(
+        $conveyor->addGenerator(
             SchemaConveyorInterface::STAGE_USERLAND,
-            new GenerateMigrations($this->migrator->getRepository(), $this->config)
+            new GenerateMigrations($migrator->getRepository(), $this->promise->getMigrationConfig())
         );
         // show DB changes
-        $this->conveyor->addGenerator(SchemaConveyorInterface::STAGE_USERLAND, new PrintChanges($output));
+        $conveyor->addGenerator(SchemaConveyorInterface::STAGE_USERLAND, new PrintChanges($output));
         // compile schema and convert diffs to new migrations
-        (new Compiler())->compile(new Registry($this->dbal), $this->conveyor->getGenerators());
+        (new Compiler())->compile(new Registry($this->promise->getDatabaseManager()), $conveyor->getGenerators());
 
         // compare migrations list before and after
-        $listBefore = $this->migrator->getMigrations();
+        $listBefore = $migrator->getMigrations();
         $added = count($listBefore) - count($listAfter);
         $output->writeln("<info>Added {$added} file(s)</info>");
 
