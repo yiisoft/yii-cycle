@@ -20,7 +20,8 @@ final class DownCommand extends BaseMigrationCommand
 
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(CycleDependencyPromise $promise, EventDispatcherInterface $eventDispatcher) {
+    public function __construct(CycleDependencyPromise $promise, EventDispatcherInterface $eventDispatcher)
+    {
         $this->eventDispatcher = $eventDispatcher;
         parent::__construct($promise);
     }
