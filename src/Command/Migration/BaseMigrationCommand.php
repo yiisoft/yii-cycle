@@ -1,22 +1,20 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Command;
+declare(strict_types=1);
+
+namespace Yiisoft\Yii\Cycle\Command\Migration;
 
 use Cycle\Migrations\MigrationImage;
-use Spiral\Database\DatabaseManager;
-use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\Exception\RepositoryException;
 use Spiral\Migrations\MigrationInterface;
-use Spiral\Migrations\Migrator;
 use Spiral\Migrations\State;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
+use Yiisoft\Yii\Cycle\Command\CycleDependencyPromise;
 
 abstract class BaseMigrationCommand extends Command
 {
-    protected DatabaseManager $dbal;
-    protected MigrationConfig $config;
-    protected Migrator $migrator;
+    protected CycleDependencyPromise $promise;
 
     protected const MIGRATION_STATUS = [
         State::STATUS_UNDEFINED => 'undefined',
@@ -24,14 +22,9 @@ abstract class BaseMigrationCommand extends Command
         State::STATUS_EXECUTED => 'executed',
     ];
 
-    public function __construct(
-        DatabaseManager $dbal,
-        MigrationConfig $conf,
-        Migrator $migrator
-    ) {
-        $this->dbal = $dbal;
-        $this->config = $conf;
-        $this->migrator = $migrator;
+    public function __construct(CycleDependencyPromise $promise)
+    {
+        $this->promise = $promise;
         parent::__construct();
     }
 
@@ -42,13 +35,14 @@ abstract class BaseMigrationCommand extends Command
     ): ?MigrationImage {
         if ($database === null) {
             // get default database
-            $database = $this->dbal->database()->getName();
+            $database = $this->promise->getDatabaseManager()->database()->getName();
         }
+        $migrator = $this->promise->getMigrator();
 
-        $migrationSkeleton = new MigrationImage($this->config, $database);
+        $migrationSkeleton = new MigrationImage($this->promise->getMigrationConfig(), $database);
         $migrationSkeleton->setName($name);
         try {
-            $migrationFile = $this->migrator->getRepository()->registerMigration(
+            $migrationFile = $migrator->getRepository()->registerMigration(
                 $migrationSkeleton->buildFileName(),
                 $migrationSkeleton->getClass()->getName(),
                 $migrationSkeleton->getFile()->render()
@@ -69,9 +63,13 @@ abstract class BaseMigrationCommand extends Command
      */
     protected function findMigrations(OutputInterface $output): array
     {
-        $list = $this->migrator->getMigrations();
+        $list = $this->promise->getMigrator()->getMigrations();
         $output->writeln(
-            sprintf('<info>Total %d migration(s) found in %s</info>', count($list), $this->config->getDirectory())
+            sprintf(
+                '<info>Total %d migration(s) found in %s</info>',
+                count($list),
+                $this->promise->getMigrationConfig()->getDirectory()
+            )
         );
         return $list;
     }

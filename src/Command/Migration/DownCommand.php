@@ -1,16 +1,16 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Command;
+declare(strict_types=1);
+
+namespace Yiisoft\Yii\Cycle\Command\Migration;
 
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Spiral\Database\DatabaseManager;
-use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\MigrationInterface;
-use Spiral\Migrations\Migrator;
 use Spiral\Migrations\State;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Console\ExitCode;
+use Yiisoft\Yii\Cycle\Command\CycleDependencyPromise;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 
@@ -20,14 +20,9 @@ final class DownCommand extends BaseMigrationCommand
 
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(
-        DatabaseManager $dbal,
-        MigrationConfig $conf,
-        Migrator $migrator,
-        EventDispatcherInterface $eventDispatcher
-    ) {
+    public function __construct(CycleDependencyPromise $promise, EventDispatcherInterface $eventDispatcher) {
         $this->eventDispatcher = $eventDispatcher;
-        parent::__construct($dbal, $conf, $migrator);
+        parent::__construct($promise);
     }
 
     public function configure(): void
@@ -54,7 +49,7 @@ final class DownCommand extends BaseMigrationCommand
 
         $this->eventDispatcher->dispatch(new BeforeMigrate());
         try {
-            $migration = $this->migrator->rollback();
+            $this->promise->getMigrator()->rollback();
             if (!$migration instanceof MigrationInterface) {
                 throw new \Exception('Migration not found');
             }

@@ -1,5 +1,6 @@
 <?php
 
+use Yiisoft\Yii\Cycle\Command\Migration;
 use Yiisoft\Yii\Cycle\Command;
 
 return [
@@ -7,11 +8,11 @@ return [
     'console' => [
         'commands' => [
             'cycle/schema' => Command\SchemaCommand::class,
-            'migrate/create' => Command\CreateCommand::class,
-            'migrate/generate' => Command\GenerateCommand::class,
-            'migrate/up' => Command\UpCommand::class,
-            'migrate/down' => Command\DownCommand::class,
-            'migrate/list' => Command\ListCommand::class,
+            'migrate/create' => Migration\CreateCommand::class,
+            'migrate/generate' => Migration\GenerateCommand::class,
+            'migrate/up' => Migration\UpCommand::class,
+            'migrate/down' => Migration\DownCommand::class,
+            'migrate/list' => Migration\ListCommand::class,
         ],
     ],
 

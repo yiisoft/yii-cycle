@@ -1,6 +1,8 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Command;
+declare(strict_types=1);
+
+namespace Yiisoft\Yii\Cycle\Command\Migration;
 
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;

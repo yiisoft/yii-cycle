@@ -1,13 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Cycle\Command;
 
 use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;
-use Cycle\ORM\SchemaInterface;
-use Spiral\Database\DatabaseManager;
-use Spiral\Migrations\Config\MigrationConfig;
-use Spiral\Migrations\Migrator;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -17,7 +15,7 @@ final class SchemaCommand extends Command
 {
     protected static $defaultName = 'cycle/schema';
 
-    private SchemaInterface $schema;
+    private CycleDependencyPromise $promise;
     private const STR_RELATION = [
         Relation::HAS_ONE => 'has one',
         Relation::HAS_MANY => 'has many',
@@ -33,9 +31,9 @@ final class SchemaCommand extends Command
         Relation::LOAD_EAGER => 'eager',
     ];
 
-    public function __construct(SchemaInterface $schema)
+    public function __construct(CycleDependencyPromise $promise)
     {
-        $this->schema = $schema;
+        $this->promise = $promise;
         parent::__construct();
     }
 
@@ -46,9 +44,10 @@ final class SchemaCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        foreach ($this->schema->getRoles() as $role) {
+        $schema = $this->promise->getSchema();
+        foreach ($schema->getRoles() as $role) {
             $output->write("<fg=magenta>[{$role}</>");
-            $alias = $this->schema->resolveAlias($role);
+            $alias = $schema->resolveAlias($role);
             // alias
             if ($alias !== null && $alias !== $role) {
                 $output->write("=><fg=magenta>{$alias}</>");
@@ -57,38 +56,38 @@ final class SchemaCommand extends Command
             $output->write("<fg=magenta>]</>");
 
             // database
-            $database = $this->schema->define($role, Schema::DATABASE);
-            $table = $this->schema->define($role, Schema::TABLE);
+            $database = $schema->define($role, Schema::DATABASE);
+            $table = $schema->define($role, Schema::TABLE);
             if ($database !== null) {
                 $output->write(" :: <fg=green>{$database}</>.<fg=green>{$table}</>");
             }
             $output->writeln('');
 
             // Entity
-            $entity = $this->schema->define($role, Schema::ENTITY);
+            $entity = $schema->define($role, Schema::ENTITY);
             $output->write('   Entity     : ');
             $output->writeln($entity === null ? 'no entity' : "<fg=blue>{$entity}</>");
             // Mapper
-            $mapper = $this->schema->define($role, Schema::MAPPER);
+            $mapper = $schema->define($role, Schema::MAPPER);
             $output->write('   Mapper     : ');
             $output->writeln($mapper === null ? 'no mapper' : "<fg=blue>{$mapper}</>");
             // Constrain
-            $constrain = $this->schema->define($role, Schema::CONSTRAIN);
+            $constrain = $schema->define($role, Schema::CONSTRAIN);
             $output->write('   Constrain  : ');
             $output->writeln($constrain === null ? 'no constrain' : "<fg=blue>{$constrain}</>");
             // Repository
-            $repository = $this->schema->define($role, Schema::REPOSITORY);
+            $repository = $schema->define($role, Schema::REPOSITORY);
             $output->write('   Repository : ');
             $output->writeln($repository === null ? 'no repository' : "<fg=blue>{$repository}</>");
             // PK
-            $pk = $this->schema->define($role, Schema::PRIMARY_KEY);
+            $pk = $schema->define($role, Schema::PRIMARY_KEY);
             $output->write('   Primary key: ');
             $output->writeln($pk === null ? 'no primary key' : "<fg=green>{$pk}</>");
             // Fields
-            $columns = $this->schema->define($role, Schema::COLUMNS);
+            $columns = $schema->define($role, Schema::COLUMNS);
             $output->writeln("   Fields     :");
             $output->writeln("     (<fg=cyan>property</> -> <fg=green>db.field</> -> <fg=blue>typecast</>)");
-            $types = $this->schema->define($role, Schema::TYPECAST);
+            $types = $schema->define($role, Schema::TYPECAST);
             foreach ($columns as $property => $field) {
                 $typecast = $types[$property] ?? $types[$field] ?? null;
                 $output->write("     <fg=cyan>{$property}</> -> <fg=green>{$field}</>");
@@ -99,7 +98,7 @@ final class SchemaCommand extends Command
             }
 
             // Relations
-            $relations = $this->schema->define($role, Schema::RELATIONS);
+            $relations = $schema->define($role, Schema::RELATIONS);
             if (count($relations) > 0) {
                 $output->writeln('   Relations  :');
                 foreach ($relations as $field => $relation) {
