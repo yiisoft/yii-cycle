@@ -1,13 +1,14 @@
 <?php
 
 use Yiisoft\Yii\Cycle\Command\Migration;
-use Yiisoft\Yii\Cycle\Command;
+use Yiisoft\Yii\Cycle\Command\Common;
 
 return [
     // Console commands
     'console' => [
         'commands' => [
-            'cycle/schema' => Command\SchemaCommand::class,
+            'cycle/schema' => Common\SchemaCommand::class,
+            'cycle/schema/save' => Common\SchemaSaveCommand::class,
             'migrate/create' => Migration\CreateCommand::class,
             'migrate/generate' => Migration\GenerateCommand::class,
             'migrate/up' => Migration\UpCommand::class,

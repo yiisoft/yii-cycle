@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Command;
+namespace Yiisoft\Yii\Cycle\Command\Common;
 
 use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;
@@ -10,6 +10,7 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Console\ExitCode;
+use Yiisoft\Yii\Cycle\Command\CycleDependencyPromise;
 
 final class SchemaCommand extends Command
 {
@@ -52,10 +53,9 @@ final class SchemaCommand extends Command
             if ($alias !== null && $alias !== $role) {
                 $output->write("=><fg=magenta>{$alias}</>");
             }
-            // table
             $output->write("<fg=magenta>]</>");
 
-            // database
+            // database and table
             $database = $schema->define($role, Schema::DATABASE);
             $table = $schema->define($role, Schema::TABLE);
             if ($database !== null) {
