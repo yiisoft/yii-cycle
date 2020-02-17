@@ -10,3 +10,4 @@ Cycle — это DataMapper ORM, спроектированный для без�
 - [Установка и настройка](installation.md)
 - [Консольные команды](console-commands.md)
 - [Класс SelectDataReader](select-data-reader.md)
+- [Получение схемы](schema-getting.md)

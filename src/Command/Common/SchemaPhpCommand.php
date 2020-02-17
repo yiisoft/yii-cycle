@@ -13,9 +13,9 @@ use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyPromise;
 use Yiisoft\Yii\Cycle\Helper\SchemaToPHP;
 
-final class SchemaSaveCommand extends Command
+final class SchemaPhpCommand extends Command
 {
-    protected static $defaultName = 'cycle/schema/save';
+    protected static $defaultName = 'cycle/schema/php';
 
     private CycleDependencyPromise $promise;
     private Aliases $aliases;
