@@ -10,7 +10,8 @@ final class SchemaFromFileFactory
 {
     private string $file;
 
-    public function __construct(string $file) {
+    public function __construct(string $file)
+    {
         $this->file = $file;
     }
 

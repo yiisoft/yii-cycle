@@ -55,7 +55,8 @@ final class SchemaToPHP
     {
         return $this->render();
     }
-    public function render(): string {
+    public function render(): string
+    {
         $items = new ArrayItem(null);
         foreach ($this->schema->getRoles() as $role) {
             $items->value[] = $this->renderRole($role);
