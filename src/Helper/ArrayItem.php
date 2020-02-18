@@ -37,13 +37,13 @@ final class ArrayItem
             if (count($value) === 0) {
                 return '[]';
             }
-            $result = "[";
+            $result = '[';
             foreach ($value as $key => $item) {
                 $result .= "\n";
                 if (!$item instanceof ArrayItem) {
                     $result .= is_int($key) ? "{$key} => " : "'{$key}' => ";
                 }
-                $result .= $this->renderValue($item) . ",";
+                $result .= $this->renderValue($item) . ',';
             }
             return str_replace("\n", "\n    ", $result) .  "\n]";
         }

@@ -51,7 +51,7 @@ final class SchemaToPHP
     {
         $this->schema = $schema;
     }
-    public function __toString()
+    public function __toString(): string
     {
         return $this->render();
     }
@@ -151,7 +151,7 @@ final class SchemaToPHP
                     $resultList = [];
                     foreach ($value as $listKey => $listValue) {
                         $resultList[] = new ArrayItem(
-                            key_exists($listKey, self::RELATION_OPTION) ? self::RELATION_OPTION[$listKey] : $listKey,
+                            array_key_exists($listKey, self::RELATION_OPTION) ? self::RELATION_OPTION[$listKey] : $listKey,
                             $listValue
                         );
                     }
