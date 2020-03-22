@@ -24,7 +24,7 @@
         "cycle/annotated": "^2.0",
         "cycle/migrations": "^1.0",
         "cycle/orm": "^1.1",
-        "hiqdev/composer-config-plugin": "^1.0@dev",
+        "yiisoft/composer-config-plugin": "^1.0@dev",
         "psr/event-dispatcher": "^1.0",
         "psr/simple-cache": "^1.0",
         "yiisoft/aliases": "@dev",
