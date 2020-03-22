@@ -45,7 +45,7 @@ final class ArrayItem
                 }
                 $result .= $this->renderValue($item) . ',';
             }
-            return str_replace("\n", "\n    ", $result) .  "\n]";
+            return str_replace("\n", "\n    ", $result) . "\n]";
         }
         if (!$this->wrapValue || is_int($value) || $value instanceof ArrayItem) {
             return (string)$value;
