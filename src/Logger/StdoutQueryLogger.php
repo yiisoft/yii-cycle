@@ -84,10 +84,15 @@ class StdoutQueryLogger implements LoggerInterface
     private function print(string $str): void
     {
         $this->buffer[] = $str;
-        if (!$this->display) {
+        if (!$this->display || $this->fp === null) {
             return;
         }
-        fwrite($this->fp, "{$str}\n");
+        try {
+            fwrite($this->fp, "{$str}\n");
+        } catch (\Throwable $e) {
+            fclose($this->fp);
+            $this->fp = null;
+        }
     }
 
     public function display(): void

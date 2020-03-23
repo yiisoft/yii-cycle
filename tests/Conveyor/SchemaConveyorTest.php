@@ -22,7 +22,7 @@ class SchemaConveyorTest extends TestCase
             $conveyor->getGenerators()
         );
 
-        $this->assertEquals([
+        $this->assertSame([
             'Cycle\Schema\Generator\ResetTables',
             'Cycle\Schema\Generator\GenerateRelations',
             'Cycle\Schema\Generator\ValidateEntities',
@@ -57,7 +57,7 @@ class SchemaConveyorTest extends TestCase
             $conveyor->getGenerators()
         );
 
-        $this->assertEquals([
+        $this->assertSame([
             'Cycle\Schema\Generator\ResetTables',
             'FakeGenerator-object',
             'Cycle\Schema\Generator\GenerateRelations',
@@ -86,7 +86,7 @@ class SchemaConveyorTest extends TestCase
             $conveyor->getGenerators()
         );
 
-        $this->assertEquals([
+        $this->assertSame([
             'Cycle\Schema\Generator\ResetTables',
             \Cycle\Annotated\MergeIndexes::class,
             'Cycle\Schema\Generator\GenerateRelations',

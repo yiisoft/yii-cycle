@@ -21,7 +21,7 @@ class AnnotatedSchemaConveyorTest extends TestCase
             $conveyor->getGenerators()
         );
 
-        $this->assertEquals([
+        $this->assertSame([
             'Cycle\Schema\Generator\ResetTables',
             'Cycle\Annotated\Embeddings',
             'Cycle\Annotated\Entities',
@@ -47,7 +47,7 @@ class AnnotatedSchemaConveyorTest extends TestCase
             $conveyor->getGenerators()
         );
 
-        $this->assertEquals([
+        $this->assertSame([
             'Cycle\Schema\Generator\ResetTables',
             'Cycle\Annotated\Embeddings',
             'Cycle\Annotated\Entities',
