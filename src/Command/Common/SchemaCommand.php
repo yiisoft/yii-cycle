@@ -8,6 +8,7 @@ use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Console\ExitCode;
@@ -42,37 +43,38 @@ final class SchemaCommand extends Command
     public function configure(): void
     {
         $this->setDescription('Shown current schema');
-        $this->addArgument('entity', null, 'Entity or entities to display (separated by ",").');
+        $this->addArgument('role', InputArgument::OPTIONAL, 'Roles to display (separated by ",").');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        $roleArgument = $input->getArgument('role');
+        $result = true;
         $schema = $this->promise->getSchema();
-        $entityParameter = $input->getArgument('entity');
+        $roles = $roleArgument !== null ? explode(',', $roleArgument) : $schema->getRoles();
 
-        if ($entityParameter !== null) {
-            foreach(explode(',', $entityParameter) as $role) {
-                $this->displaySchema($schema, strtolower($role), $output);
-            }
-        } else {
-            foreach ($schema->getRoles() as $role) {
-                $this->displaySchema($schema, $role, $output);
-            }
+        foreach ($roles as $role) {
+            $result = $this->displaySchema($schema, $role, $output) && $result;
         }
 
-        return ExitCode::OK;
+        return $result ? ExitCode::OK : ExitCode::UNSPECIFIED_ERROR;
     }
 
     /**
-     * Display data schema in console output
+     * Write a role schema in the output
      *
      * @param SchemaInterface $schema Data schema
      * @param string $role Role to display
      * @param OutputInterface $output Output console
      * @return void
      */
-    private function displaySchema(SchemaInterface $schema, string $role, OutputInterface $output) : void
+    private function displaySchema(SchemaInterface $schema, string $role, OutputInterface $output): bool
     {
+        if (!$schema->defines($role)) {
+            $output->writeln("<fg=red>Role</> <fg=magenta>[{$role}]</> <fg=red>not defined!</>");
+            return false;
+        }
+
         $output->write("<fg=magenta>[{$role}</>");
         $alias = $schema->resolveAlias($role);
         // alias
@@ -173,5 +175,6 @@ final class SchemaCommand extends Command
         } else {
             $output->writeln('   No relations');
         }
+        return true;
     }
 }
