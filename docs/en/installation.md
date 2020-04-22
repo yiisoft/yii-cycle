@@ -32,7 +32,7 @@ return [
 
     # Cycle common config
     'cycle.common' => [
-        # Migration directories list
+        # Entity directories list
         'entityPaths' => [
             '@src/Entity'
         ],
