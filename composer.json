@@ -27,7 +27,7 @@
         "yiisoft/composer-config-plugin": "^1.0@dev",
         "psr/event-dispatcher": "^1.0",
         "psr/simple-cache": "^1.0",
-        "yiisoft/aliases": "@dev",
+        "yiisoft/aliases": "^1.0",
         "yiisoft/data": "@dev",
         "yiisoft/friendly-exception": "@dev",
         "yiisoft/yii-console": "@dev"
@@ -64,7 +64,6 @@
         }
     },
     "scripts": {
-        "phan": "phan --progress-bar -o analysis.txt",
         "test": "phpunit --colors=always"
     },
     "config": {
