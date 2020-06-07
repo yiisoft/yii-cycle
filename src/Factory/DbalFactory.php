@@ -76,6 +76,6 @@ final class DbalFactory
 
     private function getAlias(string $alias): string
     {
-        return $this->container->get(Aliases::class)->get($alias, true);
+        return $this->container->get(Aliases::class)->get($alias);
     }
 }
