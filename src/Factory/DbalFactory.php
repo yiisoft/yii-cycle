@@ -13,7 +13,7 @@ final class DbalFactory
     /** @var array|DatabaseConfig */
     private $config;
     private $logger;
-    private ContainerInterface $container;
+    private ?ContainerInterface $container = null;
 
     /**
      * @param array|DatabaseConfig $config
