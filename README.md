@@ -18,7 +18,31 @@ Read more in the [official Cycle documentation](https://github.com/cycle/docs)
 [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/yiisoft/yii-cycle/badges/quality-score.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/yii-cycle/?branch=master)
 [![Code Coverage](https://scrutinizer-ci.com/g/yiisoft/yii-cycle/badges/coverage.png?b=master)](https://scrutinizer-ci.com/g/yiisoft/yii-cycle/?branch=master)
 
-## Documentation
+### Documentation
 
 - [English](docs/en/README.md)
 - [Russian](docs/ru/README.md)
+
+### Unit testing
+
+The package is tested with [PHPUnit](https://phpunit.de/). To run tests:
+
+```php
+./vendor/bin/phpunit
+```
+
+### Mutation testing
+
+The package tests are checked with [Infection](https://infection.github.io/) mutation framework. To run it:
+
+```php
+./vendor/bin/infection
+```
+
+### Static analysis
+
+The code is statically analyzed with [Phan](https://github.com/phan/phan/wiki). To run static analysis:
+
+```php
+./vendor/bin/phan
+```
