@@ -5,7 +5,7 @@ use Yiisoft\Yii\Cycle\Command\Common;
 
 return [
     // Console commands
-    'console' => [
+    'yiisoft/yii-console' => [
         'commands' => [
             'cycle/schema' => Common\SchemaCommand::class,
             'cycle/schema/php' => Common\SchemaPhpCommand::class,
