@@ -33,7 +33,9 @@
         "yiisoft/yii-console": "@dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.0",
+        "infection/infection": "^0.16.3",
+        "phan/phan": "^3.0.2",
+        "phpunit/phpunit": "^9.2",
         "yiisoft/di": "@dev"
     },
     "autoload": {
@@ -64,7 +66,11 @@
         }
     },
     "scripts": {
-        "test": "phpunit --colors=always"
+        "test": [
+            "phpunit --colors=always",
+            "infection --no-progress",
+            "phan --no-progress-bar"
+        ]
     },
     "config": {
         "sort-packages": true

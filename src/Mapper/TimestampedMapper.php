@@ -33,6 +33,9 @@ class TimestampedMapper extends Mapper
         return $command;
     }
 
+    /**
+     * @suppress PhanUndeclaredMethod
+     */
     public function queueUpdate($entity, Node $node, State $state): ContextCarrierInterface
     {
         /** @var Update $command */
