@@ -10,7 +10,6 @@ use InvalidArgumentException;
 use IteratorAggregate;
 use Spiral\Database\Query\SelectQuery;
 use Spiral\Pagination\PaginableInterface;
-use Traversable;
 use Yiisoft\Data\Reader\CountableDataInterface;
 use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\OffsetableDataInterface;
@@ -33,6 +32,7 @@ final class SelectDataReader implements
     private ?Sort $sorting = null;
     private CachedCount $countCache;
     private CachedCollection $itemsCache;
+    private CachedCollection $oneItemCache;
 
     /**
      * @param Select|SelectQuery $query
@@ -94,11 +94,26 @@ final class SelectDataReader implements
     }
 
     /**
-     * Get Iterator without caching
-     * @return Traversable
-     * @throws \Exception
+     * @return mixed
      */
-    public function getIterator(): Traversable
+    public function readOne()
+    {
+        if (!$this->oneItemCache->isCollected()) {
+            $item = $this->itemsCache->isCollected()
+                // get first item from cached collection
+                ? $this->itemsCache->getGenerator()->current()
+                // read data with limit 1
+                : $this->withLimit(1)->getIterator()->current();
+            $this->oneItemCache->setCollection($item === null ? [] : [$item]);
+        }
+
+        return $this->oneItemCache->getGenerator()->current();
+    }
+
+    /**
+     * Get Iterator without caching
+     */
+    public function getIterator(): \Generator
     {
         if ($this->itemsCache->getCollection() !== null) {
             yield from $this->itemsCache->getCollection();
@@ -112,6 +127,7 @@ final class SelectDataReader implements
         if ($this->sorting !== $sorting) {
             $this->sorting = $sorting;
             $this->itemsCache = new CachedCollection();
+            $this->oneItemCache = new CachedCollection();
         }
     }
 
@@ -128,6 +144,7 @@ final class SelectDataReader implements
         if ($this->offset !== $offset) {
             $this->offset = $offset;
             $this->itemsCache = new CachedCollection();
+            $this->oneItemCache = new CachedCollection();
         }
     }
 
