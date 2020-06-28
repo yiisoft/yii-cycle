@@ -50,6 +50,7 @@ final class SelectDataReader implements
         $this->query = clone $query;
         $this->countCache = new CachedCount($this->query);
         $this->itemsCache = new CachedCollection();
+        $this->oneItemCache = new CachedCollection();
     }
 
     public function getSort(): ?Sort

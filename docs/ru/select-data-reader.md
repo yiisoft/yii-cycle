@@ -14,12 +14,13 @@
   - Задавать сортировку. Но учтите, что сортировка `SelectDataReader`
     не заменяет сортировку в исходном запросе, а лишь дополняет её.
     Однако каждый следующий вызов метода `withSort()` будет заменять настройки
-    сортровки объекта `SelectDataReader`
-* `SelectDataReader` не позволяет применять фильтрацию — её следует настраивать в репозитории.
+    сортировки объекта `SelectDataReader`
+* `SelectDataReader` не позволяет применять фильтрацию — её следует настраивать в исходном запросе.
 * `SelectDataReader` не вытягивает данные из БД сразу.
   Обращение к БД происходит только тогда, когда эти данные запрашиваются.
-* Если вы будете использовать метод `read()` для чтения данных,
+* Если вы будете использовать методы `read()` и `readOne()` для чтения данных,
   то `SelectDataReader` сохранит их в кеше. Кешируется также и результат вызова `count()`.
+* Метод `count()` возвращает кол-во всех элементов выборки без учёта ограничений `Limit` и `Offset`.
 * Если вы не хотите, чтобы данные были записаны в кеш, то используйте метод `getIterator()`.
   Однако, если кеш уже заполнен, то `getIterator()` вернёт содержимое кеша.
 
@@ -78,7 +79,7 @@ foreach ($paginator->read() as $article) {
 }
 ```
 
-А тепрь сделаем запрос на 20 последних опубликованных статей, а потом на 20 первых.
+А теперь сделаем запрос на 20 последних опубликованных статей, а потом на 20 первых.
 
 ```php
 /**
@@ -140,21 +141,19 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
     public function findPublic(): DataReaderInterface
     {
         $sort = (new Sort([]))->withOrder(['published_at' => 'desc']);
+        // Параметры сортировки присваиваются объекту DataReader, а не \Cycle\ORM\Select
         return (new SelectDataReader($this->select()->where(['public' => true])))->withSort($sort);
     }
 }
 
 // class SiteController ... {
 
-function index(\Cycle\ORM\ORMInterface $orm)
+function index(ArticleRepository $repository)
 {
-    /** @var ArticleRepository $repository */
-    $repository = $orm->getRepository(Article::class);
-
     $articlesReader = $repository
-        // получаем объект SelectDataReader
+        // Получаем объект SelectDataReader
         ->findPublic()
-        // применяем новое правило сортировки
+        // Применяем новое правило сортировки
         ->withSort((new Sort([]))->withOrder(['published_at' => 'asc']));
 }
 ```

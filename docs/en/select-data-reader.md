@@ -12,10 +12,11 @@ You need to know the following about `SelectDataReader`:
   - Specify sorting. But note that `SelectDataReader` sorting does
     not replace initial query sorting but adds sorting on top of it.
     Each next `withSort()` call is replacing `SelectDataReader` sorting options.
-* `SelectDataReader` doesn't allow filtering. It should be done in repository instead.
+* `SelectDataReader` doesn't allow filtering. It should be done in initial query instead.
 * `SelectDataReader` queries database only when you actually read the data.
-* In case you're using `read()` to read data, data will be cached by `SelectDataReader`. Result of `count()` call is
-  cached as well.
+* In case you're using `read()` or `readOne()` to read data, data will be cached by `SelectDataReader`. Result of
+  `count()` call is cached as well.
+* The count() method returns the number of elements without taking Limit and Offset into account.
 * In case you want to avoid caching, use `getIterator()`. But note that if cache is already there, `getIterator()`
   uses it.
 
@@ -141,15 +142,12 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
 
 // class SiteController ... {
 
-function index(\Cycle\ORM\ORMInterface $orm)
+function index(ArticleRepository $repository)
 {
-    /** @var ArticleRepository $repository */
-    $repository = $orm->getRepository(Article::class);
-
     $articlesReader = $repository
-        // getting SelectDataReader
+        // Getting SelectDataReader
         ->findPublic()
-        // applying new sorting
+        // Applying new sorting
         ->withSort((new Sort([]))->withOrder(['published_at' => 'asc']));
 }
 ```
