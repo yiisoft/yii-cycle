@@ -9,14 +9,14 @@ You need to know the following about `SelectDataReader`:
  It allows using `SelectDataReader` instance in `foreach`.
 * Using `SelectDataReader` you can adjust select-query:
   - Add `Limit` and `Offset` manually or using `OffsetPaginator`
-  - Specify sorting. But note that `SelectDataReader` sorting does
+  - Specify sorting. Note that `SelectDataReader` sorting does
     not replace initial query sorting but adds sorting on top of it.
     Each next `withSort()` call is replacing `SelectDataReader` sorting options.
-* `SelectDataReader` doesn't allow filtering. It should be done in repository instead.
+* `SelectDataReader` doesn't allow filtering. It should be done in initial query instead.
 * `SelectDataReader` queries database only when you actually read the data.
-* In case you're using `read()` to read data, data will be cached by `SelectDataReader`. Result of `count()` call is
-  cached as well.
-* In case you want to avoid caching, use `getIterator()`. But note that if cache is already there, `getIterator()`
+* In case you're using `read()`, `readOne()` or `count()`, data will be cached by `SelectDataReader`.
+* The `count()` method returns the number of elements without taking limit and offset into account.
+* In case you want to avoid caching, use `getIterator()`. Note that if cache is already there, `getIterator()`
   uses it.
 
 ## Examples
@@ -119,7 +119,7 @@ foreach ($lastPublicReader->read() as $article) {
 ```
 
 Sorting through `SelectDataReader` does not replace sorting in initial query but adds more to it.
-If you need to set default sorting in a repository method but want to be able to change it in controller, you
+If you need to set default sorting in a repository method but want to be able to change it in a controller, you
 can do it like the following:
 
 ```php
@@ -141,15 +141,12 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
 
 // class SiteController ... {
 
-function index(\Cycle\ORM\ORMInterface $orm)
+function index(ArticleRepository $repository)
 {
-    /** @var ArticleRepository $repository */
-    $repository = $orm->getRepository(Article::class);
-
     $articlesReader = $repository
-        // getting SelectDataReader
+        // Getting SelectDataReader
         ->findPublic()
-        // applying new sorting
+        // Applying new sorting
         ->withSort((new Sort([]))->withOrder(['published_at' => 'asc']));
 }
 ```
