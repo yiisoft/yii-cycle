@@ -6,11 +6,11 @@ use Cycle\ORM\ORMInterface;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
-use Yiisoft\Yii\Cycle\Conveyor\AnnotatedSchemaConveyor;
-use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Factory\SchemaFromConveyorFactory;
+use Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor;
+use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
 /**
  * @var array $params

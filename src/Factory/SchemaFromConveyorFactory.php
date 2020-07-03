@@ -10,7 +10,7 @@ use Cycle\Schema\Registry;
 use Psr\Container\ContainerInterface;
 use Psr\SimpleCache\CacheInterface;
 use Spiral\Database\DatabaseManager;
-use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyorInterface;
+use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
 final class SchemaFromConveyorFactory
 {

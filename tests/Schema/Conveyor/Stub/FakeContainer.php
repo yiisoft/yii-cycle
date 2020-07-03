@@ -1,6 +1,6 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Tests\Conveyor\Stub;
+namespace Yiisoft\Yii\Cycle\Tests\Schema\Conveyor\Stub;
 
 use Cycle\Schema\GeneratorInterface;
 use PHPUnit\Framework\TestCase;

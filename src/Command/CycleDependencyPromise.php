@@ -10,7 +10,7 @@ use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
 use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\Migrator;
-use Yiisoft\Yii\Cycle\Conveyor\SchemaConveyorInterface;
+use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
 final class CycleDependencyPromise
 {
