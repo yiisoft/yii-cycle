@@ -52,6 +52,7 @@ final class SchemaProviderDispatcher
 
     public function clearSchema(): void
     {
+        /** @var SchemaProviderInterface[] $toClear */
         $toClear = [];
         $isWritableLast = false;
         $this->walkProviders(static function (SchemaProviderInterface $provider) use (&$toClear, &$isWritableLast) {
@@ -63,9 +64,9 @@ final class SchemaProviderDispatcher
         if ($isWritableLast) {
             array_pop($toClear);
         }
-        array_walk($toClear, static function (SchemaProviderInterface $provider) {
+        foreach ($toClear as $provider) {
             $provider->clear();
-        });
+        }
     }
 
     private function walkProviders(\Closure $closure)
@@ -88,5 +89,4 @@ final class SchemaProviderDispatcher
             }
         }
     }
-
 }

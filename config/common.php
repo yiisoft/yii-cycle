@@ -28,7 +28,7 @@ return [
         return new Factory($container->get(DatabaseManager::class), null, null, $container);
     },
     // Schema Provider dispatcher
-    SchemaProviderDispatcher::class => static function(ContainerInterface $container) use (&$params) {
+    SchemaProviderDispatcher::class => static function (ContainerInterface $container) use (&$params) {
         return new SchemaProviderDispatcher($container, $params['yiisoft/yii-cycle']['schema-providers']);
     },
     // Schema
