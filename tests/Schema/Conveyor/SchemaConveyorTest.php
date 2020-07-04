@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Conveyor;
 
 use Cycle\Schema\GeneratorInterface;

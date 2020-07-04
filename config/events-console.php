@@ -1,11 +1,11 @@
 <?php
 
-use Yiisoft\Arrays\Modifier\ReverseBlockMerge;
+declare(strict_types=1);
+
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Listener\MigrationListener;
 
 return [
-    // ReverseBlockMerge::class => new ReverseBlockMerge(),
     AfterMigrate::class => [
         [MigrationListener::class, 'onAfterMigrate']
     ],
