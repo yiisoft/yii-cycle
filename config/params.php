@@ -1,7 +1,11 @@
 <?php
 
+declare(strict_types=1);
+
+use Cycle\ORM\PromiseFactoryInterface;
 use Yiisoft\Yii\Cycle\Command\Migration;
 use Yiisoft\Yii\Cycle\Command\Common;
+use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 return [
     // Console commands
@@ -17,36 +21,58 @@ return [
         ],
     ],
 
-    // DBAL config
-    'cycle.dbal' => [
-        'default' => null,
-        'aliases' => [],
-        'databases' => [],
-        'connections' => [],
+    'yiisoft/yii-cycle' => [
+        // DBAL config
+        'dbal' => [
+            // SQL query logger. Definition of Psr\Log\LoggerInterface
+            'query-logger' => null,
+            // Default database
+            'default' => null,
+            'aliases' => [],
+            'databases' => [],
+            'connections' => [],
+        ],
+
+        // Cycle migration config
+        'migrations' => [
+            'directory' => '@root/migrations',
+            'namespace' => 'App\\Migration',
+            'table' => 'migration',
+            'safe' => false,
+        ],
+
+        /**
+         * Config for @see \Yiisoft\Yii\Cycle\Factory\OrmFactory
+         * Null, classname or @see PromiseFactoryInterface object.
+         * @link https://github.com/cycle/docs/blob/master/advanced/promise.md
+         */
+        'orm-promise-factory' => null,
+
+        /**
+         * SchemaProvider list for @see \Yiisoft\Yii\Cycle\Schema\SchemaProviderDispatcher
+         * Array of classname and @see SchemaProviderInterface object.
+         * You can configure providers if you pass classname as key and parameters as array:
+         * [
+         *     SimpleCacheSchemaProvider::class => [
+         *         'key' => 'my-custom-cache-key'
+         *     ],
+         *     FromFileSchemaProvider::class => [
+         *         'file' => '@runtime/cycle-schema.php'
+         *     ],
+         *     FromConveyorSchemaProvider::class => [
+         *         'generators' => [
+         *              Generator\SyncTables::class, // sync table changes to database
+         *          ]
+         *     ],
+         * ]
+         */
+        'schema-providers' => [],
+
+        /**
+         * Config for @see \Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor
+         * Annotated entity directories list.
+         * @see \Yiisoft\Aliases\Aliases are also supported.
+         */
+        'annotated-entity-paths' => [],
     ],
-
-    // common config
-    'cycle.common' => [
-        // Annotated entities config
-        'entityPaths' => [],
-        'cacheEnabled' => true,
-        'cacheKey' => 'Cycle-ORM-Schema',
-        // List of \Cycle\Schema\GeneratorInterface definitions
-        'generators' => [],
-
-        // dbal config
-        // \Cycle\ORM\PromiseFactoryInterface definition
-        'promiseFactory' => null,
-        // \Psr\Log\LoggerInterface definition
-        'queryLogger' => null,
-    ],
-
-    // migration config
-    'cycle.migrations' => [
-        'directory' => '@root/migrations',
-        'namespace' => 'App\\Migration',
-        'table' => 'migration',
-        'safe' => false,
-    ],
-
 ];

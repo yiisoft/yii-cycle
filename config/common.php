@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Cycle\ORM\Factory;
 use Cycle\ORM\FactoryInterface;
 use Cycle\ORM\ORMInterface;
@@ -8,9 +10,9 @@ use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
-use Yiisoft\Yii\Cycle\Factory\SchemaFromConveyorFactory;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
+use Yiisoft\Yii\Cycle\Schema\SchemaProviderDispatcher;
 
 /**
  * @var array $params
@@ -18,23 +20,29 @@ use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
 return [
     // Cycle DBAL
-    DatabaseManager::class => new DbalFactory($params['cycle.dbal'], $params['cycle.common']['queryLogger']),
+    DatabaseManager::class => new DbalFactory($params['yiisoft/yii-cycle']['dbal']),
     // Cycle ORM
-    ORMInterface::class => new OrmFactory($params['cycle.common']['promiseFactory']),
+    ORMInterface::class => new OrmFactory($params['yiisoft/yii-cycle']['orm-promise-factory']),
     // Factory for Cycle ORM
-    FactoryInterface::class => function (ContainerInterface $container) {
+    FactoryInterface::class => static function (ContainerInterface $container) {
         return new Factory($container->get(DatabaseManager::class), null, null, $container);
     },
-    // Schema from generators
-    SchemaInterface::class => new SchemaFromConveyorFactory(
-        $params['cycle.common']['cacheEnabled'],
-        $params['cycle.common']['cacheKey'],
-        $params['cycle.common']['generators']
-    ),
+    // Schema Provider dispatcher
+    SchemaProviderDispatcher::class => static function(ContainerInterface $container) use (&$params) {
+        return new SchemaProviderDispatcher($container, $params['yiisoft/yii-cycle']['schema-providers']);
+    },
+    // Schema
+    SchemaInterface::class => static function (ContainerInterface $container) {
+        $schema = $container->get(SchemaProviderDispatcher::class)->getSchemaArray();
+        if ($schema === null) {
+            throw new RuntimeException('Cycle Schema not read.');
+        }
+        return new \Cycle\ORM\Schema($schema);
+    },
     // Annotated Schema Conveyor
     SchemaConveyorInterface::class => static function (ContainerInterface $container) use (&$params) {
         $conveyor = new AnnotatedSchemaConveyor($container);
-        $conveyor->addEntityPaths($params['cycle.common']['entityPaths']);
+        $conveyor->addEntityPaths($params['yiisoft/yii-cycle']['annotated-entity-paths']);
         return $conveyor;
     },
 ];

@@ -6,6 +6,11 @@ namespace Yiisoft\Yii\Cycle\Schema;
 
 interface SchemaProviderInterface
 {
+    /**
+     * @param array $config
+     * @return $this
+     */
+    public function withConfig(array $config): self;
     public function isWritable(): bool;
     public function isReadable(): bool;
     /**

@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 use Psr\Container\ContainerInterface;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyPromise;
 use Yiisoft\Yii\Cycle\Factory\MigrationConfigFactory;
@@ -13,7 +15,7 @@ use Spiral\Migrations\Migrator;
 
 return [
     Migrator::class => new MigratorFactory(),
-    MigrationConfig::class => new MigrationConfigFactory($params['cycle.migrations']),
+    MigrationConfig::class => new MigrationConfigFactory($params['yiisoft/yii-cycle']['migrations']),
     CycleDependencyPromise::class => static function (ContainerInterface $container) {
         return new CycleDependencyPromise($container);
     }

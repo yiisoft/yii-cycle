@@ -5,23 +5,17 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Schema;
 
 use Psr\Container\ContainerInterface;
-use Yiisoft\Yii\Cycle\Schema\Provider\ConveyorSchemaProvider;
-use Yiisoft\Yii\Cycle\Schema\Provider\FromFileSchemaProvider;
-use Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider;
 
 final class SchemaProviderDispatcher
 {
     private ContainerInterface $container;
-    /** @var string[] */
-    private array $providers = [
-        // SimpleCacheSchemaProvider::class,
-        // ConveyorSchemaProvider::class,
-        // FromFileSchemaProvider::class,
-    ];
+    /** @var string[]|SchemaProviderInterface[] */
+    private array $providers = [];
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, array $providers)
     {
         $this->container = $container;
+        $this->providers = $providers;
     }
 
     public function getSchemaArray(): ?array
@@ -58,10 +52,16 @@ final class SchemaProviderDispatcher
 
     private function walkProviders(\Closure $closure)
     {
-        foreach ($this->providers as &$provider) {
+        foreach ($this->providers as $key => &$provider) {
+            // Providers resolving
             if (is_string($provider)) {
                 $provider = $this->container->get($provider);
             }
+            // If Provider defined as ClassName => ConfigArray
+            if (is_array($provider) && is_string($key)) {
+                $provider = $this->container->get($key)->withConfig($provider);
+            }
+
             if (!$provider instanceof SchemaProviderInterface) {
                 throw new \RuntimeException('Provider should be instance of SchemaProviderInterface.');
             }

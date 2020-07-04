@@ -13,10 +13,16 @@ final class SimpleCacheSchemaProvider implements SchemaProviderInterface
     private CacheInterface $cache;
     private string $key = self::DEFAULT_KEY;
 
-    public function __construct(CacheInterface $cache, string $key = self::DEFAULT_KEY)
+    public function __construct(CacheInterface $cache)
     {
         $this->cache = $cache;
-        $this->key = $key;
+    }
+
+    public function withConfig(array $config): SchemaProviderInterface
+    {
+        $clone = clone $this;
+        $clone->key = $config['key'] ?? self::DEFAULT_KEY;
+        return $clone;
     }
 
     public function read(): ?array

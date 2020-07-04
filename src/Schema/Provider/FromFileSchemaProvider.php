@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Schema\Provider;
 
+use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 /**
@@ -11,17 +12,26 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
  */
 final class FromFileSchemaProvider implements SchemaProviderInterface
 {
-    private string $file;
+    private string $file = '';
+    private Aliases $aliases;
 
-    public function __construct(string $file)
+    public function __construct(Aliases $aliases)
     {
-        $this->file = $file;
+        $this->aliases = $aliases;
+    }
+
+    public function withConfig(array $config): SchemaProviderInterface
+    {
+        $clone = clone $this;
+        // required option
+        $clone->file = $this->aliases->get($config['file']);
+        return $clone;
     }
 
     public function read(): ?array
     {
         if (!is_file($this->file)) {
-            throw new \RuntimeException('Schema file not found.');
+            return null;
         }
         return include $this->file;
     }
@@ -35,10 +45,12 @@ final class FromFileSchemaProvider implements SchemaProviderInterface
     {
         return false;
     }
+
     public function isWritable(): bool
     {
         return false;
     }
+
     public function isReadable(): bool
     {
         return true;
