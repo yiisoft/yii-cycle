@@ -10,11 +10,11 @@ use Spiral\Migrations\MigrationInterface;
 use Spiral\Migrations\State;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yiisoft\Yii\Cycle\Command\CycleDependencyPromise;
+use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
 abstract class BaseMigrationCommand extends Command
 {
-    protected CycleDependencyPromise $promise;
+    protected CycleDependencyProxy $promise;
 
     protected const MIGRATION_STATUS = [
         State::STATUS_UNDEFINED => 'undefined',
@@ -22,7 +22,7 @@ abstract class BaseMigrationCommand extends Command
         State::STATUS_EXECUTED => 'executed',
     ];
 
-    public function __construct(CycleDependencyPromise $promise)
+    public function __construct(CycleDependencyProxy $promise)
     {
         $this->promise = $promise;
         parent::__construct();

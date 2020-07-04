@@ -10,7 +10,7 @@ use Spiral\Migrations\State;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Console\ExitCode;
-use Yiisoft\Yii\Cycle\Command\CycleDependencyPromise;
+use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 
@@ -20,7 +20,7 @@ final class DownCommand extends BaseMigrationCommand
 
     private EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(CycleDependencyPromise $promise, EventDispatcherInterface $eventDispatcher)
+    public function __construct(CycleDependencyProxy $promise, EventDispatcherInterface $eventDispatcher)
     {
         $this->eventDispatcher = $eventDispatcher;
         parent::__construct($promise);

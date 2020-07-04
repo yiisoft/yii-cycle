@@ -12,7 +12,7 @@ use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\Migrator;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
-final class CycleDependencyPromise
+final class CycleDependencyProxy
 {
     private ContainerInterface $container;
     public function __construct(ContainerInterface $container)
