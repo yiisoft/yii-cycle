@@ -18,7 +18,7 @@ final class SchemaProviderDispatcher
         $this->providers = $providers;
     }
 
-    public function getSchemaArray(): ?array
+    public function readSchema(): ?array
     {
         $toWrite = new \SplStack();
         $schema = null;
@@ -48,6 +48,24 @@ final class SchemaProviderDispatcher
         }
 
         return $schema;
+    }
+
+    public function clearSchema(): void
+    {
+        $toClear = [];
+        $isWritableLast = false;
+        $this->walkProviders(static function (SchemaProviderInterface $provider) use (&$toClear, &$isWritableLast) {
+            $isWritableLast = $provider->isWritable();
+            if ($isWritableLast) {
+                $toClear[] = $provider;
+            }
+        });
+        if ($isWritableLast) {
+            array_pop($toClear);
+        }
+        array_walk($toClear, static function (SchemaProviderInterface $provider) {
+            $provider->clear();
+        });
     }
 
     private function walkProviders(\Closure $closure)

@@ -33,7 +33,7 @@ return [
     },
     // Schema
     SchemaInterface::class => static function (ContainerInterface $container) {
-        $schema = $container->get(SchemaProviderDispatcher::class)->getSchemaArray();
+        $schema = $container->get(SchemaProviderDispatcher::class)->readSchema();
         if ($schema === null) {
             throw new RuntimeException('Cycle Schema not read.');
         }
