@@ -20,11 +20,10 @@ final class DbalFactory
 
     /**
      * @param array|DatabaseConfig $config
-     * @param null|string|LoggerInterface $loggerDefinition
      */
     public function __construct($config)
     {
-        if (array_key_exists('query-logger', $config)) {
+        if (is_array($config) && array_key_exists('query-logger', $config)) {
             $this->logger = $config['query-logger'];
             unset($config['query-logger']);
         }
