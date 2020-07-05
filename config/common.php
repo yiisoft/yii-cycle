@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Cycle\ORM\Factory;
 use Cycle\ORM\FactoryInterface;
 use Cycle\ORM\ORMInterface;
+use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
@@ -12,7 +13,7 @@ use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderDispatcher;
+use Yiisoft\Yii\Cycle\Schema\SchemaManager;
 
 /**
  * @var array $params
@@ -28,16 +29,16 @@ return [
         return new Factory($container->get(DatabaseManager::class), null, null, $container);
     },
     // Schema Provider dispatcher
-    SchemaProviderDispatcher::class => static function (ContainerInterface $container) use (&$params) {
-        return new SchemaProviderDispatcher($container, $params['yiisoft/yii-cycle']['schema-providers']);
+    SchemaManager::class => static function (ContainerInterface $container) use (&$params) {
+        return new SchemaManager($container, $params['yiisoft/yii-cycle']['schema-providers']);
     },
     // Schema
     SchemaInterface::class => static function (ContainerInterface $container) {
-        $schema = $container->get(SchemaProviderDispatcher::class)->readSchema();
+        $schema = $container->get(SchemaManager::class)->read();
         if ($schema === null) {
             throw new RuntimeException('Cycle Schema not read.');
         }
-        return new \Cycle\ORM\Schema($schema);
+        return new Schema($schema);
     },
     // Annotated Schema Conveyor
     SchemaConveyorInterface::class => static function (ContainerInterface $container) use (&$params) {

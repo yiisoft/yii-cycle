@@ -2,62 +2,57 @@
 
 Cycle ORM relies on DB schema that is represented as an instance of `\Cycle\ORM\SchemaInterface`.
 
-Since schema is built from an array of a certain structure, we can store it either in a cache or in a text file.
+Since a schema is built from an array of a certain structure, we can store it either in a cache or in a text file.
 
 You can display currently used schema by executing `cycle/schema` command.
 
-## Entity annotations
+In `yii-cycle` package schema can be built from multiple sources represented by multiple providers implementing
+`SchemaProviderInterface`. According to this interface, additionally to providing (reading) a schema from its storage,
+provider can save (overwrite) schema in the storage. You can specify an ordered list of schema providers via 
+`schema-providers` option in `config/params.php`.
 
-By default schema is built based on annotations that are in your project entities.
+`SchemaManager` handles the list of schema providers the following way:
+
+- Manager iterates providers querying schema.
+- If provider provides a schema, the list iteration ends.
+- Schema obtained is passed to providers that were unable to provide a schema.
+- If no providers provided schema, an exception manager throws an exception.
+
+## Entity annotation based schema
+
+By default, schema is built based on annotations that are in your project entities.
 
 When building a schema generators are executed sequentially. The sequence is determined in an instance of
 `SchemaConveyorInterface`. You can insert your own generators in this conveyor by defining them in
-`cycle.common.generators` option of `config/params.php` file.
+`annotated-entity-paths` option of `config/params.php` file.
 
-In order to get a schema from conveyor `SchemaFromConveyorFactory` is used.
+In order to get a schema from conveyor `FromConveyorSchemaProvider` is used.
 
 The process of building schema from annotations is relatively heavy in terms of performance. Therefore, in case of
 using annotations it is a good idea to use schema cache.
 
 ## Schema cache
 
-In case of using annotations caching is used by default in `SchemaFromConveyorFactory`. You can configure caching in
-`config/params.php`. Two options are available: `cacheEnabled` and `cacheKey`.
+Reading and writing a schema from and to cache happens in `SimpleCacheSchemaProvider`.
 
-```php
-# config/params.php
-return [
-    # ...
-    // Common Cycle options
-    'cycle.common' => [
-        // Settings for annotation-based schema
-        // Use cache
-        'cacheEnabled' => true,
-        // Name of the cache key
-        'cacheKey' => 'Cycle-ORM-Schema',
-        // A list of paths to directories with entities
-        'entityPaths' => [
-            # ...
-        ],
-        # ...
-    ],
-    # ...
-];
-```
+Place it to the beginning of providers list to make the process of obtaining a schema significantly faster.
 
 ## File-based schema
 
 If you want to avoid annotations, you can describe a schema in a PHP file.
-Use `SchemaFromFileFactory` to load a schema:
+Use `FromFileSchemaProvider` to load a schema:
 
 ```php
 # config/common.php
-use Yiisoft\Yii\Cycle\Factory\SchemaFromFileFactory;
-return [
-    # ...
-    \Cycle\ORM\SchemaInterface::class => new SchemaFromFileFactory('@runtime/schema.php'),
-    # ...
-];
+[
+    'yiisoft/yii-cycle' => [
+        // ...
+        'schema-providers' => [
+            \Yiisoft\Yii\Cycle\Schema\Provider\FromFileSchemaProvider::class => [
+                'file' => '@runtime/schema.php'
+            ]
+        ],
+    ]
 ```
 
 ```php
@@ -82,13 +77,21 @@ return [
 ];
 ```
 
-In case ready schema is loaded from a file there is no need to build it so generators conveyor won't be executed
-improving performance significantly. The downside of this approach is that you can not generate migrations based
-on current schema by using `migrate/generate`.
+Note that: 
+
+1. `FromFileSchemaProvider` loads a schema from a PHP-file via `include`. That requires security precautions.
+   Make sure you store schema file in a safe path restricted from users.
+2. There is no need to build a schema from annotations if you are reading it from a file. Therefore, there is no need
+   for `FromConveyorSchemaProvider` in this case.
+3. Thanks to internal cache, loading schema from a PHP-file is so fast that you can skip an external cache at all.
+4. You cannot generate migrations based on PHP-file schema. [See issue #25](https://github.com/yiisoft/yii-cycle/issues/25)
+5. Provider only reads schema. It cannot update the file after migration is applied.
 
 ## Switching from annotations to file
 
-In order to export schema as PHP file `cycle/schema/php` command could be used:
+In order to export schema as PHP file `cycle/schema/php` command could be used.
+Specify a file name as an argument and schema will be written into it:
+
 
 ```bash
 cycle/schema/php @runtime/schema.php
@@ -96,20 +99,7 @@ cycle/schema/php @runtime/schema.php
 
 `@runtime` alias is replaced automatically. Schema will be exported into `schema.php` file.
 
-Make sure that schema exported is correct and then switch to using it via `SchemaFromFileFactory`:
-
-```php
-# config/common.php
-use Yiisoft\Yii\Cycle\Factory\SchemaFromFileFactory;
-return [
-    # ...
-    \Cycle\ORM\SchemaInterface::class => new SchemaFromFileFactory('@runtime/schema.php'),
-    # ...
-];
-```
-
-After config cache is updated (you can force it with `composer dump-autoload`), schema will be loaded from a PHP-file.
-Annotations won't be used anymore.
+Make sure schema exported is correct and then switch to using it via `FromFileSchemaProvider`.
 
 You can combine both ways to describe a schema. During project development it's handy to use annotations. You can generate
 migrations based on them. For production use schema could be moved into a file.

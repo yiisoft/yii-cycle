@@ -5,19 +5,19 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Listener;
 
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderDispatcher;
+use Yiisoft\Yii\Cycle\Schema\SchemaManager;
 
 final class MigrationListener
 {
-    private SchemaProviderDispatcher $schemaProviderDispatcher;
+    private SchemaManager $schemaManager;
 
-    public function __construct(SchemaProviderDispatcher $schemaProviderDispatcher)
+    public function __construct(SchemaManager $schemaManager)
     {
-        $this->schemaProviderDispatcher = $schemaProviderDispatcher;
+        $this->schemaManager = $schemaManager;
     }
 
     public function onAfterMigrate(AfterMigrate $event)
     {
-        $this->schemaProviderDispatcher->clearSchema();
+        $this->schemaManager->clear();
     }
 }

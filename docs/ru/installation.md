@@ -22,7 +22,7 @@ return [
         'dbal' => [
             /**
              * Логгер SQL запросов
-             * Вы можете использовать класс @see \Yiisoft\Yii\Cycle\Logger\StdoutQueryLogger, чтобы выводить SQL лог
+             * Вы можете использовать класс {@see \Yiisoft\Yii\Cycle\Logger\StdoutQueryLogger}, чтобы выводить SQL лог
              * в stdout, или любой другой PSR-совместимый логгер
              */
             'query-logger' => null,
@@ -52,15 +52,15 @@ return [
         ],
 
         /**
-         * Конфиг для фабрики ORM @see \Yiisoft\Yii\Cycle\Factory\OrmFactory
-         * Указывается определение класса @see \Cycle\ORM\PromiseFactoryInterface иил null.
+         * Конфиг для фабрики ORM {@see \Yiisoft\Yii\Cycle\Factory\OrmFactory}
+         * Указывается определение класса {@see \Cycle\ORM\PromiseFactoryInterface} или null.
          * Документация: @link https://github.com/cycle/docs/blob/master/advanced/promise.md
          */
         'orm-promise-factory' => null,
 
         /**
-         * Список поставщиков схемы БД для @see \Yiisoft\Yii\Cycle\Schema\SchemaProviderDispatcher
-         * Поставщики схемы реализуют класс @see SchemaProviderInterface.
+         * Список поставщиков схемы БД для {@see \Yiisoft\Yii\Cycle\Schema\SchemaManager}
+         * Поставщики схемы реализуют класс {@see SchemaProviderInterface}.
          * Конфигурируется перечислением имён классов поставщиков. Вы здесь можете конфигурировать также и поставщиков,
          * указывая имя класса поставщика в качестве ключа элемента, а конфиг в виде массива элемента:
          */
@@ -75,9 +75,9 @@ return [
         ],
 
         /**
-         * Настройка для класса @see \Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor
+         * Настройка для класса {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor}
          * Здесь указывается список папок с сущностями.
-         * В путях поддерживаются псевдонимы @see \Yiisoft\Aliases\Aliases.
+         * В путях поддерживаются псевдонимы {@see \Yiisoft\Aliases\Aliases}.
          */
         'annotated-entity-paths' => [
             '@src/Entity'

@@ -6,11 +6,14 @@ namespace Yiisoft\Yii\Cycle\Schema;
 
 use Psr\Container\ContainerInterface;
 
-final class SchemaProviderDispatcher
+/**
+ * SchemaManager allows reading schema from providers available and clearing the schema in providers.
+ */
+final class SchemaManager
 {
     private ContainerInterface $container;
     /** @var string[]|SchemaProviderInterface[] */
-    private array $providers = [];
+    private array $providers;
 
     public function __construct(ContainerInterface $container, array $providers)
     {
@@ -18,7 +21,7 @@ final class SchemaProviderDispatcher
         $this->providers = $providers;
     }
 
-    public function readSchema(): ?array
+    public function read(): ?array
     {
         $toWrite = new \SplStack();
         $schema = null;
@@ -50,7 +53,7 @@ final class SchemaProviderDispatcher
         return $schema;
     }
 
-    public function clearSchema(): void
+    public function clear(): void
     {
         /** @var SchemaProviderInterface[] $toClear */
         $toClear = [];
