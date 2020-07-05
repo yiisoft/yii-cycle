@@ -1,12 +1,12 @@
 # Установка
 
-Предпочтительнее установить это расширение через [composer](http://getcomposer.org/download/):
+Предпочтительнее установить этот пакет через [composer](http://getcomposer.org/download/):
 
 ```
 composer require yiisoft/yii-cycle
 ```
 
-## Настройка расширения
+## Настройка
 
 Если вы используете Yii с плагином `composer-config-plugin`, то настройки Yii-Cycle
 можете указать в файле `config/params.php`:

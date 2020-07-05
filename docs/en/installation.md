@@ -1,12 +1,12 @@
 # Installation
 
-The preferred way to install this extension is through [composer](http://getcomposer.org/download/):
+The preferred way to install this package is through [composer](http://getcomposer.org/download/):
 
 ```
 composer require yiisoft/yii-cycle
 ```
 
-## Configuring extension
+## Configuring package
 
 If you use Yii with `composer-config-plugin`, Yii-Cycle settings could be specified in `config/params.php`:
 
