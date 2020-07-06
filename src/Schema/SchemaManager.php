@@ -31,7 +31,6 @@ final class SchemaManager
             if ($provider->isReadable()) {
                 $schema = $provider->read();
                 if ($schema !== null) {
-                    echo get_class($provider);
                     break;
                 }
             }
