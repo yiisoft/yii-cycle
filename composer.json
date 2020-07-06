@@ -55,7 +55,8 @@
         "config-plugin": {
             "params": "config/params.php",
             "common": "config/common.php",
-            "console": "config/console.php"
+            "console": "config/console.php",
+            "events-console": "config/events-console.php"
         },
         "config-plugin-dev": {
             "tests": [

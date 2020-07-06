@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Cycle\Factory;
 
 use Psr\Container\ContainerInterface;
@@ -11,24 +13,27 @@ use Yiisoft\Aliases\Aliases;
 final class DbalFactory
 {
     /** @var array|DatabaseConfig */
-    private $config;
-    private $logger;
+    private $dbalConfig;
+    /** @var null|string|LoggerInterface */
+    private $logger = null;
     private ?ContainerInterface $container = null;
 
     /**
      * @param array|DatabaseConfig $config
-     * @param null|string|LoggerInterface $loggerDefinition
      */
-    public function __construct($config, $loggerDefinition = null)
+    public function __construct($config)
     {
-        $this->config = $config;
-        $this->logger = $loggerDefinition;
+        if (is_array($config) && array_key_exists('query-logger', $config)) {
+            $this->logger = $config['query-logger'];
+            unset($config['query-logger']);
+        }
+        $this->dbalConfig = $config;
     }
 
     public function __invoke(ContainerInterface $container)
     {
         $this->container = $container;
-        $conf = $this->prepareConfig($this->config);
+        $conf = $this->prepareConfig($this->dbalConfig);
         $dbal = new DatabaseManager($conf);
 
         if ($this->logger !== null) {
@@ -36,6 +41,7 @@ final class DbalFactory
                 $this->logger = $container->get($this->logger);
             }
             $dbal->setLogger($this->logger);
+            /** Remove when issue is resolved @link https://github.com/cycle/orm/issues/60 */
             foreach ($dbal->getDrivers() as $driver) {
                 $driver->setLogger($this->logger);
             }

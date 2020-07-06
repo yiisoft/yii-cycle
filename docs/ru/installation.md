@@ -1,12 +1,12 @@
 # Установка
 
-Предпочтительнее установить это расширение через [composer](http://getcomposer.org/download/):
+Предпочтительнее установить этот пакет через [composer](http://getcomposer.org/download/):
 
 ```
 composer require yiisoft/yii-cycle
 ```
 
-## Настройка расширения
+## Настройка
 
 Если вы используете Yii с плагином `composer-config-plugin`, то настройки Yii-Cycle
 можете указать в файле `config/params.php`:
@@ -16,61 +16,72 @@ composer require yiisoft/yii-cycle
 use Cycle\Schema\Generator;
 
 return [
-    # Конфиг Cycle DBAL:
-    'cycle.dbal' => [
-        'default' => 'default',
-        'aliases' => [],
-        'databases' => [
-            'default' => ['connection' => 'sqlite']
+    // Общий конфиг Cycle
+    'yiisoft/yii-cycle' => [
+        // Конфиг Cycle DBAL
+        'dbal' => [
+            /**
+             * Логгер SQL запросов
+             * Вы можете использовать класс {@see \Yiisoft\Yii\Cycle\Logger\StdoutQueryLogger}, чтобы выводить SQL лог
+             * в stdout, или любой другой PSR-совместимый логгер
+             */
+            'query-logger' => null,
+            // БД по умолчанию (из списка 'databases')
+            'default' => 'default',
+            'aliases' => [],
+            'databases' => [
+                'default' => ['connection' => 'sqlite']
+            ],
+            'connections' => [
+                // Пример настроек подключения к SQLite:
+                'sqlite' => [
+                    'driver' => \Spiral\Database\Driver\SQLite\SQLiteDriver::class,
+                    'connection' => 'sqlite:@runtime/database.db',
+                    'username' => '',
+                    'password' => '',
+                ]
+            ],
         ],
-        'connections' => [
-            'sqlite' => [
-                'driver' => \Spiral\Database\Driver\SQLite\SQLiteDriver::class,
-                'connection' => 'sqlite:@runtime/database.db',
-                'username' => '',
-                'password' => '',
-            ]
-        ],
-    ],
 
-    # Общий конфиг Cycle
-    'cycle.common' => [
-        # Список путей к папкам с файлами сущностей
-        'entityPaths' => [
+        // Конфиг миграций
+        'migrations' => [
+            'directory' => '@root/migrations',
+            'namespace' => 'App\\Migration',
+            'table' => 'migration',
+            'safe' => false,
+        ],
+
+        /**
+         * Конфиг для фабрики ORM {@see \Yiisoft\Yii\Cycle\Factory\OrmFactory}
+         * Указывается определение класса {@see \Cycle\ORM\PromiseFactoryInterface} или null.
+         * Документация: @link https://github.com/cycle/docs/blob/master/advanced/promise.md
+         */
+        'orm-promise-factory' => null,
+
+        /**
+         * Список поставщиков схемы БД для {@see \Yiisoft\Yii\Cycle\Schema\SchemaManager}
+         * Поставщики схемы реализуют класс {@see SchemaProviderInterface}.
+         * Конфигурируется перечислением имён классов поставщиков. Вы здесь можете конфигурировать также и поставщиков,
+         * указывая имя класса поставщика в качестве ключа элемента, а конфиг в виде массива элемента:
+         */
+        'schema-providers' => [
+            \Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class => [
+                'key' => 'my-custom-cache-key'
+            ],
+            \Yiisoft\Yii\Cycle\Schema\Provider\FromFileSchemaProvider::class => [
+                'file' => '@runtime/cycle-schema.php'
+            ],
+            \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider::class,
+        ],
+
+        /**
+         * Настройка для класса {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor}
+         * Здесь указывается список папок с сущностями.
+         * В путях поддерживаются псевдонимы {@see \Yiisoft\Aliases\Aliases}.
+         */
+        'annotated-entity-paths' => [
             '@src/Entity'
         ],
-
-        # Включить использование кеша при получении схемы БД
-        'cacheEnabled' => true,
-        # Ключ, используемый при кешировании схемы
-        'cacheKey' => 'Cycle-ORM-Schema',
-
-        # Дополнительные генераторы, запускаемые при расчёте схемы
-        # Массив определений \Cycle\Schema\GeneratorInterface
-        'generators' => [
-            # Генератор SyncTables позволяет без миграций вносить изменения схемы в БД
-            // \Cycle\Schema\Generator\SyncTables::class,
-        ],
-
-        # Определение класса \Cycle\ORM\PromiseFactoryInterface
-        'promiseFactory' => null, # использовать объекты Promise
-        # Для использования фабрики ProxyFactory необходимо подключить пакет cycle/proxy-factory
-        // 'promiseFactory' => \Cycle\ORM\Promise\ProxyFactory::class,
-
-        # Логгер SQL запросов
-        # Определение класса \Psr\Log\LoggerInterface
-        'queryLogger' => null,
-        # Вы можете использовать класс \Yiisoft\Yii\Cycle\Logger\StdoutQueryLogger
-        # чтобы выводить SQL лог в stdout
-        // 'queryLogger' => \Yiisoft\Yii\Cycle\Logger\StdoutQueryLogger::class,
-    ],
-
-    # Конфиг миграций
-    'cycle.migrations' => [
-        'directory' => '@root/migrations',
-        'namespace' => 'App\\Migration',
-        'table' => 'migration',
-        'safe' => false,
     ],
 ];
 ```

@@ -1,10 +1,13 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Conveyor;
+declare(strict_types=1);
+
+namespace Yiisoft\Yii\Cycle\Schema\Conveyor;
 
 use Cycle\Schema\Generator;
 use Cycle\Schema\GeneratorInterface;
 use Psr\Container\ContainerInterface;
+use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 
 class SchemaConveyor implements SchemaConveyorInterface

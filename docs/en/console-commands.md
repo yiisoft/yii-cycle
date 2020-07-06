@@ -9,6 +9,6 @@
 
 - `migrate/list` - Get migrations list
 - `migrate/create <name>` - Create `<name>` file with empty migration
-- `migrate/generate` - Generate migration file based on the diff between schema and DB structure
+- `migrate/generate` - Generate migration file based on the diff between entity-annotation based schema and DB structure
 - `migrate/up` - Apply all not yet applied migrations
 - `migrate/down` - Rollback last migration

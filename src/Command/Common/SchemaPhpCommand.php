@@ -10,17 +10,17 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Console\ExitCode;
-use Yiisoft\Yii\Cycle\Command\CycleDependencyPromise;
+use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Helper\SchemaToPHP;
 
 final class SchemaPhpCommand extends Command
 {
     protected static $defaultName = 'cycle/schema/php';
 
-    private CycleDependencyPromise $promise;
+    private CycleDependencyProxy $promise;
     private Aliases $aliases;
 
-    public function __construct(Aliases $aliases, CycleDependencyPromise $promise)
+    public function __construct(Aliases $aliases, CycleDependencyProxy $promise)
     {
         $this->aliases = $aliases;
         $this->promise = $promise;

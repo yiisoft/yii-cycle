@@ -1,6 +1,8 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Tests\Conveyor\Stub;
+declare(strict_types=1);
+
+namespace Yiisoft\Yii\Cycle\Tests\Schema\Conveyor\Stub;
 
 use Cycle\Schema\GeneratorInterface;
 use Cycle\Schema\Registry;

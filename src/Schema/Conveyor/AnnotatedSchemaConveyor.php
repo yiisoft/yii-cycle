@@ -1,6 +1,8 @@
 <?php
 
-namespace Yiisoft\Yii\Cycle\Conveyor;
+declare(strict_types=1);
+
+namespace Yiisoft\Yii\Cycle\Schema\Conveyor;
 
 use Cycle\Annotated\Embeddings;
 use Cycle\Annotated\Entities;

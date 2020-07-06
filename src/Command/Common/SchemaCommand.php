@@ -12,13 +12,13 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Console\ExitCode;
-use Yiisoft\Yii\Cycle\Command\CycleDependencyPromise;
+use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
 final class SchemaCommand extends Command
 {
     protected static $defaultName = 'cycle/schema';
 
-    private CycleDependencyPromise $promise;
+    private CycleDependencyProxy $promise;
     private const STR_RELATION = [
         Relation::HAS_ONE => 'has one',
         Relation::HAS_MANY => 'has many',
@@ -34,7 +34,7 @@ final class SchemaCommand extends Command
         Relation::LOAD_EAGER => 'eager',
     ];
 
-    public function __construct(CycleDependencyPromise $promise)
+    public function __construct(CycleDependencyProxy $promise)
     {
         $this->promise = $promise;
         parent::__construct();
