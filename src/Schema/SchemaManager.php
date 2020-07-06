@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Schema;
 
+use Generator;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -26,19 +27,18 @@ final class SchemaManager
         $toWrite = new \SplStack();
         $schema = null;
 
-        $this->walkProviders(static function (SchemaProviderInterface $provider) use (&$schema, $toWrite): bool {
-            // Try to read schema
+        foreach ($this->getProviders() as $provider) {
             if ($provider->isReadable()) {
                 $schema = $provider->read();
                 if ($schema !== null) {
-                    return false;
+                    echo get_class($provider);
+                    break;
                 }
             }
             if ($provider->isWritable()) {
                 $toWrite->push($provider);
             }
-            return true;
-        });
+        }
 
         if ($schema === null) {
             return null;
@@ -55,15 +55,14 @@ final class SchemaManager
 
     public function clear(): void
     {
-        /** @var SchemaProviderInterface[] $toClear */
         $toClear = [];
         $isWritableLast = false;
-        $this->walkProviders(static function (SchemaProviderInterface $provider) use (&$toClear, &$isWritableLast) {
+        foreach ($this->getProviders() as $provider) {
             $isWritableLast = $provider->isWritable();
             if ($isWritableLast) {
                 $toClear[] = $provider;
             }
-        });
+        }
         if ($isWritableLast) {
             array_pop($toClear);
         }
@@ -72,7 +71,10 @@ final class SchemaManager
         }
     }
 
-    private function walkProviders(\Closure $closure)
+    /**
+     * @return Generator|SchemaProviderInterface[]
+     */
+    private function getProviders(): Generator
     {
         foreach ($this->providers as $key => &$provider) {
             // Providers resolving
@@ -87,9 +89,7 @@ final class SchemaManager
             if (!$provider instanceof SchemaProviderInterface) {
                 throw new \RuntimeException('Provider should be instance of SchemaProviderInterface.');
             }
-            if ($closure($provider) === false) {
-                break;
-            }
+            yield $provider;
         }
     }
 }
