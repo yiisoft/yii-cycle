@@ -23,18 +23,18 @@
         "php": "^7.4",
         "cycle/annotated": "^2.0",
         "cycle/migrations": "^1.0",
-        "cycle/orm": "^1.1",
-        "yiisoft/composer-config-plugin": "^1.0@dev",
+        "cycle/orm": "^1.2",
+        "yiisoft/composer-config-plugin": "@dev",
         "psr/event-dispatcher": "^1.0",
         "psr/simple-cache": "^1.0",
         "yiisoft/aliases": "^1.0",
         "yiisoft/data": "@dev",
-        "yiisoft/friendly-exception": "@dev",
+        "yiisoft/friendly-exception": "^1.0",
         "yiisoft/yii-console": "@dev"
     },
     "require-dev": {
-        "infection/infection": "^0.16.3",
-        "phan/phan": "^3.0.2",
+        "infection/infection": "^0.16.4",
+        "phan/phan": "^3.1.0",
         "phpunit/phpunit": "^9.2",
         "yiisoft/di": "@dev"
     },
@@ -57,13 +57,6 @@
             "common": "config/common.php",
             "console": "config/console.php",
             "events-console": "config/events-console.php"
-        },
-        "config-plugin-dev": {
-            "tests": [
-                "$common",
-                "$console",
-                "config/tests.php"
-            ]
         }
     },
     "scripts": {
