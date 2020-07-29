@@ -66,7 +66,7 @@ final class SchemaCommand extends Command
      * @param SchemaInterface $schema Data schema
      * @param string $role Role to display
      * @param OutputInterface $output Output console
-     * @return void
+     * @return bool
      */
     private function displaySchema(SchemaInterface $schema, string $role, OutputInterface $output): bool
     {
