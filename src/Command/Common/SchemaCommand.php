@@ -120,7 +120,7 @@ final class SchemaCommand extends Command
             $typecast = $types[$property] ?? $types[$field] ?? null;
             $output->write("     <fg=cyan>{$property}</> -> <fg=green>{$field}</>");
             if ($typecast !== null) {
-                $output->write(" -> <fg=blue>{$typecast}</>");
+                $output->write(sprintf(" -> <fg=blue>%s</>", implode('::', (array)$typecast)));
             }
             $output->writeln('');
         }
