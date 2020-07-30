@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Cycle\Command\Common;
 
 use Symfony\Component\Console\Command\Command;
@@ -22,13 +24,12 @@ class SchemaClearCommand extends Command
 
     public function configure(): void
     {
-        $this->setDescription('Clear current schema');
+        $this->setDescription('Clear current schema cache');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->promise->getSchemaManager()->clear();
-        $output->writeln('Schema cleared.');
         return ExitCode::OK;
     }
 }
