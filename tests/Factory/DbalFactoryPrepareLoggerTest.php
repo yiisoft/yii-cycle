@@ -6,31 +6,40 @@ namespace Yiisoft\Yii\Cycle\Tests\Factory;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Log\NullLogger;
-use ReflectionClass;
+use stdClass;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Tests\Factory\Stub\FakeContainer;
+use Yiisoft\Yii\Cycle\Tests\Factory\Stub\FakeDriver;
 
 class DbalFactoryPrepareLoggerTest extends TestCase
 {
 
-    private $factory;
-    private $method;
+    private $container;
 
     protected function setUp(): void
     {
-        $this->factory = new DbalFactory([]);
-
-        $containerProperty = (new ReflectionClass(DbalFactory::class))->getProperty('container');
-        $containerProperty->setAccessible(true);
-        $containerProperty->setValue($this->factory, new FakeContainer($this));
-
-        $this->method = (new ReflectionClass(DbalFactory::class))->getMethod('prepareLogger');
-        $this->method->setAccessible(true);
+        $this->container = new FakeContainer($this);
     }
 
     protected function prepareLogger($logger)
     {
-        return $this->method->invoke($this->factory, $logger);
+        $factory = (new DbalFactory([
+            'query-logger' => $logger,
+            'default' => 'default',
+            'aliases' => [],
+            'databases' => [
+                'default' => ['connection' => 'fake']
+            ],
+            'connections' => [
+                'fake' => [
+                    'driver' => FakeDriver::class,
+                    'connection' => 'fake',
+                    'username' => '',
+                    'password' => '',
+                ]
+            ],
+        ]))($this->container);
+        return $factory->driver('fake')->getLogger();
     }
 
     public function testString(): void
@@ -53,6 +62,6 @@ class DbalFactoryPrepareLoggerTest extends TestCase
     public function testInvalid(): void
     {
         $this->expectExceptionMessage('Invalid logger.');
-        $this->prepareLogger(null);
+        $this->prepareLogger(new stdClass());
     }
 }
