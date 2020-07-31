@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Factory;
 
+use Closure;
+use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Spiral\Database\Config\DatabaseConfig;
@@ -14,7 +16,7 @@ final class DbalFactory
 {
     /** @var array|DatabaseConfig */
     private $dbalConfig;
-    /** @var null|string|LoggerInterface */
+    /** @var null|string|Closure|LoggerInterface */
     private $logger = null;
     private ?ContainerInterface $container = null;
 
@@ -37,17 +39,34 @@ final class DbalFactory
         $dbal = new DatabaseManager($conf);
 
         if ($this->logger !== null) {
-            if (!$this->logger instanceof LoggerInterface) {
-                $this->logger = $container->get($this->logger);
-            }
-            $dbal->setLogger($this->logger);
+            $logger = $this->prepareLogger($this->logger);
+            $dbal->setLogger($logger);
             /** Remove when issue is resolved @link https://github.com/cycle/orm/issues/60 */
             foreach ($dbal->getDrivers() as $driver) {
-                $driver->setLogger($this->logger);
+                $driver->setLogger($logger);
             }
         }
 
         return $dbal;
+    }
+
+    /**
+     * @param string|Closure|LoggerInterface $logger
+     * @return LoggerInterface
+     * @throws InvalidArgumentException
+     */
+    private function prepareLogger($logger): LoggerInterface
+    {
+        if ($logger instanceof LoggerInterface) {
+            return $logger;
+        }
+        if (is_string($logger)) {
+            return $this->container->get($logger);
+        }
+        if (is_object($logger) && method_exists($logger, '__invoke')) {
+            return $logger($this->container);
+        }
+        throw new InvalidArgumentException('Invalid logger.');
     }
 
     /**
