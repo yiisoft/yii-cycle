@@ -13,6 +13,7 @@ return [
         'commands' => [
             'cycle/schema' => Common\SchemaCommand::class,
             'cycle/schema/php' => Common\SchemaPhpCommand::class,
+            'cycle/schema/clear' => Common\SchemaClearCommand::class,
             'migrate/create' => Migration\CreateCommand::class,
             'migrate/generate' => Migration\GenerateCommand::class,
             'migrate/up' => Migration\UpCommand::class,
