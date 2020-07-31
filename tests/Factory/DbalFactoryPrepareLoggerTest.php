@@ -47,7 +47,7 @@ class DbalFactoryPrepareLoggerTest extends TestCase
 
     public function testLoggerInterface(): void
     {
-        $this->assertInstanceOf(NullLogger::class, $this->prepareLogger(NullLogger::class));
+        $this->assertInstanceOf(NullLogger::class, $this->prepareLogger(new NullLogger()));
     }
 
     public function testInvalid(): void
