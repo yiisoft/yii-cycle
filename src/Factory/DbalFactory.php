@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Factory;
 
+use InvalidArgumentException;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Spiral\Database\Config\DatabaseConfig;
@@ -37,17 +38,31 @@ final class DbalFactory
         $dbal = new DatabaseManager($conf);
 
         if ($this->logger !== null) {
-            if (!$this->logger instanceof LoggerInterface) {
-                $this->logger = $container->get($this->logger);
-            }
-            $dbal->setLogger($this->logger);
+            $logger = $this->prepareLogger($this->logger);
+            $dbal->setLogger($logger);
             /** Remove when issue is resolved @link https://github.com/cycle/orm/issues/60 */
             foreach ($dbal->getDrivers() as $driver) {
-                $driver->setLogger($this->logger);
+                $driver->setLogger($logger);
             }
         }
 
         return $dbal;
+    }
+
+    /**
+     * @param string|LoggerInterface $logger
+     * @return LoggerInterface
+     * @throws InvalidArgumentException
+     */
+    private function prepareLogger($logger): LoggerInterface
+    {
+        if ($logger instanceof LoggerInterface) {
+            return $logger;
+        }
+        if (is_string($logger)) {
+            return $this->container->get($logger);
+        }
+        throw new InvalidArgumentException('Invalid logger.');
     }
 
     /**
