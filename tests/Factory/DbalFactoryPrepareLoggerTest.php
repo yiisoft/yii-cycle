@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Factory;
 
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
 use stdClass;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
@@ -14,7 +15,7 @@ use Yiisoft\Yii\Cycle\Tests\Factory\Stub\FakeDriver;
 class DbalFactoryPrepareLoggerTest extends TestCase
 {
 
-    private $container;
+    private ContainerInterface $container;
 
     protected function setUp(): void
     {

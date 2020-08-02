@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Cycle\Tests\Factory\Stub;
 
 use PHPUnit\Framework\TestCase;

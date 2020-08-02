@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use Spiral\Database\Config\DatabaseConfig;
 use Spiral\Database\DatabaseManager;
+use Spiral\Database\Driver\Driver;
 use Yiisoft\Aliases\Aliases;
 
 final class DbalFactory
@@ -40,10 +41,9 @@ final class DbalFactory
         if ($this->logger !== null) {
             $logger = $this->prepareLogger($this->logger);
             $dbal->setLogger($logger);
-            /** Remove when issue is resolved @link https://github.com/cycle/orm/issues/60 */
-            foreach ($dbal->getDrivers() as $driver) {
-                $driver->setLogger($logger);
-            }
+            /** Remove when issue is resolved {@link https://github.com/cycle/orm/issues/60} */
+            $drivers = $dbal->getDrivers();
+            array_walk($drivers, static fn (Driver $driver) => $driver->setLogger($logger));
         }
 
         return $dbal;

@@ -1,7 +1,10 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Cycle\Tests\Factory\Stub;
 
+use Exception;
 use Spiral\Database\Driver\Driver;
 use Spiral\Database\Driver\SQLite\SQLiteCompiler;
 use Spiral\Database\Driver\SQLite\SQLiteHandler;
@@ -29,6 +32,7 @@ class FakeDriver extends Driver
 
     protected function mapException(Throwable $exception, string $query): StatementException
     {
+        return new StatementException(new Exception(), 'fake query');
     }
 
     public function getType(): string
