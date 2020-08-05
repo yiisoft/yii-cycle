@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Factory;
 
-use InvalidArgumentException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Spiral\Database\Config\DatabaseConfig;
 use Spiral\Database\DatabaseManager;
 use Spiral\Database\Driver\Driver;
@@ -52,17 +53,20 @@ final class DbalFactory
     /**
      * @param string|LoggerInterface $logger
      * @return LoggerInterface
-     * @throws InvalidArgumentException
+     * @throws RuntimeException
+     * @throws ContainerExceptionInterface
      */
     private function prepareLogger($logger): LoggerInterface
     {
-        if ($logger instanceof LoggerInterface) {
-            return $logger;
-        }
         if (is_string($logger)) {
-            return $this->container->get($logger);
+            $logger = $this->container->get($logger);
         }
-        throw new InvalidArgumentException('Invalid logger.');
+        if (!$logger instanceof LoggerInterface) {
+            throw new RuntimeException(
+                sprintf('Logger definition should be subclass of %s.', LoggerInterface::class)
+            );
+        }
+        return $logger;
     }
 
     /**

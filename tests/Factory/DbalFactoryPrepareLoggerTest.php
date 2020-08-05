@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Cycle\Tests\Factory;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
+use RuntimeException;
 use stdClass;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Tests\Factory\Stub\FakeContainer;
@@ -55,7 +56,7 @@ class DbalFactoryPrepareLoggerTest extends TestCase
 
     public function testInvalid(): void
     {
-        $this->expectExceptionMessage('Invalid logger.');
+        $this->expectException(RuntimeException::class);
         $this->prepareLogger(new stdClass());
     }
 }
