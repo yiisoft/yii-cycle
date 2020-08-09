@@ -20,7 +20,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.4",
+        "php": "^7.4|^8.0",
         "cycle/annotated": "^2.0",
         "cycle/migrations": "^1.0",
         "cycle/orm": "^1.2",
@@ -34,8 +34,8 @@
     },
     "require-dev": {
         "infection/infection": "^0.16.4",
-        "phan/phan": "^3.1.0",
-        "phpunit/phpunit": "^9.2",
+        "phan/phan": "^3.0",
+        "phpunit/phpunit": "^9.3",
         "yiisoft/di": "@dev"
     },
     "autoload": {
