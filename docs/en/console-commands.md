@@ -4,6 +4,7 @@
 
 - `cycle/schema` - Get information about schema used
 - `cycle/schema/php [file]` - Export current schema as PHP file
+- `cycle/schema/clear` - Clear current schema cache
 
 ## Migrations
 
