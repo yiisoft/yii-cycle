@@ -4,35 +4,43 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\DataReader;
 
+use Closure;
 use Countable;
 use Cycle\ORM\Select;
+use Cycle\ORM\Select\QueryBuilder;
 use InvalidArgumentException;
-use IteratorAggregate;
 use Spiral\Database\Query\SelectQuery;
 use Spiral\Pagination\PaginableInterface;
-use Yiisoft\Data\Reader\CountableDataInterface;
 use Yiisoft\Data\Reader\DataReaderInterface;
-use Yiisoft\Data\Reader\OffsetableDataInterface;
+use Yiisoft\Data\Reader\Filter\FilterInterface;
+use Yiisoft\Data\Reader\Filter\FilterProcessorInterface;
 use Yiisoft\Data\Reader\Sort;
-use Yiisoft\Data\Reader\SortableDataInterface;
 use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCount;
 use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCollection;
+use Yiisoft\Yii\Cycle\DataReader\Processor\All;
+use Yiisoft\Yii\Cycle\DataReader\Processor\Any;
+use Yiisoft\Yii\Cycle\DataReader\Processor\Equals;
+use Yiisoft\Yii\Cycle\DataReader\Processor\GreaterThan;
+use Yiisoft\Yii\Cycle\DataReader\Processor\GreaterThanOrEqual;
+use Yiisoft\Yii\Cycle\DataReader\Processor\In;
+use Yiisoft\Yii\Cycle\DataReader\Processor\LessThan;
+use Yiisoft\Yii\Cycle\DataReader\Processor\LessThanOrEqual;
+use Yiisoft\Yii\Cycle\DataReader\Processor\Like;
+use Yiisoft\Yii\Cycle\DataReader\Processor\QueryBuilderProcessor;
 
-final class SelectDataReader implements
-    DataReaderInterface,
-    OffsetableDataInterface,
-    CountableDataInterface,
-    SortableDataInterface,
-    IteratorAggregate
+final class SelectDataReader implements DataReaderInterface
 {
     /** @var Select|SelectQuery */
     private $query;
     private ?int $limit = null;
     private ?int $offset = null;
     private ?Sort $sorting = null;
+    private ?FilterInterface $filter = null;
     private CachedCount $countCache;
     private CachedCollection $itemsCache;
     private CachedCollection $oneItemCache;
+    /** @var FilterProcessorInterface[]|QueryBuilderProcessor[] */
+    private array $filterProcessors = [];
 
     /**
      * @param Select|SelectQuery $query
@@ -51,6 +59,18 @@ final class SelectDataReader implements
         $this->countCache = new CachedCount($this->query);
         $this->itemsCache = new CachedCollection();
         $this->oneItemCache = new CachedCollection();
+        $this->setFilterProcessors(
+            new All(),
+            new Any(),
+            new Equals(),
+            new GreaterThan(),
+            new GreaterThanOrEqual(),
+            new In(),
+            new LessThan(),
+            new LessThanOrEqual(),
+            new Like(),
+            // new Not()
+        );
     }
 
     public function getSort(): ?Sort
@@ -76,6 +96,23 @@ final class SelectDataReader implements
     {
         $clone = clone $this;
         $clone->setSort($sorting);
+        return $clone;
+    }
+
+    public function withFilter(FilterInterface $filter)
+    {
+        $clone = clone $this;
+        $clone->setFilter($filter);
+        return $clone;
+    }
+
+    public function withFilterProcessors(FilterProcessorInterface ...$filterProcessors)
+    {
+        $clone = clone $this;
+        $clone->setFilterProcessors(...$filterProcessors);
+        $clone->resetCountCache();
+        $clone->itemsCache = new CachedCollection();
+        $clone->oneItemCache = new CachedCollection();
         return $clone;
     }
 
@@ -123,6 +160,11 @@ final class SelectDataReader implements
         }
     }
 
+    public function __toString(): string
+    {
+        return $this->buildQuery()->sqlStatement();
+    }
+
     private function setSort(?Sort $sorting): void
     {
         if ($this->sorting !== $sorting) {
@@ -145,8 +187,27 @@ final class SelectDataReader implements
         if ($this->offset !== $offset) {
             $this->offset = $offset;
             $this->itemsCache = new CachedCollection();
+        }
+    }
+
+    private function setFilter(FilterInterface $filter): void
+    {
+        if ($this->filter !== $filter) {
+            $this->filter = $filter;
+            $this->itemsCache = new CachedCollection();
             $this->oneItemCache = new CachedCollection();
         }
+    }
+
+    private function setFilterProcessors(FilterProcessorInterface ...$filterProcessors): void
+    {
+        $processors = [];
+        foreach ($filterProcessors as $filterProcessor) {
+            if ($filterProcessor instanceof QueryBuilderProcessor) {
+                $processors[$filterProcessor->getOperator()] = $filterProcessor;
+            }
+        }
+        $this->filterProcessors = array_merge($this->filterProcessors, $processors);
     }
 
     /**
@@ -164,6 +225,31 @@ final class SelectDataReader implements
         if ($this->limit !== null) {
             $newQuery->limit($this->limit);
         }
+        if ($this->filter !== null) {
+            $newQuery->andWhere($this->makeFilterClosure());
+        }
         return $newQuery;
+    }
+    private function makeFilterClosure(): Closure
+    {
+        return function (QueryBuilder $select) {
+            $filter = $this->filter->toArray();
+            $operation = array_shift($filter);
+            $arguments = $filter;
+
+            $processor = $this->filterProcessors[$operation] ?? null;
+            if ($processor === null) {
+                throw new \RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
+            }
+            $select->where(...$processor->getAsWhereArguments($arguments, $this->filterProcessors));
+        };
+    }
+    private function resetCountCache()
+    {
+        $newQuery = clone $this->query;
+        if ($this->filter !== null) {
+            $newQuery->andWhere($this->makeFilterClosure());
+        }
+        $this->countCache = new CachedCount($newQuery);
     }
 }
