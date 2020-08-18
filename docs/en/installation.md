@@ -35,6 +35,7 @@ return [
                 // Example SQLite connection:
                 'sqlite' => [
                     'driver' => \Spiral\Database\Driver\SQLite\SQLiteDriver::class,
+                    // see https://www.php.net/manual/en/pdo.construct.php, DSN for connection syntax
                     'connection' => 'sqlite:@runtime/database.db',
                     'username' => '',
                     'password' => '',
