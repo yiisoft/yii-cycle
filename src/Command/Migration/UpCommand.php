@@ -67,7 +67,7 @@ final class UpCommand extends BaseMigrationCommand
                 'to be applied:</>'
             );
             foreach ($newMigrations as $migration) {
-                $output->writeln('— ' . $migration->getState()->getName());
+                $output->writeln('— <fg=cyan>' . $migration->getState()->getName() . '</>');
             }
             $question = new ConfirmationQuestion(
                 'Apply the above ' .

@@ -54,7 +54,7 @@ final class DownCommand extends BaseMigrationCommand
         // Confirm
         if (!$migrator->getConfig()->isSafe()) {
             $output->writeln('<fg=yellow>Migration to be reverted:</>');
-            $output->writeln('— ' . $migration->getState()->getName());
+            $output->writeln('— <fg=cyan>' . $migration->getState()->getName() . '</>');
             $question = new ConfirmationQuestion('Revert the above migration? (yes|no) ', false);
             if (!$this->getHelper('question')->ask($input, $output, $question)) {
                 return ExitCode::OK;
