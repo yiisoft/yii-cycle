@@ -38,7 +38,7 @@ final class DownCommand extends BaseMigrationCommand
         $migrations = $this->findMigrations($output);
         // check any executed migration
         $exist = false;
-        foreach ($migrations as $migration) {
+        foreach (array_reverse($migrations) as $migration) {
             if ($migration->getState()->getStatus() === State::STATUS_EXECUTED) {
                 $exist = true;
                 break;
