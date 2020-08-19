@@ -11,7 +11,7 @@ final class In implements QueryBuilderProcessor, FilterProcessorInterface
 {
     public function getOperator(): string
     {
-        return \Yiisoft\Data\Reader\Filter\In::getOperator();
+        return 'in';
     }
     public function getAsWhereArguments(array $arguments, array $processors): array
     {

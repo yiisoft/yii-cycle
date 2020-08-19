@@ -8,6 +8,6 @@ final class GreaterThan extends CompareProcessor
 {
     public function getOperator(): string
     {
-        return \Yiisoft\Data\Reader\Filter\GreaterThan::getOperator();
+        return '>';
     }
 }

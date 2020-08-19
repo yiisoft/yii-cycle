@@ -10,7 +10,7 @@ final class All extends GroupProcessor
 {
     public function getOperator(): string
     {
-        return \Yiisoft\Data\Reader\Filter\All::getOperator();
+        return 'and';
     }
     public function getAsWhereArguments(array $arguments, array $processors): array
     {

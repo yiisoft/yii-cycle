@@ -8,6 +8,6 @@ final class LessThanOrEqual extends CompareProcessor
 {
     public function getOperator(): string
     {
-        return \Yiisoft\Data\Reader\Filter\LessThanOrEqual::getOperator();
+        return '<=';
     }
 }

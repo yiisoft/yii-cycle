@@ -10,7 +10,7 @@ final class Like implements QueryBuilderProcessor, FilterProcessorInterface
 {
     public function getOperator(): string
     {
-        return \Yiisoft\Data\Reader\Filter\Like::getOperator();
+        return 'like';
     }
     public function getAsWhereArguments(array $arguments, array $processors): array
     {

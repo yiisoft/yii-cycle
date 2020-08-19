@@ -8,6 +8,6 @@ final class Equals extends CompareProcessor
 {
     public function getOperator(): string
     {
-        return \Yiisoft\Data\Reader\Filter\Equals::getOperator();
+        return '=';
     }
 }
