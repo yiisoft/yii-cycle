@@ -9,6 +9,7 @@ use Spiral\Migrations\MigrationInterface;
 use Spiral\Migrations\State;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
@@ -48,9 +49,21 @@ final class DownCommand extends BaseMigrationCommand
             return ExitCode::OK;
         }
 
+        $migrator = $this->promise->getMigrator();
+
+        // Confirm
+        if (!$migrator->getConfig()->isSafe()) {
+            $output->writeln('<fg=yellow>Migration to be reverted:</>');
+            $output->writeln('— ' . $migration->getState()->getName());
+            $question = new ConfirmationQuestion('Revert the above migration? (yes|no) ', false);
+            if (!$this->getHelper('question')->ask($input, $output, $question)) {
+                return ExitCode::OK;
+            }
+        }
+
         $this->eventDispatcher->dispatch(new BeforeMigrate());
         try {
-            $this->promise->getMigrator()->rollback();
+            $migrator->rollback();
             if (!$migration instanceof MigrationInterface) {
                 throw new \Exception('Migration not found');
             }
