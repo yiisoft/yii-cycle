@@ -17,15 +17,7 @@ use Yiisoft\Data\Reader\Filter\FilterProcessorInterface;
 use Yiisoft\Data\Reader\Sort;
 use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCount;
 use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCollection;
-use Yiisoft\Yii\Cycle\DataReader\Processor\All;
-use Yiisoft\Yii\Cycle\DataReader\Processor\Any;
-use Yiisoft\Yii\Cycle\DataReader\Processor\Equals;
-use Yiisoft\Yii\Cycle\DataReader\Processor\GreaterThan;
-use Yiisoft\Yii\Cycle\DataReader\Processor\GreaterThanOrEqual;
-use Yiisoft\Yii\Cycle\DataReader\Processor\In;
-use Yiisoft\Yii\Cycle\DataReader\Processor\LessThan;
-use Yiisoft\Yii\Cycle\DataReader\Processor\LessThanOrEqual;
-use Yiisoft\Yii\Cycle\DataReader\Processor\Like;
+use Yiisoft\Yii\Cycle\DataReader\Processor;
 use Yiisoft\Yii\Cycle\DataReader\Processor\QueryBuilderProcessor;
 
 final class SelectDataReader implements DataReaderInterface
@@ -60,16 +52,16 @@ final class SelectDataReader implements DataReaderInterface
         $this->itemsCache = new CachedCollection();
         $this->oneItemCache = new CachedCollection();
         $this->setFilterProcessors(
-            new All(),
-            new Any(),
-            new Equals(),
-            new GreaterThan(),
-            new GreaterThanOrEqual(),
-            new In(),
-            new LessThan(),
-            new LessThanOrEqual(),
-            new Like(),
-            // new Not()
+            new Processor\All(),
+            new Processor\Any(),
+            new Processor\Equals(),
+            new Processor\GreaterThan(),
+            new Processor\GreaterThanOrEqual(),
+            new Processor\In(),
+            new Processor\LessThan(),
+            new Processor\LessThanOrEqual(),
+            new Processor\Like(),
+            // new Processor\Not()
         );
     }
 
@@ -160,7 +152,15 @@ final class SelectDataReader implements DataReaderInterface
         }
     }
 
+    /**
+     * Convert to SQL string
+     */
     public function __toString(): string
+    {
+        return $this->getSql();
+    }
+
+    public function getSql(): string
     {
         return $this->buildQuery()->sqlStatement();
     }
