@@ -1,8 +1,9 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Cycle\DataReader\Processor;
 
-use Cycle\ORM\Select\QueryBuilder;
 use Yiisoft\Data\Reader\Filter\FilterProcessorInterface;
 
 abstract class CompareProcessor implements QueryBuilderProcessor, FilterProcessorInterface
