@@ -53,12 +53,25 @@ final class UpCommand extends BaseMigrationCommand
 
         // Confirm
         if (!$migrator->getConfig()->isSafe()) {
+            $newMigrations = [];
             foreach ($migrations as $migration) {
+                if ($migration->getState()->getStatus() === State::STATUS_PENDING) {
+                    $newMigrations[] = $migration;
+                }
+            }
+            $countNewMigrations = count($newMigrations);
+            $output->writeln(
+                '<fg=yellow>' .
+                ($countNewMigrations === 1 ? 'Migration' : $countNewMigrations . ' migrations') .
+                ' ' .
+                'to be applied:</>'
+            );
+            foreach ($newMigrations as $migration) {
                 $output->writeln('— ' . $migration->getState()->getName());
             }
             $question = new ConfirmationQuestion(
                 'Apply the above ' .
-                (count($migrations) === 1 ? 'migration' : 'migrations') .
+                ($countNewMigrations === 1 ? 'migration' : 'migrations') .
                 '? (yes|no) ',
                 false
             );
