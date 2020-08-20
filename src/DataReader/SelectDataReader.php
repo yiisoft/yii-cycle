@@ -91,14 +91,14 @@ final class SelectDataReader implements DataReaderInterface
         return $clone;
     }
 
-    public function withFilter(FilterInterface $filter)
+    public function withFilter(FilterInterface $filter): self
     {
         $clone = clone $this;
         $clone->setFilter($filter);
         return $clone;
     }
 
-    public function withFilterProcessors(FilterProcessorInterface ...$filterProcessors)
+    public function withFilterProcessors(FilterProcessorInterface ...$filterProcessors): self
     {
         $clone = clone $this;
         $clone->setFilterProcessors(...$filterProcessors);
@@ -244,7 +244,7 @@ final class SelectDataReader implements DataReaderInterface
             $select->where(...$processor->getAsWhereArguments($arguments, $this->filterProcessors));
         };
     }
-    private function resetCountCache()
+    private function resetCountCache(): void
     {
         $newQuery = clone $this->query;
         if ($this->filter !== null) {
