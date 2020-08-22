@@ -10,6 +10,7 @@ use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
+use Yiisoft\Yii\Cycle\Factory\FactoryProxy;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
@@ -26,7 +27,12 @@ return [
     ORMInterface::class => new OrmFactory($params['yiisoft/yii-cycle']['orm-promise-factory']),
     // Factory for Cycle ORM
     FactoryInterface::class => static function (ContainerInterface $container) {
-        return new Factory($container->get(DatabaseManager::class), null, null, $container);
+        return new Factory(
+            $container->get(DatabaseManager::class),
+            null,
+            new FactoryProxy($container),
+            $container
+        );
     },
     // Schema Manager
     SchemaManager::class => static function (ContainerInterface $container) use (&$params) {
