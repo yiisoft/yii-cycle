@@ -8,7 +8,7 @@ use Psr\Container\ContainerInterface;
 use Spiral\Core\FactoryInterface as SpiralFactoryInterface;
 use Yiisoft\Factory\Factory;
 
-final class FactoryProxy implements SpiralFactoryInterface
+final class CoreFactory implements SpiralFactoryInterface
 {
 
     private $factory;
