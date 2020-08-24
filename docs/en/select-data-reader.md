@@ -12,7 +12,9 @@ You need to know the following about `SelectDataReader`:
   - Specify sorting. Note that `SelectDataReader` sorting does
     not replace initial query sorting but adds sorting on top of it.
     Each next `withSort()` call is replacing `SelectDataReader` sorting options.
-* `SelectDataReader` doesn't allow filtering. It should be done in initial query instead.
+  - Apply filter. Filtration conditions in `SelectDataReader` also, do not replace filtration conditions
+    in initial query, but adds conditions on top of it. Therefore, by using filtration in `SeletecDataReader`
+    you can only refine the selection, but NOT expand.
 * `SelectDataReader` queries database only when you actually read the data.
 * In case you're using `read()`, `readOne()` or `count()`, data will be cached by `SelectDataReader`.
 * The `count()` method returns the number of elements without taking limit and offset into account.
@@ -150,3 +152,27 @@ function index(ArticleRepository $repository)
         ->withSort((new Sort([]))->withOrder(['published_at' => 'asc']));
 }
 ```
+You may refine query conditions with filters. This filtering conditions are adding to original select query conditions, but NOT replace them.
+
+
+```php
+use Yiisoft\Data\Reader\DataReaderInterface;
+use Yiisoft\Data\Reader\Filter\Equals;
+use Yiisoft\Yii\Cycle\DataReader\SelectDataReader;
+
+class ArticleRepository extends \Cycle\ORM\Select\Repository
+{
+    public function findUserArticles(int $userId): DataReaderInterface
+    {
+        return (new SelectDataReader($this->select()->where('user_id', $userId)))
+            //Adding filter by default - only public articles.
+            
+            ->withFilter(new Equals('public', '1'));
+        // condition `public` = "1" doesnt replace `user_id` = "$userId"
+    }
+}
+```
+
+Use filters from  [yiisoft/data](https://github.com/yiisoft/data) package, or any others, having previously written
+the appropriate handlers(processors) for them. 
+
