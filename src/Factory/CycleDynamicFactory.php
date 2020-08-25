@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Cycle\Factory;
 use Spiral\Core\FactoryInterface;
 use Yiisoft\Factory\Factory;
 
-final class CoreFactory extends Factory implements FactoryInterface
+final class CycleDynamicFactory extends Factory implements FactoryInterface
 {
     public function make(string $alias, array $parameters = [])
     {

@@ -9,7 +9,7 @@ use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
-use Yiisoft\Yii\Cycle\Factory\CoreFactory;
+use Yiisoft\Yii\Cycle\Factory\CycleDynamicFactory;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor;
@@ -30,7 +30,7 @@ return [
         return new Factory(
             $container->get(DatabaseManager::class),
             null,
-            new CoreFactory($container),
+            new CycleDynamicFactory($container),
             $container
         );
     },
