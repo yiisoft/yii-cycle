@@ -10,12 +10,14 @@
 * Класс `SelectDataReader` реализует интерфейс `IteratorAggregate`.
  Это позволяет использовать объект `SelectDataReader` в цикле `foreach`.
 * С помощью `SelectDataReader` вы можете корректировать переданный select-запрос:
-  - Выставлять `Limit` и `Offset` вручную или с помощью `OffsetPaginator`
+  - Выставлять `Limit` и `Offset` вручную или с помощью `OffsetPaginator`.
   - Задавать сортировку. Но учтите, что сортировка `SelectDataReader`
     не заменяет сортировку в исходном запросе, а лишь дополняет её.
     Однако каждый следующий вызов метода `withSort()` будет заменять настройки
-    сортировки объекта `SelectDataReader`
-* `SelectDataReader` не позволяет применять фильтрацию — её следует настраивать в исходном запросе.
+    сортировки объекта `SelectDataReader`.
+  - Применять фильтр. Условия фильтрации `SelectDataReader` также не заменяют настройки
+    фильтрации в исходном запросе, а дополняют её. Таким образом, фильтрацией
+    в объекте `SelectDataReader` вы можете только уточнить выборку, но не расширить.
 * `SelectDataReader` не вытягивает данные из БД сразу.
   Обращение к БД происходит только тогда, когда эти данные запрашиваются.
 * Если вы будете использовать методы `read()` и `readOne()` для чтения данных,
@@ -37,9 +39,6 @@ use \Yiisoft\Yii\Cycle\DataReader\SelectDataReader;
 
 class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
-    /**
-     * @return SelectDataReader
-     */
     public function findPublic(): DataReaderInterface
     {
         return new SelectDataReader($this->select()->where(['public' => true]));
@@ -135,9 +134,6 @@ use Yiisoft\Yii\Cycle\DataReader\SelectDataReader;
 
 class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
-    /**
-     * @return SelectDataReader
-     */
     public function findPublic(): DataReaderInterface
     {
         $sort = (new Sort([]))->withOrder(['published_at' => 'desc']);
@@ -157,3 +153,25 @@ function index(ArticleRepository $repository)
         ->withSort((new Sort([]))->withOrder(['published_at' => 'asc']));
 }
 ```
+
+Уточнить условия выборки можно с помощью фильтров. Они также дополняют условия выборки запроса, а не заменяют их.
+
+```php
+use Yiisoft\Data\Reader\DataReaderInterface;
+use Yiisoft\Data\Reader\Filter\Equals;
+use Yiisoft\Yii\Cycle\DataReader\SelectDataReader;
+
+class ArticleRepository extends \Cycle\ORM\Select\Repository
+{
+    public function findUserArticles(int $userId): DataReaderInterface
+    {
+        return (new SelectDataReader($this->select()->where('user_id', $userId)))
+            // Добавим фильтр по умолчанию - только public статьи
+            ->withFilter(new Equals('public', '1'));
+        // Условие `public` = "1" не заменит `user_id` = "$userId"
+    }
+}
+```
+
+Используйте фильтры пакета [yiisoft/data](https://github.com/yiisoft/data), либо любые другие, предварительно написав
+для них соответствующие обработчики (процессоры).
