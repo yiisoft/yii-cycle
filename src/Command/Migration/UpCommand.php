@@ -9,6 +9,7 @@ use Spiral\Migrations\MigrationInterface;
 use Spiral\Migrations\State;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
@@ -47,7 +48,37 @@ final class UpCommand extends BaseMigrationCommand
             $output->writeln('<fg=red>No migration found for execute</>');
             return ExitCode::OK;
         }
+
         $migrator = $this->promise->getMigrator();
+
+        // Confirm
+        if (!$migrator->getConfig()->isSafe()) {
+            $newMigrations = [];
+            foreach ($migrations as $migration) {
+                if ($migration->getState()->getStatus() === State::STATUS_PENDING) {
+                    $newMigrations[] = $migration;
+                }
+            }
+            $countNewMigrations = count($newMigrations);
+            $output->writeln(
+                '<fg=yellow>' .
+                ($countNewMigrations === 1 ? 'Migration' : $countNewMigrations . ' migrations') .
+                ' ' .
+                'to be applied:</>'
+            );
+            foreach ($newMigrations as $migration) {
+                $output->writeln('— <fg=cyan>' . $migration->getState()->getName() . '</>');
+            }
+            $question = new ConfirmationQuestion(
+                'Apply the above ' .
+                ($countNewMigrations === 1 ? 'migration' : 'migrations') .
+                '? (yes|no) ',
+                false
+            );
+            if (!$this->getHelper('question')->ask($input, $output, $question)) {
+                return ExitCode::OK;
+            }
+        }
 
         $limit = PHP_INT_MAX;
         $this->eventDispatcher->dispatch(new BeforeMigrate());

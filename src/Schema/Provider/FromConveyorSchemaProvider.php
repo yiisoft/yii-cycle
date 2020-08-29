@@ -28,11 +28,11 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
         $this->dbal = $dbal;
     }
 
-    public function withConfig(array $config): SchemaProviderInterface
+    public function withConfig(array $config): self
     {
-        $clone = clone $this;
-        $clone->generators = $config['generators'] ?? [];
-        return $clone;
+        $new = clone $this;
+        $new->generators = $config['generators'] ?? [];
+        return $new;
     }
 
     public function read(): ?array

@@ -18,11 +18,11 @@ final class SimpleCacheSchemaProvider implements SchemaProviderInterface
         $this->cache = $cache;
     }
 
-    public function withConfig(array $config): SchemaProviderInterface
+    public function withConfig(array $config): self
     {
-        $clone = clone $this;
-        $clone->key = $config['key'] ?? self::DEFAULT_KEY;
-        return $clone;
+        $new = clone $this;
+        $new->key = $config['key'] ?? self::DEFAULT_KEY;
+        return $new;
     }
 
     public function read(): ?array
