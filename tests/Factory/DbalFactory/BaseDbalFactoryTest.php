@@ -25,5 +25,4 @@ abstract class BaseDbalFactoryTest extends TestCase
             Aliases::class => new Aliases(self::ALIASES),
         ]);
     }
-
 }
