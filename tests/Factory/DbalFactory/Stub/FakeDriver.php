@@ -2,9 +2,10 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Tests\Factory\Stub;
+namespace Yiisoft\Yii\Cycle\Tests\Factory\DbalFactory\Stub;
 
 use Exception;
+use Psr\Log\LoggerInterface;
 use Spiral\Database\Driver\Driver;
 use Spiral\Database\Driver\SQLite\SQLiteCompiler;
 use Spiral\Database\Driver\SQLite\SQLiteHandler;
@@ -14,7 +15,6 @@ use Throwable;
 
 class FakeDriver extends Driver
 {
-
     public function __construct(array $options)
     {
         parent::__construct(
@@ -25,7 +25,7 @@ class FakeDriver extends Driver
         );
     }
 
-    public function getLogger()
+    public function getLogger(): ?LoggerInterface
     {
         return $this->logger;
     }
