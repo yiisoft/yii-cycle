@@ -72,40 +72,40 @@ final class SelectDataReader implements DataReaderInterface
 
     public function withLimit(int $limit): self
     {
-        $clone = clone $this;
-        $clone->setLimit($limit);
-        return $clone;
+        $new = clone $this;
+        $new->setLimit($limit);
+        return $new;
     }
 
     public function withOffset(int $offset): self
     {
-        $clone = clone $this;
-        $clone->setOffset($offset);
-        return $clone;
+        $new = clone $this;
+        $new->setOffset($offset);
+        return $new;
     }
 
     public function withSort(?Sort $sorting): self
     {
-        $clone = clone $this;
-        $clone->setSort($sorting);
-        return $clone;
+        $new = clone $this;
+        $new->setSort($sorting);
+        return $new;
     }
 
     public function withFilter(FilterInterface $filter): self
     {
-        $clone = clone $this;
-        $clone->setFilter($filter);
-        return $clone;
+        $new = clone $this;
+        $new->setFilter($filter);
+        return $new;
     }
 
     public function withFilterProcessors(FilterProcessorInterface ...$filterProcessors): self
     {
-        $clone = clone $this;
-        $clone->setFilterProcessors(...$filterProcessors);
-        $clone->resetCountCache();
-        $clone->itemsCache = new CachedCollection();
-        $clone->oneItemCache = new CachedCollection();
-        return $clone;
+        $new = clone $this;
+        $new->setFilterProcessors(...$filterProcessors);
+        $new->resetCountCache();
+        $new->itemsCache = new CachedCollection();
+        $new->oneItemCache = new CachedCollection();
+        return $new;
     }
 
     public function count(): int

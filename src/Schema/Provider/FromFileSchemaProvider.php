@@ -20,12 +20,12 @@ final class FromFileSchemaProvider implements SchemaProviderInterface
         $this->aliases = $aliases;
     }
 
-    public function withConfig(array $config): SchemaProviderInterface
+    public function withConfig(array $config): self
     {
-        $clone = clone $this;
+        $new = clone $this;
         // required option
-        $clone->file = $this->aliases->get($config['file']);
-        return $clone;
+        $new->file = $this->aliases->get($config['file']);
+        return $new;
     }
 
     public function read(): ?array
