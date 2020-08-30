@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Factory;
 
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
+use RuntimeException;
 use Spiral\Database\Config\DatabaseConfig;
 use Spiral\Database\DatabaseManager;
+use Spiral\Database\Driver\Driver;
 use Yiisoft\Aliases\Aliases;
 
 final class DbalFactory
@@ -37,17 +40,33 @@ final class DbalFactory
         $dbal = new DatabaseManager($conf);
 
         if ($this->logger !== null) {
-            if (!$this->logger instanceof LoggerInterface) {
-                $this->logger = $container->get($this->logger);
-            }
-            $dbal->setLogger($this->logger);
-            /** Remove when issue is resolved @link https://github.com/cycle/orm/issues/60 */
-            foreach ($dbal->getDrivers() as $driver) {
-                $driver->setLogger($this->logger);
-            }
+            $logger = $this->prepareLogger($this->logger);
+            $dbal->setLogger($logger);
+            /** Remove when issue is resolved {@link https://github.com/cycle/orm/issues/60} */
+            $drivers = $dbal->getDrivers();
+            array_walk($drivers, static fn (Driver $driver) => $driver->setLogger($logger));
         }
 
         return $dbal;
+    }
+
+    /**
+     * @param string|LoggerInterface $logger
+     * @return LoggerInterface
+     * @throws RuntimeException
+     * @throws ContainerExceptionInterface
+     */
+    private function prepareLogger($logger): LoggerInterface
+    {
+        if (is_string($logger)) {
+            $logger = $this->container->get($logger);
+        }
+        if (!$logger instanceof LoggerInterface) {
+            throw new RuntimeException(
+                sprintf('Logger definition should be subclass of %s.', LoggerInterface::class)
+            );
+        }
+        return $logger;
     }
 
     /**

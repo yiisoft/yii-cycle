@@ -36,7 +36,7 @@
         "infection/infection": "^0.16.4",
         "phan/phan": "^3.0",
         "phpunit/phpunit": "^9.3",
-        "yiisoft/di": "@dev"
+        "yiisoft/test-support": "^3.0@dev"
     },
     "autoload": {
         "psr-4": {
