@@ -9,6 +9,7 @@ use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
+use Spiral\Database\DatabaseProviderInterface;
 use Yiisoft\Yii\Cycle\Factory\CycleDynamicFactory;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
@@ -23,6 +24,9 @@ use Yiisoft\Yii\Cycle\Schema\SchemaManager;
 return [
     // Cycle DBAL
     DatabaseManager::class => new DbalFactory($params['yiisoft/yii-cycle']['dbal']),
+    DatabaseProviderInterface::class => static function (ContainerInterface $container) {
+        return $container->get(DatabaseManager::class);
+    },
     // Cycle ORM
     ORMInterface::class => new OrmFactory($params['yiisoft/yii-cycle']['orm-promise-factory']),
     // Factory for Cycle ORM
