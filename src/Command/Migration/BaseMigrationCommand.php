@@ -35,7 +35,7 @@ abstract class BaseMigrationCommand extends Command
     ): ?MigrationImage {
         if ($database === null) {
             // get default database
-            $database = $this->promise->getDatabaseManager()->database()->getName();
+            $database = $this->promise->getDatabaseProvider()->database()->getName();
         }
         $migrator = $this->promise->getMigrator();
 

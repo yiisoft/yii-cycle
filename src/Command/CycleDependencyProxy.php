@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Cycle\Command;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
-use Spiral\Database\DatabaseManager;
+use Spiral\Database\DatabaseProviderInterface;
 use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\Migrator;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
@@ -20,9 +20,9 @@ final class CycleDependencyProxy
     {
         $this->container = $container;
     }
-    public function getDatabaseManager(): DatabaseManager
+    public function getDatabaseProvider(): DatabaseProviderInterface
     {
-        return $this->container->get(DatabaseManager::class);
+        return $this->container->get(DatabaseProviderInterface::class);
     }
     public function getMigrationConfig(): MigrationConfig
     {

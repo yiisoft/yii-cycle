@@ -47,7 +47,7 @@ final class GenerateCommand extends BaseMigrationCommand
         // show DB changes
         $conveyor->addGenerator(SchemaConveyorInterface::STAGE_USERLAND, new PrintChanges($output));
         // compile schema and convert diffs to new migrations
-        (new Compiler())->compile(new Registry($this->promise->getDatabaseManager()), $conveyor->getGenerators());
+        (new Compiler())->compile(new Registry($this->promise->getDatabaseProvider()), $conveyor->getGenerators());
 
         // compare migrations list before and after
         $listBefore = $migrator->getMigrations();

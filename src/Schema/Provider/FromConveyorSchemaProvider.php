@@ -8,21 +8,21 @@ use Closure;
 use Cycle\Schema\Compiler;
 use Cycle\Schema\GeneratorInterface;
 use Cycle\Schema\Registry;
-use Spiral\Database\DatabaseManager;
+use Spiral\Database\DatabaseProviderInterface;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 final class FromConveyorSchemaProvider implements SchemaProviderInterface
 {
     private SchemaConveyorInterface $conveyor;
-    private DatabaseManager $dbal;
+    private DatabaseProviderInterface $dbal;
     /**
      * Additional generators when reading Schema
      * @var string[]|GeneratorInterface[]|Closure[]
      */
     private array $generators = [];
 
-    public function __construct(SchemaConveyorInterface $conveyor, DatabaseManager $dbal)
+    public function __construct(SchemaConveyorInterface $conveyor, DatabaseProviderInterface $dbal)
     {
         $this->conveyor = $conveyor;
         $this->dbal = $dbal;
