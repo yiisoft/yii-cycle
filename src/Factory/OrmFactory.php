@@ -9,6 +9,7 @@ use Cycle\ORM\ORM;
 use Cycle\ORM\PromiseFactoryInterface;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
+use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 
 final class OrmFactory
 {
@@ -31,14 +32,22 @@ final class OrmFactory
 
         $orm = new ORM($factory, $schema);
 
-        // Promise factory
-        if ($this->promiseFactory !== null) {
-            if (!$this->promiseFactory instanceof PromiseFactoryInterface) {
-                $this->promiseFactory = $container->get($this->promiseFactory);
-            }
-            $orm = $orm->withPromiseFactory($this->promiseFactory);
-        }
+        return $this->addPromiseFactory($orm, $container);
+    }
 
-        return $orm;
+    private function addPromiseFactory(ORM $orm, ContainerInterface $container): ORM
+    {
+        if ($this->promiseFactory === null) {
+            return $orm;
+        }
+        $promiseFactory = is_string($this->promiseFactory)
+            ? $container->get($this->promiseFactory)
+            : $this->promiseFactory;
+
+
+        if (!$promiseFactory instanceof PromiseFactoryInterface) {
+            throw new BadDeclarationException('Promise factory', PromiseFactoryInterface::class, $promiseFactory);
+        }
+        return $orm->withPromiseFactory($promiseFactory);
     }
 }
