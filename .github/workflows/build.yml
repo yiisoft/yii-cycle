@@ -7,11 +7,9 @@ name: build
 jobs:
   tests:
     name: PHP ${{ matrix.php-version }}-${{ matrix.os }}
-
     env:
       extensions: curl, mbstring, dom, intl, json, libxml, xml, xmlwriter
       key: cache-v1
-      update: true
 
     runs-on: ${{ matrix.os }}
 
@@ -27,11 +25,11 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2.3.2
+        uses: actions/checkout@v2
 
       - name: Setup cache environment
         id: cache-env
-        uses: shivammathur/cache-extensions@1.1.3
+        uses: shivammathur/cache-extensions@v1
         with:
           php-version: ${{ matrix.php-version }}
           extensions: ${{ env.extensions }}
@@ -62,7 +60,7 @@ jobs:
         run: ECHO "::set-env name=COMPOSER_CACHE_DIR::~\AppData\Local\Composer"
 
       - name: Cache dependencies installed with composer
-        uses: actions/cache@v1
+        uses: actions/cache@v2
         with:
           path: ${{ env.COMPOSER_CACHE_DIR }}
           key: php${{ matrix.php-version }}-composer-${{ hashFiles('**/composer.json') }}
@@ -81,12 +79,7 @@ jobs:
         if: matrix.os == 'ubuntu-latest' && matrix.php-version == '7.4'
         run: vendor/bin/phpunit --coverage-clover=coverage.clover
 
-      - name: Run tests with phpunit without coverage on Linux php 8.0
-        if: matrix.os == 'ubuntu-latest' && matrix.php-version == '8.0'
-        run: vendor/bin/phpunit
-
-      - name: Run tests with phpunit without coverage on Windows
-        if: matrix.os == 'windows-latest'
+      - name: Run tests with phpunit without coverage
         run: vendor/bin/phpunit
 
       - name: Upload code coverage scrutinizer on Linux php 7.4
