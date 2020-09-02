@@ -10,7 +10,7 @@ use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
 use Spiral\Database\DatabaseManager;
 use Spiral\Database\DatabaseProviderInterface;
-use Yiisoft\Yii\Cycle\Exception\SchemaNotReadException;
+use Yiisoft\Yii\Cycle\Exception\SchemaWasNotProvidedException;
 use Yiisoft\Yii\Cycle\Factory\CycleDynamicFactory;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
@@ -47,7 +47,7 @@ return [
     SchemaInterface::class => static function (ContainerInterface $container) {
         $schema = $container->get(SchemaManager::class)->read();
         if ($schema === null) {
-            throw new SchemaNotReadException();
+            throw new SchemaWasNotProvidedException();
         }
         return new Schema($schema);
     },
