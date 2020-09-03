@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Cycle\Schema;
 
 use Generator;
 use Psr\Container\ContainerInterface;
+use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 
 /**
  * SchemaManager allows reading schema from providers available and clearing the schema in providers.
@@ -72,6 +73,7 @@ final class SchemaManager
 
     /**
      * @return Generator|SchemaProviderInterface[]
+     * @throws BadDeclarationException
      */
     private function getProviders(): Generator
     {
@@ -86,7 +88,7 @@ final class SchemaManager
             }
 
             if (!$provider instanceof SchemaProviderInterface) {
-                throw new \RuntimeException('Provider should be instance of SchemaProviderInterface.');
+                throw new BadDeclarationException('Provider', SchemaProviderInterface::class, $provider);
             }
             yield $provider;
         }
