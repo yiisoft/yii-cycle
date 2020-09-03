@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Exception;
 
-use Exception;
+use Cycle\Schema\GeneratorInterface;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
-class BadGeneratorDeclarationException extends Exception implements FriendlyExceptionInterface
+class BadGeneratorDeclarationException extends BadDeclarationException implements FriendlyExceptionInterface
 {
+    public function __construct($argument)
+    {
+        parent::__construct('Generator', GeneratorInterface::class, $argument);
+    }
     public function getName(): string
     {
         return 'Bad declaration of schema generator';

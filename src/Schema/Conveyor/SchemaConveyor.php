@@ -58,7 +58,7 @@ class SchemaConveyor implements SchemaConveyorInterface
                     $result[] = $generator;
                     continue;
                 }
-                throw new BadGeneratorDeclarationException();
+                throw new BadGeneratorDeclarationException($generator ?? $generatorDefinition);
             }
         }
         return $result;
