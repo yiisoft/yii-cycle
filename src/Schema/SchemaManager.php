@@ -55,19 +55,13 @@ final class SchemaManager
 
     public function clear(): void
     {
-        $toClear = [];
-        $isWritableLast = false;
-        foreach ($this->getProviders() as $provider) {
-            $isWritableLast = $provider->isWritable();
-            if ($isWritableLast) {
-                $toClear[] = $provider;
+        $providers = iterator_to_array($this->getProviders());
+        array_pop($providers);
+
+        foreach ($providers as $provider) {
+            if ($provider->isWritable()) {
+                $provider->clear();
             }
-        }
-        if ($isWritableLast) {
-            array_pop($toClear);
-        }
-        foreach ($toClear as $provider) {
-            $provider->clear();
         }
     }
 
