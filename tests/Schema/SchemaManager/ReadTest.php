@@ -40,7 +40,6 @@ class ReadTest extends BaseSchemaManagerTest
 
     public function testSkipNotReadableProviders(): void
     {
-
         $manager = $this->prepareSchemaManager([
             (new SameOriginProvider(self::SIMPLE_SCHEMA))->withConfig([SameOriginProvider::OPTION_READABLE => false]),
             new ArraySchemaProvider(self::ANOTHER_SCHEMA),
