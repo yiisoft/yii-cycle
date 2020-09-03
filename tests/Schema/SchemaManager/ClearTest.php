@@ -53,6 +53,16 @@ class ClearTest extends BaseSchemaManagerTest
         $this->assertSame(self::ANOTHER_SCHEMA, $provider3->read());
     }
 
+    public function testOneProviderWillNotClear(): void
+    {
+        $provider1 = new ArraySchemaProvider(static::SIMPLE_SCHEMA);
+        $manager = $this->prepareSchemaManager([$provider1]);
+
+        $manager->clear();
+
+        $this->assertSame(self::SIMPLE_SCHEMA, $provider1->read());
+    }
+
     public function testWithExceptionWhenClear(): void
     {
         $provider1 = (new SameOriginProvider(static::SIMPLE_SCHEMA))

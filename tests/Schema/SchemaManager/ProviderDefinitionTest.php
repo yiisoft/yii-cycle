@@ -28,6 +28,16 @@ final class ProviderDefinitionTest extends BaseSchemaManagerTest
         $this->assertSame($newSchema, $manager->read());
     }
 
+    public function testIgnoreStringKeyIfDefinitionIsNotArray(): void
+    {
+        $this->prepareContainer(['provider' => new ArraySchemaProvider(static::SIMPLE_SCHEMA)]);
+        $provider = new ArraySchemaProvider(static::ANOTHER_SCHEMA);
+
+        $manager = $this->prepareSchemaManager(['provider' => $provider]);
+
+        $this->assertSame(self::ANOTHER_SCHEMA, $manager->read());
+    }
+
     public function testProviderAsObject(): void
     {
         $provider = new ArraySchemaProvider(static::SIMPLE_SCHEMA);
