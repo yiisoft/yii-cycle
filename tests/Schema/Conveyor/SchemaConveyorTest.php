@@ -5,24 +5,16 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Conveyor;
 
 use Cycle\Schema\GeneratorInterface;
-use PHPUnit\Framework\TestCase;
-use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyor;
-use Yiisoft\Yii\Cycle\Tests\Schema\Conveyor\Stub\FakeContainer;
 use Yiisoft\Yii\Cycle\Tests\Schema\Conveyor\Stub\FakeGenerator;
 
-class SchemaConveyorTest extends TestCase
+class SchemaConveyorTest extends BaseConveyorTest
 {
     public function testDefaultGeneratorsList(): void
     {
         $conveyor = $this->createConveyor();
 
-        // get generators list
-        /** @var string[] $generators */
-        $generators = array_map(
-            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
-            $conveyor->getGenerators()
-        );
+        $generators = $this->getGeneratorClassList($conveyor);
 
         $this->assertSame([
             'Cycle\Schema\Generator\ResetTables',
@@ -81,12 +73,7 @@ class SchemaConveyorTest extends TestCase
         $conveyor->addGenerator($conveyor::STAGE_RENDER, \Cycle\Schema\Generator\SyncTables::class);
         $conveyor->addGenerator($conveyor::STAGE_INDEX, \Cycle\Annotated\MergeIndexes::class);
 
-        // get generators list
-        /** @var string[] $generators */
-        $generators = array_map(
-            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
-            $conveyor->getGenerators()
-        );
+        $generators = $this->getGeneratorClassList($conveyor);
 
         $this->assertSame([
             'Cycle\Schema\Generator\ResetTables',
@@ -102,30 +89,8 @@ class SchemaConveyorTest extends TestCase
         ], $generators);
     }
 
-    public function badGeneratorProvider(): array
-    {
-        return [
-            [\stdClass::class],
-            [new \DateTimeImmutable()],
-            [fn () => new \DateTime()],
-        ];
-    }
-
-    /**
-     * @dataProvider badGeneratorProvider
-     */
-    public function testAddWrongGenerator($badGenerator): void
-    {
-        $conveyor = $this->createConveyor();
-        $conveyor->addGenerator($conveyor::STAGE_USERLAND, $badGenerator);
-
-        $this->expectException(BadGeneratorDeclarationException::class);
-
-        $conveyor->getGenerators();
-    }
-
     public function createConveyor(): SchemaConveyor
     {
-        return new SchemaConveyor(new FakeContainer($this));
+        return new SchemaConveyor($this->prepareContainer());
     }
 }
