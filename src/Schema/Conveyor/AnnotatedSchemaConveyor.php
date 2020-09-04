@@ -23,6 +23,12 @@ final class AnnotatedSchemaConveyor extends SchemaConveyor
 
     private bool $isAddedAnnotated = false;
 
+    /**
+     * @param int $type
+     * @see \Cycle\Annotated\Entities::TABLE_NAMING_PLURAL
+     * @see \Cycle\Annotated\Entities::TABLE_NAMING_SINGULAR
+     * @see \Cycle\Annotated\Entities::TABLE_NAMING_NONE
+     */
     public function setTableNaming(int $type): void
     {
         $this->tableNaming = $type;

@@ -4,12 +4,40 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Conveyor;
 
+use Cycle\Annotated\Entities;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor;
-use Yiisoft\Yii\Cycle\Tests\Schema\Conveyor\Stub\FakeGenerator;
 
 class AnnotatedSchemaConveyorTest extends BaseConveyorTest
 {
+    public function testGetTableNamingDefault(): void
+    {
+        $conveyor = $this->createConveyor();
+
+        $this->assertSame(Entities::TABLE_NAMING_SINGULAR, $conveyor->getTableNaming());
+    }
+
+    public function tableNamingProvider(): array
+    {
+        return [
+            [Entities::TABLE_NAMING_PLURAL],
+            [Entities::TABLE_NAMING_SINGULAR],
+            [Entities::TABLE_NAMING_NONE],
+        ];
+    }
+
+    /**
+     * @dataProvider tableNamingProvider
+     */
+    public function testSetTableNaming(int $naming): void
+    {
+        $conveyor = $this->createConveyor();
+
+        $conveyor->setTableNaming($naming);
+
+        $this->assertSame($naming, $conveyor->getTableNaming());
+    }
+
     public function testDefaultGeneratorsOrder(): void
     {
         $conveyor = $this->createConveyor();
