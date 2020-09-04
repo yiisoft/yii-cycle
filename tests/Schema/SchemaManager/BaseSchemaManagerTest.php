@@ -15,27 +15,27 @@ abstract class BaseSchemaManagerTest extends TestCase
 {
     protected const SIMPLE_SCHEMA = [
         'user' => [
-            Schema::ENTITY      => \stdClass::class,
-            Schema::MAPPER      => \stdClass::class,
-            Schema::DATABASE    => 'default',
-            Schema::TABLE       => 'user',
+            Schema::ENTITY => \stdClass::class,
+            Schema::MAPPER => \stdClass::class,
+            Schema::DATABASE => 'default',
+            Schema::TABLE => 'user',
             Schema::PRIMARY_KEY => 'id',
-            Schema::COLUMNS     => [
-                'id'      => 'id',
-                'email'   => 'email',
+            Schema::COLUMNS => [
+                'id' => 'id',
+                'email' => 'email',
                 'balance' => 'balance',
             ],
-            Schema::TYPECAST    => [
-                'id'      => 'int',
+            Schema::TYPECAST => [
+                'id' => 'int',
                 'balance' => 'float',
             ],
-            Schema::RELATIONS   => [],
+            Schema::RELATIONS => [],
         ],
     ];
     protected const ANOTHER_SCHEMA = [
         'post' => [
-            Schema::ENTITY      => \stdClass::class,
-            Schema::MAPPER      => \stdClass::class,
+            Schema::ENTITY => \stdClass::class,
+            Schema::MAPPER => \stdClass::class,
         ],
     ];
 
