@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Cycle\Schema;
 use Generator;
 use Psr\Container\ContainerInterface;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
+use Yiisoft\Yii\Cycle\Exception\CumulativeException;
 
 /**
  * SchemaManager allows reading schema from providers available and clearing the schema in providers.
@@ -58,10 +59,18 @@ final class SchemaManager
         $providers = iterator_to_array($this->getProviders());
         array_pop($providers);
 
+        $exceptions = [];
         foreach ($providers as $provider) {
             if ($provider->isWritable()) {
-                $provider->clear();
+                try {
+                    $provider->clear();
+                } catch (\Throwable $e) {
+                    $exceptions[] = $e;
+                }
             }
+        }
+        if (count($exceptions)) {
+            throw new CumulativeException(...$exceptions);
         }
     }
 

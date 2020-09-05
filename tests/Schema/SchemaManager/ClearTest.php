@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Schema\SchemaManager;
 
+use Yiisoft\Yii\Cycle\Exception\CumulativeException;
 use Yiisoft\Yii\Cycle\Tests\Schema\SchemaManager\Stub\ArraySchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\SchemaManager\Stub\SameOriginProvider;
 
-class ClearTest extends BaseSchemaManagerTest
+final class ClearTest extends BaseSchemaManagerTest
 {
     public function testWithoutProviders(): void
     {
@@ -71,12 +72,19 @@ class ClearTest extends BaseSchemaManagerTest
         $provider3 = new ArraySchemaProvider(static::ANOTHER_SCHEMA);
         $manager = $this->prepareSchemaManager([$provider1, $provider2, $provider3]);
 
-        $this->expectException(\Exception::class);
+        $this->expectException(CumulativeException::class);
 
-        $manager->clear();
-
-        // $this->assertSame(self::SIMPLE_SCHEMA, $provider1->read());
-        // $this->assertNull($provider2->read());
-        // $this->assertSame(self::ANOTHER_SCHEMA, $provider2->read());
+        try {
+            $manager->clear();
+        } catch (\Throwable $e) {
+            throw $e;
+        } finally {
+            // first provider throws exception
+            $this->assertSame(self::SIMPLE_SCHEMA, $provider1->read());
+            // next provider will be cleared
+            $this->assertNull($provider2->read());
+            // last provider will not be cleared
+            $this->assertSame(static::ANOTHER_SCHEMA, $provider3->read());
+        }
     }
 }
