@@ -6,6 +6,8 @@ namespace Yiisoft\Yii\Cycle\Schema;
 
 use Generator;
 use Psr\Container\ContainerInterface;
+use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
+use Yiisoft\Yii\Cycle\Exception\CumulativeException;
 
 /**
  * SchemaManager allows reading schema from providers available and clearing the schema in providers.
@@ -54,24 +56,27 @@ final class SchemaManager
 
     public function clear(): void
     {
-        $toClear = [];
-        $isWritableLast = false;
-        foreach ($this->getProviders() as $provider) {
-            $isWritableLast = $provider->isWritable();
-            if ($isWritableLast) {
-                $toClear[] = $provider;
+        $providers = iterator_to_array($this->getProviders());
+        array_pop($providers);
+
+        $exceptions = [];
+        foreach ($providers as $provider) {
+            if ($provider->isWritable()) {
+                try {
+                    $provider->clear();
+                } catch (\Throwable $e) {
+                    $exceptions[] = $e;
+                }
             }
         }
-        if ($isWritableLast) {
-            array_pop($toClear);
-        }
-        foreach ($toClear as $provider) {
-            $provider->clear();
+        if (count($exceptions)) {
+            throw new CumulativeException(...$exceptions);
         }
     }
 
     /**
      * @return Generator|SchemaProviderInterface[]
+     * @throws BadDeclarationException
      */
     private function getProviders(): Generator
     {
@@ -86,7 +91,7 @@ final class SchemaManager
             }
 
             if (!$provider instanceof SchemaProviderInterface) {
-                throw new \RuntimeException('Provider should be instance of SchemaProviderInterface.');
+                throw new BadDeclarationException('Provider', SchemaProviderInterface::class, $provider);
             }
             yield $provider;
         }
