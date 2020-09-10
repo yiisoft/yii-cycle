@@ -62,15 +62,15 @@ final class CumulativeExceptionTest extends TestCase
         $this->assertMatchesRegularExpression('/3 exceptions were thrown\\./', $exception->getMessage());
 
         $this->assertMatchesRegularExpression(
-            '/1\\) [^\\n]++\\n\\[RuntimeException\\] \\#42\\: Foo message\\./',
+            '/\\n1\\) [^\\n]++\\n\\[RuntimeException\\] \\#42\\: Foo message\\./',
             $exception->getMessage()
         );
         $this->assertMatchesRegularExpression(
-            '/2\\) [^\\n]++\\n\\[Exception] #0: Bar message./',
+            '/\\n2\\) [^\\n]++\\n\\[Exception] #0: Bar message./',
             $exception->getMessage()
         );
         $this->assertMatchesRegularExpression(
-            '/3\\) [^\\n]++\\n\\[InvalidArgumentException] #0: Baz message./',
+            '/\\n3\\) [^\\n]++\\n\\[InvalidArgumentException] #0: Baz message./',
             $exception->getMessage()
         );
     }
