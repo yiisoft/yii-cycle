@@ -37,6 +37,18 @@ final class CumulativeExceptionTest extends TestCase
         $this->assertSame($list, $exception->getExceptions());
     }
 
+    public function testGetMessageWithOneException(): void
+    {
+        $list = [
+            new \RuntimeException('Foo message.', 42),
+        ];
+
+        $exception = $this->prepareException(...$list);
+
+        $this->assertIsInt(strpos($exception->getMessage(), '[RuntimeException] #42: Foo message.'));
+        $this->assertMatchesRegularExpression('/One exception was thrown\\./', $exception->getMessage());
+    }
+
     public function testGetMessageWithMultipleExceptions(): void
     {
         $list = [
@@ -47,8 +59,19 @@ final class CumulativeExceptionTest extends TestCase
 
         $exception = $this->prepareException(...$list);
 
-        $this->assertIsInt(strpos($exception->getMessage(), '[RuntimeException] #42: Foo message.'));
-        $this->assertIsInt(strpos($exception->getMessage(), '[Exception] #0: Bar message.'));
-        $this->assertIsInt(strpos($exception->getMessage(), '[InvalidArgumentException] #0: Baz message.'));
+        $this->assertMatchesRegularExpression('/3 exceptions were thrown\\./', $exception->getMessage());
+
+        $this->assertMatchesRegularExpression(
+            '/1\\) [^\\n]++\\n\\[RuntimeException\\] \\#42\\: Foo message\\./',
+            $exception->getMessage()
+        );
+        $this->assertMatchesRegularExpression(
+            '/2\\) [^\\n]++\\n\\[Exception] #0: Bar message./',
+            $exception->getMessage()
+        );
+        $this->assertMatchesRegularExpression(
+            '/3\\) [^\\n]++\\n\\[InvalidArgumentException] #0: Baz message./',
+            $exception->getMessage()
+        );
     }
 }
