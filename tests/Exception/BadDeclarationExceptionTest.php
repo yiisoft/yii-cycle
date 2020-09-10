@@ -6,7 +6,7 @@ namespace Yiisoft\Yii\Cycle\Tests\Exception;
 
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 
-final class BadDeclarationTest extends BaseBadDeclarationTest
+final class BadDeclarationExceptionTest extends BaseBadDeclarationTest
 {
     private const DEFAULT_CLASS = \stdClass::class;
     private const DEFAULT_PARAMETER = 'Default parameter';
