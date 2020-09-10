@@ -36,7 +36,7 @@ return [
                 // Пример настроек подключения к SQLite:
                 'sqlite' => [
                     'driver' => \Spiral\Database\Driver\SQLite\SQLiteDriver::class,
-                    // Синтаксис подключения описан в https://www.php.net/manual/en/pdo.construct.php, смотрите DSN
+                    // Синтаксис подключения описан в https://www.php.net/manual/pdo.construct.php, смотрите DSN
                     'connection' => 'sqlite:@runtime/database.db',
                     'username' => '',
                     'password' => '',
