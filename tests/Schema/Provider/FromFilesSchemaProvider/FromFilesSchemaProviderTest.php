@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\FromFileSchemaProvider;
+namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\FromFilesSchemaProvider;
 
 use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Yii\Cycle\Schema\Provider\FromFileSchemaProvider;
+use Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider;
 
-class FromFileSchemaProviderTest extends TestCase
+class FromFilesSchemaProviderTest extends TestCase
 {
 
     public function getWithConfigEmptyData(): array
@@ -20,13 +20,7 @@ class FromFileSchemaProviderTest extends TestCase
                 [],
             ],
             [
-                ['file' => null],
-            ],
-            [
-                ['file' => ''],
-            ],
-            [
-                ['file' => []],
+                ['files' => []],
             ],
         ];
     }
@@ -41,7 +35,7 @@ class FromFileSchemaProviderTest extends TestCase
         $schemaProvider = $this->createSchemaProvider();
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('File(s) not set.');
+        $this->expectExceptionMessage('Files not set.');
         $schemaProvider->withConfig($config);
     }
 
@@ -50,29 +44,16 @@ class FromFileSchemaProviderTest extends TestCase
         $schemaProvider = $this->createSchemaProvider();
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The "file" parameter must be array or string.');
-        $schemaProvider->withConfig(['file' => 42]);
+        $this->expectExceptionMessage('The "files" parameter must be array.');
+        $schemaProvider->withConfig(['files' => '@dir/schema1.php']);
     }
 
-    public function testWithConfigString(): void
+    public function testWithConfig(): void
     {
         $schemaProvider = $this->createSchemaProvider();
 
         $data = $schemaProvider
-            ->withConfig(['file' => '@dir/schema1.php'])
-            ->read();
-
-        $this->assertSame([
-            'user' => [],
-        ], $data);
-    }
-
-    public function testWithConfigArray(): void
-    {
-        $schemaProvider = $this->createSchemaProvider();
-
-        $data = $schemaProvider
-            ->withConfig(['file' => ['@dir/schema1.php']])
+            ->withConfig(['files' => ['@dir/schema1.php']])
             ->read();
 
         $this->assertSame([
@@ -84,7 +65,7 @@ class FromFileSchemaProviderTest extends TestCase
     {
         $schemaProvider1 = $this->createSchemaProvider();
         $schemaProvider2 = $schemaProvider1->withConfig([
-            'file' => '@dir/schema1.php',
+            'files' => ['@dir/schema1.php'],
         ]);
         $this->assertNull($schemaProvider1->read());
         $this->assertSame([
@@ -98,7 +79,7 @@ class FromFileSchemaProviderTest extends TestCase
 
         $data = $schemaProvider
             ->withConfig([
-                'file' => [
+                'files' => [
                     '@dir/schema1.php',
                     '@dir/schema-not-exists.php', // not exists files should be silent
                     '@dir/schema2.php',
@@ -127,7 +108,7 @@ class FromFileSchemaProviderTest extends TestCase
         $this->expectExceptionMessage('Role "post" already has in schema.');
         $schemaProvider
             ->withConfig([
-                'file' => [
+                'files' => [
                     '@dir/schema2.php',
                     '@dir/schema2-duplicate.php',
                 ],
@@ -159,9 +140,9 @@ class FromFileSchemaProviderTest extends TestCase
         $this->assertTrue($schemaProvider->isReadable());
     }
 
-    private function createSchemaProvider(): FromFileSchemaProvider
+    private function createSchemaProvider(): FromFilesSchemaProvider
     {
         $aliases = new Aliases(['@dir' => __DIR__]);
-        return new FromFileSchemaProvider($aliases);
+        return new FromFilesSchemaProvider($aliases);
     }
 }
