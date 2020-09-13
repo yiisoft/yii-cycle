@@ -22,11 +22,6 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
         $this->aliases = $aliases;
     }
 
-    /**
-     * @param array $config
-     * @return self
-     * @throws InvalidArgumentException
-     */
     public function withConfig(array $config): self
     {
         if (empty($config['files'])) {
@@ -34,7 +29,7 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
         }
 
         if (!is_array($config['files'])) {
-            throw new InvalidArgumentException('The "files" parameter must be array.');
+            throw new InvalidArgumentException('The "files" parameter must be an array.');
         }
 
         $files = $config['files'];
@@ -49,10 +44,6 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
         return $new;
     }
 
-    /**
-     * @return array|null
-     * @throws LogicException
-     */
     public function read(): ?array
     {
         $schema = [];
@@ -60,7 +51,7 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
             if (is_file($file)) {
                 foreach (require $file as $role => $definition) {
                     if (array_key_exists($role, $schema)) {
-                        throw new LogicException('Role "' . $role . '" already has in schema.');
+                        throw new LogicException('The "' . $role . '" role already exists in the DB schema.');
                     }
                     $schema[$role] = $definition;
                 }

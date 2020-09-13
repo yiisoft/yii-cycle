@@ -12,7 +12,6 @@ use Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider;
 
 class FromFilesSchemaProviderTest extends TestCase
 {
-
     public function getWithConfigEmptyData(): array
     {
         return [
@@ -44,7 +43,7 @@ class FromFilesSchemaProviderTest extends TestCase
         $schemaProvider = $this->createSchemaProvider();
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('The "files" parameter must be array.');
+        $this->expectExceptionMessage('The "files" parameter must be an array.');
         $schemaProvider->withConfig(['files' => '@dir/schema1.php']);
     }
 
@@ -105,7 +104,7 @@ class FromFilesSchemaProviderTest extends TestCase
         $schemaProvider = $this->createSchemaProvider();
 
         $this->expectException(LogicException::class);
-        $this->expectExceptionMessage('Role "post" already has in schema.');
+        $this->expectExceptionMessage('The "post" role already exists in the DB schema.');
         $schemaProvider
             ->withConfig([
                 'files' => [
@@ -142,7 +141,7 @@ class FromFilesSchemaProviderTest extends TestCase
 
     private function createSchemaProvider(): FromFilesSchemaProvider
     {
-        $aliases = new Aliases(['@dir' => __DIR__]);
+        $aliases = new Aliases(['@dir' => __DIR__ . '/files']);
         return new FromFilesSchemaProvider($aliases);
     }
 }
