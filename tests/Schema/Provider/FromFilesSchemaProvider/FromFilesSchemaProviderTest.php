@@ -8,6 +8,7 @@ use InvalidArgumentException;
 use LogicException;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Aliases\Aliases;
+use Yiisoft\Yii\Cycle\Exception\SchemaFileNotFoundException;
 use Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider;
 
 class FromFilesSchemaProviderTest extends TestCase
@@ -38,13 +39,25 @@ class FromFilesSchemaProviderTest extends TestCase
         $schemaProvider->withConfig($config);
     }
 
-    public function testWithConfigInvalidData(): void
+    public function testWithConfigInvalidFiles(): void
     {
         $schemaProvider = $this->createSchemaProvider();
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The "files" parameter must be an array.');
         $schemaProvider->withConfig(['files' => '@dir/schema1.php']);
+    }
+
+    public function testWithConfigInvalidStrict(): void
+    {
+        $schemaProvider = $this->createSchemaProvider();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "strict" parameter must be a boolean.');
+        $schemaProvider->withConfig([
+            'files' => ['@dir/schema1.php'],
+            'strict' => 1,
+        ]);
     }
 
     public function testWithConfig(): void
@@ -58,6 +71,44 @@ class FromFilesSchemaProviderTest extends TestCase
         $this->assertSame([
             'user' => [],
         ], $data);
+    }
+
+    public function testWithConfigFilesNotExists(): void
+    {
+        $schemaProvider = $this->createSchemaProvider();
+
+        $data = $schemaProvider
+            ->withConfig(['files' => ['@dir/schema-not-exists.php']])
+            ->read();
+
+        $this->assertNull($data);
+    }
+
+    public function testWithConfigFilesEmpty(): void
+    {
+        $schemaProvider = $this->createSchemaProvider();
+
+        $data = $schemaProvider
+            ->withConfig(['files' => ['@dir/schema-empty.php']])
+            ->read();
+
+        $this->assertSame([], $data);
+    }
+
+    public function testWithConfigStrictFilesNotExists(): void
+    {
+        $schemaProvider = $this
+            ->createSchemaProvider()
+            ->withConfig([
+                'files' => [
+                    '@dir/schema1.php',
+                    '@dir/schema-not-exists.php',
+                ],
+                'strict' => true,
+            ]);
+
+        $this->expectException(SchemaFileNotFoundException::class);
+        $schemaProvider->read();
     }
 
     public function testWithConfigImmutable(): void
