@@ -15,7 +15,15 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
  */
 final class FromFilesSchemaProvider implements SchemaProviderInterface
 {
+
+    /**
+     * @var array array of files with schema
+     */
     private array $files = [];
+
+    /**
+     * @var bool throw exception if file not found
+     */
     private bool $strict = false;
 
     private Aliases $aliases;

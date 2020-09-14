@@ -131,7 +131,7 @@ class FromFilesSchemaProviderTest extends TestCase
             ->withConfig([
                 'files' => [
                     '@dir/schema1.php',
-                    '@dir/schema-not-exists.php', // not exists files should be silent
+                    '@dir/schema-not-exists.php', // not exists files should be silent in non strict mode
                     '@dir/schema2.php',
                 ],
             ])
