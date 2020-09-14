@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\FromFilesSchemaProvider;
 
 use InvalidArgumentException;
-use LogicException;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Aliases\Aliases;
+use Yiisoft\Yii\Cycle\Exception\DuplicateRoleException;
 use Yiisoft\Yii\Cycle\Exception\SchemaFileNotFoundException;
 use Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider;
 
@@ -154,7 +154,7 @@ class FromFilesSchemaProviderTest extends TestCase
     {
         $schemaProvider = $this->createSchemaProvider();
 
-        $this->expectException(LogicException::class);
+        $this->expectException(DuplicateRoleException::class);
         $this->expectExceptionMessage('The "post" role already exists in the DB schema.');
         $schemaProvider
             ->withConfig([

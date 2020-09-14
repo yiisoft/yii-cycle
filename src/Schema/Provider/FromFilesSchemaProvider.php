@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Schema\Provider;
 
 use InvalidArgumentException;
-use LogicException;
 use Yiisoft\Aliases\Aliases;
+use Yiisoft\Yii\Cycle\Exception\DuplicateRoleException;
 use Yiisoft\Yii\Cycle\Exception\SchemaFileNotFoundException;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
@@ -65,7 +65,7 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
                 $schema = $schema ?? [];
                 foreach (require $file as $role => $definition) {
                     if (array_key_exists($role, $schema)) {
-                        throw new LogicException('The "' . $role . '" role already exists in the DB schema.');
+                        throw new DuplicateRoleException($role);
                     }
                     $schema[$role] = $definition;
                 }
