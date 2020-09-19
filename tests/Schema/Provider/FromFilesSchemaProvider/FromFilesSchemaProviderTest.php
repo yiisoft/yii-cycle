@@ -35,7 +35,7 @@ class FromFilesSchemaProviderTest extends TestCase
         $schemaProvider = $this->createSchemaProvider();
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Files not set.');
+        $this->expectExceptionMessage('Schema file list is not set.');
         $schemaProvider->withConfig($config);
     }
 

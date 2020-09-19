@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Cycle\Exception;
 
 use LogicException;
@@ -20,6 +22,6 @@ class DuplicateRoleException extends LogicException implements FriendlyException
 
     public function getSolution(): ?string
     {
-        return 'Check schema in your files on role duplactes.';
+        return 'Check schema in your files on role duplicates.';
     }
 }

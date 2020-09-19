@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Cycle\Exception;
 
 use RuntimeException;
@@ -15,7 +17,7 @@ class SchemaFileNotFoundException extends RuntimeException implements FriendlyEx
 
     public function getName(): string
     {
-        return 'Schema file not found.';
+        return 'Schema file not found';
     }
 
     public function getSolution(): ?string

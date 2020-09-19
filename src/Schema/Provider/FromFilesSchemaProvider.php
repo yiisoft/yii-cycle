@@ -15,15 +15,10 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
  */
 final class FromFilesSchemaProvider implements SchemaProviderInterface
 {
-
-    /**
-     * @var array array of files with schema
-     */
+    /** @var array Schema files */
     private array $files = [];
 
-    /**
-     * @var bool throw exception if file not found
-     */
+    /** @var bool Throw exception if file not found */
     private bool $strict = false;
 
     private Aliases $aliases;
@@ -35,26 +30,26 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
 
     public function withConfig(array $config): self
     {
-        if (empty($config['files'])) {
-            throw new InvalidArgumentException('Files not set.');
-        }
-        if (!is_array($config['files'])) {
+        $files = $config['files'] ?? [];
+        if (!is_array($files)) {
             throw new InvalidArgumentException('The "files" parameter must be an array.');
         }
-
-        if (isset($config['strict'])) {
-            if (!is_bool($config['strict'])) {
-                throw new InvalidArgumentException('The "strict" parameter must be a boolean.');
-            }
-            $strict = $config['strict'];
-        } else {
-            $strict = $this->strict;
+        if (count($files) === 0) {
+            throw new InvalidArgumentException('Schema file list is not set.');
         }
 
-        $files = $config['files'];
+        $strict = $config['strict'] ?? $this->strict;
+        if (!is_bool($strict)) {
+            throw new InvalidArgumentException('The "strict" parameter must be a boolean.');
+        }
 
         $files = array_map(
-            fn ($file) => $this->aliases->get($file),
+            function ($file) {
+                if (!is_string($file)) {
+                    throw new InvalidArgumentException('The "files" parameter must contain string values.');
+                }
+                return $this->aliases->get($file);
+            },
             $files
         );
 
