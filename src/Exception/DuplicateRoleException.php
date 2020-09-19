@@ -9,7 +9,6 @@ use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
 class DuplicateRoleException extends LogicException implements FriendlyExceptionInterface
 {
-
     public function __construct(string $role)
     {
         parent::__construct('The "' . $role . '" role already exists in the DB schema.');

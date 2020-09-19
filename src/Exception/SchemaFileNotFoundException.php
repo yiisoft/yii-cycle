@@ -9,7 +9,6 @@ use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
 class SchemaFileNotFoundException extends RuntimeException implements FriendlyExceptionInterface
 {
-
     public function __construct(string $file)
     {
         parent::__construct('Schema file "' . $file . '" not found.');
