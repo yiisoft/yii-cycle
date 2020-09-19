@@ -27,8 +27,6 @@ class FromFilesSchemaProviderTest extends TestCase
 
     /**
      * @dataProvider getWithConfigEmptyData
-     *
-     * @param array $config
      */
     public function testWithConfigEmpty(array $config): void
     {
@@ -46,6 +44,29 @@ class FromFilesSchemaProviderTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('The "files" parameter must be an array.');
         $schemaProvider->withConfig(['files' => '@dir/schema1.php']);
+    }
+
+    public function FileListBadValuesDataProvider(): array
+    {
+        return [
+            [null],
+            [42],
+            [STDIN],
+            [[]],
+            [new \SplFileInfo(__FILE__)],
+        ];
+    }
+
+    /**
+     * @dataProvider FileListBadValuesDataProvider
+     */
+    public function testWithConfigInvalidValueInFileList($value): void
+    {
+        $schemaProvider = $this->createSchemaProvider();
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The "files" parameter must contain string values.');
+        $schemaProvider->withConfig(['files' => [$value]]);
     }
 
     public function testWithConfigInvalidStrict(): void
