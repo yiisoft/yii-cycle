@@ -3,11 +3,12 @@
 declare(strict_types=1);
 
 use Cycle\ORM\Factory;
-use Cycle\ORM\FactoryInterface;
+use Cycle\ORM\FactoryInterface as CycleFactoryInterface;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
+use Spiral\Core\FactoryInterface as SpiralFactoryInterface;
 use Spiral\Database\DatabaseManager;
 use Spiral\Database\DatabaseProviderInterface;
 use Yiisoft\Yii\Cycle\Exception\SchemaWasNotProvidedException;
@@ -30,12 +31,14 @@ return [
     },
     // Cycle ORM
     ORMInterface::class => new OrmFactory($params['yiisoft/yii-cycle']['orm-promise-factory']),
+    // Spiral Core Factory
+    SpiralFactoryInterface::class => static fn (ContainerInterface $container) => new CycleDynamicFactory($container),
     // Factory for Cycle ORM
-    FactoryInterface::class => static function (ContainerInterface $container) {
+    CycleFactoryInterface::class => static function (ContainerInterface $container) {
         return new Factory(
             $container->get(DatabaseManager::class),
             null,
-            new CycleDynamicFactory($container),
+            $container->get(SpiralFactoryInterface::class),
             $container
         );
     },
