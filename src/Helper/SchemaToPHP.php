@@ -140,7 +140,7 @@ final class SchemaToPHP
             $relationResult = [];
             // replace numeric keys and values to constants
             foreach ($relation as $option => $value) {
-                $item = new ArrayItem(self::GENERAL_OPTION[$option] ?? $option, $value);
+                $item = new ArrayItem(self::GENERAL_OPTION[$option] ?? (string)$option, $value);
                 if ($option === Relation::LOAD && isset(self::RELATION[$value])) {
                     $item->value = self::PREFETCH_MODE[$value];
                     $item->wrapValue = false;
@@ -151,7 +151,7 @@ final class SchemaToPHP
                     $resultList = [];
                     foreach ($value as $listKey => $listValue) {
                         $resultList[] = new ArrayItem(
-                            array_key_exists($listKey, self::RELATION_OPTION) ? self::RELATION_OPTION[$listKey] : $listKey,
+                            array_key_exists($listKey, self::RELATION_OPTION) ? self::RELATION_OPTION[$listKey] : (string)$listKey,
                             $listValue
                         );
                     }
