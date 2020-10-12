@@ -75,7 +75,7 @@ final class SchemaManager
     }
 
     /**
-     * @return Generator|SchemaProviderInterface[]
+     * @return Generator<int|string, SchemaProviderInterface>
      * @throws BadDeclarationException
      */
     private function getProviders(): Generator
@@ -93,7 +93,7 @@ final class SchemaManager
             if (!$provider instanceof SchemaProviderInterface) {
                 throw new BadDeclarationException('Provider', SchemaProviderInterface::class, $provider);
             }
-            yield $provider;
+            yield $key => $provider;
         }
     }
 }

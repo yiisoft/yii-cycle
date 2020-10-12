@@ -115,11 +115,10 @@ final class SelectDataReader implements DataReaderInterface
 
     public function read(): iterable
     {
-        if ($this->itemsCache->getCollection() !== null) {
-            return $this->itemsCache->getCollection();
+        if ($this->itemsCache->getCollection() === null) {
+            $query = $this->buildQuery();
+            $this->itemsCache->setCollection($query->fetchAll());
         }
-        $query = $this->buildQuery();
-        $this->itemsCache->setCollection($query->fetchAll());
         return $this->itemsCache->getCollection();
     }
 
@@ -145,11 +144,7 @@ final class SelectDataReader implements DataReaderInterface
      */
     public function getIterator(): \Generator
     {
-        if ($this->itemsCache->getCollection() !== null) {
-            yield from $this->itemsCache->getCollection();
-        } else {
-            yield from $this->buildQuery()->getIterator();
-        }
+        yield from ($this->itemsCache->getCollection() ?? $this->buildQuery()->getIterator());
     }
 
     /**
@@ -233,14 +228,16 @@ final class SelectDataReader implements DataReaderInterface
     private function makeFilterClosure(): Closure
     {
         return function (QueryBuilder $select) {
+            /** @psalm-suppress PossiblyNullReference */
             $filter = $this->filter->toArray();
             $operation = array_shift($filter);
             $arguments = $filter;
 
-            $processor = $this->filterProcessors[$operation] ?? null;
-            if ($processor === null) {
+            if (!array_key_exists($operation, $this->filterProcessors)) {
                 throw new \RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
             }
+            /** @psalm-var QueryBuilderProcessor $processor */
+            $processor = $this->filterProcessors[$operation];
             $select->where(...$processor->getAsWhereArguments($arguments, $this->filterProcessors));
         };
     }

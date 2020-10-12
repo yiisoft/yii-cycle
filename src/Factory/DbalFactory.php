@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Factory;
 
-use Psr\Container\ContainerExceptionInterface;
+use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -53,12 +53,12 @@ final class DbalFactory
     /**
      * @param string|LoggerInterface $logger
      * @return LoggerInterface
-     * @throws RuntimeException
-     * @throws ContainerExceptionInterface
+     * @throws Exception
      */
     private function prepareLogger($logger): LoggerInterface
     {
         if (is_string($logger)) {
+            /** @psalm-suppress PossiblyNullReference */
             $logger = $this->container->get($logger);
         }
         if (!$logger instanceof LoggerInterface) {
@@ -101,6 +101,7 @@ final class DbalFactory
 
     private function getAlias(string $alias): string
     {
+        /** @psalm-suppress PossiblyNullReference */
         return $this->container->get(Aliases::class)->get($alias);
     }
 }

@@ -41,7 +41,7 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
         return (new Compiler())->compile(new Registry($this->dbal), $generators);
     }
 
-    public function write($schema): bool
+    public function write(array $schema): bool
     {
         return false;
     }

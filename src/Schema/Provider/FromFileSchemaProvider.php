@@ -36,7 +36,7 @@ final class FromFileSchemaProvider implements SchemaProviderInterface
         return include $this->file;
     }
 
-    public function write($schema): bool
+    public function write(array $schema): bool
     {
         return false;
     }

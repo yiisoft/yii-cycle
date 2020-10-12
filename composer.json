@@ -34,8 +34,8 @@
     },
     "require-dev": {
         "infection/infection": "^0.16.4",
-        "phan/phan": "^3.0",
-        "phpunit/phpunit": "^9.3",
+        "phpunit/phpunit": "^9.4",
+        "vimeo/psalm": "^3.16",
         "yiisoft/test-support": "^3.0@dev"
     },
     "autoload": {
@@ -63,7 +63,7 @@
         "test": [
             "phpunit --colors=always",
             "infection --no-progress",
-            "phan --no-progress-bar"
+            "psalm"
         ]
     },
     "config": {

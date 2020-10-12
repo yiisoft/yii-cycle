@@ -11,12 +11,19 @@ final class ArrayItem
     public $value;
     public bool $wrapValue = true;
     public bool $wrapKey;
+
+    /**
+     * @param null|string $key
+     * @param mixed $value
+     * @param bool $wrapKey
+     */
     public function __construct(?string $key, $value = null, bool $wrapKey = false)
     {
         $this->key = $key;
         $this->value = $value;
         $this->wrapKey = $wrapKey;
     }
+
     public function __toString()
     {
         $result = '';
@@ -25,7 +32,12 @@ final class ArrayItem
         }
         return $result . $this->renderValue($this->value);
     }
-    private function renderValue($value)
+
+    /**
+     * @param mixed $value
+     * @return string
+     */
+    private function renderValue($value): string
     {
         if ($value === null) {
             return 'null';

@@ -8,6 +8,11 @@ use Exception;
 
 class BadDeclarationException extends Exception
 {
+    /**
+     * @param string $parameter
+     * @param string $class
+     * @param mixed $argument
+     */
     public function __construct(string $parameter, string $class, $argument)
     {
         $type = is_object($argument) ? 'Instance of ' . get_class($argument) : ucfirst(gettype($argument));
