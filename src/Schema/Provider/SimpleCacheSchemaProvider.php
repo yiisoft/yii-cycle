@@ -30,7 +30,7 @@ final class SimpleCacheSchemaProvider implements SchemaProviderInterface
         return $this->cache->get($this->key);
     }
 
-    public function write($schema): bool
+    public function write(array $schema): bool
     {
         return $this->cache->set($this->key, $schema);
     }

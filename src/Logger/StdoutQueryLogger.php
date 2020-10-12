@@ -23,6 +23,7 @@ class StdoutQueryLogger implements LoggerInterface
     private int $countWrites;
     private int $countReads;
     private array $buffer = [];
+    /** @var false|resource */
     private $fp;
 
     public function __construct()
@@ -84,14 +85,14 @@ class StdoutQueryLogger implements LoggerInterface
     private function print(string $str): void
     {
         $this->buffer[] = $str;
-        if (!$this->display || $this->fp === null) {
+        if (!$this->display || $this->fp === false) {
             return;
         }
         try {
             fwrite($this->fp, "{$str}\n");
         } catch (\Throwable $e) {
             fclose($this->fp);
-            $this->fp = null;
+            $this->fp = false;
         }
     }
 

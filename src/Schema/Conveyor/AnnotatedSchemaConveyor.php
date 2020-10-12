@@ -56,7 +56,10 @@ final class AnnotatedSchemaConveyor extends SchemaConveyor
         if ($this->isAddedAnnotated) {
             return;
         }
-        // autoload annotations
+        /**
+         * autoload annotations
+         * @psalm-suppress DeprecatedMethod
+         */
         AnnotationRegistry::registerLoader('class_exists');
 
         $this->isAddedAnnotated = true;

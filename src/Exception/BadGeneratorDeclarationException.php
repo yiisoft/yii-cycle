@@ -9,6 +9,9 @@ use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
 class BadGeneratorDeclarationException extends BadDeclarationException implements FriendlyExceptionInterface
 {
+    /**
+     * @param mixed $argument
+     */
     public function __construct($argument)
     {
         parent::__construct('Generator', GeneratorInterface::class, $argument);

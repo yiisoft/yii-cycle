@@ -16,7 +16,7 @@ final class MigrationListener
         $this->schemaManager = $schemaManager;
     }
 
-    public function onAfterMigrate(AfterMigrate $event)
+    public function onAfterMigrate(AfterMigrate $event): void
     {
         $this->schemaManager->clear();
     }
