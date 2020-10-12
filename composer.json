@@ -26,6 +26,7 @@
         "cycle/orm": "^1.2",
         "psr/event-dispatcher": "^1.0",
         "psr/simple-cache": "^1.0",
+        "vimeo/psalm": "^3.16",
         "yiisoft/aliases": "^1.0",
         "yiisoft/data": "@dev",
         "yiisoft/friendly-exception": "^1.0",
@@ -34,7 +35,6 @@
     },
     "require-dev": {
         "infection/infection": "^0.16.4",
-        "phan/phan": "^3.0",
         "phpunit/phpunit": "^9.3",
         "yiisoft/test-support": "^3.0@dev"
     },
@@ -63,7 +63,7 @@
         "test": [
             "phpunit --colors=always",
             "infection --no-progress",
-            "phan --no-progress-bar"
+            "psalm"
         ]
     },
     "config": {
