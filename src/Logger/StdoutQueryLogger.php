@@ -91,6 +91,7 @@ class StdoutQueryLogger implements LoggerInterface
         try {
             fwrite($this->fp, "{$str}\n");
         } catch (\Throwable $e) {
+            /** @psalm-suppress InvalidPropertyAssignmentValue */
             fclose($this->fp);
             $this->fp = false;
         }

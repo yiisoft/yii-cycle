@@ -144,11 +144,7 @@ final class SelectDataReader implements DataReaderInterface
      */
     public function getIterator(): \Generator
     {
-        if ($this->itemsCache->getCollection() !== null) {
-            yield from $this->itemsCache->getCollection();
-        } else {
-            yield from $this->buildQuery()->getIterator();
-        }
+        yield from ($this->itemsCache->getCollection() ?? $this->buildQuery()->getIterator());
     }
 
     /**
