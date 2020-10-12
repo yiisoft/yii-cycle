@@ -115,11 +115,10 @@ final class SelectDataReader implements DataReaderInterface
 
     public function read(): iterable
     {
-        if ($this->itemsCache->getCollection() !== null) {
-            return $this->itemsCache->getCollection();
+        if ($this->itemsCache->getCollection() === null) {
+            $query = $this->buildQuery();
+            $this->itemsCache->setCollection($query->fetchAll());
         }
-        $query = $this->buildQuery();
-        $this->itemsCache->setCollection($query->fetchAll());
         return $this->itemsCache->getCollection();
     }
 

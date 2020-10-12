@@ -18,6 +18,9 @@ final class CachedCollection
         return $this->collection !== null;
     }
 
+    /**
+     * @psalm-ignore-nullable-return
+     */
     public function getCollection(): ?iterable
     {
         return $this->collection;

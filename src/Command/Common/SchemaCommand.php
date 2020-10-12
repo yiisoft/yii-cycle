@@ -165,11 +165,11 @@ final class SchemaCommand extends Command
                 $output->writeln("=> <fg=magenta>{$target}</>.<fg=green>{$outerKey}</> ");
                 if (count($where)) {
                     $output->write("       Where:");
-                    $output->writeln(str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($where, 1)));
+                    $output->writeln(str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($where, true)));
                 }
                 if (count($mmWhere)) {
                     $output->write("       Through where:");
-                    $output->writeln(str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($mmWhere, 1)));
+                    $output->writeln(str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($mmWhere, true)));
                 }
             }
         } else {

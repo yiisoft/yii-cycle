@@ -48,10 +48,10 @@ class SchemaConveyor implements SchemaConveyorInterface
                 $generator = null;
                 if (is_string($generatorDefinition)) {
                     $generator = $this->container->get($generatorDefinition);
-                } elseif (is_object($generatorDefinition) && $generatorDefinition instanceof GeneratorInterface) {
+                } elseif ($generatorDefinition instanceof GeneratorInterface) {
                     $result[] = $generatorDefinition;
                     continue;
-                } elseif (is_object($generatorDefinition) && method_exists($generatorDefinition, '__invoke')) {
+                } elseif (is_object($generatorDefinition) && is_callable($generatorDefinition)) {
                     $generator = $generatorDefinition($this->container);
                 }
                 if ($generator instanceof GeneratorInterface) {

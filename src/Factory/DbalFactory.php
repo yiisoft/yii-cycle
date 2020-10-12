@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Factory;
 
-use Psr\Container\ContainerExceptionInterface;
+use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
@@ -53,8 +53,7 @@ final class DbalFactory
     /**
      * @param string|LoggerInterface $logger
      * @return LoggerInterface
-     * @throws RuntimeException
-     * @throws ContainerExceptionInterface
+     * @throws Exception
      */
     private function prepareLogger($logger): LoggerInterface
     {
