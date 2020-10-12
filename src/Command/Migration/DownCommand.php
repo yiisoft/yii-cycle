@@ -37,14 +37,13 @@ final class DownCommand extends BaseMigrationCommand
     {
         $migrations = $this->findMigrations($output);
         // check any executed migration
-        $exist = false;
         foreach (array_reverse($migrations) as $migration) {
             if ($migration->getState()->getStatus() === State::STATUS_EXECUTED) {
                 $exist = true;
                 break;
             }
         }
-        if (!$exist) {
+        if (!isset($migration)) {
             $output->writeln('<fg=red>No migration found for rollback</>');
             return ExitCode::OK;
         }

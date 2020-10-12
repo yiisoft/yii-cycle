@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Cycle\Schema\Generator;
 use Cycle\Schema\GeneratorInterface;
 use Cycle\Schema\Registry;
 use Spiral\Database\Schema\AbstractTable;
-use Spiral\Database\Schema\Comparator;
+use Spiral\Database\Schema\ComparatorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class PrintChanges implements GeneratorInterface
@@ -76,7 +76,7 @@ final class PrintChanges implements GeneratorInterface
         $this->describeFKs($cmp);
     }
 
-    private function describeColumns(Comparator $cmp): void
+    private function describeColumns(ComparatorInterface $cmp): void
     {
         foreach ($cmp->addedColumns() as $column) {
             $this->output->writeln("    - add column <fg=yellow>{$column->getName()}</fg=yellow>");
@@ -90,7 +90,7 @@ final class PrintChanges implements GeneratorInterface
         }
     }
 
-    private function describeIndexes(Comparator $cmp): void
+    private function describeIndexes(ComparatorInterface $cmp): void
     {
         foreach ($cmp->addedIndexes() as $index) {
             $index = join(', ', $index->getColumns());
@@ -107,7 +107,7 @@ final class PrintChanges implements GeneratorInterface
         }
     }
 
-    private function describeFKs(Comparator $cmp): void
+    private function describeFKs(ComparatorInterface $cmp): void
     {
         foreach ($cmp->addedForeignKeys() as $fk) {
             $fkColumns = join(', ', $fk->getColumns());

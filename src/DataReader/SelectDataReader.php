@@ -232,14 +232,16 @@ final class SelectDataReader implements DataReaderInterface
     private function makeFilterClosure(): Closure
     {
         return function (QueryBuilder $select) {
+            /** @psalm-suppress PossiblyNullReference */
             $filter = $this->filter->toArray();
             $operation = array_shift($filter);
             $arguments = $filter;
 
-            $processor = $this->filterProcessors[$operation] ?? null;
-            if ($processor === null) {
+            if (!array_key_exists($operation, $this->filterProcessors)) {
                 throw new \RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
             }
+            /** @psalm-var QueryBuilderProcessor $processor */
+            $processor = $this->filterProcessors[$operation];
             $select->where(...$processor->getAsWhereArguments($arguments, $this->filterProcessors));
         };
     }

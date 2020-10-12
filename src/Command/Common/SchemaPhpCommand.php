@@ -36,6 +36,7 @@ final class SchemaPhpCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @var string $file */
         $file = $input->getArgument('file');
 
         $content = (new SchemaToPHP($this->promise->getSchema()))->render();

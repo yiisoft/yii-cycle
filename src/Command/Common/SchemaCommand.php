@@ -48,6 +48,7 @@ final class SchemaCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @var string $roleArgument */
         $roleArgument = $input->getArgument('role');
         $result = true;
         $schema = $this->promise->getSchema();

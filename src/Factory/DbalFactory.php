@@ -58,6 +58,7 @@ final class DbalFactory
     private function prepareLogger($logger): LoggerInterface
     {
         if (is_string($logger)) {
+            /** @psalm-suppress PossiblyNullReference */
             $logger = $this->container->get($logger);
         }
         if (!$logger instanceof LoggerInterface) {
@@ -100,6 +101,7 @@ final class DbalFactory
 
     private function getAlias(string $alias): string
     {
+        /** @psalm-suppress PossiblyNullReference */
         return $this->container->get(Aliases::class)->get($alias);
     }
 }

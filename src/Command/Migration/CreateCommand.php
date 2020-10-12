@@ -22,6 +22,7 @@ final class CreateCommand extends BaseMigrationCommand
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
+        /** @var string $customName */
         $customName = $input->getArgument('name');
 
         $this->createEmptyMigration($output, $customName);
