@@ -9,6 +9,8 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 /**
  * Be careful, using this class may be insecure.
+ *
+ * @deprecated use {@see FromFilesSchemaProvider} instead
  */
 final class FromFileSchemaProvider implements SchemaProviderInterface
 {
