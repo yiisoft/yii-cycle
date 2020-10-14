@@ -15,8 +15,8 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
  */
 final class PhpFileSchemaProvider implements SchemaProviderInterface
 {
-    const MODE_READ_AND_WRITE = 0;
-    const MODE_WRITE_ONLY = 1;
+    public const MODE_READ_AND_WRITE = 0;
+    public const MODE_WRITE_ONLY = 1;
 
     private string $file = '';
     private int $mode = self::MODE_READ_AND_WRITE;

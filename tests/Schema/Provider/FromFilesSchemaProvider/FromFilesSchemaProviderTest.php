@@ -13,7 +13,7 @@ use Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider;
 
 class FromFilesSchemaProviderTest extends TestCase
 {
-    public function getWithConfigEmptyData(): array
+    public function EmptyConfigProvider(): array
     {
         return [
             [
@@ -26,7 +26,7 @@ class FromFilesSchemaProviderTest extends TestCase
     }
 
     /**
-     * @dataProvider getWithConfigEmptyData
+     * @dataProvider EmptyConfigProvider
      */
     public function testWithConfigEmpty(array $config): void
     {
@@ -46,7 +46,7 @@ class FromFilesSchemaProviderTest extends TestCase
         $schemaProvider->withConfig(['files' => '@dir/schema1.php']);
     }
 
-    public function FileListBadValuesDataProvider(): array
+    public function FileListBadValuesProvider(): array
     {
         return [
             [null],
@@ -58,7 +58,7 @@ class FromFilesSchemaProviderTest extends TestCase
     }
 
     /**
-     * @dataProvider FileListBadValuesDataProvider
+     * @dataProvider FileListBadValuesProvider
      */
     public function testWithConfigInvalidValueInFileList($value): void
     {
