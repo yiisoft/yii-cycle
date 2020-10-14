@@ -66,10 +66,7 @@ return [
         ],
         Schema::TYPECAST => [
             'id' => 'int',
-            'status' => [
-                0 => 'App\\User\\Typecast\\UserStatus',
-                1 => 'typecast',
-            ],
+            'status' => ['App\\User\\Typecast\\UserStatus', 'typecast'],
             'createdAt' => 'datetime',
             'updatedAt' => 'datetime',
         ],
@@ -114,10 +111,7 @@ return [
         ],
         Schema::TYPECAST => [
             'id' => 'int',
-            'status' => [
-                0 => 'App\\Agency\\Enum\\AgencyStatus',
-                1 => 'typecast',
-            ],
+            'status' => ['App\\Agency\\Enum\\AgencyStatus', 'typecast'],
             'createdAt' => 'datetime',
             'updatedAt' => 'datetime',
             'created_at' => 'datetime',
@@ -725,14 +719,8 @@ return [
         Schema::TYPECAST => [
             'id' => 'int',
             'ticketing_expiry_date' => 'datetime',
-            'status' => [
-                0 => 'App\\Flight\\Booking\\Enum\\BookingStatus',
-                1 => 'typecast',
-            ],
-            'checkinStatus' => [
-                0 => 'App\\Flight\\Booking\\Enum\\CheckInStatus',
-                1 => 'typecast',
-            ],
+            'status' => ['App\\Flight\\Booking\\Enum\\BookingStatus', 'typecast'],
+            'checkinStatus' => ['App\\Flight\\Booking\\Enum\\CheckInStatus', 'typecast'],
             'createdAt' => 'datetime',
             'updatedAt' => 'datetime',
             'created_at' => 'datetime',
@@ -807,14 +795,8 @@ return [
         ],
         Schema::TYPECAST => [
             'id' => 'int',
-            'from' => [
-                0 => 'App\\Flight\\Booking\\Typecast\\CodeTypecast',
-                1 => 'typecast',
-            ],
-            'to' => [
-                0 => 'App\\Flight\\Booking\\Typecast\\CodeTypecast',
-                1 => 'typecast',
-            ],
+            'from' => ['App\\Flight\\Booking\\Typecast\\CodeTypecast', 'typecast'],
+            'to' => ['App\\Flight\\Booking\\Typecast\\CodeTypecast', 'typecast'],
             'createdAt' => 'datetime',
             'updatedAt' => 'datetime',
             'created_at' => 'datetime',
@@ -879,14 +861,8 @@ return [
         ],
         Schema::TYPECAST => [
             'id' => 'int',
-            'type' => [
-                0 => 'Flight\\Data\\Provider\\Booking\\Enum\\PassengerType',
-                1 => 'typecast',
-            ],
-            'fields' => [
-                0 => 'Flight\\Data\\Provider\\Booking\\Injection\\PassengerFields',
-                1 => 'typecast',
-            ],
+            'type' => ['Flight\\Data\\Provider\\Booking\\Enum\\PassengerType', 'typecast'],
+            'fields' => ['Flight\\Data\\Provider\\Booking\\Injection\\PassengerFields', 'typecast'],
             'createdAt' => 'datetime',
             'updatedAt' => 'datetime',
             'created_at' => 'datetime',
@@ -996,10 +972,7 @@ return [
         ],
         Schema::TYPECAST => [
             'duration' => 'int',
-            'carrier' => [
-                0 => 'App\\Flight\\Booking\\Typecast\\CodeTypecast',
-                1 => 'typecast',
-            ],
+            'carrier' => ['App\\Flight\\Booking\\Typecast\\CodeTypecast', 'typecast'],
             'id' => 'int',
         ],
         Schema::RELATIONS => [],

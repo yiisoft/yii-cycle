@@ -6,6 +6,8 @@ namespace Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 
 final class ArrayItemRenderer
 {
+    private const MIX_LINE_LENGTH = 120;
+
     public ?string $key;
     /** @var mixed */
     public $value;
@@ -57,17 +59,52 @@ final class ArrayItemRenderer
 
     private function renderArray(array $value): string
     {
-        if (count($value) === 0) {
-            return '[]';
+        $aiKeys = $this->isAutoIncrementedKeys($value);
+        $inline = $aiKeys && $this->isScalarArrayValues($value);
+        if ($inline) {
+            $result = $this->renderArrayInline($value, !$aiKeys);
+            if (strlen($result) <= self::MIX_LINE_LENGTH) {
+                return $result;
+            }
         }
+        return $this->renderArrayBlock($value, !$aiKeys);
+    }
+
+    private function renderArrayInline(array $value, bool $withKeys = true): string
+    {
+        $elements = [];
+        foreach ($value as $key => $item) {
+            $str = '';
+            if (!$item instanceof ArrayItemRenderer && $withKeys) {
+                $str .= is_int($key) ? "{$key} => " : "'{$key}' => ";
+            }
+            $elements[] = $str . $this->renderValue($item);
+        }
+        return '[' . implode(', ', $elements) . ']';
+    }
+    private function renderArrayBlock(array $value, bool $withKeys = true): string
+    {
         $result = '[';
         foreach ($value as $key => $item) {
             $result .= "\n";
-            if (!$item instanceof ArrayItemRenderer) {
+            if (!$item instanceof ArrayItemRenderer && $withKeys) {
                 $result .= is_int($key) ? "{$key} => " : "'{$key}' => ";
             }
             $result .= $this->renderValue($item) . ',';
         }
         return str_replace("\n", "\n    ", $result) . "\n]";
+    }
+
+    private function isAutoIncrementedKeys(array $array): bool
+    {
+        return count($array) === 0 || array_keys($array) === range(0, count($array) - 1);
+    }
+    private function isScalarArrayValues(array $array): bool
+    {
+        foreach ($array as $value) {
+            if (!is_scalar($value))
+                return false;
+        }
+        return true;
     }
 }
