@@ -39,7 +39,7 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
         if (!is_file($this->file)) {
             return null;
         }
-        return include ($this->file);
+        return include $this->file;
     }
 
     public function write(array $schema): bool
