@@ -69,8 +69,8 @@ return [
             \Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class => [
                 'key' => 'my-custom-cache-key'
             ],
-            \Yiisoft\Yii\Cycle\Schema\Provider\FromFileSchemaProvider::class => [
-                'file' => '@runtime/cycle-schema.php'
+            \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
+                'files' => ['@runtime/cycle-schema.php']
             ],
             \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider::class,
         ],

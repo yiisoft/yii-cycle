@@ -40,19 +40,21 @@ Place it to the beginning of providers list to make the process of obtaining a s
 ## File-based schema
 
 If you want to avoid annotations, you can describe a schema in a PHP file.
-Use `FromFileSchemaProvider` to load a schema:
+Use `FromFilesSchemaProvider` to load a schema:
 
 ```php
 # config/common.php
-[
+return [
+    // ...
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Yiisoft\Yii\Cycle\Schema\Provider\FromFileSchemaProvider::class => [
-                'file' => '@runtime/schema.php'
+            \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
+                'files' => ['@runtime/schema.php']
             ]
         ],
-    ]
+    ],
+];
 ```
 
 ```php
@@ -79,9 +81,9 @@ return [
 
 Note that: 
 
-1. `FromFileSchemaProvider` loads a schema from a PHP-file via `include`. That requires security precautions.
-   Make sure you store schema file in a safe path restricted from users.
-2. There is no need to build a schema from annotations if you are reading it from a file. Therefore, there is no need
+1. `FromFilesSchemaProvider` loads a schema from a PHP-files via `require`. That requires security precautions.
+   Make sure you store schema files in a safe path restricted from users.
+2. There is no need to build a schema from annotations if you are reading it from files. Therefore, there is no need
    for `FromConveyorSchemaProvider` in this case.
 3. Thanks to internal cache, loading schema from a PHP-file is so fast that you can skip an external cache at all.
 4. You cannot generate migrations based on PHP-file schema. [See issue #25](https://github.com/yiisoft/yii-cycle/issues/25)
@@ -99,7 +101,7 @@ cycle/schema/php @runtime/schema.php
 
 `@runtime` alias is replaced automatically. Schema will be exported into `schema.php` file.
 
-Make sure schema exported is correct and then switch to using it via `FromFileSchemaProvider`.
+Make sure schema exported is correct and then switch to using it via `FromFilesSchemaProvider`.
 
 You can combine both ways to describe a schema. During project development it's handy to use annotations. You can generate
 migrations based on them. For production use schema could be moved into a file.
