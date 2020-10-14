@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Helper;
+namespace Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 
-final class ArrayItem
+final class ArrayItemRenderer
 {
     public ?string $key;
     /** @var mixed */
@@ -52,16 +52,19 @@ final class ArrayItem
             $result = '[';
             foreach ($value as $key => $item) {
                 $result .= "\n";
-                if (!$item instanceof ArrayItem) {
+                if (!$item instanceof ArrayItemRenderer) {
                     $result .= is_int($key) ? "{$key} => " : "'{$key}' => ";
                 }
                 $result .= $this->renderValue($item) . ',';
             }
             return str_replace("\n", "\n    ", $result) . "\n]";
         }
-        if (!$this->wrapValue || is_int($value) || $value instanceof ArrayItem) {
+        if (!$this->wrapValue || is_int($value) || $value instanceof ArrayItemRenderer) {
             return (string)$value;
         }
-        return "'" . addslashes((string)$value) . "'";
+        if (is_string($value)) {
+            return "'" . addslashes($value) . "'";
+        }
+        return "unserialize('" . addslashes(serialize($value)) . "')";
     }
 }

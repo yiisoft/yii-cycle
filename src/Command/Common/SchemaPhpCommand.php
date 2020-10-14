@@ -11,7 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
-use Yiisoft\Yii\Cycle\Helper\SchemaToPHP;
+use Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 
 final class SchemaPhpCommand extends Command
 {
@@ -39,7 +39,7 @@ final class SchemaPhpCommand extends Command
         /** @var null|string $file */
         $file = $input->getArgument('file');
 
-        $content = (new SchemaToPHP($this->promise->getSchema()))->render();
+        $content = (new SchemaToPHP($this->promise->getSchema()))->convert();
         if ($file !== null) {
             $file = $this->aliases->get($file);
             $output->writeln("Destination: <fg=cyan>{$file}</>");
