@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Schema\Provider;
 
 use Cycle\ORM\Schema;
+use RuntimeException;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
@@ -14,7 +15,11 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
  */
 final class PhpFileSchemaProvider implements SchemaProviderInterface
 {
+    const MODE_READ_AND_WRITE = 0;
+    const MODE_WRITE_ONLY = 1;
+
     private string $file = '';
+    private int $mode = self::MODE_READ_AND_WRITE;
 
     private Aliases $aliases;
 
@@ -26,16 +31,23 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
     public function withConfig(array $config): self
     {
         $new = clone $this;
+
         // required option
         if ($this->file === '' && !array_key_exists('file', $config)) {
             throw new \InvalidArgumentException('The "file" parameter is required.');
         }
         $new->file = $this->aliases->get($config['file']);
+
+        $new->mode = $config['mode'] ?? $this->mode;
+
         return $new;
     }
 
     public function read(): ?array
     {
+        if ($this->mode === self::MODE_WRITE_ONLY) {
+            throw new RuntimeException(__CLASS__ . ' can not read schema.');
+        }
         if (!is_file($this->file)) {
             return null;
         }
@@ -55,10 +67,10 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
             return;
         }
         if (!is_file($this->file)) {
-            throw new \RuntimeException("`$this->file` is not a file.");
+            throw new RuntimeException("`$this->file` is not a file.");
         }
         if (!is_writable($this->file)) {
-            throw new \RuntimeException("File `$this->file` is not writeable.");
+            throw new RuntimeException("File `$this->file` is not writeable.");
         }
         unlink($this->file);
     }
@@ -80,6 +92,6 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
 
     public function isReadable(): bool
     {
-        return true;
+        return $this->mode !== self::MODE_WRITE_ONLY;
     }
 }

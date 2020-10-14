@@ -102,8 +102,9 @@ final class ArrayItemRenderer
     private function isScalarArrayValues(array $array): bool
     {
         foreach ($array as $value) {
-            if (!is_scalar($value))
+            if (!is_scalar($value)) {
                 return false;
+            }
         }
         return true;
     }
