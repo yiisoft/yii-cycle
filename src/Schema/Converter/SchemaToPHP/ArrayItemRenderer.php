@@ -39,32 +39,35 @@ final class ArrayItemRenderer
      */
     private function renderValue($value): string
     {
-        if ($value === null) {
-            return 'null';
+        switch (true) {
+            case $value === null:
+                return 'null';
+            case is_bool($value):
+                return $value ? 'true' : 'false';
+            case is_array($value):
+                return $this->renderArray($value);
+            case !$this->wrapValue || is_int($value) || $value instanceof ArrayItemRenderer:
+                return (string)$value;
+            case is_string($value):
+                return "'" . addslashes($value) . "'";
+            default:
+                return "unserialize('" . addslashes(serialize($value)) . "')";
         }
-        if (is_bool($value)) {
-            return $value ? 'true' : 'false';
+    }
+
+    private function renderArray(array $value): string
+    {
+        if (count($value) === 0) {
+            return '[]';
         }
-        if (is_array($value)) {
-            if (count($value) === 0) {
-                return '[]';
+        $result = '[';
+        foreach ($value as $key => $item) {
+            $result .= "\n";
+            if (!$item instanceof ArrayItemRenderer) {
+                $result .= is_int($key) ? "{$key} => " : "'{$key}' => ";
             }
-            $result = '[';
-            foreach ($value as $key => $item) {
-                $result .= "\n";
-                if (!$item instanceof ArrayItemRenderer) {
-                    $result .= is_int($key) ? "{$key} => " : "'{$key}' => ";
-                }
-                $result .= $this->renderValue($item) . ',';
-            }
-            return str_replace("\n", "\n    ", $result) . "\n]";
+            $result .= $this->renderValue($item) . ',';
         }
-        if (!$this->wrapValue || is_int($value) || $value instanceof ArrayItemRenderer) {
-            return (string)$value;
-        }
-        if (is_string($value)) {
-            return "'" . addslashes($value) . "'";
-        }
-        return "unserialize('" . addslashes(serialize($value)) . "')";
+        return str_replace("\n", "\n    ", $result) . "\n]";
     }
 }

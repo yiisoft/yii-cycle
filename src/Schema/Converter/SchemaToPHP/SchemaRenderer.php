@@ -145,10 +145,10 @@ final class SchemaRenderer
         $item = new ArrayItemRenderer(self::GENERAL_OPTION[$option] ?? (string)$option, $value);
 
         // replace numeric keys and values to constants
-        if ($option === Relation::LOAD && isset(self::RELATION[$value])) {
+        if ($option === Relation::LOAD && array_key_exists($value, self::PREFETCH_MODE)) {
             $item->value = self::PREFETCH_MODE[$value];
             $item->wrapValue = false;
-        } elseif ($option === Relation::TYPE && isset(self::RELATION[$value])) {
+        } elseif ($option === Relation::TYPE && array_key_exists($value, self::RELATION)) {
             $item->value = self::RELATION[$value];
             $item->wrapValue = false;
         } elseif ($option === Relation::SCHEMA && is_array($value)) {
