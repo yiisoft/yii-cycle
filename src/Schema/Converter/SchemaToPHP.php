@@ -38,5 +38,4 @@ final class SchemaToPHP
         $result .= "\nreturn {$renderedArray};\n";
         return $result;
     }
-
 }
