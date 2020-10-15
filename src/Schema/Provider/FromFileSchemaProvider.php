@@ -30,31 +30,17 @@ final class FromFileSchemaProvider implements SchemaProviderInterface
         return $new;
     }
 
-    public function read(): ?array
+    public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
         if (!is_file($this->file)) {
             return null;
         }
-        return include $this->file;
-    }
-
-    public function write(array $schema): bool
-    {
-        return false;
+        $schema = include $this->file;
+        return $schema !== null && $nextProvider === null ? $schema : $nextProvider->read();
     }
 
     public function clear(): bool
     {
         return false;
-    }
-
-    public function isWritable(): bool
-    {
-        return false;
-    }
-
-    public function isReadable(): bool
-    {
-        return true;
     }
 }

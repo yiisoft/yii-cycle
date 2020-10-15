@@ -8,13 +8,7 @@ interface SchemaProviderInterface
 {
     public function withConfig(array $config): self;
 
-    public function isWritable(): bool;
-
-    public function isReadable(): bool;
-
-    public function read(): ?array;
-
-    public function write(array $schema): bool;
+    public function read(?SchemaProviderInterface $nextProvider = null): ?array;
 
     public function clear(): bool;
 }
