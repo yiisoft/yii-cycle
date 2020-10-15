@@ -40,7 +40,7 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
         $generators = $this->getGenerators();
         $schema = (new Compiler())->compile(new Registry($this->dbal), $generators);
 
-        return $schema !== null && $nextProvider === null ? $schema : $nextProvider->read();
+        return $schema !== null || $nextProvider === null ? $schema : $nextProvider->read();
     }
 
     public function clear(): bool

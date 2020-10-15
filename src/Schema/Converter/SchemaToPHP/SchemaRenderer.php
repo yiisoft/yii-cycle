@@ -127,7 +127,7 @@ final class SchemaRenderer
     }
     private function renderRelations(string $role): ArrayItemExporter
     {
-        $relations = $this->schema->define($role, Schema::RELATIONS);
+        $relations = $this->schema->define($role, Schema::RELATIONS) ?? [];
         $results = [];
         foreach ($relations as $field => $relation) {
             $relationResult = [];

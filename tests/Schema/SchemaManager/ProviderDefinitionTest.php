@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Schema\SchemaManager;
 
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
-use Yiisoft\Yii\Cycle\Tests\Schema\SchemaManager\Stub\ArraySchemaProvider;
+use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 
 final class ProviderDefinitionTest extends BaseSchemaManagerTest
 {

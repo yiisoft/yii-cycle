@@ -29,8 +29,8 @@ final class SimpleCacheSchemaProvider implements SchemaProviderInterface
     {
         $schema = $this->cache->get($this->key);
 
-        if ($schema === null && $nextProvider === null) {
-            return null;
+        if ($schema !== null || $nextProvider === null) {
+            return $schema;
         }
 
         $schema = $nextProvider->read();

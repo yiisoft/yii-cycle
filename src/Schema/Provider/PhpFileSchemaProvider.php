@@ -51,8 +51,8 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
             $schema = !is_file($this->file) ? null : (include $this->file);
         }
 
-        if ($schema === null && $nextProvider === null) {
-            return null;
+        if ($schema !== null || $nextProvider === null) {
+            return $schema;
         }
 
         $schema = $nextProvider->read();

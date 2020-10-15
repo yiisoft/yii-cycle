@@ -24,6 +24,9 @@ final class SchemaManager
 
     public function read(): ?array
     {
+        if ($this->providers->count() === 0) {
+            return null;
+        }
         $this->providers->rewind();
         return $this->providers->current()->read();
     }

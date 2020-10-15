@@ -9,6 +9,7 @@ use RuntimeException;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Schema\Provider\PhpFileSchemaProvider;
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 
 final class PhpFileSchemaProviderTest extends TestCase
 {
@@ -30,8 +31,6 @@ final class PhpFileSchemaProviderTest extends TestCase
     {
         $provider = $this->createSchemaProvider();
 
-        $this->assertTrue($provider->isReadable());
-        $this->assertTrue($provider->isWritable());
         $this->assertNull($provider->read());
     }
     public function testWithConfigImmutable(): void
@@ -49,14 +48,34 @@ final class PhpFileSchemaProviderTest extends TestCase
 
         $this->createSchemaProvider([]);
     }
-    public function testModeWriteOnly(): void
+    public function testModeWriteOnlyWithoutSchemaFromNextProvider(): void
+    {
+        $config = self::WRITE_CONFIG;
+        $config['mode'] = PhpFileSchemaProvider::MODE_WRITE_ONLY;
+        $provider = $this->createSchemaProvider($config);
+        $nextProvider = new ArraySchemaProvider(null);
+
+        $this->assertNull($provider->read($nextProvider));
+        $this->assertFileDoesNotExist(self::TMP_FILE, 'Empty schema file is created.');
+    }
+    public function testModeWriteOnlyWithSchemaFromNextProvider(): void
+    {
+        $config = self::WRITE_CONFIG;
+        $config['mode'] = PhpFileSchemaProvider::MODE_WRITE_ONLY;
+        $provider = $this->createSchemaProvider($config);
+        $nextProvider = new ArraySchemaProvider(self::DEFAULT_SCHEMA);
+        $this->assertSame(self::DEFAULT_SCHEMA, $provider->read($nextProvider));
+        $this->assertFileExists(self::TMP_FILE, 'Schema file is not created.');
+    }
+    public function testModeWriteOnlyWithoutNextProviderException(): void
     {
         $config = self::DEFAULT_CONFIG;
         $config['mode'] = PhpFileSchemaProvider::MODE_WRITE_ONLY;
         $provider = $this->createSchemaProvider($config);
 
-        $this->assertFalse($provider->isReadable());
-        $this->assertTrue($provider->isWritable());
+        $this->expectException(RuntimeException::class);
+
+        $provider->read();
     }
     public function testModeWriteOnlyExceptionOnRead(): void
     {
@@ -76,7 +95,7 @@ final class PhpFileSchemaProviderTest extends TestCase
         $result = $provider->clear();
 
         $this->assertTrue($result);
-        $this->assertFalse($this->isTmpFileExists());
+        $this->assertFileDoesNotExist(self::TMP_FILE);
     }
     public function testClearNotExistingFile(): void
     {
@@ -101,23 +120,19 @@ final class PhpFileSchemaProviderTest extends TestCase
         $result = $provider->write([]);
 
         $this->assertTrue($result);
-        $this->assertTrue($this->isTmpFileExists());
+        $this->assertFileExists(self::TMP_FILE);
     }
 
     public function testPrepareTmpFile(): void
     {
         $this->prepareTmpFile();
-        $this->assertTrue($this->isTmpFileExists());
+        $this->assertFileExists(self::TMP_FILE);
     }
     public function testRemoveTmpFile(): void
     {
         $this->prepareTmpFile();
         $this->removeTmpFile();
-        $this->assertFalse($this->isTmpFileExists());
-    }
-    private function isTmpFileExists(): bool
-    {
-        return is_file(self::TMP_FILE);
+        $this->assertFileDoesNotExist(self::TMP_FILE);
     }
     private function prepareTmpFile(): void
     {

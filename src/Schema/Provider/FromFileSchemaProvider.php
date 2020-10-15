@@ -36,7 +36,7 @@ final class FromFileSchemaProvider implements SchemaProviderInterface
             return null;
         }
         $schema = include $this->file;
-        return $schema !== null && $nextProvider === null ? $schema : $nextProvider->read();
+        return $schema !== null || $nextProvider === null ? $schema : $nextProvider->read();
     }
 
     public function clear(): bool

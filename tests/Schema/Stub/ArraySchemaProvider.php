@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Tests\Schema\SchemaManager\Stub;
+namespace Yiisoft\Yii\Cycle\Tests\Schema\Stub;
 
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
@@ -23,22 +23,13 @@ final class ArraySchemaProvider implements SchemaProviderInterface
         $new->schema = $config;
         return $new;
     }
-    public function isWritable(): bool
+    public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
-        return true;
-    }
-    public function isReadable(): bool
-    {
-        return true;
-    }
-    public function read(): ?array
-    {
+        if ($this->schema !== null) {
+            return $this->schema;
+        }
+        $this->schema = $nextProvider === null ? null : $nextProvider->read();
         return $this->schema;
-    }
-    public function write(array $schema): bool
-    {
-        $this->schema = $schema;
-        return true;
     }
     public function clear(): bool
     {

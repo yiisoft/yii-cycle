@@ -187,28 +187,10 @@ class FromFilesSchemaProviderTest extends TestCase
             ->read();
     }
 
-    public function testWrite(): void
-    {
-        $schemaProvider = $this->createSchemaProvider();
-        $this->assertFalse($schemaProvider->write([]));
-    }
-
     public function testClear(): void
     {
         $schemaProvider = $this->createSchemaProvider();
         $this->assertFalse($schemaProvider->clear());
-    }
-
-    public function testIsWritable(): void
-    {
-        $schemaProvider = $this->createSchemaProvider();
-        $this->assertFalse($schemaProvider->isWritable());
-    }
-
-    public function testIsReadable(): void
-    {
-        $schemaProvider = $this->createSchemaProvider();
-        $this->assertTrue($schemaProvider->isReadable());
     }
 
     private function createSchemaProvider(): FromFilesSchemaProvider
