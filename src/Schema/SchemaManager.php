@@ -14,7 +14,7 @@ use Yiisoft\Yii\Cycle\Schema\Provider\DeferredSchemaProviderDecorator;
  */
 final class SchemaManager
 {
-    /** @var SplDoublyLinkedList<int|SchemaProviderInterface> */
+    /** @var SplDoublyLinkedList<int, SchemaProviderInterface> */
     private SplDoublyLinkedList $providers;
 
     public function __construct(ContainerInterface $container, array $providers)

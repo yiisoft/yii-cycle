@@ -5,14 +5,17 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\FromFilesSchemaProvider;
 
 use InvalidArgumentException;
-use PHPUnit\Framework\TestCase;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Exception\DuplicateRoleException;
 use Yiisoft\Yii\Cycle\Exception\SchemaFileNotFoundException;
 use Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider;
+use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProviderTest;
 
-class FromFilesSchemaProviderTest extends TestCase
+class FromFilesSchemaProviderTest extends BaseSchemaProviderTest
 {
+    protected const READ_CONFIG = ['files' => ['@dir/schema1.php']];
+    protected const DEFAULT_CONFIG_SCHEMA = ['user' => []];
+
     public function EmptyConfigProvider(): array
     {
         return [
@@ -132,18 +135,6 @@ class FromFilesSchemaProviderTest extends TestCase
         $schemaProvider->read();
     }
 
-    public function testWithConfigImmutable(): void
-    {
-        $schemaProvider1 = $this->createSchemaProvider();
-        $schemaProvider2 = $schemaProvider1->withConfig([
-            'files' => ['@dir/schema1.php'],
-        ]);
-        $this->assertNull($schemaProvider1->read());
-        $this->assertSame([
-            'user' => [],
-        ], $schemaProvider2->read());
-    }
-
     public function testRead(): void
     {
         $schemaProvider = $this->createSchemaProvider();
@@ -193,9 +184,10 @@ class FromFilesSchemaProviderTest extends TestCase
         $this->assertFalse($schemaProvider->clear());
     }
 
-    private function createSchemaProvider(): FromFilesSchemaProvider
+    protected function createSchemaProvider(array $config = null): FromFilesSchemaProvider
     {
         $aliases = new Aliases(['@dir' => __DIR__ . '/files']);
-        return new FromFilesSchemaProvider($aliases);
+        $provider = new FromFilesSchemaProvider($aliases);
+        return $config === null ? $provider : $provider->withConfig($config);
     }
 }

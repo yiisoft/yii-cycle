@@ -28,6 +28,9 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
         $this->container = $container;
         $this->nextProvider = $nextProvider;
     }
+    /**
+     * @psalm-suppress InvalidReturnType,InvalidReturnStatement
+     */
     private function getProvider(): SchemaProviderInterface
     {
         if ($this->resolved) {
