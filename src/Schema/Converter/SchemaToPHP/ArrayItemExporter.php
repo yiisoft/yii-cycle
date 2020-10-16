@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 
-final class ArrayItemRenderer
+final class ArrayItemExporter
 {
     private const MIX_LINE_LENGTH = 120;
 
@@ -48,7 +48,7 @@ final class ArrayItemRenderer
                 return $value ? 'true' : 'false';
             case is_array($value):
                 return $this->renderArray($value);
-            case !$this->wrapValue || is_int($value) || $value instanceof ArrayItemRenderer:
+            case !$this->wrapValue || is_int($value) || $value instanceof self:
                 return (string)$value;
             case is_string($value):
                 return "'" . addslashes($value) . "'";
@@ -75,7 +75,7 @@ final class ArrayItemRenderer
         $elements = [];
         foreach ($value as $key => $item) {
             $str = '';
-            if (!$item instanceof ArrayItemRenderer && $withKeys) {
+            if (!$item instanceof ArrayItemExporter && $withKeys) {
                 $str .= is_int($key) ? "{$key} => " : "'{$key}' => ";
             }
             $elements[] = $str . $this->renderValue($item);
@@ -87,7 +87,7 @@ final class ArrayItemRenderer
         $result = '[';
         foreach ($value as $key => $item) {
             $result .= "\n";
-            if (!$item instanceof ArrayItemRenderer && $withKeys) {
+            if (!$item instanceof ArrayItemExporter && $withKeys) {
                 $result .= is_int($key) ? "{$key} => " : "'{$key}' => ";
             }
             $result .= $this->renderValue($item) . ',';

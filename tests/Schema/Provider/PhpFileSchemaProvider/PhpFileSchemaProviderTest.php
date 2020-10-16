@@ -10,7 +10,7 @@ use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Schema\Provider\PhpFileSchemaProvider;
 use PHPUnit\Framework\TestCase;
 
-class PhpFileSchemaProviderTest extends TestCase
+final class PhpFileSchemaProviderTest extends TestCase
 {
     private const DEFAULT_CONFIG = ['file' => '@dir/simple_schema.php'];
     private const WRITE_CONFIG = ['file' => self::TMP_FILE];

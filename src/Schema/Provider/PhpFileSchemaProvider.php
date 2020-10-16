@@ -10,9 +10,6 @@ use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
-/**
- * Be careful, using this class may be insecure.
- */
 final class PhpFileSchemaProvider implements SchemaProviderInterface
 {
     public const MODE_READ_AND_WRITE = 0;
@@ -56,8 +53,16 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
 
     public function write(array $schema): bool
     {
+        if (basename($this->file) === '') {
+            throw new RuntimeException('The "file" parameter must not be empty.');
+        }
+        $dirname = dirname($this->file);
+        if ($dirname !== '' && !is_dir($dirname)) {
+            mkdir($dirname, 0777, true);
+        }
+
         $content = (new SchemaToPHP(new Schema($schema)))->convert();
-        file_put_contents($this->file, $content);
+        file_put_contents($this->file, $content, LOCK_EX);
         return true;
     }
 

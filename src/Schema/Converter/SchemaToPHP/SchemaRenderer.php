@@ -58,14 +58,14 @@ final class SchemaRenderer
 
     public function render(): string
     {
-        $arrayToString = new ArrayItemRenderer(null);
+        $arrayToString = new ArrayItemExporter(null);
         foreach ($this->schema->getRoles() as $role) {
             $arrayToString->value[] = $this->renderRole($role);
         }
         return (string)$arrayToString;
     }
 
-    private function renderRole(string $role): ?ArrayItemRenderer
+    private function renderRole(string $role): ?ArrayItemExporter
     {
         $aliasOf = $this->schema->resolveAlias($role);
         if ($aliasOf !== null && $aliasOf !== $role) {
@@ -73,10 +73,10 @@ final class SchemaRenderer
             return null;
         }
         if ($this->schema->defines($role) === false) {
-            // Role has not a definition within the schema
+            // Role has no definition within the schema
             return null;
         }
-        $declaration = new ArrayItemRenderer($role, [
+        return new ArrayItemExporter($role, [
             $this->renderDatabase($role),
             $this->renderTable($role),
             $this->renderEntity($role),
@@ -88,46 +88,44 @@ final class SchemaRenderer
             $this->renderTypecast($role),
             $this->renderRelations($role),
         ], true);
-
-        return $declaration;
     }
-    private function renderDatabase(string $role): ArrayItemRenderer
+    private function renderDatabase(string $role): ArrayItemExporter
     {
-        return new ArrayItemRenderer('Schema::DATABASE', $this->schema->define($role, Schema::DATABASE));
+        return new ArrayItemExporter('Schema::DATABASE', $this->schema->define($role, Schema::DATABASE));
     }
-    private function renderTable(string $role): ArrayItemRenderer
+    private function renderTable(string $role): ArrayItemExporter
     {
-        return new ArrayItemRenderer('Schema::TABLE', $this->schema->define($role, Schema::TABLE));
+        return new ArrayItemExporter('Schema::TABLE', $this->schema->define($role, Schema::TABLE));
     }
-    private function renderEntity(string $role): ArrayItemRenderer
+    private function renderEntity(string $role): ArrayItemExporter
     {
-        return new ArrayItemRenderer('Schema::ENTITY', $this->schema->define($role, Schema::ENTITY));
+        return new ArrayItemExporter('Schema::ENTITY', $this->schema->define($role, Schema::ENTITY));
     }
-    private function renderMapper(string $role): ArrayItemRenderer
+    private function renderMapper(string $role): ArrayItemExporter
     {
-        return new ArrayItemRenderer('Schema::MAPPER', $this->schema->define($role, Schema::MAPPER));
+        return new ArrayItemExporter('Schema::MAPPER', $this->schema->define($role, Schema::MAPPER));
     }
-    private function renderRepository(string $role): ArrayItemRenderer
+    private function renderRepository(string $role): ArrayItemExporter
     {
-        return new ArrayItemRenderer('Schema::REPOSITORY', $this->schema->define($role, Schema::REPOSITORY));
+        return new ArrayItemExporter('Schema::REPOSITORY', $this->schema->define($role, Schema::REPOSITORY));
     }
-    private function renderScope(string $role): ArrayItemRenderer
+    private function renderScope(string $role): ArrayItemExporter
     {
-        return new ArrayItemRenderer('Schema::CONSTRAIN', $this->schema->define($role, Schema::CONSTRAIN));
+        return new ArrayItemExporter('Schema::CONSTRAIN', $this->schema->define($role, Schema::CONSTRAIN));
     }
-    private function renderPK(string $role): ArrayItemRenderer
+    private function renderPK(string $role): ArrayItemExporter
     {
-        return new ArrayItemRenderer('Schema::PRIMARY_KEY', $this->schema->define($role, Schema::PRIMARY_KEY));
+        return new ArrayItemExporter('Schema::PRIMARY_KEY', $this->schema->define($role, Schema::PRIMARY_KEY));
     }
-    private function renderFields(string $role): ArrayItemRenderer
+    private function renderFields(string $role): ArrayItemExporter
     {
-        return new ArrayItemRenderer('Schema::COLUMNS', $this->schema->define($role, Schema::COLUMNS));
+        return new ArrayItemExporter('Schema::COLUMNS', $this->schema->define($role, Schema::COLUMNS));
     }
-    private function renderTypecast(string $role): ArrayItemRenderer
+    private function renderTypecast(string $role): ArrayItemExporter
     {
-        return new ArrayItemRenderer('Schema::TYPECAST', $this->schema->define($role, Schema::TYPECAST));
+        return new ArrayItemExporter('Schema::TYPECAST', $this->schema->define($role, Schema::TYPECAST));
     }
-    private function renderRelations(string $role): ArrayItemRenderer
+    private function renderRelations(string $role): ArrayItemExporter
     {
         $relations = $this->schema->define($role, Schema::RELATIONS);
         $results = [];
@@ -136,15 +134,15 @@ final class SchemaRenderer
             foreach ($relation as $option => $value) {
                 $relationResult[] = $this->renderRelationOption($option, $value);
             }
-            $results[] = new ArrayItemRenderer($field, $relationResult, true);
+            $results[] = new ArrayItemExporter($field, $relationResult, true);
         }
-        return new ArrayItemRenderer('Schema::RELATIONS', $results);
+        return new ArrayItemExporter('Schema::RELATIONS', $results);
     }
-    private function renderRelationOption(int $option, $value): ArrayItemRenderer
+    private function renderRelationOption(int $option, $value): ArrayItemExporter
     {
-        $item = new ArrayItemRenderer(self::GENERAL_OPTION[$option] ?? (string)$option, $value);
+        $item = new ArrayItemExporter(self::GENERAL_OPTION[$option] ?? (string)$option, $value);
 
-        // replace numeric keys and values to constants
+        // replace numeric keys and values with constants
         if ($option === Relation::LOAD && array_key_exists($value, self::PREFETCH_MODE)) {
             $item->value = self::PREFETCH_MODE[$value];
             $item->wrapValue = false;
@@ -161,7 +159,7 @@ final class SchemaRenderer
     {
         $result = [];
         foreach ($value as $listKey => $listValue) {
-            $result[] = new ArrayItemRenderer(
+            $result[] = new ArrayItemExporter(
                 array_key_exists($listKey, self::RELATION_OPTION) ? self::RELATION_OPTION[$listKey] : (string)$listKey,
                 $listValue
             );
