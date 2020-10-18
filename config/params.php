@@ -57,8 +57,8 @@ return [
          *     SimpleCacheSchemaProvider::class => [
          *         'key' => 'my-custom-cache-key'
          *     ],
-         *     FromFileSchemaProvider::class => [
-         *         'file' => '@runtime/cycle-schema.php'
+         *     FromFilesSchemaProvider::class => [
+         *         'files' => ['@runtime/cycle-schema.php']
          *     ],
          *     FromConveyorSchemaProvider::class => [
          *         'generators' => [
