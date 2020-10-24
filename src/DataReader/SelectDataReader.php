@@ -221,17 +221,16 @@ final class SelectDataReader implements DataReaderInterface
             $newQuery->limit($this->limit);
         }
         if ($this->filter !== null) {
-            $newQuery->andWhere($this->makeFilterClosure());
+            $newQuery->andWhere($this->makeFilterClosure($this->filter));
         }
         return $newQuery;
     }
-    private function makeFilterClosure(): Closure
+    private function makeFilterClosure(FilterInterface $filter): Closure
     {
-        return function (QueryBuilder $select) {
-            /** @psalm-suppress PossiblyNullReference */
-            $filter = $this->filter->toArray();
-            $operation = array_shift($filter);
-            $arguments = $filter;
+        return function (QueryBuilder $select) use ($filter) {
+            $filterArray = $filter->toArray();
+            $operation = array_shift($filterArray);
+            $arguments = $filterArray;
 
             if (!array_key_exists($operation, $this->filterProcessors)) {
                 throw new \RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
@@ -245,9 +244,8 @@ final class SelectDataReader implements DataReaderInterface
     {
         $newQuery = clone $this->query;
         if ($this->filter !== null) {
-            $newQuery->andWhere($this->makeFilterClosure());
+            $newQuery->andWhere($this->makeFilterClosure($this->filter));
         }
-        /** @psalm-suppress InaccessibleProperty */
         $this->countCache = new CachedCount($newQuery);
     }
 }
