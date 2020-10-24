@@ -20,6 +20,9 @@ use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCollection;
 use Yiisoft\Yii\Cycle\DataReader\Processor;
 use Yiisoft\Yii\Cycle\DataReader\Processor\QueryBuilderProcessor;
 
+/**
+ * @psalm-suppress MissingImmutableAnnotation
+ */
 final class SelectDataReader implements DataReaderInterface
 {
     /** @var Select|SelectQuery */
@@ -205,9 +208,6 @@ final class SelectDataReader implements DataReaderInterface
         $this->filterProcessors = array_merge($this->filterProcessors, $processors);
     }
 
-    /**
-     * @return Select|SelectQuery
-     */
     private function buildQuery()
     {
         $newQuery = clone $this->query;
@@ -247,6 +247,7 @@ final class SelectDataReader implements DataReaderInterface
         if ($this->filter !== null) {
             $newQuery->andWhere($this->makeFilterClosure());
         }
+        /** @psalm-suppress InaccessibleProperty */
         $this->countCache = new CachedCount($newQuery);
     }
 }

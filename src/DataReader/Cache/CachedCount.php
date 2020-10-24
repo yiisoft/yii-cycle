@@ -14,13 +14,18 @@ final class CachedCount
     {
         $this->collection = $collection;
     }
+    /**
+     * @psalm-internal Yiisoft\Yii\Cycle\DataReader
+     */
     public function getCount(): int
     {
-        if ($this->count === null) {
-            /** @psalm-suppress PossiblyNullReference */
-            $this->count = (int)$this->collection->count();
-            $this->collection = null;
-        }
+        return $this->count ?? $this->cacheCount();
+    }
+    private function cacheCount(): int
+    {
+        /** @psalm-suppress PossiblyNullReference */
+        $this->count = (int)$this->collection->count();
+        $this->collection = null;
         return $this->count;
     }
 }
