@@ -20,9 +20,6 @@ use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCollection;
 use Yiisoft\Yii\Cycle\DataReader\Processor;
 use Yiisoft\Yii\Cycle\DataReader\Processor\QueryBuilderProcessor;
 
-/**
- * @psalm-suppress MissingImmutableAnnotation
- */
 final class SelectDataReader implements DataReaderInterface
 {
     /** @var Select|SelectQuery */
@@ -73,38 +70,69 @@ final class SelectDataReader implements DataReaderInterface
         return $this->sorting;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function withLimit(int $limit): self
     {
         $new = clone $this;
-        $new->setLimit($limit);
+        if ($new->limit !== $limit) {
+            $new->limit = $limit;
+            $new->itemsCache = new CachedCollection();
+        }
         return $new;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function withOffset(int $offset): self
     {
         $new = clone $this;
-        $new->setOffset($offset);
+        if ($new->offset !== $offset) {
+            $new->offset = $offset;
+            $new->itemsCache = new CachedCollection();
+        }
         return $new;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function withSort(?Sort $sorting): self
     {
         $new = clone $this;
-        $new->setSort($sorting);
+        if ($new->sorting !== $sorting) {
+            $new->sorting = $sorting;
+            $new->itemsCache = new CachedCollection();
+            $new->oneItemCache = new CachedCollection();
+        }
         return $new;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function withFilter(FilterInterface $filter): self
     {
         $new = clone $this;
-        $new->setFilter($filter);
+        if ($new->filter !== $filter) {
+            $new->filter = $filter;
+            $new->itemsCache = new CachedCollection();
+            $new->oneItemCache = new CachedCollection();
+        }
         return $new;
     }
 
+    /**
+     * @psalm-mutation-free
+     */
     public function withFilterProcessors(FilterProcessorInterface ...$filterProcessors): self
     {
         $new = clone $this;
+        /** @psalm-suppress ImpureMethodCall */
         $new->setFilterProcessors(...$filterProcessors);
+        /** @psalm-suppress ImpureMethodCall */
         $new->resetCountCache();
         $new->itemsCache = new CachedCollection();
         $new->oneItemCache = new CachedCollection();
@@ -161,40 +189,6 @@ final class SelectDataReader implements DataReaderInterface
     public function getSql(): string
     {
         return $this->buildQuery()->sqlStatement();
-    }
-
-    private function setSort(?Sort $sorting): void
-    {
-        if ($this->sorting !== $sorting) {
-            $this->sorting = $sorting;
-            $this->itemsCache = new CachedCollection();
-            $this->oneItemCache = new CachedCollection();
-        }
-    }
-
-    private function setLimit(?int $limit): void
-    {
-        if ($this->limit !== $limit) {
-            $this->limit = $limit;
-            $this->itemsCache = new CachedCollection();
-        }
-    }
-
-    private function setOffset(?int $offset): void
-    {
-        if ($this->offset !== $offset) {
-            $this->offset = $offset;
-            $this->itemsCache = new CachedCollection();
-        }
-    }
-
-    private function setFilter(FilterInterface $filter): void
-    {
-        if ($this->filter !== $filter) {
-            $this->filter = $filter;
-            $this->itemsCache = new CachedCollection();
-            $this->oneItemCache = new CachedCollection();
-        }
     }
 
     private function setFilterProcessors(FilterProcessorInterface ...$filterProcessors): void
