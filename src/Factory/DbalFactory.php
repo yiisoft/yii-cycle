@@ -61,11 +61,11 @@ final class DbalFactory
             /** @psalm-suppress PossiblyNullReference */
             $logger = $this->container->get($logger);
         }
-        
+
         if ($logger instanceof \Closure) {
             $logger = $logger($this->container);
         }
-        
+
         if (!$logger instanceof LoggerInterface) {
             throw new RuntimeException(
                 sprintf('Logger definition should be subclass of %s.', LoggerInterface::class)
