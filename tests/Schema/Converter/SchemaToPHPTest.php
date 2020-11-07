@@ -17,6 +17,7 @@ class SchemaToPHPTest extends TestCase
         $schema = include $file;
         $result = $this->createConverter($schema)->convert();
 
+        $this->assertSame(strlen($schemaString), strlen($result), 'Length comparison');
         $this->assertSame($schemaString, $result);
     }
 
