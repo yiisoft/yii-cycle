@@ -8,6 +8,7 @@ use Exception;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Spiral\Core\FactoryInterface;
 use Spiral\Database\Config\DatabaseConfig;
 use Spiral\Database\DatabaseManager;
 use Spiral\Database\Driver\Driver;
@@ -36,8 +37,11 @@ final class DbalFactory
     public function __invoke(ContainerInterface $container)
     {
         $this->container = $container;
-        $conf = $this->prepareConfig($this->dbalConfig);
-        $dbal = new DatabaseManager($conf);
+
+        $dbal = new DatabaseManager(
+            $this->prepareConfig($this->dbalConfig),
+            $this->container->get(FactoryInterface::class)
+        );
 
         if ($this->logger !== null) {
             $logger = $this->prepareLogger($this->logger);
