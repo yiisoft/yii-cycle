@@ -75,6 +75,9 @@ final class SelectDataReader implements DataReaderInterface
      */
     public function withLimit(int $limit): self
     {
+        if ($limit < 0) {
+            throw new \InvalidArgumentException('$limit must not be less than 0.');
+        }
         $new = clone $this;
         if ($new->limit !== $limit) {
             $new->limit = $limit;
