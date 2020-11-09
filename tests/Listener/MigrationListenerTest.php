@@ -8,23 +8,23 @@ use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Listener\MigrationListener;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Yii\Cycle\Schema\SchemaManager;
+use Yiisoft\Yii\Cycle\Schema\Provider\SchemaProviderPipeline;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 use Yiisoft\Yii\Cycle\Tests\Listener\Stub\CallingSpyProvider;
 
 class MigrationListenerTest extends TestCase
 {
-    private function prepareSchemaManager(array $providers = []): SchemaManager
+    private function prepareSchemaProvider(array $providers = []): SchemaProviderInterface
     {
         $container = new SimpleContainer();
-        return new SchemaManager($container, $providers);
+        return (new SchemaProviderPipeline($container))->withConfig($providers);
     }
 
     public function testOnEvent(): void
     {
         $provider = new CallingSpyProvider();
         $mockProvider = $this->createMock(SchemaProviderInterface::class);
-        $manager = $this->prepareSchemaManager([$provider, $mockProvider]);
+        $manager = $this->prepareSchemaProvider([$provider, $mockProvider]);
         $listener = new MigrationListener($manager);
         $event = new AfterMigrate();
 

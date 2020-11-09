@@ -13,21 +13,44 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
     /** @var SchemaProviderInterface|string */
     private $provider;
     private array $config = [];
-    private ?SchemaProviderInterface $nextProvider;
+    private ?self $nextProvider;
+    private ?SchemaProviderInterface $latestProvider = null;
     private bool $resolved = false;
     private ContainerInterface $container;
 
     /**
      * @param ContainerInterface $container
      * @param $provider
-     * @param null|SchemaProviderInterface $nextProvider
+     * @param null|self $nextProvider
      */
-    public function __construct(ContainerInterface $container, $provider, ?SchemaProviderInterface $nextProvider)
+    public function __construct(ContainerInterface $container, $provider, ?self $nextProvider)
     {
         $this->provider = $provider;
         $this->container = $container;
         $this->nextProvider = $nextProvider;
     }
+    public function withConfig(array $config): self
+    {
+        $provider = !$this->resolved && count($this->config) === 0 ? $this->provider : $this->getProvider();
+        $new = new self($this->container, $provider, $this->nextProvider);
+        $new->config = $config;
+        return $new;
+    }
+    public function read(?SchemaProviderInterface $latestProvider = null): ?array
+    {
+        $latestProvider = $latestProvider ?? $this->latestProvider;
+        if ($latestProvider !== null && $this->nextProvider !== null) {
+            $nextProvider = $this->nextProvider->withLatestProvider($latestProvider);
+        } else {
+            $nextProvider = $this->nextProvider ?? $latestProvider;
+        }
+        return $this->getProvider()->read($nextProvider ?? null);
+    }
+    public function clear(): bool
+    {
+        return $this->getProvider()->clear();
+    }
+
     /**
      * @psalm-suppress InvalidReturnType,InvalidReturnStatement
      */
@@ -47,19 +70,12 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
         $this->resolved = true;
         return $this->provider;
     }
-    public function withConfig(array $config): SchemaProviderInterface
+    private function withLatestProvider(SchemaProviderInterface $provider): self
     {
-        $provider = !$this->resolved && count($this->config) === 0 ? $this->provider : $this->getProvider();
-        $new = new self($this->container, $provider, $this->nextProvider);
-        $new->config = $config;
+        // resolve provider
+        $this->getProvider();
+        $new = clone $this;
+        $new->latestProvider = $provider;
         return $new;
-    }
-    public function read(?SchemaProviderInterface $nextProvider = null): ?array
-    {
-        return $this->getProvider()->read($this->nextProvider);
-    }
-    public function clear(): bool
-    {
-        return $this->getProvider()->clear();
     }
 }

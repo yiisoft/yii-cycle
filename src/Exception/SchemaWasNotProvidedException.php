@@ -19,6 +19,6 @@ class SchemaWasNotProvidedException extends RuntimeException implements Friendly
     }
     public function getSolution(): ?string
     {
-        return 'If you are using the SchemaManager to get the Schema, make sure it is configured correctly.';
+        return 'Make sure a SchemaProvider is configured correctly.';
     }
 }

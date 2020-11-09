@@ -4,62 +4,29 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Schema;
 
-use Psr\Container\ContainerInterface;
-use SplDoublyLinkedList;
-use Yiisoft\Yii\Cycle\Exception\CumulativeException;
-use Yiisoft\Yii\Cycle\Schema\Provider\DeferredSchemaProviderDecorator;
-
 /**
- * SchemaManager allows reading schema from providers available and clearing the schema in providers.
+ * @deprecated moved to {@see \Yiisoft\Yii\Cycle\Schema\Provider\SchemaProviderPipeline}
  */
-final class SchemaManager
+final class SchemaManager implements SchemaProviderInterface
 {
-    /** @var SplDoublyLinkedList<int, SchemaProviderInterface> */
-    private SplDoublyLinkedList $providers;
+    private SchemaProviderInterface $provider;
 
-    public function __construct(ContainerInterface $container, array $providers)
+    public function __construct(SchemaProviderInterface $provider)
     {
-        $this->providers = $this->createPipeline($container, $providers);
+        $this->provider = $provider;
     }
 
-    public function read(): ?array
+    public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
-        if ($this->providers->count() === 0) {
-            return null;
-        }
-        $this->providers->rewind();
-        return $this->providers->current()->read();
+        return $this->provider->read();
     }
 
-    public function clear(): void
+    public function clear(): bool
     {
-        $exceptions = [];
-        foreach ($this->providers as $provider) {
-            try {
-                $provider->clear();
-            } catch (\Throwable $e) {
-                $exceptions[] = $e;
-            }
-        }
-        if (count($exceptions)) {
-            throw new CumulativeException(...$exceptions);
-        }
+        return $this->provider->clear();
     }
-
-    private function createPipeline(ContainerInterface $container, array $providers): SplDoublyLinkedList
+    public function withConfig(array $config): SchemaProviderInterface
     {
-        $stack = new SplDoublyLinkedList();
-        $nextProvider = null;
-        foreach (array_reverse($providers) as $key => $definition) {
-            $config = [];
-            if (is_string($key) && is_array($definition)) {
-                $config = $definition;
-                $definition = $key;
-            }
-            $nextProvider = (new DeferredSchemaProviderDecorator($container, $definition, $nextProvider))
-                ->withConfig($config);
-            $stack->unshift($nextProvider);
-        }
-        return $stack;
+        return clone $this;
     }
 }
