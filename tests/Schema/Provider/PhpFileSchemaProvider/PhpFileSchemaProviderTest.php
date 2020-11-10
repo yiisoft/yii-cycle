@@ -58,16 +58,11 @@ final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
         $this->assertNull($provider->read($nextProvider));
         $this->assertFileDoesNotExist(self::TMP_FILE, 'Empty schema file is created.');
     }
-    /**
-     * In the write_only mode, the provider always returns null, and schema from next provider writes to the
-     * configured file
-     */
     public function testModeWriteOnlyWithSchemaFromNextProvider(): void
     {
         $provider = $this->createSchemaProvider(self::WRITE_ONLY_CONFIG);
         $nextProvider = new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA);
-
-        $this->assertNull($provider->read($nextProvider));
+        $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $provider->read($nextProvider));
         $this->assertFileExists(self::TMP_FILE, 'Schema file is not created.');
     }
     public function testModeWriteOnlyWithoutNextProviderException(): void

@@ -59,7 +59,7 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
         if ($schema !== null) {
             $this->write($schema);
         }
-        return $this->isReadable() ? $schema : null;
+        return $schema;
     }
 
     private function write(array $schema): bool
