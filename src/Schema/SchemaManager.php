@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Schema;
 
 /**
- * @deprecated moved to {@see \Yiisoft\Yii\Cycle\Schema\Provider\SchemaProviderPipeline}
+ * @deprecated moved to {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}
  */
 final class SchemaManager implements SchemaProviderInterface
 {

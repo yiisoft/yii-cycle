@@ -59,10 +59,10 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
         if ($schema !== null) {
             $this->write($schema);
         }
-        return $schema;
+        return $this->isReadable() ? $schema : null;
     }
 
-    public function write(array $schema): bool
+    private function write(array $schema): bool
     {
         if (basename($this->file) === '') {
             throw new RuntimeException('The "file" parameter must not be empty.');

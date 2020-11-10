@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\SchemaProviderPipeline;
+namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\Support;
 
 use Cycle\ORM\Schema;
 use Psr\Container\ContainerInterface;
@@ -11,7 +11,7 @@ use Yiisoft\Aliases\Aliases;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 use Yiisoft\Yii\Cycle\Exception\CumulativeException;
-use Yiisoft\Yii\Cycle\Schema\Provider\SchemaProviderPipeline;
+use Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProviderTest;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\SameOriginProvider;

@@ -8,7 +8,7 @@ use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Listener\MigrationListener;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Yii\Cycle\Schema\Provider\SchemaProviderPipeline;
+use Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 use Yiisoft\Yii\Cycle\Tests\Listener\Stub\CallingSpyProvider;
 

@@ -60,7 +60,7 @@ return [
         'orm-promise-factory' => null,
 
         /**
-         * Список поставщиков схемы БД для {@see \Yiisoft\Yii\Cycle\Schema\Provider\SchemaProviderPipeline}
+         * Список поставщиков схемы БД для {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}
          * Поставщики схемы реализуют класс {@see SchemaProviderInterface}.
          * Конфигурируется перечислением имён классов поставщиков. Вы здесь можете конфигурировать также и поставщиков,
          * указывая имя класса поставщика в качестве ключа элемента, а конфиг в виде массива элемента:

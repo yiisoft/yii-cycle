@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Schema\Provider;
+namespace Yiisoft\Yii\Cycle\Schema\Provider\Support;
 
 use Psr\Container\ContainerInterface;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
@@ -44,7 +44,7 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
         } else {
             $nextProvider = $this->nextProvider ?? $latestProvider;
         }
-        return $this->getProvider()->read($nextProvider ?? null);
+        return $this->getProvider()->read($nextProvider);
     }
     public function clear(): bool
     {

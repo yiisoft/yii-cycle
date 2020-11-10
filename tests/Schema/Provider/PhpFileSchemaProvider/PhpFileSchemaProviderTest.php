@@ -11,7 +11,7 @@ use Yiisoft\Yii\Cycle\Schema\Provider\PhpFileSchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProviderTest;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 
-class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
+final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
 {
     protected const READ_CONFIG = ['file' => '@dir/simple_schema.php'];
     protected const DEFAULT_CONFIG_SCHEMA = ['user' => []];
@@ -30,7 +30,7 @@ class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
 
     public function testReadFromNextProvider(): void
     {
-        $provider1 = $this->createSchemaProvider(self::WRITE_ONLY_CONFIG);
+        $provider1 = $this->createSchemaProvider(self::WRITE_CONFIG);
         $provider2 = new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA);
 
         $result = $provider1->read($provider2);
@@ -58,11 +58,16 @@ class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
         $this->assertNull($provider->read($nextProvider));
         $this->assertFileDoesNotExist(self::TMP_FILE, 'Empty schema file is created.');
     }
+    /**
+     * In the write_only mode, the provider always returns null, and schema from next provider writes to the
+     * configured file
+     */
     public function testModeWriteOnlyWithSchemaFromNextProvider(): void
     {
         $provider = $this->createSchemaProvider(self::WRITE_ONLY_CONFIG);
         $nextProvider = new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA);
-        $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $provider->read($nextProvider));
+
+        $this->assertNull($provider->read($nextProvider));
         $this->assertFileExists(self::TMP_FILE, 'Schema file is not created.');
     }
     public function testModeWriteOnlyWithoutNextProviderException(): void
@@ -110,15 +115,6 @@ class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
         $result = $provider->clear();
 
         $this->assertFalse($result);
-    }
-    public function testWrite(): void
-    {
-        $provider = $this->createSchemaProvider(self::WRITE_CONFIG);
-
-        $result = $provider->write([]);
-
-        $this->assertTrue($result);
-        $this->assertFileExists(self::TMP_FILE);
     }
 
     public function testPrepareTmpFile(): void

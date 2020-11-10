@@ -16,7 +16,7 @@ use Yiisoft\Yii\Cycle\Factory\CycleDynamicFactory;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor;
-use Yiisoft\Yii\Cycle\Schema\Provider\SchemaProviderPipeline;
+use Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 

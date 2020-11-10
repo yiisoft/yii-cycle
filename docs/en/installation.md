@@ -59,7 +59,7 @@ return [
         'orm-promise-factory' => null,
 
         /**
-         * A list of DB schema providers for {@see \Yiisoft\Yii\Cycle\Schema\Provider\SchemaProviderPipeline}
+         * A list of DB schema providers for {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}
          * Providers are implementing {@see SchemaProviderInterface}.
          * The configuration is an array of provider class names. Alternatively, you can specify provider class as key
          * and its config as value:
