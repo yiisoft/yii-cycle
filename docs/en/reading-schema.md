@@ -1,22 +1,19 @@
 # Reading DB schema
 
-Cycle ORM relies on DB schema that is represented as an instance of `\Cycle\ORM\SchemaInterface`.
+Cycle ORM relies on DB schema - object, that implement `\Cycle\ORM\SchemaInterface` interface.
 
 Since a schema is built from an array of a certain structure, we can store it either in a cache or in a text file.
 
 You can display currently used schema by executing `cycle/schema` command.
 
 In `yii-cycle` package schema can be built from multiple sources represented by multiple providers implementing
-`SchemaProviderInterface`. According to this interface, additionally to providing (reading) a schema from its storage,
-provider can save (overwrite) schema in the storage. You can specify an ordered list of schema providers via 
-`schema-providers` option in `config/params.php`.
+`SchemaProviderInterface`. 
 
-`SchemaManager` handles the list of schema providers the following way:
+In order to use multiple schema providers in turn, grouping `SchemaProviderPipeline` provider is used.
+You can configure this provider in `schema-providers` section of a `config/params.php` file.
+Arrage schema providers in such an order, that caching providers are at the top of the list, 
+and origin schema providers at the end. 
 
-- Manager iterates providers querying schema.
-- If provider provides a schema, the list iteration ends.
-- Schema obtained is passed to providers that were unable to provide a schema.
-- If no providers provided schema, an exception manager throws an exception.
 
 ## Entity annotation based schema
 
@@ -44,17 +41,15 @@ Use `FromFilesSchemaProvider` to load a schema:
 
 ```php
 # config/common.php
-return [
-    // ...
+[
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
             \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
-                'files' => ['@runtime/schema.php']
+                'files' => '@runtime/schema.php'
             ]
         ],
-    ],
-];
+    ]
 ```
 
 ```php
@@ -81,15 +76,19 @@ return [
 
 Note that: 
 
-1. `FromFilesSchemaProvider` loads a schema from a PHP-files via `require`. That requires security precautions.
-   Make sure you store schema files in a safe path restricted from users.
-2. There is no need to build a schema from annotations if you are reading it from files. Therefore, there is no need
-   for `FromConveyorSchemaProvider` in this case.
+1. `FromFilesSchemaProvider` loads a schema from PHP-files via `include`. That requires security precautions.
+   Make sure you store schema file in a safe path restricted from users.
+2. You can specify multiple schema files, which will be merged into one schema. 
+Exception will be thrown in case of collision of roles.
+
 3. Thanks to internal cache, loading schema from a PHP-file is so fast that you can skip an external cache at all.
+But in case of loading multiple files, it may take extra time to merge them.
 4. You cannot generate migrations based on PHP-file schema. [See issue #25](https://github.com/yiisoft/yii-cycle/issues/25)
-5. Provider only reads schema. It cannot update the file after migration is applied.
+5. Provider only reads schema. It cannot update the file after migration is applied, as `SimpleCacheSchemaProvider` does.
 
 ## Switching from annotations to file
+
+### Consloe command
 
 In order to export schema as PHP file `cycle/schema/php` command could be used.
 Specify a file name as an argument and schema will be written into it:
@@ -105,3 +104,11 @@ Make sure schema exported is correct and then switch to using it via `FromFilesS
 
 You can combine both ways to describe a schema. During project development it's handy to use annotations. You can generate
 migrations based on them. For production use schema could be moved into a file.
+
+### `PhpFileSchemaProvider` Provider
+
+Unlike `FromFilesSchemaProvider`, the `PhpFileSchemaProvider` works with only one file. but, `PhpFileSchemaProvider`
+can not only read schema, but also save it.
+
+In the mode of reading and writing a schema file, the `PhpFileSchemaProvider` provider works similarly to the cache, with
+the only difference is that saved result (schema file), can be saved in codebase.
