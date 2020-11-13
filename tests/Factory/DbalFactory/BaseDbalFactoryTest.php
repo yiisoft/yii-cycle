@@ -9,6 +9,7 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\NullLogger;
 use Spiral\Core\FactoryInterface;
 use Yiisoft\Aliases\Aliases;
+use Yiisoft\Injector\Injector;
 use Yiisoft\Test\Support\Container\Exception\NotFoundException;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Factory\CycleDynamicFactory;
@@ -30,7 +31,7 @@ abstract class BaseDbalFactoryTest extends TestCase
             ],
             function (string $id) {
                 if ($id === FactoryInterface::class) {
-                    return new CycleDynamicFactory($this->container);
+                    return new CycleDynamicFactory(new Injector($this->container));
                 }
                 throw new NotFoundException($id);
             }
