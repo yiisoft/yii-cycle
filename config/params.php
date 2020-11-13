@@ -50,7 +50,7 @@ return [
         'orm-promise-factory' => null,
 
         /**
-         * SchemaProvider list for {@see \Yiisoft\Yii\Cycle\Schema\SchemaManager}
+         * SchemaProvider list for {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}
          * Array of classname and {@see SchemaProviderInterface} object.
          * You can configure providers if you pass classname as key and parameters as array:
          * [

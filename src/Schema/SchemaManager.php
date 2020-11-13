@@ -4,96 +4,29 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Schema;
 
-use Generator;
-use Psr\Container\ContainerInterface;
-use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
-use Yiisoft\Yii\Cycle\Exception\CumulativeException;
-
 /**
- * SchemaManager allows reading schema from providers available and clearing the schema in providers.
+ * @deprecated moved to {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}
  */
-final class SchemaManager
+final class SchemaManager implements SchemaProviderInterface
 {
-    private ContainerInterface $container;
-    /** @var string[]|SchemaProviderInterface[] */
-    private array $providers;
+    private SchemaProviderInterface $provider;
 
-    public function __construct(ContainerInterface $container, array $providers)
+    public function __construct(SchemaProviderInterface $provider)
     {
-        $this->container = $container;
-        $this->providers = $providers;
+        $this->provider = $provider;
     }
 
-    public function read(): ?array
+    public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
-        $toWrite = new \SplStack();
-        $schema = null;
-
-        foreach ($this->getProviders() as $provider) {
-            if ($provider->isReadable()) {
-                $schema = $provider->read();
-                if ($schema !== null) {
-                    break;
-                }
-            }
-            if ($provider->isWritable()) {
-                $toWrite->push($provider);
-            }
-        }
-
-        if ($schema === null) {
-            return null;
-        }
-
-        // Save schema
-        /** @var SchemaProviderInterface $provider */
-        foreach ($toWrite as $provider) {
-            $provider->write($schema);
-        }
-
-        return $schema;
+        return $this->provider->read();
     }
 
-    public function clear(): void
+    public function clear(): bool
     {
-        $providers = iterator_to_array($this->getProviders());
-        array_pop($providers);
-
-        $exceptions = [];
-        foreach ($providers as $provider) {
-            if ($provider->isWritable()) {
-                try {
-                    $provider->clear();
-                } catch (\Throwable $e) {
-                    $exceptions[] = $e;
-                }
-            }
-        }
-        if (count($exceptions)) {
-            throw new CumulativeException(...$exceptions);
-        }
+        return $this->provider->clear();
     }
-
-    /**
-     * @return Generator<int|string, SchemaProviderInterface>
-     * @throws BadDeclarationException
-     */
-    private function getProviders(): Generator
+    public function withConfig(array $config): SchemaProviderInterface
     {
-        foreach ($this->providers as $key => &$provider) {
-            // Providers resolving
-            if (is_string($provider)) {
-                $provider = $this->container->get($provider);
-            }
-            // If Provider defined as ClassName => ConfigArray
-            if (is_array($provider) && is_string($key)) {
-                $provider = $this->container->get($key)->withConfig($provider);
-            }
-
-            if (!$provider instanceof SchemaProviderInterface) {
-                throw new BadDeclarationException('Provider', SchemaProviderInterface::class, $provider);
-            }
-            yield $key => $provider;
-        }
+        return clone $this;
     }
 }

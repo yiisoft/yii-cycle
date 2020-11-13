@@ -17,8 +17,9 @@ use Yiisoft\Yii\Cycle\Factory\CycleDynamicFactory;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor;
+use Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
-use Yiisoft\Yii\Cycle\Schema\SchemaManager;
+use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 /**
  * @var array $params
@@ -45,13 +46,13 @@ return [
             $container
         );
     },
-    // Schema Manager
-    SchemaManager::class => static function (ContainerInterface $container) use (&$params) {
-        return new SchemaManager($container, $params['yiisoft/yii-cycle']['schema-providers']);
+    // Schema provider
+    SchemaProviderInterface::class => static function (ContainerInterface $container) use (&$params) {
+        return (new SchemaProviderPipeline($container))->withConfig($params['yiisoft/yii-cycle']['schema-providers']);
     },
     // Schema
     SchemaInterface::class => static function (ContainerInterface $container) {
-        $schema = $container->get(SchemaManager::class)->read();
+        $schema = $container->get(SchemaProviderInterface::class)->read();
         if ($schema === null) {
             throw new SchemaWasNotProvidedException();
         }

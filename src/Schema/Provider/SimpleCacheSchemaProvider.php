@@ -25,26 +25,28 @@ final class SimpleCacheSchemaProvider implements SchemaProviderInterface
         return $new;
     }
 
-    public function read(): ?array
+    public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
-        return $this->cache->get($this->key);
-    }
+        $schema = $this->cache->get($this->key);
 
-    public function write(array $schema): bool
-    {
-        return $this->cache->set($this->key, $schema);
+        if ($schema !== null || $nextProvider === null) {
+            return $schema;
+        }
+
+        $schema = $nextProvider->read();
+        if ($schema !== null) {
+            $this->write($schema);
+        }
+        return $schema;
     }
 
     public function clear(): bool
     {
         return $this->cache->delete($this->key);
     }
-    public function isWritable(): bool
+
+    private function write(array $schema): bool
     {
-        return true;
-    }
-    public function isReadable(): bool
-    {
-        return true;
+        return $this->cache->set($this->key, $schema);
     }
 }

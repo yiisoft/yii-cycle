@@ -59,10 +59,9 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
         return $new;
     }
 
-    public function read(): ?array
+    public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
         $schema = null;
-
         foreach ($this->files as $file) {
             if (is_file($file)) {
                 $schema = $schema ?? [];
@@ -77,26 +76,11 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
             }
         }
 
-        return $schema;
-    }
-
-    public function write(array $schema): bool
-    {
-        return false;
+        return $schema !== null || $nextProvider === null ? $schema : $nextProvider->read();
     }
 
     public function clear(): bool
     {
         return false;
-    }
-
-    public function isWritable(): bool
-    {
-        return false;
-    }
-
-    public function isReadable(): bool
-    {
-        return true;
     }
 }

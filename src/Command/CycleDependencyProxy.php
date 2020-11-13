@@ -12,6 +12,7 @@ use Spiral\Migrations\Config\MigrationConfig;
 use Spiral\Migrations\Migrator;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Schema\SchemaManager;
+use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 final class CycleDependencyProxy
 {
@@ -43,9 +44,16 @@ final class CycleDependencyProxy
     {
         return $this->container->get(SchemaInterface::class);
     }
+    /**
+     * @deprecated {@see getSchemaProvider}
+     */
     public function getSchemaManager(): SchemaManager
     {
         return $this->container->get(SchemaManager::class);
+    }
+    public function getSchemaProvider(): SchemaProviderInterface
+    {
+        return $this->container->get(SchemaProviderInterface::class);
     }
     public function getSchemaConveyor(): SchemaConveyorInterface
     {

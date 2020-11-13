@@ -29,7 +29,7 @@ class CallingSpyProvider implements SchemaProviderInterface
     {
         return true;
     }
-    public function read(): ?array
+    public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
         ++$this->read;
         return $this->schema;

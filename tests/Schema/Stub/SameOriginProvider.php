@@ -2,23 +2,23 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Tests\Schema\SchemaManager\Stub;
+namespace Yiisoft\Yii\Cycle\Tests\Schema\Stub;
 
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 final class SameOriginProvider implements SchemaProviderInterface
 {
-    public const OPTION_READABLE = 'readable';
     public const OPTION_WRITABLE = 'writable';
     public const OPTION_CLEARABLE = 'clearable';
+    public const EXCEPTION_ON_READ = 'exception_on_read';
     public const EXCEPTION_ON_WRITE = 'exception_on_write';
     public const EXCEPTION_ON_CLEAR = 'exception_on_clear';
 
     protected ?array $schema;
 
-    private bool $readable = true;
     private bool $writable = true;
     private bool $clearable = true;
+    private bool $exceptionOnRead = false;
     private bool $exceptionOnWrite = false;
     private bool $exceptionOnClear = false;
     public function __construct($schema)
@@ -29,14 +29,14 @@ final class SameOriginProvider implements SchemaProviderInterface
     {
         $new = clone $this;
         $new->schema = &$this->schema;
-        if (array_key_exists(self::OPTION_READABLE, $config)) {
-            $new->readable = $config[self::OPTION_READABLE];
-        }
         if (array_key_exists(self::OPTION_WRITABLE, $config)) {
             $new->writable = $config[self::OPTION_WRITABLE];
         }
         if (array_key_exists(self::OPTION_CLEARABLE, $config)) {
             $new->clearable = $config[self::OPTION_CLEARABLE];
+        }
+        if (array_key_exists(self::EXCEPTION_ON_READ, $config)) {
+            $new->exceptionOnRead = $config[self::EXCEPTION_ON_READ];
         }
         if (array_key_exists(self::EXCEPTION_ON_WRITE, $config)) {
             $new->exceptionOnWrite = $config[self::EXCEPTION_ON_WRITE];
@@ -50,16 +50,23 @@ final class SameOriginProvider implements SchemaProviderInterface
     {
         return $this->writable;
     }
-    public function isReadable(): bool
+    public function isExceptionOnRead(): bool
     {
-        return $this->readable;
+        return $this->exceptionOnRead;
     }
-    public function read(): ?array
+    public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
-        if (!$this->readable) {
+        if ($this->exceptionOnRead) {
             throw new \RuntimeException('Schema can\'t be raed.');
         }
-        return $this->schema;
+        if ($this->schema !== null) {
+            return $this->schema;
+        }
+        $schema = $nextProvider === null ? null : $nextProvider->read();
+        if ($schema !== null) {
+            $this->write($schema);
+        }
+        return $schema;
     }
     public function write(array $schema): bool
     {

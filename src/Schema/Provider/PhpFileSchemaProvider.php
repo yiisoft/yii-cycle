@@ -40,18 +40,29 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
         return $new;
     }
 
-    public function read(): ?array
+    public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
-        if ($this->mode === self::MODE_WRITE_ONLY) {
-            throw new RuntimeException(__CLASS__ . ' can not read schema.');
+        if (!$this->isReadable()) {
+            if ($nextProvider === null) {
+                throw new RuntimeException(__CLASS__ . ' can not read schema.');
+            }
+            $schema = null;
+        } else {
+            $schema = !is_file($this->file) ? null : (include $this->file);
         }
-        if (!is_file($this->file)) {
-            return null;
+
+        if ($schema !== null || $nextProvider === null) {
+            return $schema;
         }
-        return include $this->file;
+
+        $schema = $nextProvider->read();
+        if ($schema !== null) {
+            $this->write($schema);
+        }
+        return $schema;
     }
 
-    public function write(array $schema): bool
+    private function write(array $schema): bool
     {
         if (basename($this->file) === '') {
             throw new RuntimeException('The "file" parameter must not be empty.');
@@ -90,12 +101,7 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
         return true;
     }
 
-    public function isWritable(): bool
-    {
-        return true;
-    }
-
-    public function isReadable(): bool
+    private function isReadable(): bool
     {
         return $this->mode !== self::MODE_WRITE_ONLY;
     }
