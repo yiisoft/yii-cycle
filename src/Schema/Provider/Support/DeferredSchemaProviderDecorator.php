@@ -8,6 +8,9 @@ use Psr\Container\ContainerInterface;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
+/**
+ * Auxiliary class for building scheme providers in a pipeline.
+ */
 final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
 {
     /** @var SchemaProviderInterface|string */
