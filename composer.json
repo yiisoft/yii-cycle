@@ -29,7 +29,7 @@
         "yiisoft/aliases": "^1.0",
         "yiisoft/data": "@dev",
         "yiisoft/friendly-exception": "^1.0",
-        "yiisoft/injector": "^1.0.2",
+        "yiisoft/injector": "^1.0.3",
         "yiisoft/yii-console": "@dev"
     },
     "require-dev": {
