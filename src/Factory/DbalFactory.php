@@ -18,7 +18,7 @@ final class DbalFactory
 {
     /** @var array|DatabaseConfig */
     private $dbalConfig;
-    /** @var null|string|LoggerInterface */
+    /** @var LoggerInterface|string|null */
     private $logger = null;
     private ?ContainerInterface $container = null;
 
@@ -55,9 +55,11 @@ final class DbalFactory
     }
 
     /**
-     * @param string|LoggerInterface $logger
-     * @return LoggerInterface
+     * @param LoggerInterface|string $logger
+     *
      * @throws Exception
+     *
+     * @return LoggerInterface
      */
     private function prepareLogger($logger): LoggerInterface
     {
@@ -75,6 +77,7 @@ final class DbalFactory
 
     /**
      * @param array|DatabaseConfig $config
+     *
      * @return DatabaseConfig
      */
     private function prepareConfig($config): DatabaseConfig

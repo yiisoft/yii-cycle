@@ -13,6 +13,7 @@ class EmptyEntityPathsException extends Exception implements FriendlyExceptionIn
     {
         return 'Bad declaration of Entity paths';
     }
+
     public function getSolution(): ?string
     {
         return 'There must be at least one entry in the path list.';

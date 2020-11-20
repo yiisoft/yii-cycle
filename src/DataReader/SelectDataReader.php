@@ -15,9 +15,8 @@ use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\Filter\FilterInterface;
 use Yiisoft\Data\Reader\Filter\FilterProcessorInterface;
 use Yiisoft\Data\Reader\Sort;
-use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCount;
 use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCollection;
-use Yiisoft\Yii\Cycle\DataReader\Processor;
+use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCount;
 use Yiisoft\Yii\Cycle\DataReader\Processor\QueryBuilderProcessor;
 
 final class SelectDataReader implements DataReaderInterface
@@ -178,7 +177,7 @@ final class SelectDataReader implements DataReaderInterface
      */
     public function getIterator(): \Generator
     {
-        yield from ($this->itemsCache->getCollection() ?? $this->buildQuery()->getIterator());
+        yield from $this->itemsCache->getCollection() ?? $this->buildQuery()->getIterator();
     }
 
     /**
@@ -222,6 +221,7 @@ final class SelectDataReader implements DataReaderInterface
         }
         return $newQuery;
     }
+
     private function makeFilterClosure(FilterInterface $filter): Closure
     {
         return function (QueryBuilder $select) use ($filter) {
@@ -237,6 +237,7 @@ final class SelectDataReader implements DataReaderInterface
             $select->where(...$processor->getAsWhereArguments($arguments, $this->filterProcessors));
         };
     }
+
     private function resetCountCache(): void
     {
         $newQuery = clone $this->query;

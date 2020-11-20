@@ -18,7 +18,8 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
     private DatabaseProviderInterface $dbal;
     /**
      * Additional generators when reading Schema
-     * @var string[]|GeneratorInterface[]|Closure[]
+     *
+     * @var Closure[]|GeneratorInterface[]|string[]
      */
     private array $generators = [];
 

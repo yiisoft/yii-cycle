@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Exception;
 
+use PHPUnit\Framework\TestCase;
 use Throwable;
 use Yiisoft\Yii\Cycle\Exception\CumulativeException;
-use PHPUnit\Framework\TestCase;
 
 final class CumulativeExceptionTest extends TestCase
 {

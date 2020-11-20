@@ -7,8 +7,8 @@ namespace Yiisoft\Yii\Cycle\Schema\Conveyor;
 use Cycle\Schema\Generator;
 use Cycle\Schema\GeneratorInterface;
 use Psr\Container\ContainerInterface;
-use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
+use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
 class SchemaConveyor implements SchemaConveyorInterface
 {
@@ -24,7 +24,7 @@ class SchemaConveyor implements SchemaConveyorInterface
         ],
         self::STAGE_USERLAND => [],
         self::STAGE_POSTPROCESS => [
-            Generator\GenerateTypecast::class   // typecast non string columns
+            Generator\GenerateTypecast::class,   // typecast non string columns
         ],
     ];
 
