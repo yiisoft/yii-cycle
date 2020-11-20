@@ -11,7 +11,9 @@ use Psr\Log\LogLevel;
 /**
  * Temporary LoggerInterface class
  * Slightly adapted for SQL queries
+ *
  * @package Yiisoft\Yii\Cycle\Logger
+ *
  * @deprecated In the future StdoutLogger will be removed (when we will have debug-tools)
  */
 class StdoutQueryLogger implements LoggerInterface
@@ -120,17 +122,17 @@ class StdoutQueryLogger implements LoggerInterface
     protected function isPostgresSystemQuery(string $query): bool
     {
         $query = strtolower($query);
-        if (
+        return (bool) (
             strpos($query, 'tc.constraint_name') ||
             strpos($query, 'pg_indexes') ||
             strpos($query, 'tc.constraint_name') ||
             strpos($query, 'pg_constraint') ||
             strpos($query, 'information_schema') ||
             strpos($query, 'pg_class')
-        ) {
-            return true;
-        }
+        )
 
-        return false;
+
+
+         ;
     }
 }

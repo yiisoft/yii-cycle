@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Converter;
 
 use Cycle\ORM\Schema;
-use Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 use PHPUnit\Framework\TestCase;
+use Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 
 class SchemaToPHPTest extends TestCase
 {

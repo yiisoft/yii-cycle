@@ -70,7 +70,7 @@ final class DownCommand extends BaseMigrationCommand
             $state = $migration->getState();
             $status = $state->getStatus();
             $output->writeln(
-                sprintf('<fg=cyan>%s</>: %s', $state->getName(), static::MIGRATION_STATUS[$status] ?? $status)
+                sprintf('<fg=cyan>%s</>: %s', $state->getName(), self::MIGRATION_STATUS[$status] ?? $status)
             );
         } finally {
             $this->eventDispatcher->dispatch(new AfterMigrate());

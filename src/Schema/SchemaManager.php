@@ -25,6 +25,7 @@ final class SchemaManager implements SchemaProviderInterface
     {
         return $this->provider->clear();
     }
+
     public function withConfig(array $config): SchemaProviderInterface
     {
         return clone $this;

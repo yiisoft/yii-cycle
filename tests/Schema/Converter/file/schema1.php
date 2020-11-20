@@ -2,8 +2,8 @@
 
 declare(strict_types=1);
 
-use Cycle\ORM\Schema;
 use Cycle\ORM\Relation;
+use Cycle\ORM\Schema;
 use Cycle\Schema\Relation\RelationSchema;
 
 return [

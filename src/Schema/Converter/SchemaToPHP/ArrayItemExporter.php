@@ -15,7 +15,7 @@ final class ArrayItemExporter
     public bool $wrapKey;
 
     /**
-     * @param null|string $key
+     * @param string|null $key
      * @param mixed $value
      * @param bool $wrapKey
      */
@@ -37,6 +37,7 @@ final class ArrayItemExporter
 
     /**
      * @param mixed $value
+     *
      * @return string
      */
     private function renderValue($value): string
@@ -75,19 +76,20 @@ final class ArrayItemExporter
         $elements = [];
         foreach ($value as $key => $item) {
             $str = '';
-            if (!$item instanceof ArrayItemExporter && $withKeys) {
+            if (!$item instanceof self && $withKeys) {
                 $str .= is_int($key) ? "{$key} => " : "'{$key}' => ";
             }
             $elements[] = $str . $this->renderValue($item);
         }
         return '[' . implode(', ', $elements) . ']';
     }
+
     private function renderArrayBlock(array $value, bool $withKeys = true): string
     {
         $result = '[';
         foreach ($value as $key => $item) {
             $result .= "\n";
-            if (!$item instanceof ArrayItemExporter && $withKeys) {
+            if (!$item instanceof self && $withKeys) {
                 $result .= is_int($key) ? "{$key} => " : "'{$key}' => ";
             }
             $result .= $this->renderValue($item) . ',';
@@ -99,6 +101,7 @@ final class ArrayItemExporter
     {
         return count($array) === 0 || array_keys($array) === range(0, count($array) - 1);
     }
+
     private function isScalarArrayValues(array $array): bool
     {
         foreach ($array as $value) {

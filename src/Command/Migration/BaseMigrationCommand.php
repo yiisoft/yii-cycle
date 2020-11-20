@@ -59,6 +59,7 @@ abstract class BaseMigrationCommand extends Command
 
     /**
      * @param OutputInterface $output
+     *
      * @return MigrationInterface[]
      */
     protected function findMigrations(OutputInterface $output): array

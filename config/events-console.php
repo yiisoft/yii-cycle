@@ -7,6 +7,6 @@ use Yiisoft\Yii\Cycle\Listener\MigrationListener;
 
 return [
     AfterMigrate::class => [
-        [MigrationListener::class, 'onAfterMigrate']
+        [MigrationListener::class, 'onAfterMigrate'],
     ],
 ];

@@ -13,6 +13,7 @@ final class In implements QueryBuilderProcessor, FilterProcessorInterface
     {
         return 'in';
     }
+
     public function getAsWhereArguments(array $arguments, array $processors): array
     {
         if (count($arguments) !== 2) {
