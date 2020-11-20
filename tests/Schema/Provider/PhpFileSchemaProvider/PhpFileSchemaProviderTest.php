@@ -23,7 +23,6 @@ final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
     {
         $this->removeTmpFile();
     }
-
     protected function tearDown(): void
     {
         $this->removeTmpFile();
@@ -45,14 +44,12 @@ final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
 
         $this->assertNull($provider->read());
     }
-
     public function testWithConfigWithoutRequiredParams(): void
     {
         $this->expectException(InvalidArgumentException::class);
 
         $this->createSchemaProvider([]);
     }
-
     public function testModeWriteOnlyWithoutSchemaFromNextProvider(): void
     {
         $provider = $this->createSchemaProvider(self::WRITE_ONLY_CONFIG);
@@ -61,7 +58,6 @@ final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
         $this->assertNull($provider->read($nextProvider));
         $this->assertFileDoesNotExist(self::TMP_FILE, 'Empty schema file is created.');
     }
-
     public function testModeWriteOnlyWithSchemaFromNextProvider(): void
     {
         $provider = $this->createSchemaProvider(self::WRITE_ONLY_CONFIG);
@@ -69,7 +65,6 @@ final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
         $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $provider->read($nextProvider));
         $this->assertFileExists(self::TMP_FILE, 'Schema file is not created.');
     }
-
     public function testModeWriteOnlyWithoutNextProviderException(): void
     {
         $config = self::READ_CONFIG;
@@ -80,7 +75,6 @@ final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
 
         $provider->read();
     }
-
     public function testModeWriteOnlyExceptionOnRead(): void
     {
         $config = self::READ_CONFIG;
@@ -91,7 +85,6 @@ final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
 
         $provider->read();
     }
-
     public function testClear(): void
     {
         $this->prepareTmpFile();
@@ -102,7 +95,6 @@ final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
         $this->assertTrue($result);
         $this->assertFileDoesNotExist(self::TMP_FILE);
     }
-
     public function testClearNotExistingFile(): void
     {
         $provider = $this->createSchemaProvider(self::WRITE_CONFIG);
@@ -111,7 +103,6 @@ final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
 
         $this->assertTrue($result);
     }
-
     public function testClearNotFile(): void
     {
         $provider = $this->createSchemaProvider(['file' => '@dir']);
@@ -126,26 +117,22 @@ final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
         $this->prepareTmpFile();
         $this->assertFileExists(self::TMP_FILE);
     }
-
     public function testRemoveTmpFile(): void
     {
         $this->prepareTmpFile();
         $this->removeTmpFile();
         $this->assertFileDoesNotExist(self::TMP_FILE);
     }
-
     private function prepareTmpFile(): void
     {
         file_put_contents(self::TMP_FILE, '<?php return null;');
     }
-
     private function removeTmpFile(): void
     {
         if (is_file(self::TMP_FILE)) {
             unlink(self::TMP_FILE);
         }
     }
-
     protected function createSchemaProvider(array $config = null): PhpFileSchemaProvider
     {
         $aliases = new Aliases(['@dir' => __DIR__ . '/files']);

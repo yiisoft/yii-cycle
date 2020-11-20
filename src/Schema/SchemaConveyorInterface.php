@@ -21,14 +21,12 @@ interface SchemaConveyorInterface
 
     /**
      * @param string $stage
-     * @param Closure|GeneratorInterface|string $generator
+     * @param GeneratorInterface|string|Closure $generator
      */
     public function addGenerator(string $stage, $generator): void;
-
     /**
-     * @throws BadGeneratorDeclarationException
-     *
      * @return GeneratorInterface[]
+     * @throws BadGeneratorDeclarationException
      */
     public function getGenerators(): array;
 }

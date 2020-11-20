@@ -48,7 +48,7 @@ final class SchemaCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        /** @var string|null $roleArgument */
+        /** @var null|string $roleArgument */
         $roleArgument = $input->getArgument('role');
         $result = true;
         $schema = $this->promise->getSchema();
@@ -67,7 +67,6 @@ final class SchemaCommand extends Command
      * @param SchemaInterface $schema Data schema
      * @param string $role Role to display
      * @param OutputInterface $output Output console
-     *
      * @return bool
      */
     private function displaySchema(SchemaInterface $schema, string $role, OutputInterface $output): bool
@@ -83,7 +82,7 @@ final class SchemaCommand extends Command
         if ($alias !== null && $alias !== $role) {
             $output->write("=><fg=magenta>{$alias}</>");
         }
-        $output->write('<fg=magenta>]</>');
+        $output->write("<fg=magenta>]</>");
 
         // database and table
         $database = $schema->define($role, Schema::DATABASE);
@@ -115,14 +114,14 @@ final class SchemaCommand extends Command
         $output->writeln($pk === null ? 'no primary key' : "<fg=green>{$pk}</>");
         // Fields
         $columns = $schema->define($role, Schema::COLUMNS);
-        $output->writeln('   Fields     :');
-        $output->writeln('     (<fg=cyan>property</> -> <fg=green>db.field</> -> <fg=blue>typecast</>)');
+        $output->writeln("   Fields     :");
+        $output->writeln("     (<fg=cyan>property</> -> <fg=green>db.field</> -> <fg=blue>typecast</>)");
         $types = $schema->define($role, Schema::TYPECAST);
         foreach ($columns as $property => $field) {
             $typecast = $types[$property] ?? $types[$field] ?? null;
             $output->write("     <fg=cyan>{$property}</> -> <fg=green>{$field}</>");
             if ($typecast !== null) {
-                $output->write(sprintf(' -> <fg=blue>%s</>', implode('::', (array)$typecast)));
+                $output->write(sprintf(" -> <fg=blue>%s</>", implode('::', (array)$typecast)));
             }
             $output->writeln('');
         }
@@ -161,16 +160,16 @@ final class SchemaCommand extends Command
                 $output->write("       {$nullableStr} <fg=green>{$table}</>.<fg=green>{$innerKey}</> <=");
                 if ($mmEntity !== null) {
                     $output->write(" <fg=magenta>{$mmEntity}</>.<fg=green>{$mmInnerKey}</>");
-                    $output->write('|');
+                    $output->write("|");
                     $output->write("<fg=magenta>{$mmEntity}</>.<fg=green>{$mmOuterKey}</> ");
                 }
                 $output->writeln("=> <fg=magenta>{$target}</>.<fg=green>{$outerKey}</> ");
                 if (count($where)) {
-                    $output->write('       Where:');
+                    $output->write("       Where:");
                     $output->writeln(str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($where, true)));
                 }
                 if (count($mmWhere)) {
-                    $output->write('       Through where:');
+                    $output->write("       Through where:");
                     $output->writeln(str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($mmWhere, true)));
                 }
             }

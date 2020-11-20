@@ -58,7 +58,6 @@ final class AnnotatedSchemaConveyor extends SchemaConveyor
         }
         /**
          * autoload annotations
-         *
          * @psalm-suppress DeprecatedMethod
          */
         AnnotationRegistry::registerLoader('class_exists');

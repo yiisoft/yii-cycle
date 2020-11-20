@@ -31,8 +31,8 @@ final class PrintChanges implements GeneratorInterface
                 if ($table->getComparator()->hasChanges()) {
                     $this->changes[] = [
                         'database' => $registry->getDatabase($entity),
-                        'table' => $registry->getTable($entity),
-                        'schema' => $table,
+                        'table'    => $registry->getTable($entity),
+                        'schema'   => $table,
                     ];
                 }
             }
@@ -93,16 +93,16 @@ final class PrintChanges implements GeneratorInterface
     private function describeIndexes(ComparatorInterface $cmp): void
     {
         foreach ($cmp->addedIndexes() as $index) {
-            $index = implode(', ', $index->getColumns());
+            $index = join(', ', $index->getColumns());
             $this->output->writeln("    - add index on <fg=yellow>[{$index}]</fg=yellow>");
         }
         foreach ($cmp->droppedIndexes() as $index) {
-            $index = implode(', ', $index->getColumns());
+            $index = join(', ', $index->getColumns());
             $this->output->writeln("    - drop index on <fg=yellow>[{$index}]</fg=yellow>");
         }
         foreach ($cmp->alteredIndexes() as $index) {
             $index = $index[0];
-            $index = implode(', ', $index->getColumns());
+            $index = join(', ', $index->getColumns());
             $this->output->writeln("    - alter index on <fg=yellow>[{$index}]</fg=yellow>");
         }
     }
@@ -110,16 +110,16 @@ final class PrintChanges implements GeneratorInterface
     private function describeFKs(ComparatorInterface $cmp): void
     {
         foreach ($cmp->addedForeignKeys() as $fk) {
-            $fkColumns = implode(', ', $fk->getColumns());
+            $fkColumns = join(', ', $fk->getColumns());
             $this->output->writeln("    - add foreign key on <fg=yellow>{$fkColumns}</fg=yellow>");
         }
         foreach ($cmp->droppedForeignKeys() as $fk) {
-            $fkColumns = implode(', ', $fk->getColumns());
+            $fkColumns = join(', ', $fk->getColumns());
             $this->output->writeln("    - drop foreign key <fg=yellow>{$fkColumns}</fg=yellow>");
         }
         foreach ($cmp->alteredForeignKeys() as $fk) {
             $fk = $fk[0];
-            $fkColumns = implode(', ', $fk->getColumns());
+            $fkColumns = join(', ', $fk->getColumns());
             $this->output->writeln("    - alter foreign key <fg=yellow>{$fkColumns}</fg=yellow>");
         }
     }

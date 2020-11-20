@@ -10,7 +10,6 @@ use Yiisoft\Injector\Injector;
 final class CycleDynamicFactory implements FactoryInterface
 {
     private Injector $injector;
-
     public function __construct(Injector $injector)
     {
         $this->injector = $injector;

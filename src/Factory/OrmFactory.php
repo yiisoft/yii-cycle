@@ -13,13 +13,12 @@ use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 
 final class OrmFactory
 {
-    /** @var PromiseFactoryInterface|string|null  */
+    /** @var null|PromiseFactoryInterface|string  */
     private $promiseFactory = null;
 
     /**
      * OrmFactory constructor.
-     *
-     * @param PromiseFactoryInterface|string|null $promiseFactory
+     * @param null|PromiseFactoryInterface|string $promiseFactory
      */
     public function __construct($promiseFactory = null)
     {

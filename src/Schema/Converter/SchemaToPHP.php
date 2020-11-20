@@ -23,12 +23,10 @@ final class SchemaToPHP
     {
         $this->schema = $schema;
     }
-
     public function __toString(): string
     {
         return $this->convert();
     }
-
     public function convert(): string
     {
         $result = "<?php\n\ndeclare(strict_types=1);\n\n";

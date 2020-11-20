@@ -12,7 +12,6 @@ final class Any extends GroupProcessor
     {
         return 'or';
     }
-
     public function getAsWhereArguments(array $arguments, array $processors): array
     {
         $this->validateArguments($arguments);

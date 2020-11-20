@@ -25,7 +25,7 @@ final class ListCommand extends BaseMigrationCommand
         foreach ($list as $migration) {
             $state = $migration->getState();
             $output->writeln('<fg=cyan>' . $state->getName() . '</> '
-                . '<fg=yellow>[' . (self::MIGRATION_STATUS[$state->getStatus()] ?? '?') . ']</>');
+                . '<fg=yellow>[' . (static::MIGRATION_STATUS[$state->getStatus()] ?? '?') . ']</>');
         }
         return ExitCode::OK;
     }

@@ -89,52 +89,42 @@ final class SchemaRenderer
             $this->renderRelations($role),
         ], true);
     }
-
     private function renderDatabase(string $role): ArrayItemExporter
     {
         return new ArrayItemExporter('Schema::DATABASE', $this->schema->define($role, Schema::DATABASE));
     }
-
     private function renderTable(string $role): ArrayItemExporter
     {
         return new ArrayItemExporter('Schema::TABLE', $this->schema->define($role, Schema::TABLE));
     }
-
     private function renderEntity(string $role): ArrayItemExporter
     {
         return new ArrayItemExporter('Schema::ENTITY', $this->schema->define($role, Schema::ENTITY));
     }
-
     private function renderMapper(string $role): ArrayItemExporter
     {
         return new ArrayItemExporter('Schema::MAPPER', $this->schema->define($role, Schema::MAPPER));
     }
-
     private function renderRepository(string $role): ArrayItemExporter
     {
         return new ArrayItemExporter('Schema::REPOSITORY', $this->schema->define($role, Schema::REPOSITORY));
     }
-
     private function renderScope(string $role): ArrayItemExporter
     {
         return new ArrayItemExporter('Schema::CONSTRAIN', $this->schema->define($role, Schema::CONSTRAIN));
     }
-
     private function renderPK(string $role): ArrayItemExporter
     {
         return new ArrayItemExporter('Schema::PRIMARY_KEY', $this->schema->define($role, Schema::PRIMARY_KEY));
     }
-
     private function renderFields(string $role): ArrayItemExporter
     {
         return new ArrayItemExporter('Schema::COLUMNS', $this->schema->define($role, Schema::COLUMNS));
     }
-
     private function renderTypecast(string $role): ArrayItemExporter
     {
         return new ArrayItemExporter('Schema::TYPECAST', $this->schema->define($role, Schema::TYPECAST));
     }
-
     private function renderRelations(string $role): ArrayItemExporter
     {
         $relations = $this->schema->define($role, Schema::RELATIONS) ?? [];
@@ -148,7 +138,6 @@ final class SchemaRenderer
         }
         return new ArrayItemExporter('Schema::RELATIONS', $results);
     }
-
     private function renderRelationOption(int $option, $value): ArrayItemExporter
     {
         $item = new ArrayItemExporter(self::GENERAL_OPTION[$option] ?? (string)$option, $value);
@@ -166,7 +155,6 @@ final class SchemaRenderer
 
         return $item;
     }
-
     private function renderRelationSchemaKeys(array $value): array
     {
         $result = [];

@@ -13,12 +13,10 @@ class SchemaWasNotProvidedException extends RuntimeException implements Friendly
     {
         parent::__construct('Schema was not provided.');
     }
-
     public function getName(): string
     {
         return 'Current Schema for Cycle ORM was not provided';
     }
-
     public function getSolution(): ?string
     {
         return 'Make sure a SchemaProvider is configured correctly.';

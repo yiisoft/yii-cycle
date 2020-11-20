@@ -16,9 +16,8 @@ use Yiisoft\Yii\Cycle\Tests\Factory\DbalFactory\Stub\FakeDriver;
 final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactoryTest
 {
     /**
-     * @param LoggerInterface|string $logger Classname or object
-     *
-     * @return LoggerInterface|null
+     * @param string|LoggerInterface $logger Classname or object
+     * @return null|LoggerInterface
      */
     protected function prepareLoggerFromDbalFactory($logger): ?LoggerInterface
     {
@@ -27,7 +26,7 @@ final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactoryTest
             'default' => 'default',
             'aliases' => [],
             'databases' => [
-                'default' => ['connection' => 'fake'],
+                'default' => ['connection' => 'fake']
             ],
             'connections' => [
                 'fake' => [
@@ -35,7 +34,7 @@ final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactoryTest
                     'connection' => 'fake',
                     'username' => '',
                     'password' => '',
-                ],
+                ]
             ],
         ]))($this->container);
         return $factory->driver('fake')->getLogger();

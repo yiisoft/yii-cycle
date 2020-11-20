@@ -30,11 +30,9 @@ class OrmFactoryTest extends TestCase
     }
 
     /**
-     * @param PromiseFactoryInterface|string|null $promiseFactory
-     *
-     * @throws \Throwable
-     *
+     * @param null|PromiseFactoryInterface|string $promiseFactory
      * @return ORM
+     * @throws \Throwable
      */
     protected function runOrmFactory($promiseFactory = null): ORM
     {
@@ -47,7 +45,6 @@ class OrmFactoryTest extends TestCase
 
         $this->assertInstanceOf(ORMInterface::class, $orm);
     }
-
     public function testFactoryWithNullSchema(): void
     {
         $this->container = new SimpleContainer([
@@ -68,7 +65,6 @@ class OrmFactoryTest extends TestCase
 
         $this->assertInstanceOf(ORMInterface::class, $orm);
     }
-
     public function testPromiseFactoryAsObject(): void
     {
         $promiseFactory = $this->container->get(PromiseFactoryInterface::class);
@@ -77,14 +73,12 @@ class OrmFactoryTest extends TestCase
 
         $this->assertInstanceOf(ORMInterface::class, $orm);
     }
-
     public function testPromiseFactoryAsInvalidObject(): void
     {
         $this->expectException(BadDeclarationException::class);
 
         $this->runOrmFactory(new stdClass());
     }
-
     public function testPromiseFactoryAsInvalidDefinition(): void
     {
         $this->expectException(BadDeclarationException::class);

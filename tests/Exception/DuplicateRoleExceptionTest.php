@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Exception;
 
-use PHPUnit\Framework\TestCase;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 use Yiisoft\Yii\Cycle\Exception\DuplicateRoleException;
+use PHPUnit\Framework\TestCase;
 
 final class DuplicateRoleExceptionTest extends TestCase
 {

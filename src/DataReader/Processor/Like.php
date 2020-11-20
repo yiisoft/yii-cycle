@@ -12,7 +12,6 @@ final class Like implements QueryBuilderProcessor, FilterProcessorInterface
     {
         return 'like';
     }
-
     public function getAsWhereArguments(array $arguments, array $processors): array
     {
         if (count($arguments) !== 2) {

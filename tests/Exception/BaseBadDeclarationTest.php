@@ -1,7 +1,5 @@
 <?php
 
-declare(strict_types=1);
-
 namespace Yiisoft\Yii\Cycle\Tests\Exception;
 
 use PHPUnit\Framework\TestCase;
@@ -23,7 +21,6 @@ abstract class BaseBadDeclarationTest extends TestCase
             [[], 'Array'],
         ];
     }
-
     /**
      * @dataProvider ArgumentValueProvider
      */

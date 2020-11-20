@@ -16,7 +16,7 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
  */
 final class SchemaProviderPipeline implements SchemaProviderInterface
 {
-    /** @var SplDoublyLinkedList<int, DeferredSchemaProviderDecorator>|null */
+    /** @var null|SplDoublyLinkedList<int, DeferredSchemaProviderDecorator> */
     private ?SplDoublyLinkedList $providers = null;
     private ContainerInterface $container;
 
