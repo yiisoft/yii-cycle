@@ -17,29 +17,35 @@ class CallingSpyProvider implements SchemaProviderInterface
     {
         $this->schema = $schema;
     }
+
     public function withConfig(array $config): self
     {
         return $this;
     }
+
     public function isWritable(): bool
     {
         return true;
     }
+
     public function isReadable(): bool
     {
         return true;
     }
+
     public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
         ++$this->read;
         return $this->schema;
     }
+
     public function write(array $schema): bool
     {
         ++$this->write;
         $this->schema = $schema;
         return true;
     }
+
     public function clear(): bool
     {
         ++$this->clear;
@@ -51,10 +57,12 @@ class CallingSpyProvider implements SchemaProviderInterface
     {
         return $this->read;
     }
+
     public function getWriteCount(): int
     {
         return $this->write;
     }
+
     public function getClearCount(): int
     {
         return $this->clear;

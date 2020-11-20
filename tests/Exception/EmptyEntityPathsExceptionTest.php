@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Exception;
 
-use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 use PHPUnit\Framework\TestCase;
+use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 
 final class EmptyEntityPathsExceptionTest extends TestCase

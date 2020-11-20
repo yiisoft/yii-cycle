@@ -92,7 +92,7 @@ final class UpCommand extends BaseMigrationCommand
                 $state = $migration->getState();
                 $status = $state->getStatus();
                 $output->writeln('<fg=cyan>' . $state->getName() . '</>: '
-                    . (static::MIGRATION_STATUS[$status] ?? $status));
+                    . (self::MIGRATION_STATUS[$status] ?? $status));
             } while (--$limit > 0);
         } finally {
             $this->eventDispatcher->dispatch(new AfterMigrate());

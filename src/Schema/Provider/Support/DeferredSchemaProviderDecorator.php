@@ -24,7 +24,7 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
     /**
      * @param ContainerInterface $container
      * @param $provider
-     * @param null|self $nextProvider
+     * @param self|null $nextProvider
      */
     public function __construct(ContainerInterface $container, $provider, ?self $nextProvider)
     {
@@ -32,6 +32,7 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
         $this->container = $container;
         $this->nextProvider = $nextProvider;
     }
+
     public function withConfig(array $config): self
     {
         $provider = !$this->resolved && count($this->config) === 0 ? $this->provider : $this->getProvider();
@@ -39,6 +40,7 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
         $new->config = $config;
         return $new;
     }
+
     public function read(?SchemaProviderInterface $latestProvider = null): ?array
     {
         $latestProvider = $latestProvider ?? $this->latestProvider;
@@ -49,6 +51,7 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
         }
         return $this->getProvider()->read($nextProvider);
     }
+
     public function clear(): bool
     {
         return $this->getProvider()->clear();
@@ -73,6 +76,7 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
         $this->resolved = true;
         return $this->provider;
     }
+
     private function withLatestProvider(SchemaProviderInterface $provider): self
     {
         // resolve provider

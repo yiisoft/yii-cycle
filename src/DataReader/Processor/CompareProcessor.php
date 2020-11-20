@@ -14,6 +14,7 @@ abstract class CompareProcessor implements QueryBuilderProcessor, FilterProcesso
             throw new \InvalidArgumentException('$arguments should contain exactly two elements.');
         }
     }
+
     public function getAsWhereArguments(array $arguments, array $processors): array
     {
         $this->validateArguments($arguments);

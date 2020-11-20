@@ -21,10 +21,12 @@ final class SameOriginProvider implements SchemaProviderInterface
     private bool $exceptionOnRead = false;
     private bool $exceptionOnWrite = false;
     private bool $exceptionOnClear = false;
+
     public function __construct($schema)
     {
         $this->schema = $schema;
     }
+
     public function withConfig(array $config): self
     {
         $new = clone $this;
@@ -46,14 +48,17 @@ final class SameOriginProvider implements SchemaProviderInterface
         }
         return $new;
     }
+
     public function isWritable(): bool
     {
         return $this->writable;
     }
+
     public function isExceptionOnRead(): bool
     {
         return $this->exceptionOnRead;
     }
+
     public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
         if ($this->exceptionOnRead) {
@@ -68,6 +73,7 @@ final class SameOriginProvider implements SchemaProviderInterface
         }
         return $schema;
     }
+
     public function write(array $schema): bool
     {
         if ($this->exceptionOnWrite) {
@@ -79,6 +85,7 @@ final class SameOriginProvider implements SchemaProviderInterface
         $this->schema = $schema;
         return true;
     }
+
     public function clear(): bool
     {
         if ($this->exceptionOnClear) {

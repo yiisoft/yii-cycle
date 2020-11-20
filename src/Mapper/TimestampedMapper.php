@@ -14,6 +14,7 @@ use Cycle\ORM\Mapper\Mapper;
 
 /**
  * You can use the annotated entities extension to automatically declare the needed columns from inside your mapper
+ *
  * @see https://github.com/cycle/docs/blob/master/advanced/timestamp.md#automatically-define-columns
  *
  * @Table(

@@ -9,12 +9,15 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 final class ArraySchemaProvider implements SchemaProviderInterface
 {
     protected ?array $schema;
+
     public function __construct(array $schema = null)
     {
         $this->schema = $schema;
     }
+
     /**
      * @param array $config will replace the schema
+     *
      * @return $this
      */
     public function withConfig(array $config): self
@@ -23,6 +26,7 @@ final class ArraySchemaProvider implements SchemaProviderInterface
         $new->schema = $config;
         return $new;
     }
+
     public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
         if ($this->schema !== null) {
@@ -31,6 +35,7 @@ final class ArraySchemaProvider implements SchemaProviderInterface
         $this->schema = $nextProvider === null ? null : $nextProvider->read();
         return $this->schema;
     }
+
     public function clear(): bool
     {
         $this->schema = null;
