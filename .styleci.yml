@@ -73,7 +73,6 @@ enabled:
     - phpdoc_type_to_var
     - phpdoc_types
     - phpdoc_types_order
-    - phpdoc_var_without_name
     - print_to_echo
     - regular_callable_call
     - return_assignment
