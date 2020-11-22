@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Command\Common;
+namespace Yiisoft\Yii\Cycle\Command\Schema;
 
 use Cycle\ORM\Relation;
 use Cycle\ORM\Schema;

@@ -3,7 +3,7 @@
 declare(strict_types=1);
 
 use Cycle\ORM\PromiseFactoryInterface;
-use Yiisoft\Yii\Cycle\Command\Common;
+use Yiisoft\Yii\Cycle\Command\Schema;
 use Yiisoft\Yii\Cycle\Command\Migration;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
@@ -11,9 +11,9 @@ return [
     // Console commands
     'yiisoft/yii-console' => [
         'commands' => [
-            'cycle/schema' => Common\SchemaCommand::class,
-            'cycle/schema/php' => Common\SchemaPhpCommand::class,
-            'cycle/schema/clear' => Common\SchemaClearCommand::class,
+            'cycle/schema' => Schema\SchemaCommand::class,
+            'cycle/schema/php' => Schema\SchemaPhpCommand::class,
+            'cycle/schema/clear' => Schema\SchemaClearCommand::class,
             'migrate/create' => Migration\CreateCommand::class,
             'migrate/generate' => Migration\GenerateCommand::class,
             'migrate/up' => Migration\UpCommand::class,
