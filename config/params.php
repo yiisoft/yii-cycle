@@ -14,7 +14,7 @@ return [
             'cycle/schema' => Common\SchemaCommand::class,
             'cycle/schema/php' => Common\SchemaPhpCommand::class,
             'cycle/schema/clear' => Common\SchemaClearCommand::class,
-            'cycle/schema/rebuild' => Common\SchemaRebuildCommand::class,
+            'cycle/schema/rebuild' => Schema\SchemaRebuildCommand::class,
             'migrate/create' => Migration\CreateCommand::class,
             'migrate/generate' => Migration\GenerateCommand::class,
             'migrate/up' => Migration\UpCommand::class,
