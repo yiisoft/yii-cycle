@@ -21,25 +21,6 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
     protected const READ_CONFIG = [
         ArraySchemaProvider::class => self::DEFAULT_CONFIG_SCHEMA,
     ];
-    protected const DEFAULT_CONFIG_SCHEMA = [
-        'user' => [
-            Schema::ENTITY => \stdClass::class,
-            Schema::MAPPER => \stdClass::class,
-            Schema::DATABASE => 'default',
-            Schema::TABLE => 'user',
-            Schema::PRIMARY_KEY => 'id',
-            Schema::COLUMNS => [
-                'id' => 'id',
-                'email' => 'email',
-                'balance' => 'balance',
-            ],
-            Schema::TYPECAST => [
-                'id' => 'int',
-                'balance' => 'float',
-            ],
-            Schema::RELATIONS => [],
-        ],
-    ];
     protected const ANOTHER_SCHEMA = [
         'post' => [
             Schema::ENTITY => \stdClass::class,

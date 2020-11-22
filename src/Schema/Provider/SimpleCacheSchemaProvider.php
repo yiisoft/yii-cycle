@@ -42,7 +42,11 @@ final class SimpleCacheSchemaProvider implements SchemaProviderInterface
 
     public function clear(): bool
     {
-        return $this->cache->delete($this->key);
+        $result = $this->cache->delete($this->key);
+        if ($result === false) {
+            throw new \RuntimeException('?');
+        }
+        return true;
     }
 
     private function write(array $schema): bool

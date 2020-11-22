@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider;
 
+use Cycle\ORM\Schema;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
@@ -11,7 +12,25 @@ use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 abstract class BaseSchemaProviderTest extends TestCase
 {
     protected const READ_CONFIG = [];
-    protected const DEFAULT_CONFIG_SCHEMA = ['user' => []];
+    protected const DEFAULT_CONFIG_SCHEMA = [
+        'user' => [
+            Schema::ENTITY => \stdClass::class,
+            Schema::MAPPER => \stdClass::class,
+            Schema::DATABASE => 'default',
+            Schema::TABLE => 'user',
+            Schema::PRIMARY_KEY => 'id',
+            Schema::COLUMNS => [
+                'id' => 'id',
+                'email' => 'email',
+                'balance' => 'balance',
+            ],
+            Schema::TYPECAST => [
+                'id' => 'int',
+                'balance' => 'float',
+            ],
+            Schema::RELATIONS => [],
+        ],
+    ];
 
     public function testWithConfigImmutability(): void
     {
