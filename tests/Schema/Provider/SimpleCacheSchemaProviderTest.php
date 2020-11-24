@@ -16,7 +16,7 @@ final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
     protected const READ_CONFIG = ['key' => self::CACHE_KEY];
     private const CACHE_KEY = 'test-cycle-schema-cache-key';
 
-    private CacheInterface $cacheService;
+    private SimpleCacheService $cacheService;
 
     public function testDefaultState(): void
     {
@@ -25,12 +25,7 @@ final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
         $this->assertNull($provider->read());
         $this->assertTrue($this->cacheService->has(self::CACHE_KEY));
     }
-    // public function testWithConfigWithoutRequiredParams(): void
-    // {
-    //     $this->expectException(InvalidArgumentException::class);
-    //
-    //     $this->createSchemaProvider([]);
-    // }
+
     public function testClear(): void
     {
         $provider = $this->createSchemaProvider(self::READ_CONFIG);
@@ -40,14 +35,37 @@ final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
         $this->assertTrue($result);
         $this->assertFalse($this->cacheService->has(self::CACHE_KEY));
     }
+
     public function testClearNotExistingKey(): void
     {
-        $provider = $this->createSchemaProvider(['key' => 'key-no-exists']);
+        $provider = $this->createSchemaProvider(['key' => 'key-not-exists']);
 
         $result = $provider->clear();
 
         $this->assertTrue($result);
     }
+
+    public function testClearWithCacheOnDeleteError(): void
+    {
+        $provider = $this->createSchemaProvider();
+        $this->cacheService->returnOnDelete = false;
+
+        $this->expectException(RuntimeException::class);
+
+        $provider->clear();
+    }
+
+    public function testWriteOnReadFromNextProvider(): void
+    {
+        $key = 'key-not-exists';
+        $provider = $this->createSchemaProvider(['key' => $key]);
+        $nextProvider = new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA);
+
+        $result = $provider->read($nextProvider);
+        $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $result);
+        $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $this->cacheService->get($key));
+    }
+
     // public function testClearNotFile(): void
     // {
     //     $provider = $this->createSchemaProvider(['file' => '@dir']);
@@ -61,10 +79,12 @@ final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
     {
         $this->cacheService = new SimpleCacheService([self::CACHE_KEY => self::DEFAULT_CONFIG_SCHEMA]);
     }
+
     protected function setUp(): void
     {
         $this->prepareCacheService();
     }
+
     protected function createSchemaProvider(array $config = null): SimpleCacheSchemaProvider
     {
         $provider = new SimpleCacheSchemaProvider($this->cacheService);

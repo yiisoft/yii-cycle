@@ -20,6 +20,7 @@ final class SimpleCacheService implements CacheInterface
     private const EXPIRATION_EXPIRED = -1;
 
     private array $cache = [];
+    public bool $returnOnDelete = true;
 
     public function __construct(array $cacheData = [])
     {
@@ -59,7 +60,7 @@ final class SimpleCacheService implements CacheInterface
     {
         $this->validateKey($key);
         unset($this->cache[$key]);
-        return true;
+        return $this->returnOnDelete;
     }
 
     public function clear(): bool
@@ -99,7 +100,7 @@ final class SimpleCacheService implements CacheInterface
             assert(is_string($key));
             $this->delete($key);
         }
-        return true;
+        return $this->returnOnDelete;
     }
 
     public function has($key): bool
@@ -110,7 +111,9 @@ final class SimpleCacheService implements CacheInterface
 
     /**
      * Checks whether item is expired or not
+     *
      * @param string $key
+     *
      * @return bool
      */
     private function isExpired(string $key): bool
@@ -120,7 +123,9 @@ final class SimpleCacheService implements CacheInterface
 
     /**
      * Converts TTL to expiration
+     *
      * @param int|DateInterval|null $ttl
+     *
      * @return int
      */
     private function ttlToExpiration($ttl): int
@@ -140,9 +145,10 @@ final class SimpleCacheService implements CacheInterface
 
     /**
      * Normalizes cache TTL handling strings and {@see DateInterval} objects.
+     *
      * @param int|string|DateInterval|null $ttl raw TTL.
+     *
      * @return int|null TTL value as UNIX timestamp or null meaning infinity
-     * @suppress PhanPossiblyFalseTypeReturn
      */
     private function normalizeTtl($ttl): ?int
     {
@@ -159,7 +165,9 @@ final class SimpleCacheService implements CacheInterface
 
     /**
      * Converts iterable to array. If provided value is not iterable it throws an InvalidArgumentException
+     *
      * @param $iterable
+     *
      * @return array
      */
     private function iterableToArray($iterable): array
@@ -171,19 +179,13 @@ final class SimpleCacheService implements CacheInterface
         return $iterable instanceof \Traversable ? iterator_to_array($iterable) : (array)$iterable;
     }
 
-    /**
-     * @param $key
-     */
     private function validateKey($key): void
     {
-        // if (!\is_string($key) || strpbrk($key, '{}()/\@:')) {
-        //     throw new InvalidArgumentException('Invalid key value.');
-        // }
+        if (!\is_string($key) || strpbrk($key, '{}()/\@:')) {
+            throw new InvalidArgumentException('Invalid key value.');
+        }
     }
 
-    /**
-     * @param array $keys
-     */
     private function validateKeys(array $keys): void
     {
         foreach ($keys as $key) {
@@ -191,9 +193,6 @@ final class SimpleCacheService implements CacheInterface
         }
     }
 
-    /**
-     * @param array $values
-     */
     private function validateKeysOfValues(array $values): void
     {
         $keys = array_map('strval', array_keys($values));
