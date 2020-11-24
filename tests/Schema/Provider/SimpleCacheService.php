@@ -124,7 +124,7 @@ final class SimpleCacheService implements CacheInterface
     /**
      * Converts TTL to expiration
      *
-     * @param int|DateInterval|null $ttl
+     * @param DateInterval|int|null $ttl
      *
      * @return int
      */
@@ -133,9 +133,9 @@ final class SimpleCacheService implements CacheInterface
         $ttl = $this->normalizeTtl($ttl);
 
         if ($ttl === null) {
-            $expiration = static::EXPIRATION_INFINITY;
+            $expiration = self::EXPIRATION_INFINITY;
         } elseif ($ttl <= 0) {
-            $expiration = static::EXPIRATION_EXPIRED;
+            $expiration = self::EXPIRATION_EXPIRED;
         } else {
             $expiration = $ttl + time();
         }
@@ -146,7 +146,7 @@ final class SimpleCacheService implements CacheInterface
     /**
      * Normalizes cache TTL handling strings and {@see DateInterval} objects.
      *
-     * @param int|string|DateInterval|null $ttl raw TTL.
+     * @param DateInterval|int|string|null $ttl raw TTL.
      *
      * @return int|null TTL value as UNIX timestamp or null meaning infinity
      */

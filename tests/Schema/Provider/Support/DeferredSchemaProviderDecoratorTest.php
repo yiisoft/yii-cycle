@@ -6,7 +6,6 @@ namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\Support;
 
 use Cycle\ORM\Schema;
 use Psr\Container\ContainerInterface;
-use Yiisoft\Aliases\Aliases;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Schema\Provider\Support\DeferredSchemaProviderDecorator;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
