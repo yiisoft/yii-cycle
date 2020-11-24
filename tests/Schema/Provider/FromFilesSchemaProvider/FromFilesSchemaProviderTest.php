@@ -14,7 +14,7 @@ use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProviderTest;
 class FromFilesSchemaProviderTest extends BaseSchemaProviderTest
 {
     protected const READ_CONFIG = ['files' => ['@dir/schema1.php']];
-    protected const DEFAULT_CONFIG_SCHEMA = ['user' => []];
+    protected const READ_CONFIG_SCHEMA = ['user' => []];
 
     public function EmptyConfigProvider(): array
     {

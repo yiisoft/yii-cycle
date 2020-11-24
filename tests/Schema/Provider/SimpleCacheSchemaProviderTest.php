@@ -4,10 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider;
 
-use InvalidArgumentException;
-use Psr\SimpleCache\CacheInterface;
 use RuntimeException;
-use Yiisoft\Yii\Cycle\Schema\Provider\PhpFileSchemaProvider;
 use Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 
@@ -59,11 +56,11 @@ final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
     {
         $key = 'key-not-exists';
         $provider = $this->createSchemaProvider(['key' => $key]);
-        $nextProvider = new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA);
+        $nextProvider = new ArraySchemaProvider(self::READ_CONFIG_SCHEMA);
 
         $result = $provider->read($nextProvider);
-        $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $result);
-        $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $this->cacheService->get($key));
+        $this->assertSame(self::READ_CONFIG_SCHEMA, $result);
+        $this->assertSame(self::READ_CONFIG_SCHEMA, $this->cacheService->get($key));
     }
 
     // public function testClearNotFile(): void
@@ -77,7 +74,7 @@ final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
 
     private function prepareCacheService(): void
     {
-        $this->cacheService = new SimpleCacheService([self::CACHE_KEY => self::DEFAULT_CONFIG_SCHEMA]);
+        $this->cacheService = new SimpleCacheService([self::CACHE_KEY => self::READ_CONFIG_SCHEMA]);
     }
 
     protected function setUp(): void

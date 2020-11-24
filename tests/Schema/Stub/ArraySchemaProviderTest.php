@@ -8,7 +8,7 @@ use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProviderTest;
 
 final class ArraySchemaProviderTest extends BaseSchemaProviderTest
 {
-    protected const READ_CONFIG = self::DEFAULT_CONFIG_SCHEMA;
+    protected const READ_CONFIG = self::READ_CONFIG_SCHEMA;
 
     protected function createSchemaProvider(?array $config = null): ArraySchemaProvider
     {
