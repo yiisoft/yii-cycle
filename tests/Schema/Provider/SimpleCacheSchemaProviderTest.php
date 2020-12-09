@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider;
 
 use RuntimeException;
+use Yiisoft\Test\Support\SimpleCache\Action;
+use Yiisoft\Test\Support\SimpleCache\MemorySimpleCache;
+use Yiisoft\Test\Support\SimpleCache\SimpleCacheActionLogger;
 use Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 
@@ -13,7 +16,7 @@ final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
     protected const READ_CONFIG = ['key' => self::CACHE_KEY];
     private const CACHE_KEY = 'test-cycle-schema-cache-key';
 
-    private SimpleCacheService $cacheService;
+    private SimpleCacheActionLogger $cacheService;
 
     public function testDefaultState(): void
     {
@@ -30,22 +33,25 @@ final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
         $result = $provider->clear();
 
         $this->assertTrue($result);
+        $this->assertSame([[Action::DELETE, self::CACHE_KEY]], $this->cacheService->getShortActions());
         $this->assertFalse($this->cacheService->has(self::CACHE_KEY));
     }
 
     public function testClearNotExistingKey(): void
     {
-        $provider = $this->createSchemaProvider(['key' => 'key-not-exists']);
+        $key = 'key-not-exists';
+        $provider = $this->createSchemaProvider(['key' => $key]);
 
         $result = $provider->clear();
 
         $this->assertTrue($result);
+        $this->assertSame([[Action::DELETE, $key]], $this->cacheService->getShortActions());
     }
 
     public function testClearWithCacheOnDeleteError(): void
     {
         $provider = $this->createSchemaProvider();
-        $this->cacheService->returnOnDelete = false;
+        $this->cacheService->getCacheService()->returnOnDelete = false;
 
         $this->expectException(RuntimeException::class);
 
@@ -59,22 +65,20 @@ final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
         $nextProvider = new ArraySchemaProvider(self::READ_CONFIG_SCHEMA);
 
         $result = $provider->read($nextProvider);
+        $this->assertSame(
+            [[Action::GET, $key], [Action::SET, $key]],
+            $this->cacheService->getShortActions()
+        );
         $this->assertSame(self::READ_CONFIG_SCHEMA, $result);
         $this->assertSame(self::READ_CONFIG_SCHEMA, $this->cacheService->get($key));
     }
 
-    // public function testClearNotFile(): void
-    // {
-    //     $provider = $this->createSchemaProvider(['file' => '@dir']);
-    //
-    //     $result = $provider->clear();
-    //
-    //     $this->assertFalse($result);
-    // }
-
     private function prepareCacheService(): void
     {
-        $this->cacheService = new SimpleCacheService([self::CACHE_KEY => self::READ_CONFIG_SCHEMA]);
+        $this->cacheService = new SimpleCacheActionLogger(
+            new MemorySimpleCache(),
+            [self::CACHE_KEY => self::READ_CONFIG_SCHEMA]
+        );
     }
 
     protected function setUp(): void
