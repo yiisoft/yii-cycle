@@ -76,7 +76,7 @@ class ConfigurableSchemaProvider implements SchemaProviderInterface
     public function write(array $schema): bool
     {
         if ($this->exceptionOnWrite) {
-            throw new \RuntimeException('Schema can\'t be write.');
+            throw new \RuntimeException('Schema cannot be written.');
         }
         if (!$this->writable) {
             return false;
