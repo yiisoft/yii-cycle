@@ -43,7 +43,7 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
 
     public function read(?SchemaProviderInterface $latestProvider = null): ?array
     {
-        $latestProvider = $latestProvider ?? $this->latestProvider;
+        $latestProvider ??= $this->latestProvider;
         if ($latestProvider !== null && $this->nextProvider !== null) {
             $nextProvider = $this->nextProvider->withLatestProvider($latestProvider);
         } else {

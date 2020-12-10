@@ -19,26 +19,7 @@ use Yiisoft\Yii\Cycle\Tests\Schema\Stub\SameOriginProvider;
 final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
 {
     protected const READ_CONFIG = [
-        ArraySchemaProvider::class => self::DEFAULT_CONFIG_SCHEMA,
-    ];
-    protected const DEFAULT_CONFIG_SCHEMA = [
-        'user' => [
-            Schema::ENTITY => \stdClass::class,
-            Schema::MAPPER => \stdClass::class,
-            Schema::DATABASE => 'default',
-            Schema::TABLE => 'user',
-            Schema::PRIMARY_KEY => 'id',
-            Schema::COLUMNS => [
-                'id' => 'id',
-                'email' => 'email',
-                'balance' => 'balance',
-            ],
-            Schema::TYPECAST => [
-                'id' => 'int',
-                'balance' => 'float',
-            ],
-            Schema::RELATIONS => [],
-        ],
+        ArraySchemaProvider::class => self::READ_CONFIG_SCHEMA,
     ];
     protected const ANOTHER_SCHEMA = [
         'post' => [
@@ -94,10 +75,10 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
 
     public function testClearAllProvidersIndependentFromWriteable(): void
     {
-        $writeable = new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA);
+        $writeable = new ArraySchemaProvider(self::READ_CONFIG_SCHEMA);
         $origin = new SameOriginProvider([]);
         $notReadable = $origin->withConfig([]);
-        $notWriteable1 = (new SameOriginProvider(self::DEFAULT_CONFIG_SCHEMA))
+        $notWriteable1 = (new SameOriginProvider(self::READ_CONFIG_SCHEMA))
             ->withConfig([SameOriginProvider::OPTION_WRITABLE => false]);
         $notWriteable2 = (new SameOriginProvider(self::ANOTHER_SCHEMA))
             ->withConfig([SameOriginProvider::OPTION_CLEARABLE => false]);
@@ -114,7 +95,7 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
 
     public function testClearWithException(): void
     {
-        $provider1 = (new SameOriginProvider(self::DEFAULT_CONFIG_SCHEMA))
+        $provider1 = (new SameOriginProvider(self::READ_CONFIG_SCHEMA))
             ->withConfig([SameOriginProvider::EXCEPTION_ON_CLEAR => true]);
         $provider2 = new ArraySchemaProvider(self::ANOTHER_SCHEMA);
         $provider3 = new ArraySchemaProvider(self::ANOTHER_SCHEMA);
@@ -128,7 +109,7 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
             throw $e;
         } finally {
             // first provider throws exception
-            $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $provider1->read());
+            $this->assertSame(self::READ_CONFIG_SCHEMA, $provider1->read());
             // next provider will be cleared
             $this->assertNull($provider2->read());
             // last provider will be cleared
@@ -140,16 +121,16 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
 
     public function testProviderFromString(): void
     {
-        $this->prepareContainer(['provider' => new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA)]);
+        $this->prepareContainer(['provider' => new ArraySchemaProvider(self::READ_CONFIG_SCHEMA)]);
 
         $provider = $this->createSchemaProvider(['provider']);
 
-        $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $provider->read());
+        $this->assertSame(self::READ_CONFIG_SCHEMA, $provider->read());
     }
 
     public function testProviderFromArray(): void
     {
-        $this->prepareContainer(['provider' => new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA)]);
+        $this->prepareContainer(['provider' => new ArraySchemaProvider(self::READ_CONFIG_SCHEMA)]);
         $newSchema = self::ANOTHER_SCHEMA;
 
         $provider = $this->createSchemaProvider(['provider' => $newSchema]);
@@ -159,7 +140,7 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
 
     public function testIgnoreStringKeyIfDefinitionIsNotArray(): void
     {
-        $this->prepareContainer(['provider' => new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA)]);
+        $this->prepareContainer(['provider' => new ArraySchemaProvider(self::READ_CONFIG_SCHEMA)]);
 
         $provider = $this->createSchemaProvider(['provider' => new ArraySchemaProvider(self::ANOTHER_SCHEMA)]);
 
@@ -168,9 +149,9 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
 
     public function testProviderAsObject(): void
     {
-        $provider = $this->createSchemaProvider([new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA)]);
+        $provider = $this->createSchemaProvider([new ArraySchemaProvider(self::READ_CONFIG_SCHEMA)]);
 
-        $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $provider->read());
+        $this->assertSame(self::READ_CONFIG_SCHEMA, $provider->read());
     }
 
     public function testProviderAsBadClassObject(): void
@@ -185,13 +166,13 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
     public function testShortCircuitInstantiation(): void
     {
         $this->prepareContainer([
-            'goodProvider' => new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA),
+            'goodProvider' => new ArraySchemaProvider(self::READ_CONFIG_SCHEMA),
             'badProvider' => 'not an object',
         ]);
 
         $provider = $this->createSchemaProvider(['goodProvider', 'badProvider', 'undefined provider']);
 
-        $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $provider->read());
+        $this->assertSame(self::READ_CONFIG_SCHEMA, $provider->read());
     }
 
     // Reading test
@@ -205,17 +186,17 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
 
     public function testReadFromOneProvider(): void
     {
-        $provider = $this->createSchemaProvider([new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA)]);
+        $provider = $this->createSchemaProvider([new ArraySchemaProvider(self::READ_CONFIG_SCHEMA)]);
 
         $schema = $provider->read();
 
-        $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $schema);
+        $this->assertSame(self::READ_CONFIG_SCHEMA, $schema);
     }
 
     public function testReadingOrderWithNullIgnoring(): void
     {
         $this->prepareContainer([
-            'withSchema' => new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA),
+            'withSchema' => new ArraySchemaProvider(self::READ_CONFIG_SCHEMA),
             'withoutSchema' => new ArraySchemaProvider(null),
         ]);
 
@@ -227,7 +208,7 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
     public function testReadWithException(): void
     {
         $this->prepareContainer([
-            'withoutSchema' => (new SameOriginProvider(self::DEFAULT_CONFIG_SCHEMA))
+            'withoutSchema' => (new SameOriginProvider(self::READ_CONFIG_SCHEMA))
                 ->withConfig([SameOriginProvider::EXCEPTION_ON_READ => true]),
         ]);
 
@@ -245,10 +226,10 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
         ]);
 
         $schema1 = $provider->read();
-        $schema2 = $provider->read(new ArraySchemaProvider(self::DEFAULT_CONFIG_SCHEMA));
+        $schema2 = $provider->read(new ArraySchemaProvider(self::READ_CONFIG_SCHEMA));
 
         $this->assertNull($schema1);
-        $this->assertSame(self::DEFAULT_CONFIG_SCHEMA, $schema2);
+        $this->assertSame(self::READ_CONFIG_SCHEMA, $schema2);
     }
 
     public function testReadNotConfigured(): void

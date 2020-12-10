@@ -122,17 +122,12 @@ class StdoutQueryLogger implements LoggerInterface
     protected function isPostgresSystemQuery(string $query): bool
     {
         $query = strtolower($query);
-        return (bool) (
+        return
             strpos($query, 'tc.constraint_name') ||
             strpos($query, 'pg_indexes') ||
             strpos($query, 'tc.constraint_name') ||
             strpos($query, 'pg_constraint') ||
             strpos($query, 'information_schema') ||
-            strpos($query, 'pg_class')
-        )
-
-
-
-         ;
+            strpos($query, 'pg_class');
     }
 }
