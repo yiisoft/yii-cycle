@@ -44,7 +44,7 @@ final class SimpleCacheSchemaProvider implements SchemaProviderInterface
     {
         $result = $this->cache->delete($this->key);
         if ($result === false) {
-            throw new \RuntimeException("In the cache service was an error when deleting `{$this->key}` key.");
+            throw new \RuntimeException("Unable to delete \"{$this->key}\" from cache.");
         }
         return true;
     }
