@@ -86,7 +86,7 @@ Now we'll query for 20 latest published articles, then for 20 first articles.
 $lastPublicReader = $articles->withLimit(20);
 
 // Ordering is specified with Sort object:
-$sort = (new \Yiisoft\Data\Reader\Sort([]))->withOrder(['published_at' => 'desc']);
+$sort = (new \Yiisoft\Data\Reader\Sort(['published_at']))->withOrder(['published_at' => 'desc']);
 // Note that neither Sort not SelectDataReader would not check field correctness.
 // Specifying non-existing fields would result in an error in Cycle code
 

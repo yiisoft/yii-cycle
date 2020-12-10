@@ -89,7 +89,7 @@ foreach ($paginator->read() as $article) {
 $lastPublicReader = $articles->withLimit(20);
 
 // Правила сортировки описываются в объекте класса Sort:
-$sort = (new \Yiisoft\Data\Reader\Sort([]))->withOrder(['published_at' => 'desc']);
+$sort = (new \Yiisoft\Data\Reader\Sort(['published_at']))->withOrder(['published_at' => 'desc']);
 // Учтите, что ни объект Sort, ни SelectDataReader НЕ БУДУТ проверять правильность
 // указанных полей! Указание несуществующих полей приведёт к ошибке в коде Cycle
 
