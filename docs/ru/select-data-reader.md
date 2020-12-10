@@ -90,8 +90,8 @@ $lastPublicReader = $articles->withLimit(20);
 
 // Правила сортировки описываются в объекте класса Sort:
 $sort = (new \Yiisoft\Data\Reader\Sort(['published_at']))->withOrder(['published_at' => 'desc']);
-// Учтите, что ни объект Sort, ни SelectDataReader НЕ БУДУТ проверять правильность
-// указанных полей! Указание несуществующих полей приведёт к ошибке в коде Cycle
+// Учтите, что SelectDataReader НЕ БУДЕТ проверять правильность указанных в Sort полей!
+// Указание несуществующих в таблице полей приведёт к ошибке в коде Cycle
 
 // Применяем правила сортировки и не забываем об иммутабельности
 $lastPublicReader = $lastPublicReader->withSort($sort);
@@ -136,7 +136,7 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     public function findPublic(): DataReaderInterface
     {
-        $sort = (new Sort([]))->withOrder(['published_at' => 'desc']);
+        $sort = (new Sort(['published_at']))->withOrder(['published_at' => 'desc']);
         // Параметры сортировки присваиваются объекту DataReader, а не \Cycle\ORM\Select
         return (new SelectDataReader($this->select()->where(['public' => true])))->withSort($sort);
     }
@@ -150,7 +150,7 @@ function index(ArticleRepository $repository)
         // Получаем объект SelectDataReader
         ->findPublic()
         // Применяем новое правило сортировки
-        ->withSort((new Sort([]))->withOrder(['published_at' => 'asc']));
+        ->withSort((new Sort(['published_at']))->withOrder(['published_at' => 'asc']));
 }
 ```
 

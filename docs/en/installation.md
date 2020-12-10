@@ -1,8 +1,8 @@
 # Installation
 
-The preferred way to install this package is through [composer](http://getcomposer.org/download/):
+The preferred way to install this package is through [Composer](https://getcomposer.org/download/):
 
-```
+```bash
 composer require yiisoft/yii-cycle
 ```
 
