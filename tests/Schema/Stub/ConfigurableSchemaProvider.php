@@ -61,7 +61,7 @@ class ConfigurableSchemaProvider implements SchemaProviderInterface
     public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
         if ($this->exceptionOnRead) {
-            throw new \RuntimeException('Schema can\'t be raed.');
+            throw new \RuntimeException('Schema cannot be read.');
         }
         if ($this->schema !== null) {
             return $this->schema;
