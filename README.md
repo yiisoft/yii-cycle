@@ -20,7 +20,6 @@ Read more in the [official Cycle documentation](https://github.com/cycle/docs)
 [![static analysis](https://github.com/yiisoft/yii-cycle/workflows/static%20analysis/badge.svg)](https://github.com/yiisoft/yii-cycle/actions?query=workflow%3A%22static+analysis%22)
 [![type-coverage](https://shepherd.dev/github/yiisoft/yii-cycle/coverage.svg)](https://shepherd.dev/github/yiisoft/yii-cycle)
 
-
 ### Documentation
 
 - [English](docs/en/README.md)

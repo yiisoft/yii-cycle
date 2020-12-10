@@ -1,8 +1,8 @@
 # Установка
 
-Предпочтительнее установить этот пакет через [composer](http://getcomposer.org/download/):
+Предпочтительнее установить этот пакет через [Composer](https://getcomposer.org/download/):
 
-```
+```bash
 composer require yiisoft/yii-cycle
 ```
 
