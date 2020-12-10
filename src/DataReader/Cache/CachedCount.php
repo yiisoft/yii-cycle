@@ -27,7 +27,7 @@ final class CachedCount
     private function cacheCount(): int
     {
         /** @psalm-suppress PossiblyNullReference */
-        $this->count = (int)$this->collection->count();
+        $this->count = $this->collection->count();
         $this->collection = null;
         return $this->count;
     }
