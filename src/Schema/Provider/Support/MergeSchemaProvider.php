@@ -9,10 +9,12 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 /**
  * A class for working with a group of schema providers.
- * When the schema is read, it queues the specified schema providers using the {@see DeferredSchemaProviderDecorator}.
+ * Parts of the schema are read from all providers and merged into one.
  */
-final class SchemaProviderPipeline extends BaseProviderCollector
+final class MergeSchemaProvider extends BaseProviderCollector
 {
+    protected const IS_SEQUENCE_PIPELINE = false;
+
     public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
         if ($this->providers === null) {
@@ -21,6 +23,16 @@ final class SchemaProviderPipeline extends BaseProviderCollector
         if ($this->providers->count() === 0) {
             return $nextProvider === null ? null : $nextProvider->read();
         }
-        return $this->providers[0]->read($nextProvider);
+        $parts = [];
+        foreach ($this->providers as $provider) {
+            $parts[] = $provider->read();
+        }
+
+        $schema = (new SchemaMerger())->merge(...$parts);
+
+        if ($schema !== null || $nextProvider === null) {
+            return $schema;
+        }
+        return  $nextProvider->read();
     }
 }

@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\Support;
 use Cycle\ORM\Schema;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
-use Yiisoft\Aliases\Aliases;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 use Yiisoft\Yii\Cycle\Exception\CumulativeException;
@@ -27,9 +26,6 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
             Schema::MAPPER => \stdClass::class,
         ],
     ];
-    protected const ALIASES = [
-        '@test' => 'test',
-    ];
 
     protected ContainerInterface $container;
 
@@ -41,7 +37,6 @@ final class SchemaProviderPipelineTest extends BaseSchemaProviderTest
     protected function prepareContainer(array $definitions = []): ContainerInterface
     {
         return $this->container = new SimpleContainer(array_merge([
-            Aliases::class => new Aliases(self::ALIASES),
             ArraySchemaProvider::class => new ArraySchemaProvider(),
         ], $definitions));
     }

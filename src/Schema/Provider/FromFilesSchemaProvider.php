@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Schema\Provider;
 
+use Generator;
 use InvalidArgumentException;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Yii\Cycle\Exception\DuplicateRoleException;
 use Yiisoft\Yii\Cycle\Exception\SchemaFileNotFoundException;
+use Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaMerger;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 /**
@@ -62,19 +63,7 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
     public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
         $schema = null;
-        foreach ($this->files as $file) {
-            if (is_file($file)) {
-                $schema = $schema ?? [];
-                foreach (require $file as $role => $definition) {
-                    if (array_key_exists($role, $schema)) {
-                        throw new DuplicateRoleException($role);
-                    }
-                    $schema[$role] = $definition;
-                }
-            } elseif ($this->strict) {
-                throw new SchemaFileNotFoundException($file);
-            }
-        }
+        $schema = (new SchemaMerger())->merge(...$this->readFiles());
 
         return $schema !== null || $nextProvider === null ? $schema : $nextProvider->read();
     }
@@ -82,5 +71,20 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
     public function clear(): bool
     {
         return false;
+    }
+
+    /**
+     * Read schema from each file
+     * @return Generator<int, null|array>
+     */
+    private function readFiles(): \Generator
+    {
+        foreach ($this->files as $file) {
+            if (is_file($file)) {
+                yield require $file;
+            } elseif ($this->strict) {
+                throw new SchemaFileNotFoundException($file);
+            }
+        }
     }
 }
