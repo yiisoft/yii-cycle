@@ -35,18 +35,6 @@ abstract class BaseProviderCollector implements SchemaProviderInterface
         return $new;
     }
 
-    public function read(?SchemaProviderInterface $nextProvider = null): ?array
-    {
-        if ($this->providers === null) {
-            throw new RuntimeException(self::class . ' is not configured.');
-        }
-        if ($this->providers->count() === 0) {
-            return $nextProvider === null ? null : $nextProvider->read();
-        }
-        $this->providers->rewind();
-        return $this->providers->current()->read($nextProvider);
-    }
-
     public function clear(): bool
     {
         if ($this->providers === null) {
