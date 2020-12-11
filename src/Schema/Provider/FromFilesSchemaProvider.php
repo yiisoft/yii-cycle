@@ -74,6 +74,7 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
 
     /**
      * Read schema from each file
+     *
      * @return Generator<int, array|null>
      */
     private function readFiles(): Generator
