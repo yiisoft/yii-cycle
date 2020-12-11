@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\Support;
 
 use Cycle\ORM\Schema;
-use Psr\Container\ContainerInterface;;
+use Psr\Container\ContainerInterface;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Exception\DuplicateRoleException;
 use Yiisoft\Yii\Cycle\Schema\Provider\Support\MergeSchemaProvider;
@@ -30,7 +30,7 @@ final class MergeSchemaProviderTest extends BaseSchemaProviderTest
         'post' => [
             Schema::ENTITY => \stdClass::class,
             Schema::DATABASE => 'default',
-        ]
+        ],
     ];
 
     protected ContainerInterface $container;

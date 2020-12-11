@@ -62,7 +62,6 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
 
     public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
-        $schema = null;
         $schema = (new SchemaMerger())->merge(...$this->readFiles());
 
         return $schema !== null || $nextProvider === null ? $schema : $nextProvider->read();
@@ -75,9 +74,9 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
 
     /**
      * Read schema from each file
-     * @return Generator<int, null|array>
+     * @return Generator<int, array|null>
      */
-    private function readFiles(): \Generator
+    private function readFiles(): Generator
     {
         foreach ($this->files as $file) {
             if (is_file($file)) {

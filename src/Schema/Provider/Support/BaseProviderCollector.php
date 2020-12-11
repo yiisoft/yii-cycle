@@ -6,7 +6,6 @@ namespace Yiisoft\Yii\Cycle\Schema\Provider\Support;
 
 use Psr\Container\ContainerInterface;
 use RuntimeException;
-use SplDoublyLinkedList;
 use SplFixedArray;
 use Yiisoft\Yii\Cycle\Exception\CumulativeException;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
@@ -54,7 +53,7 @@ abstract class BaseProviderCollector implements SchemaProviderInterface
             throw new RuntimeException(self::class . ' is not configured.');
         }
         $exceptions = [];
-        $result = true;
+        $result = false;
         foreach ($this->providers as $provider) {
             try {
                 $result = $provider->clear() || $result;
