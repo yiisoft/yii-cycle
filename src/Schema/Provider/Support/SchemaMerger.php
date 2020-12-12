@@ -17,6 +17,10 @@ final class SchemaMerger
                 continue;
             }
             foreach ($part as $role => $body) {
+                if (!is_string($role)) {
+                    $schema[] = $body;
+                    continue;
+                }
                 if ($schema !== null && array_key_exists($role, $schema)) {
                     if ($schema[$role] === $body) {
                         continue;
