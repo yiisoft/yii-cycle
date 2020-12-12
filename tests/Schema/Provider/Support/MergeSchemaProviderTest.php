@@ -5,14 +5,11 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\Support;
 
 use Cycle\ORM\Schema;
-use Psr\Container\ContainerInterface;
-use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Exception\DuplicateRoleException;
 use Yiisoft\Yii\Cycle\Schema\Provider\Support\MergeSchemaProvider;
-use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProviderTest;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 
-final class MergeSchemaProviderTest extends BaseSchemaProviderTest
+final class MergeSchemaProviderTest extends BaseProviderCollectorTest
 {
     protected const READ_CONFIG = [
         [ArraySchemaProvider::class, self::SCHEMA_PART_1],
@@ -32,20 +29,6 @@ final class MergeSchemaProviderTest extends BaseSchemaProviderTest
             Schema::DATABASE => 'default',
         ],
     ];
-
-    protected ContainerInterface $container;
-
-    protected function setUp(): void
-    {
-        $this->prepareContainer();
-    }
-
-    protected function prepareContainer(array $definitions = []): ContainerInterface
-    {
-        return $this->container = new SimpleContainer(array_merge([
-            ArraySchemaProvider::class => new ArraySchemaProvider(),
-        ], $definitions));
-    }
 
     protected function createSchemaProvider(?array $config = []): MergeSchemaProvider
     {

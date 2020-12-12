@@ -55,7 +55,7 @@ abstract class BaseProviderCollector implements SchemaProviderInterface
         return $result;
     }
 
-    protected function createSequence(ContainerInterface $container, array $providers): SplFixedArray
+    private function createSequence(ContainerInterface $container, array $providers): SplFixedArray
     {
         $size = count($providers);
         $stack = new SplFixedArray($size);

@@ -20,9 +20,6 @@ final class MergeSchemaProvider extends BaseProviderCollector
         if ($this->providers === null) {
             throw new RuntimeException(self::class . ' is not configured.');
         }
-        if ($this->providers->count() === 0) {
-            return $nextProvider === null ? null : $nextProvider->read();
-        }
         $parts = [];
         foreach ($this->providers as $provider) {
             $parts[] = $provider->read();
