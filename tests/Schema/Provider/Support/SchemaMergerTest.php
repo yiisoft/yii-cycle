@@ -53,8 +53,8 @@ final class SchemaMergerTest extends TestCase
 
     public function testMergeNumericKeys(): void
     {
-        $result = $this->createMerger()->merge([['foo']], [['bar']]);
+        $result = $this->createMerger()->merge([['foo'], ['bar']], [['bar'], ['baz']]);
 
-        $this->assertSame([['foo'], ['bar']], $result);
+        $this->assertSame([['foo'], ['bar'], ['bar'], ['baz']], $result);
     }
 }
