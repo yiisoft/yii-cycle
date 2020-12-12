@@ -50,7 +50,6 @@ final class SchemaMergerTest extends TestCase
         $this->createMerger()->merge(['user' => []], ['post' => [], 'user' => ['']]);
     }
 
-
     public function testMergeNumericKeys(): void
     {
         $result = $this->createMerger()->merge([['foo'], ['bar']], [['bar'], ['baz']]);
