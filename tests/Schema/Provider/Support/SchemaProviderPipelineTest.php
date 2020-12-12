@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\Support;
 
-use RuntimeException;
 use Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
-use Yiisoft\Yii\Cycle\Tests\Schema\Stub\SameOriginProvider;
 
 final class SchemaProviderPipelineTest extends BaseProviderCollectorTest
 {
