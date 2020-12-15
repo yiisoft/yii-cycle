@@ -86,6 +86,31 @@ But in case of loading multiple files, it may take extra time to merge them.
 4. You cannot generate migrations based on PHP-file schema. [See issue #25](https://github.com/yiisoft/yii-cycle/issues/25)
 5. Provider only reads schema. It cannot update the file after migration is applied, as `SimpleCacheSchemaProvider` does.
 
+## Building DB schema from different providers
+
+To merge schema parts obtained from different providers, use `MergeSchemaProvider`.
+
+```php
+# runtime/schema.php
+return [
+    // ...
+    'yiisoft/yii-cycle' => [
+        // ...
+        'schema-providers' => [
+            \Yiisoft\Yii\Cycle\Schema\Provider\Support\MergeSchemaProvider::class => [
+                // You can specify the provider class as the key and the configuration as the value.
+                \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
+                // The provider and its configuration can be passed as an array.
+                [\Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
+                // When defining the dependency as a string, make sure the container provides
+                // the already configured provider.
+                \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider::class,
+            ]
+        ],
+    ]
+];
+```
+
 ## Switching from annotations to file
 
 ### Consloe command
