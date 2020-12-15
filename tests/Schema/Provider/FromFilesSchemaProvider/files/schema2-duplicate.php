@@ -2,7 +2,9 @@
 
 declare(strict_types=1);
 
+use Cycle\ORM\Schema;
+
 return [
     'vote' => [],
-    'post' => [],
+    'post' => [Schema::DATABASE => 'default'],
 ];

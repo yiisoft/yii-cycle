@@ -21,6 +21,6 @@ class DuplicateRoleException extends LogicException implements FriendlyException
 
     public function getSolution(): ?string
     {
-        return 'Check schema in your files on role duplicates.';
+        return 'Unable to build schema. Duplicate role in schema providers.';
     }
 }

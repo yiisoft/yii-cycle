@@ -89,6 +89,31 @@ return [
 5. Поставщик работает только на чтение схемы. Это значит, что он не сотрёт файл после применения миграции и
    не перезапишет в него новую схему, как это делает `SimpleCacheSchemaProvider`.
 
+## Сборка схемы по частям из разных поставщиков
+
+Для того, чтобы объединить получаемые из разных поставщиков части схемы в одну, используйте `MergeSchemaProvider`.
+
+```php
+# Файл config/common.php
+return [
+    // ...
+    'yiisoft/yii-cycle' => [
+        // ...
+        'schema-providers' => [
+            \Yiisoft\Yii\Cycle\Schema\Provider\Support\MergeSchemaProvider::class => [
+                // Вы можете указать класс поставщика в качестве ключа, а конфигурацию в качестве значения.
+                \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
+                // Поставщик и его конфигурация могут быть переданы в виде массива.
+                [\Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
+                // При указании зависимости в виде строки убедитесь, что контейнер предоставит
+                // уже сконфигурированного поставщика.
+                \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider::class,
+            ]
+        ],
+    ]
+];
+```
+
 ## Перенос схемы из аннотаций в файл
 
 ### Консольная команда
