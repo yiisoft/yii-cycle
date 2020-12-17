@@ -11,6 +11,8 @@ use Cycle\ORM\SchemaInterface;
 use Yiisoft\Di\Container;
 use Yiisoft\Di\Support\ServiceProvider;
 
+use function is_string;
+
 final class RepositoryProvider extends ServiceProvider
 {
     public function register(Container $container): void
