@@ -33,7 +33,10 @@ final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
         $result = $provider->clear();
 
         $this->assertTrue($result);
-        $this->assertSame([[Action::DELETE, self::CACHE_KEY]], $this->cacheService->getActionKeyList());
+        $this->assertSame([
+            [Action::HAS, self::CACHE_KEY],
+            [Action::DELETE, self::CACHE_KEY],
+        ], $this->cacheService->getActionKeyList());
         $this->assertFalse($this->cacheService->has(self::CACHE_KEY));
     }
 
@@ -45,12 +48,12 @@ final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
         $result = $provider->clear();
 
         $this->assertTrue($result);
-        $this->assertSame([[Action::DELETE, $key]], $this->cacheService->getActionKeyList());
+        $this->assertSame([[Action::HAS, $key]], $this->cacheService->getActionKeyList());
     }
 
     public function testClearWithCacheOnDeleteError(): void
     {
-        $provider = $this->createSchemaProvider();
+        $provider = $this->createSchemaProvider(self::READ_CONFIG);
         $this->cacheService->getCacheService()->returnOnDelete = false;
 
         $this->expectException(RuntimeException::class);

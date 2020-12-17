@@ -42,6 +42,9 @@ final class SimpleCacheSchemaProvider implements SchemaProviderInterface
 
     public function clear(): bool
     {
+        if (!$this->cache->has($this->key)) {
+            return true;
+        }
         $result = $this->cache->delete($this->key);
         if ($result === false) {
             throw new \RuntimeException("Unable to delete \"{$this->key}\" from cache.");
