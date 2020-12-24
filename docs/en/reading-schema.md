@@ -113,7 +113,7 @@ return [
 
 ## Switching from annotations to file
 
-### Consloe command
+### Console command
 
 In order to export schema as PHP file `cycle/schema/php` command could be used.
 Specify a file name as an argument and schema will be written into it:
