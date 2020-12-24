@@ -13,6 +13,10 @@ use Yiisoft\Di\Support\ServiceProvider;
 
 use function is_string;
 
+/**
+ * This provider provides factories to the container for creating Cycle entity repositories.
+ * Repository list is compiled based on data from the database schema.
+ */
 final class RepositoryProvider extends ServiceProvider
 {
     public function register(Container $container): void
