@@ -57,7 +57,8 @@
             "params": "config/params.php",
             "common": "config/common.php",
             "console": "config/console.php",
-            "events-console": "config/events-console.php"
+            "events-console": "config/events-console.php",
+            "providers-web": "config/providers-web.php"
         }
     },
     "scripts": {
