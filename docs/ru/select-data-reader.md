@@ -35,21 +35,22 @@
 
 ```php
 use Yiisoft\Data\Reader\DataReaderInterface;
-use \Yiisoft\Yii\Cycle\DataReader\SelectDataReader;
+use \Yiisoft\Yii\Cycle\DataReader\EntityReader;
 
 class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     public function findPublic(): DataReaderInterface
     {
-        return new SelectDataReader($this->select()->where(['public' => true]));
+        return new EntityReader($this->select()->where(['public' => true]));
     }
 }
 ```
 Рассмотрим примеры, как мы можем использовать SelectDataReader в постраничной разбивке.
+
 ```php
 /**
  * @var ArticleRepository $repository
- * @var \Yiisoft\Yii\Cycle\DataReader\SelectDataReader $articles
+ * @var \Yiisoft\Yii\Cycle\DataReader\EntityReader $articles
  */
 $articles = $repository->findPublic();
 
@@ -82,7 +83,7 @@ foreach ($paginator->read() as $article) {
 
 ```php
 /**
- * @var \Yiisoft\Yii\Cycle\DataReader\SelectDataReader $articles
+ * @var \Yiisoft\Yii\Cycle\DataReader\EntityReader $articles
  */
 
 // Порядок указания параметров не важен, так что начнём с установки лимита
@@ -127,10 +128,11 @@ foreach ($lastPublicReader->read() as $article) {
 она не заменяет сортировку в исходном select-запросе, а лишь дополняет её. \
 Бывает так, что нужно задать сортировку по умолчанию в методе репозитория, но при этом
 иметь возможность изменить её в коде контроллера. Добиться этого можно следующим образом:
+
 ```php
 use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\Sort;
-use Yiisoft\Yii\Cycle\DataReader\SelectDataReader;
+use Yiisoft\Yii\Cycle\DataReader\EntityReader;
 
 class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
@@ -138,7 +140,7 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
     {
         $sort = (new Sort(['published_at']))->withOrder(['published_at' => 'desc']);
         // Параметры сортировки присваиваются объекту DataReader, а не \Cycle\ORM\Select
-        return (new SelectDataReader($this->select()->where(['public' => true])))->withSort($sort);
+        return (new EntityReader($this->select()->where(['public' => true])))->withSort($sort);
     }
 }
 
@@ -159,13 +161,13 @@ function index(ArticleRepository $repository)
 ```php
 use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\Filter\Equals;
-use Yiisoft\Yii\Cycle\DataReader\SelectDataReader;
+use Yiisoft\Yii\Cycle\DataReader\EntityReader;
 
 class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     public function findUserArticles(int $userId): DataReaderInterface
     {
-        return (new SelectDataReader($this->select()->where('user_id', $userId)))
+        return (new EntityReader($this->select()->where('user_id', $userId)))
             // Добавим фильтр по умолчанию - только public статьи
             ->withFilter(new Equals('public', '1'));
         // Условие `public` = "1" не заменит `user_id` = "$userId"

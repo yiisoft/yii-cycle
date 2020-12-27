@@ -28,16 +28,16 @@ it would not return ready articles collection or select query. Instead, it will 
 
 ```php
 use Yiisoft\Data\Reader\DataReaderInterface;
-use \Yiisoft\Yii\Cycle\DataReader\SelectDataReader;
+use \Yiisoft\Yii\Cycle\DataReader\EntityReader;
 
 class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     /**
-     * @return SelectDataReader
+     * @return EntityReader
      */
     public function findPublic(): DataReaderInterface
     {
-        return new SelectDataReader($this->select()->where(['public' => true]));
+        return new EntityReader($this->select()->where(['public' => true]));
     }
 }
 ```
@@ -47,7 +47,7 @@ Now we can use `SelectDataReader` for pagination like the following:
 ```php
 /**
  * @var ArticleRepository $repository
- * @var \Yiisoft\Yii\Cycle\DataReader\SelectDataReader $articles
+ * @var \Yiisoft\Yii\Cycle\DataReader\EntityReader $articles
  */
 $articles = $repository->findPublic();
 
@@ -79,7 +79,7 @@ Now we'll query for 20 latest published articles, then for 20 first articles.
 
 ```php
 /**
- * @var \Yiisoft\Yii\Cycle\DataReader\SelectDataReader $articles
+ * @var \Yiisoft\Yii\Cycle\DataReader\EntityReader $articles
  */
 
 // The order of specifying parameters is not important so let's start with limit
@@ -127,17 +127,17 @@ can do it like the following:
 ```php
 use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\Sort;
-use Yiisoft\Yii\Cycle\DataReader\SelectDataReader;
+use Yiisoft\Yii\Cycle\DataReader\EntityReader;
 
 class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     /**
-     * @return SelectDataReader
+     * @return EntityReader
      */
     public function findPublic(): DataReaderInterface
     {
         $sort = (new Sort(['published_at']))->withOrder(['published_at' => 'desc']);
-        return (new SelectDataReader($this->select()->where(['public' => true])))->withSort($sort);
+        return (new EntityReader($this->select()->where(['public' => true])))->withSort($sort);
     }
 }
 
@@ -154,17 +154,16 @@ function index(ArticleRepository $repository)
 ```
 You may refine query conditions with filters. This filtering conditions are adding to original select query conditions, but NOT replace them.
 
-
 ```php
 use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\Filter\Equals;
-use Yiisoft\Yii\Cycle\DataReader\SelectDataReader;
+use Yiisoft\Yii\Cycle\DataReader\EntityReader;
 
 class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     public function findUserArticles(int $userId): DataReaderInterface
     {
-        return (new SelectDataReader($this->select()->where('user_id', $userId)))
+        return (new EntityReader($this->select()->where('user_id', $userId)))
             //Adding filter by default - only public articles.
             
             ->withFilter(new Equals('public', '1'));

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\DataReader\Cache;
+namespace Yiisoft\Yii\Cycle\Data\Reader\Cache;
 
 final class CachedCollection
 {
