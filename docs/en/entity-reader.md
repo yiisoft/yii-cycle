@@ -1,22 +1,22 @@
-# SelectDataReader
+# EntityReader
 
-`SelectDataReader` allows to securely pass select-queries from repository to user runtime.
+`EntityReader` allows to securely pass select-queries from repository to user runtime.
 By select-query we assume an instance of `\Cycle\ORM\Select` or `\Spiral\Database\Query\SelectQuery`.
 
-You need to know the following about `SelectDataReader`:
+You need to know the following about `EntityReader`:
 
-* `SelectDataReader` implements `IteratorAggregate`.
- It allows using `SelectDataReader` instance in `foreach`.
-* Using `SelectDataReader` you can adjust select-query:
+* `EntityReader` implements `IteratorAggregate`.
+ It allows using `EntityReader` instance in `foreach`.
+* Using `EntityReader` you can adjust select-query:
   - Add `Limit` and `Offset` manually or using `OffsetPaginator`
-  - Specify sorting. Note that `SelectDataReader` sorting does
+  - Specify sorting. Note that `EntityReader` sorting does
     not replace initial query sorting but adds sorting on top of it.
-    Each next `withSort()` call is replacing `SelectDataReader` sorting options.
-  - Apply filter. Filtration conditions in `SelectDataReader` also, do not replace filtration conditions
+    Each next `withSort()` call is replacing `EntityReader` sorting options.
+  - Apply filter. Filtration conditions in `EntityReader` also, do not replace filtration conditions
     in initial query, but adds conditions on top of it. Therefore, by using filtration in `SeletecDataReader`
     you can only refine the selection, but NOT expand.
-* `SelectDataReader` queries database only when you actually read the data.
-* In case you're using `read()`, `readOne()` or `count()`, data will be cached by `SelectDataReader`.
+* `EntityReader` queries database only when you actually read the data.
+* In case you're using `read()`, `readOne()` or `count()`, data will be cached by `EntityReader`.
 * The `count()` method returns the number of elements without taking limit and offset into account.
 * In case you want to avoid caching, use `getIterator()`. Note that if cache is already there, `getIterator()`
   uses it.
@@ -24,11 +24,11 @@ You need to know the following about `SelectDataReader`:
 ## Examples
 
 Let's implement a repository to work with articles table. We want a method to get public articles `findPublic()` but
-it would not return ready articles collection or select query. Instead, it will return `SelectDataReader`:
+it would not return ready articles collection or select query. Instead, it will return `EntityReader`:
 
 ```php
 use Yiisoft\Data\Reader\DataReaderInterface;
-use \Yiisoft\Yii\Cycle\DataReader\EntityReader;
+use \Yiisoft\Yii\Cycle\Data\Reader\EntityReader;
 
 class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
@@ -42,12 +42,12 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
 }
 ```
 
-Now we can use `SelectDataReader` for pagination like the following:
+Now we can use `EntityReader` for pagination like the following:
 
 ```php
 /**
  * @var ArticleRepository $repository
- * @var \Yiisoft\Yii\Cycle\DataReader\EntityReader $articles
+ * @var \Yiisoft\Yii\Cycle\Data\Reader\EntityReader $articles
  */
 $articles = $repository->findPublic();
 
@@ -60,7 +60,7 @@ $paginator = new \Yiisoft\Data\Paginator\OffsetPaginator($articles);
 $paginator->withPageSize(10)->withCurrentPage(3);
 
 
-// Getting articles from SelectDataReader with caching:
+// Getting articles from EntityReader with caching:
 foreach ($pageReader->read() as $article) {
     // ...
 }
@@ -79,7 +79,7 @@ Now we'll query for 20 latest published articles, then for 20 first articles.
 
 ```php
 /**
- * @var \Yiisoft\Yii\Cycle\DataReader\EntityReader $articles
+ * @var \Yiisoft\Yii\Cycle\Data\Reader\EntityReader $articles
  */
 
 // The order of specifying parameters is not important so let's start with limit
@@ -87,7 +87,7 @@ $lastPublicReader = $articles->withLimit(20);
 
 // Ordering is specified with Sort object:
 $sort = (new \Yiisoft\Data\Reader\Sort(['published_at']))->withOrder(['published_at' => 'desc']);
-// Note that SelectDataReader would not check Sort field correctness.
+// Note that EntityReader would not check Sort field correctness.
 // Specifying non-existing fields would result in an error in Cycle code
 
 // Don't forget about immutability when applying sorting rules
@@ -120,14 +120,14 @@ foreach ($lastPublicReader->read() as $article) {
 }
 ```
 
-Sorting through `SelectDataReader` does not replace sorting in initial query but adds more to it.
+Sorting through `EntityReader` does not replace sorting in initial query but adds more to it.
 If you need to set default sorting in a repository method but want to be able to change it in a controller, you
 can do it like the following:
 
 ```php
 use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\Sort;
-use Yiisoft\Yii\Cycle\DataReader\EntityReader;
+use Yiisoft\Yii\Cycle\Data\Reader\EntityReader;
 
 class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
@@ -146,7 +146,7 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
 function index(ArticleRepository $repository)
 {
     $articlesReader = $repository
-        // Getting SelectDataReader
+        // Getting EntityReader
         ->findPublic()
         // Applying new sorting
         ->withSort((new Sort(['published_at']))->withOrder(['published_at' => 'asc']));
@@ -157,7 +157,7 @@ You may refine query conditions with filters. This filtering conditions are addi
 ```php
 use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\Filter\Equals;
-use Yiisoft\Yii\Cycle\DataReader\EntityReader;
+use Yiisoft\Yii\Cycle\Data\Reader\EntityReader;
 
 class ArticleRepository extends \Cycle\ORM\Select\Repository
 {

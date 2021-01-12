@@ -13,7 +13,8 @@ final class EntityWriter implements DataWriterInterface
 {
     private ORMInterface $orm;
 
-    public function __construct(ORMInterface $orm) {
+    public function __construct(ORMInterface $orm)
+    {
         $this->orm = $orm;
     }
 

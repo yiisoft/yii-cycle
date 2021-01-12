@@ -9,5 +9,5 @@ This package provides a convenient way to integrate it with Yii framework.
 
 - [Installation and configuring](installation.md)
 - [Console commands](console-commands.md)
-- [SelectDataReader](select-data-reader.md)
+- [EntityReader](entity-reader.md)
 - [Reading DB schema](reading-schema.md)
