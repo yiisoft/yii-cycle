@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\DataReader\Processor;
+namespace Yiisoft\Yii\Cycle\Data\Reader\Processor;
 
 use Cycle\ORM\Select\QueryBuilder;
 

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\DataReader\Cache;
+namespace Yiisoft\Yii\Cycle\Data\Reader\Cache;
 
 use Countable;
 
@@ -17,7 +17,7 @@ final class CachedCount
     }
 
     /**
-     * @psalm-internal Yiisoft\Yii\Cycle\DataReader
+     * @psalm-internal Yiisoft\Yii\Cycle\Data\Reader
      */
     public function getCount(): int
     {

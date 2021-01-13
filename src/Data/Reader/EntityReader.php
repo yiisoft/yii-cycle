@@ -2,24 +2,26 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\DataReader;
+namespace Yiisoft\Yii\Cycle\Data\Reader;
 
 use Closure;
 use Countable;
 use Cycle\ORM\Select;
 use Cycle\ORM\Select\QueryBuilder;
+use Generator;
 use InvalidArgumentException;
+use RuntimeException;
 use Spiral\Database\Query\SelectQuery;
 use Spiral\Pagination\PaginableInterface;
 use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\Filter\FilterInterface;
 use Yiisoft\Data\Reader\Filter\FilterProcessorInterface;
 use Yiisoft\Data\Reader\Sort;
-use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCollection;
-use Yiisoft\Yii\Cycle\DataReader\Cache\CachedCount;
-use Yiisoft\Yii\Cycle\DataReader\Processor\QueryBuilderProcessor;
+use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCollection;
+use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCount;
+use Yiisoft\Yii\Cycle\Data\Reader\Processor\QueryBuilderProcessor;
 
-final class SelectDataReader implements DataReaderInterface
+final class EntityReader implements DataReaderInterface
 {
     /** @var Select|SelectQuery */
     private $query;
@@ -75,7 +77,7 @@ final class SelectDataReader implements DataReaderInterface
     public function withLimit(int $limit): self
     {
         if ($limit < 0) {
-            throw new \InvalidArgumentException('$limit must not be less than 0.');
+            throw new InvalidArgumentException('$limit must not be less than 0.');
         }
         $new = clone $this;
         if ($new->limit !== $limit) {
@@ -175,17 +177,9 @@ final class SelectDataReader implements DataReaderInterface
     /**
      * Get Iterator without caching
      */
-    public function getIterator(): \Generator
+    public function getIterator(): Generator
     {
         yield from $this->itemsCache->getCollection() ?? $this->buildQuery()->getIterator();
-    }
-
-    /**
-     * Convert to SQL string
-     */
-    public function __toString(): string
-    {
-        return $this->getSql();
     }
 
     public function getSql(): string
@@ -230,7 +224,7 @@ final class SelectDataReader implements DataReaderInterface
             $arguments = $filterArray;
 
             if (!array_key_exists($operation, $this->filterProcessors)) {
-                throw new \RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
+                throw new RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
             }
             /** @psalm-var QueryBuilderProcessor $processor */
             $processor = $this->filterProcessors[$operation];
