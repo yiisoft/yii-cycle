@@ -90,7 +90,7 @@ foreach ($paginator->read() as $article) {
 $lastPublicReader = $articles->withLimit(20);
 
 // Правила сортировки описываются в объекте класса Sort:
-$sort = (new \Yiisoft\Data\Reader\Sort(['published_at']))->withOrder(['published_at' => 'desc']);
+$sort = \Yiisoft\Data\Reader\Sort::any()->withOrder(['published_at' => 'desc']);
 // Учтите, что EntityReader НЕ БУДЕТ проверять правильность указанных в Sort полей!
 // Указание несуществующих в таблице полей приведёт к ошибке в коде Cycle
 
@@ -138,7 +138,7 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     public function findPublic(): DataReaderInterface
     {
-        $sort = (new Sort(['published_at']))->withOrder(['published_at' => 'desc']);
+        $sort = Sort::any()->withOrder(['published_at' => 'desc']);
         // Параметры сортировки присваиваются объекту DataReader, а не \Cycle\ORM\Select
         return (new EntityReader($this->select()->where(['public' => true])))->withSort($sort);
     }
@@ -152,7 +152,7 @@ function index(ArticleRepository $repository)
         // Получаем объект EntityReader
         ->findPublic()
         // Применяем новое правило сортировки
-        ->withSort((new Sort(['published_at']))->withOrder(['published_at' => 'asc']));
+        ->withSort(Sort::any()->withOrder(['published_at' => 'asc']));
 }
 ```
 

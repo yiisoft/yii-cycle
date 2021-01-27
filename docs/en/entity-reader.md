@@ -86,7 +86,7 @@ Now we'll query for 20 latest published articles, then for 20 first articles.
 $lastPublicReader = $articles->withLimit(20);
 
 // Ordering is specified with Sort object:
-$sort = (new \Yiisoft\Data\Reader\Sort(['published_at']))->withOrder(['published_at' => 'desc']);
+$sort = \Yiisoft\Data\Reader\Sort::any()->withOrder(['published_at' => 'desc']);
 // Note that EntityReader would not check Sort field correctness.
 // Specifying non-existing fields would result in an error in Cycle code
 
@@ -136,7 +136,7 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
      */
     public function findPublic(): DataReaderInterface
     {
-        $sort = (new Sort(['published_at']))->withOrder(['published_at' => 'desc']);
+        $sort = Sort::any()->withOrder(['published_at' => 'desc']);
         return (new EntityReader($this->select()->where(['public' => true])))->withSort($sort);
     }
 }
@@ -149,7 +149,7 @@ function index(ArticleRepository $repository)
         // Getting EntityReader
         ->findPublic()
         // Applying new sorting
-        ->withSort((new Sort(['published_at']))->withOrder(['published_at' => 'asc']));
+        ->withSort(Sort::any()->withOrder(['published_at' => 'asc']));
 }
 ```
 You may refine query conditions with filters. This filtering conditions are adding to original select query conditions, but NOT replace them.
