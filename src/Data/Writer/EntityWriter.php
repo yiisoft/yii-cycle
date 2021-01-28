@@ -29,4 +29,13 @@ final class EntityWriter implements DataWriterInterface
         }
         $transaction->run();
     }
+
+    public function delete(iterable $items): void
+    {
+        $transaction = new Transaction($this->orm);
+        foreach ($items as $entity) {
+            $transaction->delete($entity);
+        }
+        $transaction->run();
+    }
 }
