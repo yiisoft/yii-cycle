@@ -179,6 +179,29 @@ class FromFilesSchemaProviderTest extends BaseSchemaProviderTest
             ->read();
     }
 
+    public function testReadWildcard(): void
+    {
+        $schemaProvider = $this->createSchemaProvider();
+
+        $data = $schemaProvider
+            ->withConfig([
+                'strict' => true,
+                'files' => [
+                    '@dir/schema[12].php',
+                    '@dir/*/*.php', // no files found
+                    '@dir/**/level3*.php',
+                ],
+            ])
+            ->read();
+
+        $this->assertArrayHasKey('user', $data);
+        $this->assertArrayHasKey('post', $data);
+        $this->assertArrayHasKey('level3-schema', $data);
+        $this->assertArrayHasKey('level3-1-schema', $data);
+        $this->assertArrayHasKey('level3-2-schema', $data);
+        $this->assertArrayNotHasKey('level2-schema', $data);
+    }
+
     public function testClear(): void
     {
         $schemaProvider = $this->createSchemaProvider();
