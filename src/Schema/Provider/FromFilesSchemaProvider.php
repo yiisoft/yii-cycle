@@ -6,6 +6,8 @@ namespace Yiisoft\Yii\Cycle\Schema\Provider;
 
 use Generator;
 use InvalidArgumentException;
+use Webmozart\Glob\Glob;
+use Webmozart\Glob\Iterator\GlobIterator;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Exception\SchemaFileNotFoundException;
 use Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaMerger;
@@ -79,12 +81,27 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
      */
     private function readFiles(): Generator
     {
-        foreach ($this->files as $file) {
-            if (is_file($file)) {
-                yield require $file;
-            } elseif ($this->strict) {
-                throw new SchemaFileNotFoundException($file);
+        foreach ($this->files as $path) {
+            // Todo: make better path normalization
+            $path = str_replace('\\', '/', $path);
+            if (!Glob::isDynamic($path)) {
+                yield $this->loadFile($path);
+                continue;
+            }
+            foreach (new GlobIterator($path) as $file) {
+                yield $this->loadFile($file);
             }
         }
+    }
+
+    private function loadFile(string $path): ?array
+    {
+        $isFile = is_file($path);
+
+        if (!$isFile && $this->strict) {
+            throw new SchemaFileNotFoundException($path);
+        }
+
+        return $isFile ? require $path : null;
     }
 }
