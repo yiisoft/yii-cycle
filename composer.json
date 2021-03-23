@@ -53,12 +53,15 @@
         "branch-alias": {
             "dev-master": "3.0.x-dev"
         },
+        "config-plugin-options": {
+            "source-directory": "config"
+        },
         "config-plugin": {
-            "params": "config/params.php",
-            "common": "config/common.php",
-            "console": "config/console.php",
-            "events-console": "config/events-console.php",
-            "providers-web": "config/providers-web.php"
+            "params": "params.php",
+            "common": "common.php",
+            "console": "console.php",
+            "events-console": "events-console.php",
+            "providers-web": "providers-web.php"
         }
     },
     "scripts": {
