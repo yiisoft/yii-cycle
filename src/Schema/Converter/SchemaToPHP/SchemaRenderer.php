@@ -28,6 +28,7 @@ final class SchemaRenderer
         Relation::OUTER_KEY => 'Relation::OUTER_KEY',
         Relation::INNER_KEY => 'Relation::INNER_KEY',
         Relation::WHERE => 'Relation::WHERE',
+        Relation::ORDER_BY => 'Relation::ORDER_BY',
         Relation::THROUGH_INNER_KEY => 'Relation::THROUGH_INNER_KEY',
         Relation::THROUGH_OUTER_KEY => 'Relation::THROUGH_OUTER_KEY',
         Relation::THROUGH_ENTITY => 'Relation::THROUGH_ENTITY',

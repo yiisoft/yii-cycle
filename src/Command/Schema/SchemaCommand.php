@@ -73,56 +73,61 @@ final class SchemaCommand extends Command
     private function displaySchema(SchemaInterface $schema, string $role, OutputInterface $output): bool
     {
         if (!$schema->defines($role)) {
-            $output->writeln("<fg=red>Role</> <fg=magenta>[{$role}]</> <fg=red>not defined!</>");
+            $output->writeln(sprintf("<fg=red>The role</> %s <fg=red>is not defined!</>", $this->wrapRole($role)));
             return false;
         }
 
-        $output->write("<fg=magenta>[{$role}</>");
+        $output->write('[' . $this->wrapRole($role));
         $alias = $schema->resolveAlias($role);
         // alias
         if ($alias !== null && $alias !== $role) {
-            $output->write("=><fg=magenta>{$alias}</>");
+            $output->write(' => ' . $this->wrapRole($alias));
         }
-        $output->write('<fg=magenta>]</>');
+        $output->write(']');
 
         // database and table
         $database = $schema->define($role, Schema::DATABASE);
         $table = $schema->define($role, Schema::TABLE);
         if ($database !== null) {
-            $output->write(" :: <fg=green>{$database}</>.<fg=green>{$table}</>");
+            $output->write(sprintf(' :: %s.%s', $this->wrapDB($database), $this->wrapDB($table)));
         }
         $output->writeln('');
 
         // Entity
         $entity = $schema->define($role, Schema::ENTITY);
         $output->write('   Entity     : ');
-        $output->writeln($entity === null ? 'no entity' : "<fg=blue>{$entity}</>");
+        $output->writeln($entity === null ? 'no entity' : $this->wrapPhp($entity));
         // Mapper
         $mapper = $schema->define($role, Schema::MAPPER);
         $output->write('   Mapper     : ');
-        $output->writeln($mapper === null ? 'no mapper' : "<fg=blue>{$mapper}</>");
+        $output->writeln($mapper === null ? 'no mapper' : $this->wrapPhp($mapper));
         // Constrain
         $constrain = $schema->define($role, Schema::CONSTRAIN);
         $output->write('   Constrain  : ');
-        $output->writeln($constrain === null ? 'no constrain' : "<fg=blue>{$constrain}</>");
+        $output->writeln($constrain === null ? 'no constrain' : $this->wrapPhp($constrain));
         // Repository
         $repository = $schema->define($role, Schema::REPOSITORY);
         $output->write('   Repository : ');
-        $output->writeln($repository === null ? 'no repository' : "<fg=blue>{$repository}</>");
+        $output->writeln($repository === null ? 'no repository' : $this->wrapPhp($repository));
         // PK
         $pk = $schema->define($role, Schema::PRIMARY_KEY);
         $output->write('   Primary key: ');
-        $output->writeln($pk === null ? 'no primary key' : "<fg=green>{$pk}</>");
+        $output->writeln($pk === null ? 'no primary key' : $this->wrapProperty($pk));
         // Fields
         $columns = $schema->define($role, Schema::COLUMNS);
-        $output->writeln('   Fields     :');
-        $output->writeln('     (<fg=cyan>property</> -> <fg=green>db.field</> -> <fg=blue>typecast</>)');
+        $output->write('   Fields     :');
+        $output->writeln(sprintf(
+            ' (%s -> %s -> %s)',
+            $this->wrapProperty('property'),
+            $this->wrapDB('db.field'),
+            $this->wrapPhp('typecast')
+        ));
         $types = $schema->define($role, Schema::TYPECAST);
         foreach ($columns as $property => $field) {
             $typecast = $types[$property] ?? $types[$field] ?? null;
-            $output->write("     <fg=cyan>{$property}</> -> <fg=green>{$field}</>");
+            $output->write(sprintf('     %s -> %s', $this->wrapProperty($property), $this->wrapDB($field)));
             if ($typecast !== null) {
-                $output->write(sprintf(' -> <fg=blue>%s</>', implode('::', (array)$typecast)));
+                $output->write(sprintf(' -> %s', $this->wrapPhp(implode('::', (array)$typecast))));
             }
             $output->writeln('');
         }
@@ -139,6 +144,7 @@ final class SchemaCommand extends Command
                 $innerKey = $relSchema[Relation::INNER_KEY] ?? '?';
                 $outerKey = $relSchema[Relation::OUTER_KEY] ?? '?';
                 $where = $relSchema[Relation::WHERE] ?? [];
+                $orderBy = $relSchema[Relation::ORDER_BY] ?? [];
                 $cascade = $relSchema[Relation::CASCADE] ?? null;
                 $cascadeStr = $cascade ? 'cascaded' : 'not cascaded';
                 $nullable = $relSchema[Relation::NULLABLE] ?? null;
@@ -151,32 +157,79 @@ final class SchemaCommand extends Command
                 $mmWhere = $relSchema[Relation::THROUGH_WHERE] ?? [];
                 // print
                 $output->write(
-                    "     <fg=magenta>{$role}</>-><fg=cyan>{$field}</> "
-                    . "{$type} <fg=magenta>{$target}</> {$loading} load"
+                    sprintf(
+                        '     %s->%s %s %s %s load',
+                        $this->wrapRole($role),
+                        $this->wrapProperty($field),
+                        $type,
+                        $this->wrapRole($target),
+                        $loading
+                    )
                 );
                 if ($morphKey !== null) {
-                    $output->writeln("       Morphed key: <fg=green>{$morphKey}</>");
+                    $output->writeln('       Morphed key: ' . $this->wrapProperty($morphKey));
                 }
                 $output->writeln(" <fg=yellow>{$cascadeStr}</>");
-                $output->write("       {$nullableStr} <fg=green>{$table}</>.<fg=green>{$innerKey}</> <=");
+                $output->write(
+                    sprintf('       %s %s.%s <=', $nullableStr, $this->wrapRole($role), $this->wrapProperty($innerKey))
+                );
                 if ($mmEntity !== null) {
-                    $output->write(" <fg=magenta>{$mmEntity}</>.<fg=green>{$mmInnerKey}</>");
+                    $output->write(sprintf(' %s.%s', $this->wrapRole($mmEntity), $this->wrapProperty($mmInnerKey)));
                     $output->write('|');
-                    $output->write("<fg=magenta>{$mmEntity}</>.<fg=green>{$mmOuterKey}</> ");
+                    $output->write(sprintf('%s.%s ', $this->wrapRole($mmEntity), $this->wrapProperty($mmOuterKey)));
                 }
-                $output->writeln("=> <fg=magenta>{$target}</>.<fg=green>{$outerKey}</> ");
+                $output->writeln(sprintf('=> %s.%s ', $this->wrapRole($target), $this->wrapProperty($outerKey)));
                 if (count($where)) {
                     $output->write('       Where:');
-                    $output->writeln(str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($where, true)));
+                    $output->writeln($this->printValue($where, '         '));
+                }
+                if (count($orderBy)) {
+                    $output->writeln('       Order by:');
+                    $output->writeln($this->printValue($orderBy, '         '));
                 }
                 if (count($mmWhere)) {
                     $output->write('       Through where:');
-                    $output->writeln(str_replace(["\r\n", "\n"], "\n       ", "\n" . print_r($mmWhere, true)));
+                    $output->writeln($this->printValue($mmWhere, '         '));
                 }
             }
         } else {
             $output->writeln('   No relations');
         }
         return true;
+    }
+
+    /**
+     * @param mixed $value
+     */
+    private function printValue($value, string $prefix = ''): string
+    {
+        if (!is_iterable($value)) {
+            return (string)$value;
+        }
+        $result = [];
+        foreach ($value as $key => $val) {
+            $result[] = "$prefix$key" . (is_iterable($val) ? ":\n" : ' => ') . $this->printValue($val, $prefix . '  ');
+        }
+        return implode("\n", $result);
+    }
+
+    private function wrapRole(string $role): string
+    {
+        return "<fg=magenta>{$role}</>";
+    }
+
+    private function wrapDB(string $entity): string
+    {
+        return "<fg=green>{$entity}</>";
+    }
+
+    private function wrapPhp(string $entity): string
+    {
+        return "<fg=blue>{$entity}</>";
+    }
+
+    private function wrapProperty(string $name): string
+    {
+        return "<fg=cyan>{$name}</>";
     }
 }
