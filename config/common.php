@@ -59,8 +59,10 @@ return [
     },
     // Annotated Schema Conveyor
     SchemaConveyorInterface::class => static function (ContainerInterface $container) use (&$params) {
-        $conveyor = new CompositedSchemaConveyor($container);
+        /** @var SchemaConveyorInterface $conveyor */
+        $conveyor = $container->get($params['yiisoft/yii-cycle']['conveyor-class'] ?? CompositedSchemaConveyor::class);
         $conveyor->addEntityPaths($params['yiisoft/yii-cycle']['annotated-entity-paths']);
+        $conveyor->addEntityPaths($params['yiisoft/yii-cycle']['entity-paths']);
         return $conveyor;
     },
 ];
