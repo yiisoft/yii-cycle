@@ -33,7 +33,7 @@ class CompositedSchemaConveyorTest extends BaseConveyorTest
     {
         $conveyor = $this->createConveyor();
 
-        $conveyor->setTableNaming();
+        $conveyor->setTableNaming($naming);
 
         $this->assertSame($naming, $conveyor->getTableNaming());
     }
