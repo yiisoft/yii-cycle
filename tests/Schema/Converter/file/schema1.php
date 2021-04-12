@@ -79,6 +79,9 @@ return [
                     Relation::CASCADE => true,
                     Relation::NULLABLE => false,
                     Relation::WHERE => [],
+                    Relation::ORDER_BY => [
+                        'id' => 'DESC',
+                    ],
                     Relation::INNER_KEY => 'id',
                     Relation::OUTER_KEY => 'id',
                     Relation::THROUGH_ENTITY => 'userAgency',
@@ -579,6 +582,7 @@ return [
                     Relation::CASCADE => true,
                     Relation::NULLABLE => false,
                     Relation::WHERE => [],
+                    Relation::ORDER_BY => [],
                     Relation::INNER_KEY => 'id',
                     Relation::OUTER_KEY => 'offer_id',
                 ],
