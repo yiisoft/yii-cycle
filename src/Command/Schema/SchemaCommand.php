@@ -73,7 +73,7 @@ final class SchemaCommand extends Command
     private function displaySchema(SchemaInterface $schema, string $role, OutputInterface $output): bool
     {
         if (!$schema->defines($role)) {
-            $output->writeln(sprintf("<fg=red>The role</> %s <fg=red>is not defined!</>", $this->wrapRole($role)));
+            $output->writeln(sprintf('<fg=red>The role</> %s <fg=red>is not defined!</>', $this->wrapRole($role)));
             return false;
         }
 

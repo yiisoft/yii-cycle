@@ -25,6 +25,7 @@ final class AnnotatedSchemaConveyor extends CompositedSchemaConveyor
 
         return parent::getGenerators();
     }
+
     protected function getMetadataReader(): AnnotationReader
     {
         return new AnnotationReader();
