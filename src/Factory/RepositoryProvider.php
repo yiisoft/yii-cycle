@@ -42,7 +42,7 @@ final class RepositoryProvider implements ServiceProviderInterface
                 $compositeContainer->attach($extended);
 
                 return $compositeContainer;
-            }
+            },
         ];
     }
 
@@ -73,6 +73,6 @@ final class RepositoryProvider implements ServiceProviderInterface
      */
     private function makeRepositoryFactory(ORMInterface $orm, string $role): Closure
     {
-        return static fn(): RepositoryInterface => $orm->getRepository($role);
+        return static fn (): RepositoryInterface => $orm->getRepository($role);
     }
 }
