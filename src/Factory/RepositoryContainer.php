@@ -18,18 +18,14 @@ use function is_string;
 
 final class RepositoryContainer implements ContainerInterface
 {
-    private ORMInterface $orm;
+    private ContainerInterface $rootContainer;
     private array $repositoryFactories = [];
     private array $instances;
     private bool $build = false;
 
-    /**
-     * RepositoryContainer constructor.
-     * @param ORMInterface $orm
-     */
-    public function __construct(ORMInterface $orm)
+    public function __construct(ContainerInterface $rootContainer)
     {
-        $this->orm = $orm;
+        $this->rootContainer = $rootContainer;
     }
 
 
@@ -58,7 +54,9 @@ final class RepositoryContainer implements ContainerInterface
 
     private function makeRepositoryFactories(): void
     {
-        $schema = $this->orm->getSchema();
+        /** @var ORMInterface */
+        $orm = $this->rootContainer->get(ORMInterface::class);
+        $schema = $orm->getSchema();
         $roles = [];
         foreach ($schema->getRoles() as $role) {
             $repository = $schema->define($role, SchemaInterface::REPOSITORY);
@@ -68,17 +66,19 @@ final class RepositoryContainer implements ContainerInterface
         }
         foreach ($roles as $repo => $role) {
             if (count($role) === 1) {
-                $this->repositoryFactories[$repo] = $this->makeRepositoryFactory(current($role));
+                $this->repositoryFactories[$repo] = $this->makeRepositoryFactory($orm, current($role));
             }
         }
     }
 
     /**
      * @psalm-pure
+     * @param ORMInterface $orm
+     * @param string $role
+     * @return Closure
      */
-    private function makeRepositoryFactory(string $role): Closure
+    private function makeRepositoryFactory(ORMInterface $orm, string $role): Closure
     {
-        $orm = $this->orm;
         return static fn (): RepositoryInterface => $orm->getRepository($role);
     }
 }

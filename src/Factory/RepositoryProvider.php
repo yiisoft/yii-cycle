@@ -28,10 +28,8 @@ final class RepositoryProvider implements ServiceProviderInterface
     {
         return [
             ContainerInterface::class => function (ContainerInterface $container, ContainerInterface $extended) {
-                /** @var ORMInterface */
-                $orm = $extended->get(ORMInterface::class);
                 /** @psalm-suppress InaccessibleMethod */
-                $repositoryContainer = new RepositoryContainer($orm);
+                $repositoryContainer = new RepositoryContainer($extended);
                 $compositeContainer = new CompositeContainer();
                 $compositeContainer->attach($repositoryContainer);
                 $compositeContainer->attach($extended);
