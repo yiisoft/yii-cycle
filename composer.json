@@ -61,7 +61,7 @@
             "common": "common.php",
             "console": "console.php",
             "events-console": "events-console.php",
-            "providers": "providers-web.php"
+            "providers": "providers.php"
         }
     },
     "scripts": {
