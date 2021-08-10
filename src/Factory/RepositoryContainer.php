@@ -19,7 +19,8 @@ use function is_string;
 final class RepositoryContainer implements ContainerInterface
 {
     private ContainerInterface $rootContainer;
-    private array $repositoryFactories = [];
+    private ORMInterface $orm;
+    private array $roles = [];
     private array $instances;
     private bool $build = false;
 
@@ -36,7 +37,7 @@ final class RepositoryContainer implements ContainerInterface
         }
 
         if ($this->has($id)) {
-            return $this->instances[$id] = $this->repositoryFactories[$id]();
+            return $this->instances[$id] = $this->makeRepository($this->roles[$id]);
         }
 
         throw new NotFoundException("Repository $id doesn't exist.");
@@ -49,18 +50,18 @@ final class RepositoryContainer implements ContainerInterface
         }
 
         if (!$this->build) {
-            $this->makeRepositoryFactories();
+            $this->makeRepositoryList();
             $this->build = true;
         }
 
-        return isset($this->repositoryFactories[$id]);
+        return isset($this->roles[$id]);
     }
 
-    private function makeRepositoryFactories(): void
+    private function makeRepositoryList(): void
     {
         /** @var ORMInterface */
-        $orm = $this->rootContainer->get(ORMInterface::class);
-        $schema = $orm->getSchema();
+        $this->orm = $this->rootContainer->get(ORMInterface::class);
+        $schema = $this->orm->getSchema();
         $roles = [];
         foreach ($schema->getRoles() as $role) {
             $repository = $schema->define($role, SchemaInterface::REPOSITORY);
@@ -70,7 +71,7 @@ final class RepositoryContainer implements ContainerInterface
         }
         foreach ($roles as $repo => $role) {
             if (count($role) === 1) {
-                $this->repositoryFactories[$repo] = $this->makeRepositoryFactory($orm, current($role));
+                $this->roles[$repo] = current($role);
             }
         }
     }
@@ -81,8 +82,8 @@ final class RepositoryContainer implements ContainerInterface
      * @param string $role
      * @return Closure
      */
-    private function makeRepositoryFactory(ORMInterface $orm, string $role): Closure
+    private function makeRepository(string $role): RepositoryInterface
     {
-        return static fn (): RepositoryInterface => $orm->getRepository($role);
+        return $this->orm->getRepository($role);
     }
 }
