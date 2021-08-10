@@ -9,9 +9,6 @@ use Cycle\ORM\ORMInterface;
 use Cycle\ORM\RepositoryInterface;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
-use Yiisoft\Di\Container;
-use Yiisoft\Di\CompositeContainer;
-use Yiisoft\Di\Contracts\ServiceProviderInterface;
 
 use Yiisoft\Factory\Exception\NotFoundException;
 use function is_string;
