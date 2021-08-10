@@ -44,6 +44,10 @@ final class RepositoryContainer implements ContainerInterface
 
     public function has($id): bool
     {
+        if (!is_subclass_of($id, RepositoryInterface::class)) {
+            return false;
+        }
+
         if (!$this->build) {
             $this->makeRepositoryFactories();
             $this->build = true;
