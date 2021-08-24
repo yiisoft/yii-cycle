@@ -32,16 +32,13 @@ final class RepositoryProvider implements ServiceProviderInterface
     public function getExtensions(): array
     {
         return [
-            ContainerInterface::class => function (ContainerInterface $container, ContainerInterface $extended) {
+            'core.di.delegates' => function (ContainerInterface $container, CompositeContainer $delegates) {
                 /** @var ORMInterface */
-                $orm = $extended->get(ORMInterface::class);
+                $orm = $container->get(ORMInterface::class);
                 /** @psalm-suppress InaccessibleMethod */
-                $repositoryContainer = new Container($this->getRepositoryFactories($orm));
-                $compositeContainer = new CompositeContainer();
-                $compositeContainer->attach($repositoryContainer);
-                $compositeContainer->attach($extended);
+                $delegates->attach(new Container($this->getRepositoryFactories($orm)));
 
-                return $compositeContainer;
+                return $delegates;
             },
         ];
     }
