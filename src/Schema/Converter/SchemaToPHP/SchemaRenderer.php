@@ -118,7 +118,7 @@ final class SchemaRenderer
 
     private function renderScope(string $role): ArrayItemExporter
     {
-        return new ArrayItemExporter('Schema::CONSTRAIN', $this->schema->define($role, Schema::CONSTRAIN));
+        return new ArrayItemExporter('Schema::SCOPE', $this->schema->define($role, Schema::SCOPE));
     }
 
     private function renderPK(string $role): ArrayItemExporter

@@ -101,10 +101,10 @@ final class SchemaCommand extends Command
         $mapper = $schema->define($role, Schema::MAPPER);
         $output->write('   Mapper     : ');
         $output->writeln($mapper === null ? 'no mapper' : $this->wrapPhp($mapper));
-        // Constrain
-        $constrain = $schema->define($role, Schema::CONSTRAIN);
-        $output->write('   Constrain  : ');
-        $output->writeln($constrain === null ? 'no constrain' : $this->wrapPhp($constrain));
+        // Scope
+        $scope = $schema->define($role, Schema::SCOPE);
+        $output->write('   Scope      : ');
+        $output->writeln($scope === null ? 'no scope' : $this->wrapPhp($scope));
         // Repository
         $repository = $schema->define($role, Schema::REPOSITORY);
         $output->write('   Repository : ');
