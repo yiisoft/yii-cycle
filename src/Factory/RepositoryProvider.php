@@ -8,8 +8,10 @@ use Closure;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\RepositoryInterface;
 use Cycle\ORM\SchemaInterface;
+use Psr\Container\ContainerInterface;
 use Yiisoft\Di\Container;
-use Yiisoft\Di\Support\ServiceProvider;
+use Yiisoft\Di\CompositeContainer;
+use Yiisoft\Di\Contracts\ServiceProviderInterface;
 
 use function is_string;
 
@@ -17,14 +19,31 @@ use function is_string;
  * This provider provides factories to the container for creating Cycle entity repositories.
  * Repository list is compiled based on data from the database schema.
  */
-final class RepositoryProvider extends ServiceProvider
+final class RepositoryProvider implements ServiceProviderInterface
 {
-    public function register(Container $container): void
+    public function getDefinitions(): array
     {
-        /** @var ORMInterface */
-        $orm = $container->get(ORMInterface::class);
-        /** @psalm-suppress InaccessibleMethod */
-        $container->setMultiple($this->getRepositoryFactories($orm));
+        return [];
+    }
+
+    /**
+     * @return array<Closure>
+     */
+    public function getExtensions(): array
+    {
+        return [
+            ContainerInterface::class => function (ContainerInterface $container, ContainerInterface $extended) {
+                /** @var ORMInterface */
+                $orm = $extended->get(ORMInterface::class);
+                /** @psalm-suppress InaccessibleMethod */
+                $repositoryContainer = new Container($this->getRepositoryFactories($orm));
+                $compositeContainer = new CompositeContainer();
+                $compositeContainer->attach($repositoryContainer);
+                $compositeContainer->attach($extended);
+
+                return $compositeContainer;
+            },
+        ];
     }
 
     /**
