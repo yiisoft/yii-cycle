@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Cycle\ORM\Schema;
+use Cycle\ORM\SchemaInterface as Schema;
 use Cycle\ORM\Relation;
 use Cycle\Schema\Relation\RelationSchema;
 

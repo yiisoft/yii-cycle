@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\FromFilesSchemaProvider;
 
-use Cycle\ORM\Schema;
+use Cycle\ORM\SchemaInterface as Schema;
 use InvalidArgumentException;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Exception\DuplicateRoleException;

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Command\Schema;
 
 use Cycle\ORM\Relation;
-use Cycle\ORM\Schema;
+use Cycle\ORM\SchemaInterface as Schema;
 use Cycle\ORM\SchemaInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;

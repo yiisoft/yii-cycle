@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 
 use Cycle\ORM\Relation;
-use Cycle\ORM\Schema;
+use Cycle\ORM\SchemaInterface as Schema;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Relation\RelationSchema;
 

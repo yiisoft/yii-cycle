@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-use Cycle\ORM\Schema;
+use Cycle\ORM\SchemaInterface as Schema;
 
 return [
     'post' => [Schema::DATABASE => 'postgres'],

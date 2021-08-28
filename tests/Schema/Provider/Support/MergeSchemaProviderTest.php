@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\Support;
 
-use Cycle\ORM\Schema;
+use Cycle\ORM\SchemaInterface as Schema;
 use Yiisoft\Yii\Cycle\Exception\DuplicateRoleException;
 use Yiisoft\Yii\Cycle\Schema\Provider\Support\MergeSchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
