@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Schema\Converter;
 
 use Cycle\ORM\Relation;
-use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Relation\RelationSchema;
 use Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP\SchemaRenderer;
@@ -14,7 +13,7 @@ final class SchemaToPHP
 {
     private SchemaInterface $schema;
     private const USE_LIST = [
-        Schema::class,
+        SchemaInterface::class . ' as Schema',
         Relation::class,
         RelationSchema::class,
     ];
