@@ -76,13 +76,21 @@ return [
         ],
 
         /**
-         * Настройка для класса {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor}
+         * Настройка для имплементации {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface}
          * Здесь указывается список папок с сущностями.
          * В путях поддерживаются псевдонимы {@see \Yiisoft\Aliases\Aliases}.
          */
-        'annotated-entity-paths' => [
+        'entity-paths' => [
             '@src/Entity'
         ],
+        /**
+         * Класс, реализующий {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface},
+         * имплементация определяет источник данных о сущностях
+         * AnnotatedSchemaConveyor - для парсинга только аннотаций
+         * AttributedSchemaConveyor - для парсинга атрибутов. Работает и на php 7.4
+         * CompositedSchemaConveyor - для поддержки и аннотаций, и атрибутов
+         */
+        'conveyor-class' => CompositedSchemaConveyor::class,
     ],
 ];
 ```

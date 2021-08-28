@@ -75,12 +75,18 @@ return [
         ],
 
         /**
-         * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor} settings
+         * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface} implementation settings
          * A list of entity directories. You can use {@see \Yiisoft\Aliases\Aliases} in paths.
          */
-        'annotated-entity-paths' => [
+        'entity-paths' => [
             '@src/Entity'
         ],
+        /**
+         * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface} implementation class name.
+         * That implementation defines the entity data source: annotations, attributes or both.
+         * Can be `AnnotatedSchemaConveyor`, `AttributedSchemaConveyor` or `CompositedSchemaConveyor`
+         */
+        'conveyor-class' => CompositedSchemaConveyor::class,
     ],
 ];
 ```

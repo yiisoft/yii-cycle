@@ -21,7 +21,7 @@ By default, schema is built based on annotations that are in your project entiti
 
 When building a schema generators are executed sequentially. The sequence is determined in an instance of
 `SchemaConveyorInterface`. You can insert your own generators in this conveyor by defining them in
-`annotated-entity-paths` option of `config/params.php` file.
+`entity-paths` option of `config/params.php` file.
 
 In order to get a schema from conveyor `FromConveyorSchemaProvider` is used.
 
