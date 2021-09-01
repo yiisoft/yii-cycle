@@ -75,7 +75,7 @@ return [
         ],
 
         /**
-         * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface} implementation settings
+         * Option for {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor}.
          * A list of entity directories. You can use {@see \Yiisoft\Aliases\Aliases} in paths.
          */
         'entity-paths' => [

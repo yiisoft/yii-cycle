@@ -76,7 +76,7 @@ return [
         ],
 
         /**
-         * Настройка для имплементации {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface}
+         * Настройка для класса {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor}.
          * Здесь указывается список папок с сущностями.
          * В путях поддерживаются псевдонимы {@see \Yiisoft\Aliases\Aliases}.
          */

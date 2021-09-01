@@ -6,7 +6,7 @@ namespace Yiisoft\Yii\Cycle\Schema\Conveyor;
 
 use Spiral\Attributes\AnnotationReader;
 
-final class AttributedSchemaConveyor extends CompositedSchemaConveyor
+final class AttributedSchemaConveyor extends MetadataSchemaConveyor
 {
     protected function getMetadataReader(): AnnotationReader
     {

@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Cycle\Schema\Conveyor;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Spiral\Attributes\AnnotationReader;
 
-final class AnnotatedSchemaConveyor extends CompositedSchemaConveyor
+final class AnnotatedSchemaConveyor extends MetadataSchemaConveyor
 {
     private bool $isAutoloadRegistered = false;
 
