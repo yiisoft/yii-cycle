@@ -84,11 +84,11 @@ return [
             '@src/Entity'
         ],
         /**
-         * Имплементация интерфейса {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface},
+         * Реализация интерфейса {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface},
          * определяющая источник данных о сущностях:
          *  - `AnnotatedSchemaConveyor` - парсинг только аннотаций;
-         *  - AttributedSchemaConveyor - парсинг только атрибутов (в том числе и на PHP 7.4);
-         *  - CompositedSchemaConveyor - парсинг и аннотаций, и атрибутов.
+         *  - `AttributedSchemaConveyor` - парсинг только атрибутов (в том числе и на PHP 7.4);
+         *  - `CompositedSchemaConveyor` - парсинг и аннотаций, и атрибутов.
          */
         'conveyor-class' => CompositedSchemaConveyor::class,
     ],
