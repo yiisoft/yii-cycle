@@ -57,7 +57,7 @@ return [
         }
         return new Schema($schema);
     },
-    // Annotated Schema Conveyor
+    // Schema Conveyor
     SchemaConveyorInterface::class => static function (ContainerInterface $container) use (&$params) {
         /** @var SchemaConveyorInterface $conveyor */
         $conveyor = $container->get($params['yiisoft/yii-cycle']['conveyor-class'] ?? CompositedSchemaConveyor::class);
