@@ -38,16 +38,20 @@ final class RepositoryContainer implements ContainerInterface
             return $this->instances[$id] = $this->makeRepository($this->roles[$id]);
         }
 
+        if (!is_subclass_of($id, RepositoryInterface::class)) {
+              throw new NotInstantiableClassException(
+                $id,
+                sprintf('Can not instantiate "%s" because it is not a subclass of "%s".', $id, RepositoryInterface::class)
+            );
+        }
+
         throw new NotFoundException($id);
     }
 
     public function has($id): bool
     {
         if (!is_subclass_of($id, RepositoryInterface::class)) {
-            throw new NotInstantiableClassException(
-                $id,
-                sprintf('Can not instantiate "%s" because it is not a subclass of "%s".', $id, RepositoryInterface::class)
-            );
+            return false;
         }
 
         if (!$this->rolesBuilt) {
