@@ -39,7 +39,7 @@ final class RepositoryContainer implements ContainerInterface
         }
 
         if (!is_subclass_of($id, RepositoryInterface::class)) {
-              throw new NotInstantiableClassException(
+            throw new NotInstantiableClassException(
                 $id,
                 sprintf('Can not instantiate "%s" because it is not a subclass of "%s".', $id, RepositoryInterface::class)
             );
