@@ -88,7 +88,7 @@ return [
          * определяющая источник данных о сущностях:
          *  - `AnnotatedSchemaConveyor` - парсинг только аннотаций;
          *  - `AttributedSchemaConveyor` - парсинг только атрибутов (в том числе и на PHP 7.4);
-         *  - `CompositedSchemaConveyor` - парсинг и аннотаций, и атрибутов.
+         *  - `CompositeSchemaConveyor` - парсинг и аннотаций, и атрибутов.
          */
         'conveyor-class' => CompositedSchemaConveyor::class,
     ],

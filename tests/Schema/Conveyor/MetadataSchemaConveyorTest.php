@@ -6,19 +6,29 @@ namespace Yiisoft\Yii\Cycle\Tests\Schema\Conveyor;
 
 use Cycle\Annotated\Entities;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
-use Yiisoft\Yii\Cycle\Schema\Conveyor\CompositedSchemaConveyor;
+use Yiisoft\Yii\Cycle\Schema\Conveyor\CompositeSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor;
+use Cycle\Schema\Generator\GenerateTypecast;
+use Cycle\Annotated\MergeIndexes;
+use Cycle\Schema\Generator\RenderRelations;
+use Cycle\Schema\Generator\RenderTables;
+use Cycle\Schema\Generator\ValidateEntities;
+use Cycle\Schema\Generator\GenerateRelations;
+use Cycle\Annotated\MergeColumns;
+use Cycle\Annotated\Embeddings;
+use Cycle\Schema\Generator\ResetTables;
+use Cycle\Schema\Generator\SyncTables;
 
 class MetadataSchemaConveyorTest extends BaseConveyorTest
 {
-    public function testGetTableNamingDefault(): void
+    final public function testGetTableNamingDefault(): void
     {
         $conveyor = $this->createConveyor();
 
         $this->assertSame(Entities::TABLE_NAMING_SINGULAR, $conveyor->getTableNaming());
     }
 
-    public function tableNamingProvider(): array
+    final public function tableNamingProvider(): array
     {
         return [
             [Entities::TABLE_NAMING_PLURAL],
@@ -30,7 +40,7 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
     /**
      * @dataProvider tableNamingProvider
      */
-    public function testSetTableNaming(int $naming): void
+    final public function testSetTableNaming(int $naming): void
     {
         $conveyor = $this->createConveyor();
 
@@ -39,27 +49,27 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
         $this->assertSame($naming, $conveyor->getTableNaming());
     }
 
-    public function testDefaultGeneratorsOrder(): void
+    final public function testDefaultGeneratorsOrder(): void
     {
         $conveyor = $this->createConveyor();
 
         $generators = $this->getGeneratorClassList($conveyor);
 
         $this->assertSame([
-            'Cycle\Schema\Generator\ResetTables',
-            'Cycle\Annotated\Embeddings',
-            'Cycle\Annotated\Entities',
-            'Cycle\Annotated\MergeColumns',
-            'Cycle\Schema\Generator\GenerateRelations',
-            'Cycle\Schema\Generator\ValidateEntities',
-            'Cycle\Schema\Generator\RenderTables',
-            'Cycle\Schema\Generator\RenderRelations',
-            'Cycle\Annotated\MergeIndexes',
-            'Cycle\Schema\Generator\GenerateTypecast',
+            ResetTables::class,
+            Embeddings::class,
+            Entities::class,
+            MergeColumns::class,
+            GenerateRelations::class,
+            ValidateEntities::class,
+            RenderTables::class,
+            RenderRelations::class,
+            MergeIndexes::class,
+            GenerateTypecast::class,
         ], $generators);
     }
 
-    public function testAddCustomGenerator(): void
+    final public function testAddCustomGenerator(): void
     {
         $conveyor = $this->createConveyor();
         $conveyor->addGenerator($conveyor::STAGE_USERLAND, \Cycle\Schema\Generator\SyncTables::class);
@@ -67,21 +77,21 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
         $generators = $this->getGeneratorClassList($conveyor);
 
         $this->assertSame([
-            'Cycle\Schema\Generator\ResetTables',
-            'Cycle\Annotated\Embeddings',
-            'Cycle\Annotated\Entities',
-            'Cycle\Annotated\MergeColumns',
-            'Cycle\Schema\Generator\GenerateRelations',
-            'Cycle\Schema\Generator\ValidateEntities',
-            'Cycle\Schema\Generator\RenderTables',
-            'Cycle\Schema\Generator\RenderRelations',
-            'Cycle\Annotated\MergeIndexes',
-            'Cycle\Schema\Generator\SyncTables',
-            'Cycle\Schema\Generator\GenerateTypecast',
+            ResetTables::class,
+            Embeddings::class,
+            Entities::class,
+            MergeColumns::class,
+            GenerateRelations::class,
+            ValidateEntities::class,
+            RenderTables::class,
+            RenderRelations::class,
+            MergeIndexes::class,
+            SyncTables::class,
+            GenerateTypecast::class,
         ], $generators);
     }
 
-    public function testEmptyEntityPaths(): void
+    final public function testEmptyEntityPaths(): void
     {
         $conveyor = $this->createConveyor([]);
 
@@ -90,7 +100,7 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
         $conveyor->getGenerators();
     }
 
-    public function testAnnotatedGeneratorsAddedOnlyOnce(): void
+    final public function testAnnotatedGeneratorsAddedOnlyOnce(): void
     {
         $conveyor = $this->createConveyor();
 
@@ -99,22 +109,25 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
         $generators = $this->getGeneratorClassList($conveyor);
 
         $this->assertSame([
-            'Cycle\Schema\Generator\ResetTables',
-            'Cycle\Annotated\Embeddings',
-            'Cycle\Annotated\Entities',
-            'Cycle\Annotated\MergeColumns',
-            'Cycle\Schema\Generator\GenerateRelations',
-            'Cycle\Schema\Generator\ValidateEntities',
-            'Cycle\Schema\Generator\RenderTables',
-            'Cycle\Schema\Generator\RenderRelations',
-            'Cycle\Annotated\MergeIndexes',
-            'Cycle\Schema\Generator\GenerateTypecast',
+            ResetTables::class,
+            Embeddings::class,
+            Entities::class,
+            MergeColumns::class,
+            GenerateRelations::class,
+            ValidateEntities::class,
+            RenderTables::class,
+            RenderRelations::class,
+            MergeIndexes::class,
+            GenerateTypecast::class,
         ], $generators);
     }
 
-    public function createConveyor($entityPaths = ['@test-dir']): MetadataSchemaConveyor
+    /**
+     * @param string[] $entityPaths
+     */
+    public function createConveyor(array $entityPaths = ['@test-dir']): MetadataSchemaConveyor
     {
-        $conveyor = new CompositedSchemaConveyor($this->prepareContainer());
+        $conveyor = new CompositeSchemaConveyor($this->prepareContainer());
         $conveyor->addEntityPaths($entityPaths);
 
         return $conveyor;

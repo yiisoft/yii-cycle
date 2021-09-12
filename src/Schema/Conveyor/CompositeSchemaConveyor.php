@@ -9,7 +9,7 @@ use Spiral\Attributes\AttributeReader;
 use Spiral\Attributes\Composite\SelectiveReader;
 use Spiral\Attributes\ReaderInterface;
 
-final class CompositedSchemaConveyor extends MetadataSchemaConveyor
+final class CompositeSchemaConveyor extends MetadataSchemaConveyor
 {
     protected function getMetadataReader(): ?ReaderInterface
     {

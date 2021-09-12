@@ -84,7 +84,7 @@ return [
         /**
          * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface} implementation class name.
          * That implementation defines the entity data source: annotations, attributes or both.
-         * Can be `AnnotatedSchemaConveyor`, `AttributedSchemaConveyor` or `CompositedSchemaConveyor`
+         * Can be `AnnotatedSchemaConveyor`, `AttributedSchemaConveyor` or `CompositeSchemaConveyor`
          */
         'conveyor-class' => CompositedSchemaConveyor::class,
     ],

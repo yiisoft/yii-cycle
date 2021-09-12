@@ -8,7 +8,7 @@ use Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor;
 
 final class AnnotatedSchemaConveyorTest extends MetadataSchemaConveyorTest
 {
-    public function createConveyor($entityPaths = ['@test-dir']): AnnotatedSchemaConveyor
+    public function createConveyor(array $entityPaths = ['@test-dir']): AnnotatedSchemaConveyor
     {
         $conveyor = new AnnotatedSchemaConveyor($this->prepareContainer());
         $conveyor->addEntityPaths($entityPaths);
