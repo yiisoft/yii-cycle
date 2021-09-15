@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 
 use Cycle\ORM\Relation;
-use Cycle\ORM\Schema;
+use Cycle\ORM\SchemaInterface as Schema;
 use Cycle\ORM\SchemaInterface;
 use Cycle\Schema\Relation\RelationSchema;
 
@@ -28,6 +28,7 @@ final class SchemaRenderer
         Relation::OUTER_KEY => 'Relation::OUTER_KEY',
         Relation::INNER_KEY => 'Relation::INNER_KEY',
         Relation::WHERE => 'Relation::WHERE',
+        Relation::ORDER_BY => 'Relation::ORDER_BY',
         Relation::THROUGH_INNER_KEY => 'Relation::THROUGH_INNER_KEY',
         Relation::THROUGH_OUTER_KEY => 'Relation::THROUGH_OUTER_KEY',
         Relation::THROUGH_ENTITY => 'Relation::THROUGH_ENTITY',
@@ -117,7 +118,7 @@ final class SchemaRenderer
 
     private function renderScope(string $role): ArrayItemExporter
     {
-        return new ArrayItemExporter('Schema::CONSTRAIN', $this->schema->define($role, Schema::CONSTRAIN));
+        return new ArrayItemExporter('Schema::SCOPE', $this->schema->define($role, Schema::SCOPE));
     }
 
     private function renderPK(string $role): ArrayItemExporter

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\Support;
 
-use Cycle\ORM\Schema;
+use Cycle\ORM\SchemaInterface as Schema;
 use Psr\Container\ContainerInterface;
 use RuntimeException;
 use Yiisoft\Test\Support\Container\SimpleContainer;

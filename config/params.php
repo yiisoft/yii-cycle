@@ -5,6 +5,7 @@ declare(strict_types=1);
 use Cycle\ORM\PromiseFactoryInterface;
 use Yiisoft\Yii\Cycle\Command\Schema;
 use Yiisoft\Yii\Cycle\Command\Migration;
+use Yiisoft\Yii\Cycle\Schema\Conveyor\CompositeSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 return [
@@ -72,10 +73,13 @@ return [
         'schema-providers' => [],
 
         /**
-         * Config for {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor}
-         * Annotated entity directories list.
+         * Annotated/attributed entity directories list.
          * {@see \Yiisoft\Aliases\Aliases} are also supported.
          */
+        'entity-paths' => [],
+        'conveyor' => CompositeSchemaConveyor::class,
+
+        /** @deprecated use `entity-paths` key instead */
         'annotated-entity-paths' => [],
     ],
 ];
