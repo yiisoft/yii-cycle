@@ -61,8 +61,12 @@ return [
     SchemaConveyorInterface::class => static function (ContainerInterface $container) use (&$params) {
         /** @var SchemaConveyorInterface $conveyor */
         $conveyor = $container->get($params['yiisoft/yii-cycle']['conveyor'] ?? CompositeSchemaConveyor::class);
-        $conveyor->addEntityPaths($params['yiisoft/yii-cycle']['annotated-entity-paths']);
-        $conveyor->addEntityPaths($params['yiisoft/yii-cycle']['entity-paths']);
+        if (array_key_exists('annotated-entity-paths', $params['yiisoft/yii-cycle'])) {
+            $conveyor->addEntityPaths($params['yiisoft/yii-cycle']['annotated-entity-paths']);
+        }
+        if (array_key_exists('entity-paths', $params['yiisoft/yii-cycle'])) {
+            $conveyor->addEntityPaths($params['yiisoft/yii-cycle']['entity-paths']);
+        }
         return $conveyor;
     },
 ];
