@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Data\Reader;
 
 use Closure;
-use Countable;
+use Cycle\Database\Query\SelectQuery;
 use Cycle\ORM\Select;
 use Cycle\ORM\Select\QueryBuilder;
 use Generator;
 use InvalidArgumentException;
 use RuntimeException;
-use Spiral\Database\Query\SelectQuery;
-use Spiral\Pagination\PaginableInterface;
 use Yiisoft\Data\Reader\DataReaderInterface;
 use Yiisoft\Data\Reader\Filter\FilterInterface;
 use Yiisoft\Data\Reader\Filter\FilterProcessorInterface;
@@ -23,8 +21,7 @@ use Yiisoft\Yii\Cycle\Data\Reader\Processor\QueryBuilderProcessor;
 
 final class EntityReader implements DataReaderInterface
 {
-    /** @var Select|SelectQuery */
-    private $query;
+    private Select|SelectQuery $query;
     private ?int $limit = null;
     private ?int $offset = null;
     private ?Sort $sorting = null;
@@ -35,19 +32,8 @@ final class EntityReader implements DataReaderInterface
     /** @var FilterProcessorInterface[]|QueryBuilderProcessor[] */
     private array $filterProcessors = [];
 
-    /**
-     * @param Select|SelectQuery $query
-     */
-    public function __construct($query)
+    public function __construct(Select|SelectQuery $query)
     {
-        if (!$query instanceof Countable) {
-            throw new InvalidArgumentException(sprintf('Query should implement %s interface', Countable::class));
-        }
-        if (!$query instanceof PaginableInterface) {
-            throw new InvalidArgumentException(
-                sprintf('Query should implement %s interface', PaginableInterface::class)
-            );
-        }
         $this->query = clone $query;
         $this->countCache = new CachedCount($this->query);
         $this->itemsCache = new CachedCollection();

@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 use Cycle\ORM\Relation;
 use Cycle\ORM\SchemaInterface as Schema;
 use Cycle\ORM\SchemaInterface;
-use Cycle\Schema\Relation\RelationSchema;
 
 final class SchemaRenderer
 {
@@ -33,11 +32,6 @@ final class SchemaRenderer
         Relation::THROUGH_OUTER_KEY => 'Relation::THROUGH_OUTER_KEY',
         Relation::THROUGH_ENTITY => 'Relation::THROUGH_ENTITY',
         Relation::THROUGH_WHERE => 'Relation::THROUGH_WHERE',
-        RelationSchema::INDEX_CREATE => 'RelationSchema::INDEX_CREATE',
-        RelationSchema::FK_CREATE => 'RelationSchema::FK_CREATE',
-        RelationSchema::FK_ACTION => 'RelationSchema::FK_ACTION',
-        RelationSchema::INVERSE => 'RelationSchema::INVERSE',
-        RelationSchema::MORPH_KEY_LENGTH => 'RelationSchema::MORPH_KEY_LENGTH',
     ];
     private const PREFETCH_MODE = [
         Relation::LOAD_PROMISE => 'Relation::LOAD_PROMISE',
@@ -77,18 +71,20 @@ final class SchemaRenderer
             // Role has no definition within the schema
             return null;
         }
-        return new ArrayItemExporter($role, [
+        return new ArrayItemExporter($role, array_filter([
             $this->renderDatabase($role),
             $this->renderTable($role),
             $this->renderEntity($role),
             $this->renderMapper($role),
             $this->renderRepository($role),
+            $this->renderParent($role),
+            $this->renderParentKey($role),
             $this->renderScope($role),
             $this->renderPK($role),
             $this->renderFields($role),
             $this->renderTypecast($role),
             $this->renderRelations($role),
-        ], true);
+        ]), true);
     }
 
     private function renderDatabase(string $role): ArrayItemExporter
@@ -101,9 +97,10 @@ final class SchemaRenderer
         return new ArrayItemExporter('Schema::TABLE', $this->schema->define($role, Schema::TABLE));
     }
 
-    private function renderEntity(string $role): ArrayItemExporter
+    private function renderEntity(string $role): ?ArrayItemExporter
     {
-        return new ArrayItemExporter('Schema::ENTITY', $this->schema->define($role, Schema::ENTITY));
+        $value = $this->schema->define($role, Schema::ENTITY);
+        return $value === null ? null : new ArrayItemExporter('Schema::ENTITY', $value);
     }
 
     private function renderMapper(string $role): ArrayItemExporter
@@ -111,14 +108,28 @@ final class SchemaRenderer
         return new ArrayItemExporter('Schema::MAPPER', $this->schema->define($role, Schema::MAPPER));
     }
 
-    private function renderRepository(string $role): ArrayItemExporter
+    private function renderRepository(string $role): ?ArrayItemExporter
     {
-        return new ArrayItemExporter('Schema::REPOSITORY', $this->schema->define($role, Schema::REPOSITORY));
+        $value = $this->schema->define($role, Schema::REPOSITORY);
+        return $value === null ? null : new ArrayItemExporter('Schema::REPOSITORY', $value);
     }
 
-    private function renderScope(string $role): ArrayItemExporter
+    private function renderParent(string $role): ?ArrayItemExporter
     {
-        return new ArrayItemExporter('Schema::SCOPE', $this->schema->define($role, Schema::SCOPE));
+        $value = $this->schema->define($role, Schema::PARENT);
+        return $value === null ? null : new ArrayItemExporter('Schema::PARENT', $value);
+    }
+
+    private function renderParentKey(string $role): ?ArrayItemExporter
+    {
+        $value = $this->schema->define($role, Schema::PARENT_KEY);
+        return $value === null ? null : new ArrayItemExporter('Schema::PARENT_KEY', $value);
+    }
+
+    private function renderScope(string $role): ?ArrayItemExporter
+    {
+        $value = $this->schema->define($role, Schema::SCOPE);
+        return $value === null ? null : new ArrayItemExporter('Schema::SCOPE', $value);
     }
 
     private function renderPK(string $role): ArrayItemExporter

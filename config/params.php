@@ -45,14 +45,6 @@ return [
         ],
 
         /**
-         * Config for {@see \Yiisoft\Yii\Cycle\Factory\OrmFactory}
-         * Null, classname or {@see PromiseFactoryInterface} object.
-         *
-         * @link https://github.com/cycle/docs/blob/master/advanced/promise.md
-         */
-        'orm-promise-factory' => null,
-
-        /**
          * SchemaProvider list for {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}
          * Array of classname and {@see SchemaProviderInterface} object.
          * You can configure providers if you pass classname as key and parameters as array:

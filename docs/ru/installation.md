@@ -35,7 +35,7 @@ return [
             'connections' => [
                 // Пример настроек подключения к SQLite:
                 'sqlite' => [
-                    'driver' => \Spiral\Database\Driver\SQLite\SQLiteDriver::class,
+                    'driver' => \Cycle\Database\Driver\SQLite\SQLiteDriver::class,
                     // Синтаксис подключения описан в https://www.php.net/manual/pdo.construct.php, смотрите DSN
                     'connection' => 'sqlite:@runtime/database.db',
                     'username' => '',
@@ -51,13 +51,6 @@ return [
             'table' => 'migration',
             'safe' => false,
         ],
-
-        /**
-         * Конфиг для фабрики ORM {@see \Yiisoft\Yii\Cycle\Factory\OrmFactory}
-         * Указывается определение класса {@see \Cycle\ORM\PromiseFactoryInterface} или null.
-         * Документация: @link https://github.com/cycle/docs/blob/master/advanced/promise.md
-         */
-        'orm-promise-factory' => null,
 
         /**
          * Список поставщиков схемы БД для {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}

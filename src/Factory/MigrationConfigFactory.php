@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Factory;
 
+use Cycle\Migrations\Config\MigrationConfig;
 use Psr\Container\ContainerInterface;
-use Spiral\Migrations\Config\MigrationConfig;
 use Yiisoft\Aliases\Aliases;
 
 final class MigrationConfigFactory
@@ -17,7 +17,7 @@ final class MigrationConfigFactory
         $this->params = $params;
     }
 
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): MigrationConfig
     {
         // Convert alias to full path
         if (isset($this->params['directory'])) {

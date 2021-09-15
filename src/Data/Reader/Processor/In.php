@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Data\Reader\Processor;
 
-use Spiral\Database\Injection\Parameter;
+use Cycle\Database\Injection\Parameter;
 use Yiisoft\Data\Reader\Filter\FilterProcessorInterface;
 
 final class In implements QueryBuilderProcessor, FilterProcessorInterface
