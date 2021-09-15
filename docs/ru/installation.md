@@ -3,7 +3,7 @@
 Предпочтительнее установить этот пакет через [Composer](https://getcomposer.org/download/):
 
 ```bash
-composer require yiisoft/yii-cycle
+composer require yiisoft/yii-cycle "2.0.x-dev"
 ```
 
 ## Настройка
