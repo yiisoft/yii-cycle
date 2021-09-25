@@ -3,7 +3,7 @@
 The preferred way to install this package is through [Composer](https://getcomposer.org/download/):
 
 ```bash
-composer require yiisoft/yii-cycle
+composer require yiisoft/yii-cycle "2.0.x-dev"
 ```
 
 ## Configuring package
@@ -34,7 +34,7 @@ return [
             'connections' => [
                 // Example SQLite connection:
                 'sqlite' => [
-                    'driver' => \Spiral\Database\Driver\SQLite\SQLiteDriver::class,
+                    'driver' => \Cycle\Database\Driver\SQLite\SQLiteDriver::class,
                     // see https://www.php.net/manual/pdo.construct.php, DSN for connection syntax
                     'connection' => 'sqlite:@runtime/database.db',
                     'username' => '',
@@ -50,13 +50,6 @@ return [
             'table' => 'migration',
             'safe' => false,
         ],
-
-        /**
-         * {@see \Yiisoft\Yii\Cycle\Factory\OrmFactory} config 
-         * Either {@see \Cycle\ORM\PromiseFactoryInterface} implementation or null is specified.
-         * Docs: @link https://github.com/cycle/docs/blob/master/advanced/promise.md
-         */
-        'orm-promise-factory' => null,
 
         /**
          * A list of DB schema providers for {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}

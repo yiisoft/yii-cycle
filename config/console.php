@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
+use Cycle\Migrations\Config\MigrationConfig;
+use Cycle\Migrations\Migrator;
 use Psr\Container\ContainerInterface;
-use Spiral\Migrations\Config\MigrationConfig;
-use Spiral\Migrations\Migrator;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Factory\MigrationConfigFactory;
 use Yiisoft\Yii\Cycle\Factory\MigratorFactory;

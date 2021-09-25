@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Cycle\ORM\PromiseFactoryInterface;
 use Yiisoft\Yii\Cycle\Command\Schema;
 use Yiisoft\Yii\Cycle\Command\Migration;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\CompositeSchemaConveyor;
@@ -43,14 +42,6 @@ return [
             'table' => 'migration',
             'safe' => false,
         ],
-
-        /**
-         * Config for {@see \Yiisoft\Yii\Cycle\Factory\OrmFactory}
-         * Null, classname or {@see PromiseFactoryInterface} object.
-         *
-         * @link https://github.com/cycle/docs/blob/master/advanced/promise.md
-         */
-        'orm-promise-factory' => null,
 
         /**
          * SchemaProvider list for {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}

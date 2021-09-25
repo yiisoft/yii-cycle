@@ -13,7 +13,6 @@ return [
         Schema::ENTITY => 'App\\Token\\Manager\\Entity\\Token',
         Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
         Schema::REPOSITORY => 'App\\Token\\Manager\\TokenRepository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -34,7 +33,6 @@ return [
         Schema::ENTITY => 'App\\User\\Entity\\UserAgency',
         Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -54,7 +52,6 @@ return [
         Schema::ENTITY => 'App\\User\\Entity\\User',
         Schema::MAPPER => 'App\\User\\Mapper\\UserMapper',
         Schema::REPOSITORY => 'App\\User\\UserRepository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -98,7 +95,6 @@ return [
         Schema::ENTITY => 'App\\Agency\\Entity\\Agency',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -141,7 +137,6 @@ return [
         Schema::ENTITY => 'App\\Iata\\Entity\\Translate',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -170,7 +165,6 @@ return [
         Schema::ENTITY => 'App\\Iata\\Entity\\Country',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -214,7 +208,6 @@ return [
                     Relation::OUTER_KEY => 'relation_id',
                     Relation::INNER_KEY => 'id',
                     Relation::MORPH_KEY => 'relation_role',
-                    RelationSchema::MORPH_KEY_LENGTH => 32,
                 ],
             ],
         ],
@@ -225,7 +218,6 @@ return [
         Schema::ENTITY => 'App\\Iata\\Entity\\City',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -259,7 +251,6 @@ return [
                     Relation::OUTER_KEY => 'relation_id',
                     Relation::INNER_KEY => 'id',
                     Relation::MORPH_KEY => 'relation_role',
-                    RelationSchema::MORPH_KEY_LENGTH => 32,
                 ],
             ],
             'country' => [
@@ -281,7 +272,6 @@ return [
         Schema::ENTITY => 'App\\Iata\\Entity\\Airport',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -316,7 +306,6 @@ return [
                     Relation::OUTER_KEY => 'relation_id',
                     Relation::INNER_KEY => 'id',
                     Relation::MORPH_KEY => 'relation_role',
-                    RelationSchema::MORPH_KEY_LENGTH => 32,
                 ],
             ],
             'city' => [
@@ -338,7 +327,6 @@ return [
         Schema::ENTITY => 'App\\Iata\\Entity\\RailStation',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -373,7 +361,6 @@ return [
                     Relation::OUTER_KEY => 'relation_id',
                     Relation::INNER_KEY => 'id',
                     Relation::MORPH_KEY => 'relation_role',
-                    RelationSchema::MORPH_KEY_LENGTH => 32,
                 ],
             ],
             'city' => [
@@ -395,7 +382,6 @@ return [
         Schema::ENTITY => 'App\\Iata\\Entity\\Carrier',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -424,7 +410,6 @@ return [
                     Relation::OUTER_KEY => 'relation_id',
                     Relation::INNER_KEY => 'id',
                     Relation::MORPH_KEY => 'relation_role',
-                    RelationSchema::MORPH_KEY_LENGTH => 32,
                 ],
             ],
         ],
@@ -435,7 +420,6 @@ return [
         Schema::ENTITY => 'App\\Iata\\Entity\\Continent',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -463,7 +447,6 @@ return [
                     Relation::OUTER_KEY => 'relation_id',
                     Relation::INNER_KEY => 'id',
                     Relation::MORPH_KEY => 'relation_role',
-                    RelationSchema::MORPH_KEY_LENGTH => 32,
                 ],
             ],
         ],
@@ -474,7 +457,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Price',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -526,7 +508,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Offer',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -606,7 +587,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\BookingPerson',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -646,7 +626,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Part',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -705,7 +684,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Booking',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -785,7 +763,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Segment',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -851,7 +828,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Passenger',
         Schema::MAPPER => 'Yiisoft\\Yii\\Cycle\\Mapper\\TimestampedMapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'id' => 'id',
@@ -893,7 +869,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Embedded\\Fare',
         Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'adults_amount' => 'fare_adults_amount',
@@ -915,7 +890,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Embedded\\Fee',
         Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'adults_amount' => 'fee_adults_amount',
@@ -937,7 +911,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Embedded\\Badges',
         Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'night' => 'badge_night',
@@ -965,7 +938,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Embedded\\Segment\\Flight',
         Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'number' => 'flight_number',
@@ -987,7 +959,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Embedded\\Segment\\Terminal',
         Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'departure' => 'terminal_departure',
@@ -1005,7 +976,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Embedded\\Segment\\Date',
         Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'departure' => 'date_departure',
@@ -1025,7 +995,6 @@ return [
         Schema::ENTITY => 'App\\Flight\\Booking\\Entity\\Embedded\\Segment\\Properties',
         Schema::MAPPER => 'Cycle\\ORM\\Mapper\\Mapper',
         Schema::REPOSITORY => 'Cycle\\ORM\\Select\\Repository',
-        Schema::SCOPE => null,
         Schema::PRIMARY_KEY => 'id',
         Schema::COLUMNS => [
             'waitTime' => 'proprety_wait_time',

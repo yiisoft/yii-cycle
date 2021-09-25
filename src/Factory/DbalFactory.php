@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Factory;
 
 use Exception;
+use Cycle\Database\Config\DatabaseConfig;
+use Cycle\Database\DatabaseManager;
+use Cycle\Database\Driver\Driver;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 use Spiral\Core\FactoryInterface;
-use Spiral\Database\Config\DatabaseConfig;
-use Spiral\Database\DatabaseManager;
-use Spiral\Database\Driver\Driver;
 use Yiisoft\Aliases\Aliases;
 
 final class DbalFactory

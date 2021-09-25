@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Schema\Provider;
 
 use Closure;
+use Cycle\Database\DatabaseProviderInterface;
 use Cycle\Schema\Compiler;
 use Cycle\Schema\GeneratorInterface;
 use Cycle\Schema\Registry;
-use Spiral\Database\DatabaseProviderInterface;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 

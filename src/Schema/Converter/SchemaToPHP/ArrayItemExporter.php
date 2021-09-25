@@ -26,7 +26,7 @@ final class ArrayItemExporter
         $this->wrapKey = $wrapKey;
     }
 
-    public function __toString()
+    public function __toString(): string
     {
         $result = '';
         if ($this->key !== null) {
@@ -35,27 +35,16 @@ final class ArrayItemExporter
         return $result . $this->renderValue($this->value);
     }
 
-    /**
-     * @param mixed $value
-     *
-     * @return string
-     */
-    private function renderValue($value): string
+    private function renderValue(mixed $value): string
     {
-        switch (true) {
-            case $value === null:
-                return 'null';
-            case is_bool($value):
-                return $value ? 'true' : 'false';
-            case is_array($value):
-                return $this->renderArray($value);
-            case !$this->wrapValue || is_int($value) || $value instanceof self:
-                return (string)$value;
-            case is_string($value):
-                return "'" . addslashes($value) . "'";
-            default:
-                return "unserialize('" . addslashes(serialize($value)) . "')";
-        }
+        return match (true) {
+            $value === null => 'null',
+            is_bool($value) => $value ? 'true' : 'false',
+            is_array($value) => $this->renderArray($value),
+            !$this->wrapValue || is_int($value) || $value instanceof self => (string)$value,
+            is_string($value) => "'" . addslashes($value) . "'",
+            default => "unserialize('" . addslashes(serialize($value)) . "')",
+        };
     }
 
     private function renderArray(array $value): string

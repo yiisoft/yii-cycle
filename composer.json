@@ -1,7 +1,7 @@
 {
     "name": "yiisoft/yii-cycle",
     "type": "library",
-    "description": "Cycle ORM support",
+    "description": "Cycle ORM v2 support",
     "keywords": [
         "yii",
         "cycle",
@@ -20,14 +20,14 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.4|^8.0",
-        "cycle/annotated": "^2.3.1",
-        "cycle/migrations": "^1.0",
-        "cycle/orm": "^1.5",
+        "php": ">=8.0",
+        "cycle/annotated": "2.0.x-dev",
+        "cycle/migrations": "2.0.x-dev",
+        "cycle/orm": "2.0.x-dev",
+        "cycle/schema-migrations-generator": "dev-master",
         "psr/event-dispatcher": "^1.0",
         "psr/simple-cache": "^1.0",
         "spiral/attributes": "^2.7",
-        "spiral/database": "^2.8",
         "yiisoft/aliases": "^1.1|^2.0",
         "yiisoft/data": "@dev",
         "yiisoft/friendly-exception": "^1.0",
@@ -35,7 +35,7 @@
         "yiisoft/yii-console": "@dev"
     },
     "require-dev": {
-        "phpunit/phpunit": "^9.4",
+        "phpunit/phpunit": "^9.5",
         "roave/infection-static-analysis-plugin": "^1.5",
         "spatie/phpunit-watcher": "^1.23",
         "vimeo/psalm": "^4.10",

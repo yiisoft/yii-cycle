@@ -1,7 +1,7 @@
 # EntityReader
 
 `EntityReader` allows to securely pass select-queries from repository to user runtime.
-By select-query we assume an instance of `\Cycle\ORM\Select` or `\Spiral\Database\Query\SelectQuery`.
+By select-query we assume an instance of `\Cycle\ORM\Select` or `\Cycle\Database\Query\SelectQuery`.
 
 You need to know the following about `EntityReader`:
 
