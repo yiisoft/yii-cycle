@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Conveyor;
 
 use Cycle\Annotated\Entities;
+use Cycle\Schema\Generator\GenerateModifiers;
+use Cycle\Schema\Generator\RenderModifiers;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\CompositeSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor;
@@ -61,9 +63,11 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
             Entities::class,
             MergeColumns::class,
             GenerateRelations::class,
+            GenerateModifiers::class,
             ValidateEntities::class,
             RenderTables::class,
             RenderRelations::class,
+            RenderModifiers::class,
             MergeIndexes::class,
             GenerateTypecast::class,
         ], $generators);
@@ -82,9 +86,11 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
             Entities::class,
             MergeColumns::class,
             GenerateRelations::class,
+            GenerateModifiers::class,
             ValidateEntities::class,
             RenderTables::class,
             RenderRelations::class,
+            RenderModifiers::class,
             MergeIndexes::class,
             SyncTables::class,
             GenerateTypecast::class,
@@ -114,9 +120,11 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
             Entities::class,
             MergeColumns::class,
             GenerateRelations::class,
+            GenerateModifiers::class,
             ValidateEntities::class,
             RenderTables::class,
             RenderRelations::class,
+            RenderModifiers::class,
             MergeIndexes::class,
             GenerateTypecast::class,
         ], $generators);

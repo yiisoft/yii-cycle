@@ -18,9 +18,11 @@ class SchemaConveyor implements SchemaConveyorInterface
         ],
         self::STAGE_RENDER => [
             Generator\GenerateRelations::class, // generate entity relations
+            Generator\GenerateModifiers::class, // generate changes from schema modifiers
             Generator\ValidateEntities::class,  // make sure all entity schemas are correct
             Generator\RenderTables::class,      // declare table schemas
             Generator\RenderRelations::class,   // declare relation keys and indexes
+            Generator\RenderModifiers::class,   // render all schema modifiers
         ],
         self::STAGE_USERLAND => [],
         self::STAGE_POSTPROCESS => [

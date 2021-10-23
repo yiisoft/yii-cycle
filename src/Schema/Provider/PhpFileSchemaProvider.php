@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Schema\Provider;
 
-use Cycle\ORM\Schema;
+use Cycle\Schema\Renderer\PhpSchemaRenderer;
 use RuntimeException;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Yii\Cycle\Schema\Converter\SchemaToPHP;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 final class PhpFileSchemaProvider implements SchemaProviderInterface
@@ -72,7 +71,7 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
             mkdir($dirname, 0777, true);
         }
 
-        $content = (new SchemaToPHP(new Schema($schema)))->convert();
+        $content = (new PhpSchemaRenderer())->render($schema);
         file_put_contents($this->file, $content, LOCK_EX);
         return true;
     }

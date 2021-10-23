@@ -25,6 +25,7 @@
         "cycle/migrations": "2.0.x-dev",
         "cycle/orm": "2.0.x-dev",
         "cycle/schema-migrations-generator": "dev-master",
+        "cycle/schema-renderer": "^1.0",
         "psr/event-dispatcher": "^1.0",
         "psr/simple-cache": "^1.0",
         "spiral/attributes": "^2.7",
