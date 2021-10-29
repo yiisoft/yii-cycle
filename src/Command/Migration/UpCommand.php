@@ -69,14 +69,16 @@ final class UpCommand extends BaseMigrationCommand
             foreach ($newMigrations as $migration) {
                 $output->writeln('— <fg=cyan>' . $migration->getState()->getName() . '</>');
             }
-            $question = new ConfirmationQuestion(
-                'Apply the above ' .
-                ($countNewMigrations === 1 ? 'migration' : 'migrations') .
-                '? (yes|no) ',
-                false
-            );
-            if (!$this->getHelper('question')->ask($input, $output, $question)) {
-                return ExitCode::OK;
+            if ($input->isInteractive()) {
+                $question = new ConfirmationQuestion(
+                    'Apply the above ' .
+                    ($countNewMigrations === 1 ? 'migration' : 'migrations') .
+                    '? (yes|no) ',
+                    false
+                );
+                if (!$this->getHelper('question')->ask($input, $output, $question)) {
+                    return ExitCode::OK;
+                }
             }
         }
 
