@@ -53,7 +53,7 @@ final class SchemaCommand extends Command
         $output->write($renderer->render($found));
 
         if ($notFound !== []) {
-            $output->writeln(sprintf("<fg=red>Undefined roles: %s</>", implode(', ', $notFound)));
+            $output->writeln(sprintf('<fg=red>Undefined roles: %s</>', implode(', ', $notFound)));
         }
 
         return ExitCode::OK;
