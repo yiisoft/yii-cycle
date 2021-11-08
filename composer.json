@@ -20,7 +20,7 @@
     "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": ">=7.4",
+        "php": "^7.4|^8.0",
         "cycle/annotated": "^2.3.1",
         "cycle/migrations": "^1.0",
         "cycle/orm": "^1.7",
