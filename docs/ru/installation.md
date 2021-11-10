@@ -34,13 +34,12 @@ return [
             ],
             'connections' => [
                 // Пример настроек подключения к SQLite:
-                'sqlite' => [
-                    'driver' => \Cycle\Database\Driver\SQLite\SQLiteDriver::class,
-                    // Синтаксис подключения описан в https://www.php.net/manual/pdo.construct.php, смотрите DSN
-                    'connection' => 'sqlite:@runtime/database.db',
-                    'username' => '',
-                    'password' => '',
-                ]
+                'sqlite' => new \Cycle\Database\Config\SQLiteDriverConfig(
+                    connection: new \Cycle\Database\Config\SQLite\DsnConnectionConfig(
+                        // Синтаксис DSN описан в https://www.php.net/manual/pdo.construct.php
+                        database: 'sqlite:runtime/database.db'
+                    )
+                ),
             ],
         ],
 
