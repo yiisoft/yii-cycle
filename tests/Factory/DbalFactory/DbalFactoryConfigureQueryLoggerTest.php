@@ -11,7 +11,9 @@ use RuntimeException;
 use stdClass;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
+use Yiisoft\Yii\Cycle\Tests\Factory\DbalFactory\Stub\FakeConnectionConfig;
 use Yiisoft\Yii\Cycle\Tests\Factory\DbalFactory\Stub\FakeDriver;
+use Yiisoft\Yii\Cycle\Tests\Factory\DbalFactory\Stub\FakeDriverConfig;
 
 final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactoryTest
 {
@@ -30,12 +32,10 @@ final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactoryTest
                 'default' => ['connection' => 'fake'],
             ],
             'connections' => [
-                'fake' => [
-                    'driver' => FakeDriver::class,
-                    'connection' => 'fake',
-                    'username' => '',
-                    'password' => '',
-                ],
+                'fake' => new FakeDriverConfig(
+                    connection: new FakeConnectionConfig(),
+                    driver: FakeDriver::class,
+                ),
             ],
         ]))($this->container);
         return $factory->driver('fake')->getLogger();
