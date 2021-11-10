@@ -27,7 +27,7 @@ class FakeDriver extends Driver
         );
     }
 
-    public static function create(DriverConfig $config): \Cycle\Database\Driver\DriverInterface
+    public static function create(DriverConfig $config): DriverInterface
     {
         return new self($config);
     }
