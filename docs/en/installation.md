@@ -33,13 +33,12 @@ return [
             ],
             'connections' => [
                 // Example SQLite connection:
-                'sqlite' => [
-                    'driver' => \Cycle\Database\Driver\SQLite\SQLiteDriver::class,
-                    // see https://www.php.net/manual/pdo.construct.php, DSN for connection syntax
-                    'connection' => 'sqlite:@runtime/database.db',
-                    'username' => '',
-                    'password' => '',
-                ]
+                'sqlite' => new \Cycle\Database\Config\SQLiteDriverConfig(
+                    connection: new \Cycle\Database\Config\SQLite\DsnConnectionConfig(
+                        // see https://www.php.net/manual/pdo.construct.php, DSN for connection syntax
+                        database: 'sqlite:runtime/database.db'
+                    )
+                ),
             ],
         ],
 
