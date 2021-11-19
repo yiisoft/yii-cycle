@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Schema\Conveyor;
 
-use Spiral\Attributes\AnnotationReader;
+use Spiral\Attributes\AttributeReader;
 
 final class AttributedSchemaConveyor extends MetadataSchemaConveyor
 {
-    protected function getMetadataReader(): AnnotationReader
+    protected function getMetadataReader(): AttributeReader
     {
-        return new AnnotationReader();
+        return new AttributeReader();
     }
 }
