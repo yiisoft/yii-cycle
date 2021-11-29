@@ -32,8 +32,7 @@ final class DbalFactory
     public function __invoke(ContainerInterface $container): DatabaseManager
     {
         $dbal = new DatabaseManager(
-            $this->prepareConfig($this->dbalConfig),
-            $container->get(FactoryInterface::class)
+            $this->prepareConfig($this->dbalConfig)
         );
 
         if ($this->logger !== null) {
