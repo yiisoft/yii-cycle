@@ -11,7 +11,6 @@ use Cycle\Database\DatabaseManager;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use Spiral\Core\FactoryInterface;
 
 final class DbalFactory
 {
@@ -32,8 +31,7 @@ final class DbalFactory
     public function __invoke(ContainerInterface $container): DatabaseManager
     {
         $dbal = new DatabaseManager(
-            $this->prepareConfig($this->dbalConfig),
-            $container->get(FactoryInterface::class)
+            $this->prepareConfig($this->dbalConfig)
         );
 
         if ($this->logger !== null) {
