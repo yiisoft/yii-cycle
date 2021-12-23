@@ -24,6 +24,7 @@ Read more in the [official Cycle documentation](https://github.com/cycle/docs)
 
 - [English](docs/en/README.md)
 - [Russian](docs/ru/README.md)
+- [Spanish](docs/es/README.md)
 
 ### Unit testing
 
