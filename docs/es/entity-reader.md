@@ -1,24 +1,24 @@
 # EntityReader
 
-`EntityReader` es una herramienta útil para transferir de forma segura las solicitudes de selección del repositorio al tiempo de ejecución del usuario.
+`EntityReader` es una herramienta útil para transferir de forma segura las solicitudes de selección del repositorio en tiempo de ejecución del usuario.
 
-Una solicitud de selección se refiere a una instancia de uno de las clases: ``CycleORM\Select`` o ``Spiral\Database\Query\SelectQuery``.
+Una solicitud de selección se refiere a una instancia de una de las clases: ``CycleORM\Select`` o ``Spiral\Database\Query\SelectQuery``.
 
 Lo que hay que saber sobre `EntityReader`:
 
 * La clase `EntityReader` implementa la interfaz `IteratorAggregate`. Esto permite utilizar el objeto `EntityReader` en un bucle `foreach`.
-* Con `EntityReader` se puede ajustar la consulta de selección pasada:
-  - Establezca `Limit` y `Offset` manualmente o con `OffsetPaginator`.
-  - Establece la clasificación. Pero tenga en cuenta que la ordenación por `EntityReader` no sustituye la ordenación en la consulta original, sólo la complementa.Sin embargo, cada llamada posterior al método `withSort()` sustituirá la configuración de clasificación del objeto `EntityReader`.
-  - Aplicar filtro. Las condiciones del filtro `EntityReader` tampoco sustituyen al de filtrado en la consulta original, la complementan. Así, al filtrar en el objeto `EntityReader`, sólo puede refinar la selección pero no ampliarla.
+* Con `EntityReader` se puede ajustar la consulta de selección:
+  - Establezca `Limit` y `Offset` manualmente con `OffsetPaginator`.
+  - La ordenación por `EntityReader` no sustituye la ordenación en la consulta original, sólo la complementa. Sin embargo, cada llamada posterior al método `withSort()` sustituirá la configuración de clasificación del objeto `EntityReader`.
+  - Las condiciones del filtro `EntityReader` tampoco sustituyen al de filtrado en la consulta original, solo la complementan. Así, que al filtrar el objeto `EntityReader`, sólo puede ajustar la selección pero no ampliarla.
 * `EntityReader` no extrae los datos de la base de datos de una sola vez. Sólo accede a la base de datos cuando se consultan esos datos.
-* Si utiliza los métodos `read()` y `readOne()` para leer los datos, entonces el `EntityReader` lo almacenará en una caché. El resultado de una llamada a `count()` también se almacena en caché.
+* Si utiliza los métodos `read()` y `readOne()` para leer los datos, entonces `EntityReader` lo almacenará en una caché. El resultado de una llamada a `count()` también se almacena en caché.
 * El método `count()` devuelve el número de todos los elementos de la muestra sin tener en cuenta las restricciones `Limit` y `Offset`.
-* Si no quieres que los datos se almacenen en caché, utiliza el método `getIterator()`.Sin embargo, si la caché ya está llena, `getIterator()` devolverá el contenido de la caché.
+* Si no quieres que los datos se almacenen en caché, utiliza el método `getIterator()`. Sin embargo, si la caché ya está llena, `getIterator()` devolverá el contenido de la caché.
 
 ## Ejemplos
 
-Vamos a implementar un repositorio para trabajar con la tabla de artículos. Queremos un método para obtener artículos públicos `findPublic()` pero
+Vamos a implementar un repositorio para trabajar con la tabla de artículos. Queremos un método para obtener artículos públicos `findPublic()`
 pero no devolverá la colección de artículos ni la consulta de selección. En su lugar, devolverá una nueva instancia de `EntityReader`:
 
 ```php
@@ -113,7 +113,7 @@ foreach ($lastPublicReader->read() as $article) {
 ```
 
 La ordenación a través de `EntityReader` no sustituye la ordenación en la consulta inicial, sino que le añade algo más.
-Si necesitas establecer la ordenación por defecto en un método del repositorio pero quieres poder cambiarla en un controlador, puedes puede hacerlo de la siguiente manera:
+Si necesitas establecer la ordenación por defecto en un método del repositorio, pero quieres poder cambiarla en un controlador, puedes puede hacerlo de la siguiente manera:
 
 ```php
 use Yiisoft\Data\Reader\DataReaderInterface;
@@ -143,7 +143,7 @@ function index(ArticleRepository $repository)
         ->withSort(Sort::any()->withOrder(['published_at' => 'asc']));
 }
 ```
-Puede refinar las condiciones de consulta con filtros. Estas condiciones de filtrado se añaden a las condiciones de consulta de selección originales, pero NO las sustituyen.
+Puede ajustar las condiciones de consulta con filtros. Estas condiciones de filtrado se añaden a las condiciones de consulta de selección originales, pero no las sustituyen.
 
 ```php
 use Yiisoft\Data\Reader\DataReaderInterface;

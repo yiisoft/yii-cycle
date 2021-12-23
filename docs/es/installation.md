@@ -8,7 +8,7 @@ composer require yiisoft/yii-cycle
 
 ## Configurar paquete
 
-Si utiliza Yii con `composer-config-plugin`, la configuración de Yii-Cycle se puede especificar en `config/params.php`:
+Si utiliza `yiisoft/config`, la configuración de `yisoft/yii-cycle` se debe especificar en `config/params.php`:
 
 ```php
 <?php

@@ -1,6 +1,6 @@
 # Yii-Cycle package
 
-Cycle es un motor PHP DataMapper ORM y de modelado de datos diseñado para trabajar con seguridad tanto en aplicaciones PHP clásicas como daemonizadas tales como [RoadRunner](https://github.com/spiral/roadrunner).
+`Cycle DataMapper ORM` es un motor de modelado de datos escrito en `PHP` y esta diseñado para trabajar tanto en aplicaciones `PHP` clásicas como daemonizadas tales como [RoadRunner](https://github.com/spiral/roadrunner).
 
 Más información en la [documentación oficial de Cycle](https://github.com/cycle/docs).
 
