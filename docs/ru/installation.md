@@ -89,5 +89,4 @@ return [
 
 Документация Cycle:
 
-- [Конфигурирование подключений](https://github.com/cycle/docs/blob/master/basic/connect.md)
-- [О Reference и Proxy](https://github.com/cycle/docs/blob/master/advanced/promise.md)
+- [Конфигурирование подключений](https://cycle-orm.dev/docs/database-configuration/2.x/en#installation-declare-connection)

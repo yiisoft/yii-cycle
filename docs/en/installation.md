@@ -85,5 +85,4 @@ return [
 
 Read more in Cycle documentation:
 
-- [Connect to Database](https://github.com/cycle/docs/blob/master/basic/connect.md)
-- [References and Proxies](https://github.com/cycle/docs/blob/master/advanced/promise.md)
+- [Connect to Database](https://cycle-orm.dev/docs/database-configuration/2.x/en#installation-declare-connection)

@@ -33,13 +33,12 @@ return [
             ],
             'connections' => [
                 // Ejemplo de conexión a SQLite:
-                'sqlite' => [
-                    'driver' => \Spiral\Database\Driver\SQLite\SQLiteDriver::class,
-                    // Lee https://www.php.net/manual/pdo.construct.php, para la sintaxis de conexión DSN.
-                    'connection' => 'sqlite:@runtime/database.db',
-                    'username' => '',
-                    'password' => '',
-                ]
+                'sqlite' => new \Cycle\Database\Config\SQLiteDriverConfig(
+                    connection: new \Cycle\Database\Config\SQLite\DsnConnectionConfig(
+                        // Lee https://www.php.net/manual/pdo.construct.php, para la sintaxis de conexión DSN.
+                        database: 'sqlite:runtime/database.db'
+                    )
+                ),
             ],
         ],
 
@@ -50,13 +49,6 @@ return [
             'table' => 'migration',
             'safe' => false,
         ],
-
-        /**
-         * {@see \Yiisoft\Yii\Cycle\Factory\OrmFactory} configuración
-         * O bien {@see \Cycle\ORM\PromiseFactoryInterface} o se especifica null.
-         * Documentación: @link https://github.com/cycle/docs/blob/master/advanced/promise.md
-         */
-        'orm-promise-factory' => null,
 
         /**
          * Una lista de proveedores de esquemas de BD para {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}
@@ -93,5 +85,4 @@ return [
 
 Más información en la documentación de Cycle:
 
-- [Conectar a una base de datos](https://github.com/cycle/docs/blob/master/basic/connect.md)
-- [Referencias y Proxies](https://github.com/cycle/docs/blob/master/advanced/promise.md)
+- [Conectar a una base de datos](https://cycle-orm.dev/docs/database-configuration/2.x/en#installation-declare-connection)
