@@ -45,7 +45,7 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
     }
 }
 ```
-Рассмотрим примеры, как мы можем использовать EntityReader в постраничной разбивке.
+Рассмотрим примеры, как мы можем использовать `EntityReader` в постраничной разбивке.
 
 ```php
 /**
