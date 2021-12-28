@@ -35,7 +35,7 @@ return [
 
     // Cycle ORM
     ORMInterface::class => Reference::to(ORM::class),
-    ORM::class => static fn(
+    ORM::class => static fn (
         CycleFactoryInterface $factory,
         SchemaInterface $schema,
         ContainerInterface $container
@@ -57,7 +57,7 @@ return [
     },
 
     // Schema
-    SchemaInterface::class => static fn(SchemaProviderInterface $schemaProvider) => new Schema(
+    SchemaInterface::class => static fn (SchemaProviderInterface $schemaProvider) => new Schema(
         $schemaProvider->read() ?? throw new SchemaWasNotProvidedException()
     ),
 
