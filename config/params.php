@@ -64,6 +64,21 @@ return [
         'schema-providers' => [],
 
         /**
+         * Collection factories.
+         * @link https://cycle-orm.dev/docs/relation-collections/2.x
+         */
+        'collections' => [
+            /** Default factory (class or name from the `factories` list below) or {@see null} */
+            'default' => 'array',
+            /** List of class names that implement {@see \Cycle\ORM\Collection\CollectionFactoryInterface} */
+            'factories' => [
+                'array' => \Cycle\ORM\Collection\ArrayCollectionFactory::class,
+                // 'doctrine' => \Cycle\ORM\Collection\DoctrineCollectionFactory::class,
+                // 'illuminate' => \Cycle\ORM\Collection\IlluminateCollectionFactory::class,
+            ],
+        ],
+
+        /**
          * Annotated/attributed entity directories list.
          * {@see \Yiisoft\Aliases\Aliases} are also supported.
          */
