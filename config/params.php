@@ -65,6 +65,7 @@ return [
 
         /**
          * Collection factories.
+         *
          * @link https://cycle-orm.dev/docs/relation-collections/2.x
          */
         'collections' => [

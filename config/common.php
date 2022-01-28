@@ -57,6 +57,7 @@ return [
     SpiralFactoryInterface::class => Reference::to(CycleDynamicFactory::class),
 
     // Factory for Cycle ORM
+    // todo: move to separated class
     CycleFactoryInterface::class => static function (
         DatabaseManager $dbal,
         SpiralFactoryInterface $factory,
