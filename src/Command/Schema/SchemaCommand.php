@@ -16,6 +16,7 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 final class SchemaCommand extends Command
 {
     protected static $defaultName = 'cycle/schema';
+    protected static $defaultDescription = 'Shown current schema';
 
     private CycleDependencyProxy $promise;
 
@@ -27,7 +28,6 @@ final class SchemaCommand extends Command
 
     public function configure(): void
     {
-        $this->setDescription('Shown current schema');
         $this->addArgument('role', InputArgument::OPTIONAL, 'Roles to display (separated by ",").');
     }
 

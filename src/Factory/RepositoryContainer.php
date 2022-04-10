@@ -8,7 +8,7 @@ use Cycle\ORM\ORMInterface;
 use Cycle\ORM\RepositoryInterface;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
-use Yiisoft\Definitions\Exception\NotFoundException;
+use Yiisoft\Di\NotFoundException;
 use Yiisoft\Definitions\Exception\NotInstantiableClassException;
 
 use function is_string;

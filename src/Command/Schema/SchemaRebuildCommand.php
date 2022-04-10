@@ -13,17 +13,13 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 class SchemaRebuildCommand extends Command
 {
     protected static $defaultName = 'cycle/schema/rebuild';
+    protected static $defaultDescription = 'Rebuilds the database schema';
     private CycleDependencyProxy $promise;
 
     public function __construct(CycleDependencyProxy $promise)
     {
         $this->promise = $promise;
         parent::__construct();
-    }
-
-    public function configure(): void
-    {
-        $this->setDescription('Rebuild schema');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

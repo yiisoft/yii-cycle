@@ -48,7 +48,7 @@ final class EntityReader implements DataReaderInterface
             new Processor\LessThan(),
             new Processor\LessThanOrEqual(),
             new Processor\Like(),
-            // new Processor\Not()
+        // new Processor\Not()
         );
     }
 
@@ -184,14 +184,14 @@ final class EntityReader implements DataReaderInterface
         $this->filterProcessors = array_merge($this->filterProcessors, $processors);
     }
 
-    private function buildQuery()
+    private function buildQuery(): SelectQuery|Select
     {
         $newQuery = clone $this->query;
         if ($this->offset !== null) {
             $newQuery->offset($this->offset);
         }
         if ($this->sorting !== null) {
-            $newQuery->orderBy($this->sorting->getOrder());
+            $newQuery->orderBy($this->normalizeCriteria($this->sorting->getCriteria()));
         }
         if ($this->limit !== null) {
             $newQuery->limit($this->limit);
@@ -225,5 +225,20 @@ final class EntityReader implements DataReaderInterface
             $newQuery->andWhere($this->makeFilterClosure($this->filter));
         }
         $this->countCache = new CachedCount($newQuery);
+    }
+
+    private function normalizeCriteria(array $criteria): array
+    {
+        foreach ($criteria as $field => $direction) {
+            if (is_int($direction)) {
+                match ($direction) {
+                    SORT_DESC => $direction = 'DESC',
+                    default => $direction = 'ASC',
+                };
+            }
+            $criteria[$field] = $direction;
+        }
+
+        return $criteria;
     }
 }

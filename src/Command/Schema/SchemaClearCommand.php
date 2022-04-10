@@ -13,6 +13,7 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 class SchemaClearCommand extends Command
 {
     protected static $defaultName = 'cycle/schema/clear';
+    protected static $defaultDescription = 'Clears the current schema cache';
 
     private CycleDependencyProxy $promise;
 
@@ -20,11 +21,6 @@ class SchemaClearCommand extends Command
     {
         $this->promise = $promise;
         parent::__construct();
-    }
-
-    public function configure(): void
-    {
-        $this->setDescription('Clear current schema cache');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

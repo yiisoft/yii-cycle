@@ -18,19 +18,14 @@ use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 final class UpCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/up';
+    protected static $defaultDescription = 'Executes all new migrations';
 
-    private EventDispatcherInterface $eventDispatcher;
+    private ?EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(CycleDependencyProxy $promise, EventDispatcherInterface $eventDispatcher)
+    public function __construct(CycleDependencyProxy $promise, ?EventDispatcherInterface $eventDispatcher = null)
     {
         $this->eventDispatcher = $eventDispatcher;
         parent::__construct($promise);
-    }
-
-    public function configure(): void
-    {
-        $this
-            ->setDescription('Execute all new migrations');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -83,7 +78,7 @@ final class UpCommand extends BaseMigrationCommand
         }
 
         $limit = PHP_INT_MAX;
-        $this->eventDispatcher->dispatch(new BeforeMigrate());
+        $this->eventDispatcher?->dispatch(new BeforeMigrate());
         try {
             do {
                 $migration = $migrator->run();
@@ -97,7 +92,7 @@ final class UpCommand extends BaseMigrationCommand
                     . (self::MIGRATION_STATUS[$status] ?? $status));
             } while (--$limit > 0);
         } finally {
-            $this->eventDispatcher->dispatch(new AfterMigrate());
+            $this->eventDispatcher?->dispatch(new AfterMigrate());
         }
         return ExitCode::OK;
     }

@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Cycle\Exception;
 use Cycle\Schema\GeneratorInterface;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
-class BadGeneratorDeclarationException extends BadDeclarationException implements FriendlyExceptionInterface
+final class BadGeneratorDeclarationException extends BadDeclarationException implements FriendlyExceptionInterface
 {
     /**
      * @param mixed $argument

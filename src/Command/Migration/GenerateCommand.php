@@ -20,11 +20,7 @@ use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 final class GenerateCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/generate';
-
-    public function configure(): void
-    {
-        $this->setDescription('Generates a migration');
-    }
+    protected static $defaultDescription = 'Generates a migration';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

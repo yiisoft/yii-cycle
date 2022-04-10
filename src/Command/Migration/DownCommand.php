@@ -18,19 +18,14 @@ use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 final class DownCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/down';
+    protected static $defaultDescription = 'Rolls back the last applied migration';
 
-    private EventDispatcherInterface $eventDispatcher;
+    private ?EventDispatcherInterface $eventDispatcher;
 
-    public function __construct(CycleDependencyProxy $promise, EventDispatcherInterface $eventDispatcher)
+    public function __construct(CycleDependencyProxy $promise, ?EventDispatcherInterface $eventDispatcher = null)
     {
         $this->eventDispatcher = $eventDispatcher;
         parent::__construct($promise);
-    }
-
-    public function configure(): void
-    {
-        $this
-            ->setDescription('Rollback last migration');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -62,7 +57,7 @@ final class DownCommand extends BaseMigrationCommand
             }
         }
 
-        $this->eventDispatcher->dispatch(new BeforeMigrate());
+        $this->eventDispatcher?->dispatch(new BeforeMigrate());
         try {
             $migrator->rollback();
             if (!$migration instanceof MigrationInterface) {
@@ -75,7 +70,7 @@ final class DownCommand extends BaseMigrationCommand
                 sprintf('<fg=cyan>%s</>: %s', $state->getName(), self::MIGRATION_STATUS[$status] ?? $status)
             );
         } finally {
-            $this->eventDispatcher->dispatch(new AfterMigrate());
+            $this->eventDispatcher?->dispatch(new AfterMigrate());
         }
         return ExitCode::OK;
     }

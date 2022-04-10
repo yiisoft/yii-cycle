@@ -4,18 +4,14 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Data\Writer;
 
-use Cycle\ORM\ORMInterface;
-use Cycle\ORM\Transaction;
+use Cycle\ORM\EntityManagerInterface;
 use Throwable;
 use Yiisoft\Data\Writer\DataWriterInterface;
 
 final class EntityWriter implements DataWriterInterface
 {
-    private ORMInterface $orm;
-
-    public function __construct(ORMInterface $orm)
+    public function __construct(private EntityManagerInterface $entityManager)
     {
-        $this->orm = $orm;
     }
 
     /**
@@ -23,19 +19,17 @@ final class EntityWriter implements DataWriterInterface
      */
     public function write(iterable $items): void
     {
-        $transaction = new Transaction($this->orm);
         foreach ($items as $entity) {
-            $transaction->persist($entity);
+            $this->entityManager->persist($entity);
         }
-        $transaction->run();
+        $this->entityManager->run();
     }
 
     public function delete(iterable $items): void
     {
-        $transaction = new Transaction($this->orm);
         foreach ($items as $entity) {
-            $transaction->delete($entity);
+            $this->entityManager->delete($entity);
         }
-        $transaction->run();
+        $this->entityManager->run();
     }
 }
