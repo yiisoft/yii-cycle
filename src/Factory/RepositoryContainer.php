@@ -81,6 +81,9 @@ final class RepositoryContainer implements ContainerInterface
         }
     }
 
+    /**
+     * @psalm-param class-string $role
+     */
     private function makeRepository(string $role): RepositoryInterface
     {
         return $this->orm->getRepository($role);

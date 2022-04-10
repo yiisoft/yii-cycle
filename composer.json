@@ -38,6 +38,7 @@
     },
     "require-dev": {
         "cycle/entity-behavior": "^1.0",
+        "jetbrains/phpstorm-attributes": "^1.0",
         "phpunit/phpunit": "^9.5",
         "roave/infection-static-analysis-plugin": "^1.5",
         "spatie/phpunit-watcher": "^1.23",
