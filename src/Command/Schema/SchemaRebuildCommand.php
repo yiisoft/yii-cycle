@@ -10,7 +10,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
-class SchemaRebuildCommand extends Command
+final class SchemaRebuildCommand extends Command
 {
     protected static $defaultName = 'cycle/schema/rebuild';
     protected static $defaultDescription = 'Rebuilds the database schema';
