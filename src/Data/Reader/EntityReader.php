@@ -232,9 +232,9 @@ final class EntityReader implements DataReaderInterface
     {
         foreach ($criteria as $field => $direction) {
             if (is_int($direction)) {
-                match ($direction) {
-                    SORT_DESC => $direction = 'DESC',
-                    default => $direction = 'ASC',
+                $direction = match ($direction) {
+                    SORT_DESC => 'DESC',
+                    default => 'ASC',
                 };
             }
             $criteria[$field] = $direction;
