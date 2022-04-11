@@ -48,7 +48,7 @@ final class EntityReader implements DataReaderInterface
             new Processor\LessThan(),
             new Processor\LessThanOrEqual(),
             new Processor\Like(),
-        // new Processor\Not()
+            // new Processor\Not()
         );
     }
 
@@ -137,7 +137,7 @@ final class EntityReader implements DataReaderInterface
     public function read(): iterable
     {
         if ($this->itemsCache->getCollection() === null) {
-            $query = $this->selectQuery();
+            $query = $this->buildSelectQuery();
             $this->itemsCache->setCollection($query->fetchAll());
         }
         return $this->itemsCache->getCollection();
@@ -165,12 +165,12 @@ final class EntityReader implements DataReaderInterface
      */
     public function getIterator(): Generator
     {
-        yield from $this->itemsCache->getCollection() ?? $this->selectQuery()->getIterator();
+        yield from $this->itemsCache->getCollection() ?? $this->buildSelectQuery()->getIterator();
     }
 
     public function getSql(): string
     {
-        $query = $this->selectQuery();
+        $query = $this->buildSelectQuery();
         return (string)($query instanceof Select ? $query->buildQuery() : $query);
     }
 
@@ -185,14 +185,14 @@ final class EntityReader implements DataReaderInterface
         $this->filterProcessors = array_merge($this->filterProcessors, $processors);
     }
 
-    private function selectQuery(): SelectQuery|Select
+    private function buildSelectQuery(): SelectQuery|Select
     {
         $newQuery = clone $this->query;
         if ($this->offset !== null) {
             $newQuery->offset($this->offset);
         }
         if ($this->sorting !== null) {
-            $newQuery->orderBy($this->normalizeCriteria($this->sorting->getCriteria()));
+            $newQuery->orderBy($this->normalizeSortingCriteria($this->sorting->getCriteria()));
         }
         if ($this->limit !== null) {
             $newQuery->limit($this->limit);
@@ -228,7 +228,7 @@ final class EntityReader implements DataReaderInterface
         $this->countCache = new CachedCount($newQuery);
     }
 
-    private function normalizeCriteria(array $criteria): array
+    private function normalizeSortingCriteria(array $criteria): array
     {
         foreach ($criteria as $field => $direction) {
             if (is_int($direction)) {
