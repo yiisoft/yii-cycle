@@ -10,9 +10,7 @@ use JetBrains\PhpStorm\Pure;
 use Psr\Container\ContainerExceptionInterface;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
-final class NotInstantiableClassException extends Exception implements
-    ContainerExceptionInterface,
-                                                                       FriendlyExceptionInterface
+final class NotInstantiableClassException extends Exception implements ContainerExceptionInterface, FriendlyExceptionInterface
 {
     #[Pure]
     public function __construct(string $class, string $message = null, int $code = 0, Exception $previous = null)
@@ -30,5 +28,10 @@ final class NotInstantiableClassException extends Exception implements
     public function getSolution(): ?string
     {
         return 'Make sure that the class is instantiable and implements ' . RepositoryInterface::class;
+    }
+
+    public function getName(): string
+    {
+        return 'Repository not instantiable';
     }
 }

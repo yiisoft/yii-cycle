@@ -24,4 +24,9 @@ final class NotFoundException extends Exception implements NotFoundExceptionInte
     {
         return 'Check if the class exists or if the class is properly defined.';
     }
+
+    public function getName(): string
+    {
+        return 'Repository not found';
+    }
 }
