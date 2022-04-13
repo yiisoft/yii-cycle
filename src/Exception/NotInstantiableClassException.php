@@ -10,7 +10,8 @@ use JetBrains\PhpStorm\Pure;
 use Psr\Container\ContainerExceptionInterface;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
-final class NotInstantiableClassException extends Exception implements ContainerExceptionInterface,
+final class NotInstantiableClassException extends Exception implements
+    ContainerExceptionInterface,
                                                                        FriendlyExceptionInterface
 {
     #[Pure]
