@@ -11,12 +11,7 @@ use Yiisoft\Yii\Console\ExitCode;
 final class ListCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/list';
-
-    public function configure(): void
-    {
-        $this
-            ->setDescription('Print list of all migrations');
-    }
+    protected static $defaultDescription = 'Prints list of all migrations';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {

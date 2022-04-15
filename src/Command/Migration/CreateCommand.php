@@ -12,11 +12,11 @@ use Yiisoft\Yii\Console\ExitCode;
 final class CreateCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/create';
+    protected static $defaultDescription = 'Creates an empty migration';
 
     public function configure(): void
     {
-        $this->setDescription('Create an empty migration')
-             ->setHelp('This command allows you to create a custom migration')
+        $this->setHelp('This command allows you to create a custom migration')
              ->addArgument('name', InputArgument::REQUIRED, 'Migration name');
     }
 

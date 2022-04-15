@@ -18,6 +18,7 @@ use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 final class DownCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/down';
+    protected static $defaultDescription = 'Rolls back the last applied migration';
 
     private EventDispatcherInterface $eventDispatcher;
 
@@ -25,12 +26,6 @@ final class DownCommand extends BaseMigrationCommand
     {
         $this->eventDispatcher = $eventDispatcher;
         parent::__construct($promise);
-    }
-
-    public function configure(): void
-    {
-        $this
-            ->setDescription('Rollback last migration');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

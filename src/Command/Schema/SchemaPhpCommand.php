@@ -17,6 +17,7 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 final class SchemaPhpCommand extends Command
 {
     protected static $defaultName = 'cycle/schema/php';
+    protected static $defaultDescription = 'Saves the current schema in a PHP file';
 
     private CycleDependencyProxy $promise;
     private Aliases $aliases;
@@ -30,8 +31,7 @@ final class SchemaPhpCommand extends Command
 
     public function configure(): void
     {
-        $this->setDescription('Save current schema in a PHP file')
-            ->addArgument('file', InputArgument::OPTIONAL, 'file');
+        $this->addArgument('file', InputArgument::OPTIONAL, 'file');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

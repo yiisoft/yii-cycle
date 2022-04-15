@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Cycle\Exception;
 use RuntimeException;
 use Throwable;
 
-class CumulativeException extends RuntimeException
+final class CumulativeException extends RuntimeException
 {
     /** @var Throwable[] */
     private array $exceptions;

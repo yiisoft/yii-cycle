@@ -18,6 +18,7 @@ use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 final class UpCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/up';
+    protected static $defaultDescription = 'Executes all new migrations';
 
     private EventDispatcherInterface $eventDispatcher;
 
@@ -25,12 +26,6 @@ final class UpCommand extends BaseMigrationCommand
     {
         $this->eventDispatcher = $eventDispatcher;
         parent::__construct($promise);
-    }
-
-    public function configure(): void
-    {
-        $this
-            ->setDescription('Execute all new migrations');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

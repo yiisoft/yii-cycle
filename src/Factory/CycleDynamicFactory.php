@@ -18,6 +18,7 @@ final class CycleDynamicFactory implements FactoryInterface
 
     public function make(string $alias, array $parameters = [])
     {
+        /** @psalm-var class-string $alias */
         return $this->injector->make($alias, $parameters);
     }
 }

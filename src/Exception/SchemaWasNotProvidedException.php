@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Cycle\Exception;
 use RuntimeException;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
-class SchemaWasNotProvidedException extends RuntimeException implements FriendlyExceptionInterface
+final class SchemaWasNotProvidedException extends RuntimeException implements FriendlyExceptionInterface
 {
     public function __construct()
     {

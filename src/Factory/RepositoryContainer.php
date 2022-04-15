@@ -8,8 +8,8 @@ use Cycle\ORM\ORMInterface;
 use Cycle\ORM\RepositoryInterface;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
-use Yiisoft\Definitions\Exception\NotFoundException;
-use Yiisoft\Definitions\Exception\NotInstantiableClassException;
+use Yiisoft\Yii\Cycle\Exception\NotFoundException;
+use Yiisoft\Yii\Cycle\Exception\NotInstantiableClassException;
 
 use function is_string;
 
@@ -39,10 +39,7 @@ final class RepositoryContainer implements ContainerInterface
         }
 
         if (!is_subclass_of($id, RepositoryInterface::class)) {
-            throw new NotInstantiableClassException(
-                $id,
-                sprintf('Can not instantiate "%s" because it is not a subclass of "%s".', $id, RepositoryInterface::class)
-            );
+            throw new NotInstantiableClassException($id);
         }
 
         throw new NotFoundException($id);
@@ -81,6 +78,9 @@ final class RepositoryContainer implements ContainerInterface
         }
     }
 
+    /**
+     * @psalm-param class-string $role
+     */
     private function makeRepository(string $role): RepositoryInterface
     {
         return $this->orm->getRepository($role);
