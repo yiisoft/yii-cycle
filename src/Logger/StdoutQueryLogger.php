@@ -49,7 +49,7 @@ class StdoutQueryLogger implements LoggerInterface
     public function log($level, $message, array $context = []): void
     {
         if (!empty($context['elapsed'])) {
-            $sql = strtolower((string)$message);
+            $sql = strtolower($message);
             if (
                 str_starts_with($sql, 'insert') ||
                 str_starts_with($sql, 'update') ||
@@ -65,7 +65,7 @@ class StdoutQueryLogger implements LoggerInterface
             $this->print(" ! \033[31m" . $message . "\033[0m");
         } elseif ($level === LogLevel::ALERT) {
             $this->print(" ! \033[35m" . $message . "\033[0m");
-        } elseif (str_starts_with((string)$message, 'SHOW')) {
+        } elseif (str_starts_with($message, 'SHOW')) {
             $this->print(" > \033[34m" . $message . "\033[0m");
         } else {
             if ($this->isPostgresSystemQuery($message)) {
@@ -76,7 +76,7 @@ class StdoutQueryLogger implements LoggerInterface
 
             if (str_starts_with($message, 'SELECT')) {
                 $this->print(" > \033[32m" . $message . "\033[0m");
-            } elseif (str_starts_with((string)$message, 'INSERT')) {
+            } elseif (str_starts_with($message, 'INSERT')) {
                 $this->print(" > \033[36m" . $message . "\033[0m");
             } else {
                 $this->print(" > \033[33m" . $message . "\033[0m");
