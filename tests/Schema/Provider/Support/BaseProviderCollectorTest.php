@@ -35,7 +35,7 @@ abstract class BaseProviderCollectorTest extends BaseSchemaProviderTest
     {
         return $this->container = new SimpleContainer(array_merge([
             ArraySchemaProvider::class => new ArraySchemaProvider(),
-            'BadSchemaProvider' => new \stdClass,
+            'BadSchemaProvider' => new \stdClass(),
         ], $definitions));
     }
 
