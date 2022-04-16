@@ -35,6 +35,7 @@ abstract class BaseProviderCollectorTest extends BaseSchemaProviderTest
     {
         return $this->container = new SimpleContainer(array_merge([
             ArraySchemaProvider::class => new ArraySchemaProvider(),
+            'BadSchemaProvider' => new \stdClass,
         ], $definitions));
     }
 
@@ -77,7 +78,7 @@ abstract class BaseProviderCollectorTest extends BaseSchemaProviderTest
 
     public function testProviderAsBadClassObject(): void
     {
-        $provider = $this->createSchemaProvider([new \DateTimeImmutable()]);
+        $provider = $this->createSchemaProvider(['BadSchemaProvider']);
 
         $this->expectException(BadDeclarationException::class);
 
