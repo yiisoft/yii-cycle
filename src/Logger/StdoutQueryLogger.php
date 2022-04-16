@@ -8,6 +8,8 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use Psr\Log\LogLevel;
 
+use function Symfony\Component\String\s;
+
 /**
  * Temporary LoggerInterface class
  * Slightly adapted for SQL queries
@@ -49,7 +51,7 @@ class StdoutQueryLogger implements LoggerInterface
     public function log($level, $message, array $context = []): void
     {
         if (!empty($context['elapsed'])) {
-            $sql = strtolower($message);
+            $sql = strtolower((string)$message);
             if (
                 str_starts_with($sql, 'insert') ||
                 str_starts_with($sql, 'update') ||
@@ -65,7 +67,7 @@ class StdoutQueryLogger implements LoggerInterface
             $this->print(" ! \033[31m" . $message . "\033[0m");
         } elseif ($level === LogLevel::ALERT) {
             $this->print(" ! \033[35m" . $message . "\033[0m");
-        } elseif (str_starts_with($message, 'SHOW')) {
+        } elseif (str_starts_with((string)$message, 'SHOW')) {
             $this->print(" > \033[34m" . $message . "\033[0m");
         } else {
             if ($this->isPostgresSystemQuery($message)) {
@@ -76,7 +78,7 @@ class StdoutQueryLogger implements LoggerInterface
 
             if (str_starts_with($message, 'SELECT')) {
                 $this->print(" > \033[32m" . $message . "\033[0m");
-            } elseif (strpos($message, 'INSERT') === 0) {
+            } elseif (str_starts_with((string)$message, 'INSERT')) {
                 $this->print(" > \033[36m" . $message . "\033[0m");
             } else {
                 $this->print(" > \033[33m" . $message . "\033[0m");

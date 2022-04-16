@@ -21,11 +21,12 @@ final class RepositoryContainer implements ContainerInterface
     private bool $rolesBuilt = false;
     private array $roles = [];
 
-    private array $instances;
+    private array $instances = [];
 
     public function __construct(ContainerInterface $rootContainer)
     {
         $this->rootContainer = $rootContainer;
+        $this->orm = $rootContainer->get(ORMInterface::class);
     }
 
     public function get($id)
