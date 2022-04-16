@@ -8,8 +8,6 @@ use Psr\Log\LoggerInterface;
 use Psr\Log\LoggerTrait;
 use Psr\Log\LogLevel;
 
-use function Symfony\Component\String\s;
-
 /**
  * Temporary LoggerInterface class
  * Slightly adapted for SQL queries
