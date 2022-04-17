@@ -62,8 +62,6 @@ final class RepositoryContainer implements ContainerInterface
 
     private function makeRepositoryList(): void
     {
-        /** @var ORMInterface */
-        $this->orm = $this->rootContainer->get(ORMInterface::class);
         $schema = $this->orm->getSchema();
         $roles = [];
         foreach ($schema->getRoles() as $role) {
