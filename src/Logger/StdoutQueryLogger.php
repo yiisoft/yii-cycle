@@ -51,9 +51,9 @@ class StdoutQueryLogger implements LoggerInterface
         if (!empty($context['elapsed'])) {
             $sql = strtolower($message);
             if (
-                strpos($sql, 'insert') === 0 ||
-                strpos($sql, 'update') === 0 ||
-                strpos($sql, 'delete') === 0
+                str_starts_with($sql, 'insert') ||
+                str_starts_with($sql, 'update') ||
+                str_starts_with($sql, 'delete')
             ) {
                 $this->countWrites++;
             } elseif (!$this->isPostgresSystemQuery($sql)) {
@@ -65,7 +65,7 @@ class StdoutQueryLogger implements LoggerInterface
             $this->print(" ! \033[31m" . $message . "\033[0m");
         } elseif ($level === LogLevel::ALERT) {
             $this->print(" ! \033[35m" . $message . "\033[0m");
-        } elseif (strpos($message, 'SHOW') === 0) {
+        } elseif (str_starts_with($message, 'SHOW')) {
             $this->print(" > \033[34m" . $message . "\033[0m");
         } else {
             if ($this->isPostgresSystemQuery($message)) {
@@ -74,9 +74,9 @@ class StdoutQueryLogger implements LoggerInterface
                 return;
             }
 
-            if (strpos($message, 'SELECT') === 0) {
+            if (str_starts_with($message, 'SELECT')) {
                 $this->print(" > \033[32m" . $message . "\033[0m");
-            } elseif (strpos($message, 'INSERT') === 0) {
+            } elseif (str_starts_with($message, 'INSERT')) {
                 $this->print(" > \033[36m" . $message . "\033[0m");
             } else {
                 $this->print(" > \033[33m" . $message . "\033[0m");
@@ -125,7 +125,6 @@ class StdoutQueryLogger implements LoggerInterface
         return
             strpos($query, 'tc.constraint_name') ||
             strpos($query, 'pg_indexes') ||
-            strpos($query, 'tc.constraint_name') ||
             strpos($query, 'pg_constraint') ||
             strpos($query, 'information_schema') ||
             strpos($query, 'pg_class');

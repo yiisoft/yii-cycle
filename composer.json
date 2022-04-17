@@ -32,17 +32,17 @@
         "yiisoft/aliases": "^1.1|^2.0",
         "yiisoft/data": "@dev",
         "yiisoft/friendly-exception": "^1.0",
-        "yiisoft/injector": "^1.0.3",
+        "yiisoft/injector": "^1.0",
         "yiisoft/yii-console": "^1.0"
     },
     "require-dev": {
         "cycle/entity-behavior": "^1.0",
         "jetbrains/phpstorm-attributes": "^1.0",
         "phpunit/phpunit": "^9.5",
-        "roave/infection-static-analysis-plugin": "^1.5",
+        "roave/infection-static-analysis-plugin": "^1.18",
         "spatie/phpunit-watcher": "^1.23",
-        "vimeo/psalm": "^4.10",
-        "yiisoft/test-support": "^1.0"
+        "vimeo/psalm": "^4.22",
+        "yiisoft/test-support": "^1.4"
     },
     "autoload": {
         "psr-4": {

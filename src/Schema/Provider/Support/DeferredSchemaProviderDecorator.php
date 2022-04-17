@@ -13,8 +13,7 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
  */
 final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
 {
-    /** @var SchemaProviderInterface|string */
-    private $provider;
+    private SchemaProviderInterface|string $provider;
     private array $config = [];
     private ?self $nextProvider;
     private ?SchemaProviderInterface $latestProvider = null;
@@ -26,7 +25,7 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
      * @param $provider
      * @param self|null $nextProvider
      */
-    public function __construct(ContainerInterface $container, $provider, ?self $nextProvider)
+    public function __construct(ContainerInterface $container, SchemaProviderInterface|string $provider, ?self $nextProvider)
     {
         $this->provider = $provider;
         $this->container = $container;
