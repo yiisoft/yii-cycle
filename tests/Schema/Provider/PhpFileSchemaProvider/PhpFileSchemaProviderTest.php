@@ -60,7 +60,9 @@ final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
 
         $nextProvider = new ArraySchemaProvider(self::READ_CONFIG_SCHEMA);
 
-        $this->createSchemaProvider(null)->read($nextProvider);
+        $this
+            ->createSchemaProvider(null)
+            ->read($nextProvider);
     }
 
     public function testModeWriteOnlyWithoutSchemaFromNextProvider(): void

@@ -29,7 +29,9 @@ class SchemaClearCommand extends Command
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
-        $this->promise->getSchemaProvider()->clear();
+        $this->promise
+            ->getSchemaProvider()
+            ->clear();
         return ExitCode::OK;
     }
 }

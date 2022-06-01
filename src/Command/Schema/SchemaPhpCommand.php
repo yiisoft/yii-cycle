@@ -30,7 +30,8 @@ final class SchemaPhpCommand extends Command
 
     public function configure(): void
     {
-        $this->setDescription('Save current schema in a PHP file')
+        $this
+            ->setDescription('Save current schema in a PHP file')
             ->addArgument('file', InputArgument::OPTIONAL, 'file');
     }
 

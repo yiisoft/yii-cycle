@@ -32,7 +32,9 @@ final class GenerateCommand extends BaseMigrationCommand
         // check existing unapplied migrations
         $listAfter = $migrator->getMigrations();
         foreach ($listAfter as $migration) {
-            if ($migration->getState()->getStatus() !== State::STATUS_EXECUTED) {
+            if ($migration
+                    ->getState()
+                    ->getStatus() !== State::STATUS_EXECUTED) {
                 $output->writeln('<fg=red>Outstanding migrations found, run `migrate/up` first.</>');
                 return ExitCode::OK;
             }
@@ -57,8 +59,12 @@ final class GenerateCommand extends BaseMigrationCommand
         // print added migrations
         if ($added > 0) {
             foreach ($listBefore as $migration) {
-                if ($migration->getState()->getStatus() !== State::STATUS_EXECUTED) {
-                    $output->writeln($migration->getState()->getName());
+                if ($migration
+                        ->getState()
+                        ->getStatus() !== State::STATUS_EXECUTED) {
+                    $output->writeln($migration
+                        ->getState()
+                        ->getName());
                 }
             }
         } else {

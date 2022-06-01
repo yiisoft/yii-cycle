@@ -38,7 +38,9 @@ final class DownCommand extends BaseMigrationCommand
         $migrations = $this->findMigrations($output);
         // check any executed migration
         foreach (array_reverse($migrations) as $migration) {
-            if ($migration->getState()->getStatus() === State::STATUS_EXECUTED) {
+            if ($migration
+                    ->getState()
+                    ->getStatus() === State::STATUS_EXECUTED) {
                 $exist = true;
                 break;
             }
@@ -51,12 +53,18 @@ final class DownCommand extends BaseMigrationCommand
         $migrator = $this->promise->getMigrator();
 
         // Confirm
-        if (!$migrator->getConfig()->isSafe()) {
+        if (!$migrator
+            ->getConfig()
+            ->isSafe()) {
             $output->writeln('<fg=yellow>Migration to be reverted:</>');
-            $output->writeln('— <fg=cyan>' . $migration->getState()->getName() . '</>');
+            $output->writeln('— <fg=cyan>' . $migration
+                    ->getState()
+                    ->getName() . '</>');
             if ($input->isInteractive()) {
                 $question = new ConfirmationQuestion('Revert the above migration? (yes|no) ', false);
-                if (!$this->getHelper('question')->ask($input, $output, $question)) {
+                if (!$this
+                    ->getHelper('question')
+                    ->ask($input, $output, $question)) {
                     return ExitCode::OK;
                 }
             }

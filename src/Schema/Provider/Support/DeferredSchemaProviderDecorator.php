@@ -49,12 +49,16 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
         } else {
             $nextProvider = $this->nextProvider ?? $latestProvider;
         }
-        return $this->getProvider()->read($nextProvider);
+        return $this
+            ->getProvider()
+            ->read($nextProvider);
     }
 
     public function clear(): bool
     {
-        return $this->getProvider()->clear();
+        return $this
+            ->getProvider()
+            ->clear();
     }
 
     /**

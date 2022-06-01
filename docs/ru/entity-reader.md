@@ -41,7 +41,9 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     public function findPublic(): DataReaderInterface
     {
-        return new EntityReader($this->select()->where(['public' => true]));
+        return new EntityReader($this
+            ->select()
+            ->where(['public' => true]));
     }
 }
 ```
@@ -56,11 +58,15 @@ $articles = $repository->findPublic();
 
 // Смещение и лимит можно задать вручную
 // Третья страница:
-$pageReader = $articles->withLimit(10)->withOffset(20);
+$pageReader = $articles
+    ->withLimit(10)
+    ->withOffset(20);
 
 // Использование пагинатора
 $paginator = new \Yiisoft\Data\Paginator\OffsetPaginator($articles);
-$paginator->withPageSize(10)->withCurrentPage(3);
+$paginator
+    ->withPageSize(10)
+    ->withCurrentPage(3);
 
 
 // Обход статей из объекта EntityReader:
@@ -107,7 +113,9 @@ foreach ($lastPublicReader->read() as $article) {
 }
 
 // Теперь получим 20 первых опубликованных статей
-$sort = $lastPublicReader->getSort()->withOrder(['published_at' => 'asc']);
+$sort = $lastPublicReader
+    ->getSort()
+    ->withOrder(['published_at' => 'asc']);
 
 // Ввиду своей иммутабельности, запрошенный объект Sort не будет изменён,
 // и текущие настройки сортировки $lastPublicReader останутся без изменения.
@@ -140,7 +148,9 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
     {
         $sort = Sort::any()->withOrder(['published_at' => 'desc']);
         // Параметры сортировки присваиваются объекту DataReader, а не \Cycle\ORM\Select
-        return (new EntityReader($this->select()->where(['public' => true])))->withSort($sort);
+        return (new EntityReader($this
+            ->select()
+            ->where(['public' => true])))->withSort($sort);
     }
 }
 
@@ -167,7 +177,9 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     public function findUserArticles(int $userId): DataReaderInterface
     {
-        return (new EntityReader($this->select()->where('user_id', $userId)))
+        return (new EntityReader($this
+            ->select()
+            ->where('user_id', $userId)))
             // Добавим фильтр по умолчанию - только public статьи
             ->withFilter(new Equals('public', '1'));
         // Условие `public` = "1" не заменит `user_id` = "$userId"

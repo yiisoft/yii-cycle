@@ -62,7 +62,7 @@ final class EntityReader implements DataReaderInterface
             new Processor\LessThan(),
             new Processor\LessThanOrEqual(),
             new Processor\Like(),
-            // new Processor\Not()
+        // new Processor\Not()
         );
     }
 
@@ -165,13 +165,20 @@ final class EntityReader implements DataReaderInterface
         if (!$this->oneItemCache->isCollected()) {
             $item = $this->itemsCache->isCollected()
                 // get first item from cached collection
-                ? $this->itemsCache->getGenerator()->current()
+                ? $this->itemsCache
+                    ->getGenerator()
+                    ->current()
                 // read data with limit 1
-                : $this->withLimit(1)->getIterator()->current();
+                : $this
+                    ->withLimit(1)
+                    ->getIterator()
+                    ->current();
             $this->oneItemCache->setCollection($item === null ? [] : [$item]);
         }
 
-        return $this->oneItemCache->getGenerator()->current();
+        return $this->oneItemCache
+            ->getGenerator()
+            ->current();
     }
 
     /**
@@ -179,12 +186,16 @@ final class EntityReader implements DataReaderInterface
      */
     public function getIterator(): Generator
     {
-        yield from $this->itemsCache->getCollection() ?? $this->buildQuery()->getIterator();
+        yield from $this->itemsCache->getCollection() ?? $this
+                ->buildQuery()
+                ->getIterator();
     }
 
     public function getSql(): string
     {
-        return $this->buildQuery()->sqlStatement();
+        return $this
+            ->buildQuery()
+            ->sqlStatement();
     }
 
     private function setFilterProcessors(FilterProcessorInterface ...$filterProcessors): void

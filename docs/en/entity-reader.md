@@ -37,7 +37,9 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
      */
     public function findPublic(): DataReaderInterface
     {
-        return new EntityReader($this->select()->where(['public' => true]));
+        return new EntityReader($this
+            ->select()
+            ->where(['public' => true]));
     }
 }
 ```
@@ -53,11 +55,15 @@ $articles = $repository->findPublic();
 
 // Offset and limit could be specified explicitly.
 // Third page:
-$pageReader = $articles->withLimit(10)->withOffset(20);
+$pageReader = $articles
+    ->withLimit(10)
+    ->withOffset(20);
 
 // Paginator could be used instead.
 $paginator = new \Yiisoft\Data\Paginator\OffsetPaginator($articles);
-$paginator->withPageSize(10)->withCurrentPage(3);
+$paginator
+    ->withPageSize(10)
+    ->withCurrentPage(3);
 
 
 // Getting articles from EntityReader with caching:
@@ -103,7 +109,9 @@ foreach ($lastPublicReader->read() as $article) {
 }
 
 // Now let's obtain 20 first published articles
-$sort = $lastPublicReader->getSort()->withOrder(['published_at' => 'asc']);
+$sort = $lastPublicReader
+    ->getSort()
+    ->withOrder(['published_at' => 'asc']);
 
 // Because of immutability Sort object won't be modified and current 
 // sorting for $lastPublicReader will stay the same.
@@ -137,7 +145,9 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
     public function findPublic(): DataReaderInterface
     {
         $sort = Sort::any()->withOrder(['published_at' => 'desc']);
-        return (new EntityReader($this->select()->where(['public' => true])))->withSort($sort);
+        return (new EntityReader($this
+            ->select()
+            ->where(['public' => true])))->withSort($sort);
     }
 }
 
@@ -163,7 +173,9 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     public function findUserArticles(int $userId): DataReaderInterface
     {
-        return (new EntityReader($this->select()->where('user_id', $userId)))
+        return (new EntityReader($this
+            ->select()
+            ->where('user_id', $userId)))
             //Adding filter by default - only public articles.
             
             ->withFilter(new Equals('public', '1'));

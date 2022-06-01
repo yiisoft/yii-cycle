@@ -28,7 +28,9 @@ final class PrintChanges implements GeneratorInterface
         foreach ($registry->getIterator() as $entity) {
             if ($registry->hasTable($entity)) {
                 $table = $registry->getTableSchema($entity);
-                if ($table->getComparator()->hasChanges()) {
+                if ($table
+                    ->getComparator()
+                    ->hasChanges()) {
                     $this->changes[] = [
                         'database' => $registry->getDatabase($entity),
                         'table' => $registry->getTable($entity),

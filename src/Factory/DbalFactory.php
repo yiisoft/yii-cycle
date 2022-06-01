@@ -109,6 +109,8 @@ final class DbalFactory
     private function getAlias(string $alias): string
     {
         /** @psalm-suppress PossiblyNullReference */
-        return $this->container->get(Aliases::class)->get($alias);
+        return $this->container
+            ->get(Aliases::class)
+            ->get($alias);
     }
 }

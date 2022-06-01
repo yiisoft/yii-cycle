@@ -29,7 +29,9 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     public function findPublic(): DataReaderInterface
     {
-        return new EntityReader($this->select()->where(['public' => true]));
+        return new EntityReader($this
+            ->select()
+            ->where(['public' => true]));
     }
 }
 ```
@@ -45,11 +47,15 @@ $articles = $repository->findPublic();
 
 // El límite y el desplazamiento pueden especificarse explícitamente.
 // Tercera página:
-$pageReader = $articles->withLimit(10)->withOffset(20);
+$pageReader = $articles
+    ->withLimit(10)
+    ->withOffset(20);
 
 // En su lugar se podría utilizar Paginator.
 $paginator = new \Yiisoft\Data\Paginator\OffsetPaginator($articles);
-$paginator->withPageSize(10)->withCurrentPage(3);
+$paginator
+    ->withPageSize(10)
+    ->withCurrentPage(3);
 
 
 // Obtención de artículos desde EntityReader con caché:
@@ -95,7 +101,9 @@ foreach ($lastPublicReader->read() as $article) {
 }
 
 // Ahora vamos a obtener 20 primeros artículos publicados
-$sort = $lastPublicReader->getSort()->withOrder(['published_at' => 'asc']);
+$sort = $lastPublicReader
+    ->getSort()
+    ->withOrder(['published_at' => 'asc']);
 
 // Debido a la inmutabilidad, el objeto Sort no se modificará y
 // la ordenación actual de $lastPublicReader seguirá siendo la misma.
@@ -128,7 +136,9 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
     public function findPublic(): DataReaderInterface
     {
         $sort = Sort::any()->withOrder(['published_at' => 'desc']);
-        return (new EntityReader($this->select()->where(['public' => true])))->withSort($sort);
+        return (new EntityReader($this
+            ->select()
+            ->where(['public' => true])))->withSort($sort);
     }
 }
 
@@ -154,7 +164,9 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
 {
     public function findUserArticles(int $userId): DataReaderInterface
     {
-        return (new EntityReader($this->select()->where('user_id', $userId)))
+        return (new EntityReader($this
+            ->select()
+            ->where('user_id', $userId)))
             // Añadiendo filtro por defecto - sólo artículos públicos.
             ->withFilter(new Equals('public', '1'));
             // la condición `public` = "1" no reemplaza `user_id` = "$userId"

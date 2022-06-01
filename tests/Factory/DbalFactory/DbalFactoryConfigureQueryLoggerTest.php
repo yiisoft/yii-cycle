@@ -38,7 +38,9 @@ final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactoryTest
                 ],
             ],
         ]))($this->container);
-        return $factory->driver('fake')->getLogger();
+        return $factory
+            ->driver('fake')
+            ->getLogger();
     }
 
     public function testLoggerDefinitionAsStringDefinition(): void

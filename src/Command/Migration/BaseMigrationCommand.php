@@ -35,18 +35,27 @@ abstract class BaseMigrationCommand extends Command
     ): ?MigrationImage {
         if ($database === null) {
             // get default database
-            $database = $this->promise->getDatabaseProvider()->database()->getName();
+            $database = $this->promise
+                ->getDatabaseProvider()
+                ->database()
+                ->getName();
         }
         $migrator = $this->promise->getMigrator();
 
         $migrationSkeleton = new MigrationImage($this->promise->getMigrationConfig(), $database);
         $migrationSkeleton->setName($name);
         try {
-            $migrationFile = $migrator->getRepository()->registerMigration(
-                $migrationSkeleton->buildFileName(),
-                $migrationSkeleton->getClass()->getName(),
-                $migrationSkeleton->getFile()->render()
-            );
+            $migrationFile = $migrator
+                ->getRepository()
+                ->registerMigration(
+                    $migrationSkeleton->buildFileName(),
+                    $migrationSkeleton
+                        ->getClass()
+                        ->getName(),
+                    $migrationSkeleton
+                        ->getFile()
+                        ->render()
+                );
         } catch (RepositoryException $e) {
             $output->writeln('<fg=yellow>Can not create migration</>');
             $output->writeln('<fg=red>' . $e->getMessage() . '</>');
@@ -64,12 +73,16 @@ abstract class BaseMigrationCommand extends Command
      */
     protected function findMigrations(OutputInterface $output): array
     {
-        $list = $this->promise->getMigrator()->getMigrations();
+        $list = $this->promise
+            ->getMigrator()
+            ->getMigrations();
         $output->writeln(
             sprintf(
                 '<info>Total %d migration(s) found in %s</info>',
                 count($list),
-                $this->promise->getMigrationConfig()->getDirectory()
+                $this->promise
+                    ->getMigrationConfig()
+                    ->getDirectory()
             )
         );
         return $list;

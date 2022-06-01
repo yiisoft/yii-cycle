@@ -39,7 +39,9 @@ final class UpCommand extends BaseMigrationCommand
         // check any not executed migration
         $exist = false;
         foreach ($migrations as $migration) {
-            if ($migration->getState()->getStatus() === State::STATUS_PENDING) {
+            if ($migration
+                    ->getState()
+                    ->getStatus() === State::STATUS_PENDING) {
                 $exist = true;
                 break;
             }
@@ -52,10 +54,14 @@ final class UpCommand extends BaseMigrationCommand
         $migrator = $this->promise->getMigrator();
 
         // Confirm
-        if (!$migrator->getConfig()->isSafe()) {
+        if (!$migrator
+            ->getConfig()
+            ->isSafe()) {
             $newMigrations = [];
             foreach ($migrations as $migration) {
-                if ($migration->getState()->getStatus() === State::STATUS_PENDING) {
+                if ($migration
+                        ->getState()
+                        ->getStatus() === State::STATUS_PENDING) {
                     $newMigrations[] = $migration;
                 }
             }
@@ -67,7 +73,9 @@ final class UpCommand extends BaseMigrationCommand
                 'to be applied:</>'
             );
             foreach ($newMigrations as $migration) {
-                $output->writeln('— <fg=cyan>' . $migration->getState()->getName() . '</>');
+                $output->writeln('— <fg=cyan>' . $migration
+                        ->getState()
+                        ->getName() . '</>');
             }
             if ($input->isInteractive()) {
                 $question = new ConfirmationQuestion(
@@ -76,7 +84,9 @@ final class UpCommand extends BaseMigrationCommand
                     '? (yes|no) ',
                     false
                 );
-                if (!$this->getHelper('question')->ask($input, $output, $question)) {
+                if (!$this
+                    ->getHelper('question')
+                    ->ask($input, $output, $question)) {
                     return ExitCode::OK;
                 }
             }

@@ -15,9 +15,10 @@ final class CreateCommand extends BaseMigrationCommand
 
     public function configure(): void
     {
-        $this->setDescription('Create an empty migration')
-             ->setHelp('This command allows you to create a custom migration')
-             ->addArgument('name', InputArgument::REQUIRED, 'Migration name');
+        $this
+            ->setDescription('Create an empty migration')
+            ->setHelp('This command allows you to create a custom migration')
+            ->addArgument('name', InputArgument::REQUIRED, 'Migration name');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int

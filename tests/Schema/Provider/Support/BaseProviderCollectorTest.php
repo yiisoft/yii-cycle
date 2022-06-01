@@ -210,7 +210,9 @@ abstract class BaseProviderCollectorTest extends BaseSchemaProviderTest
 
         $this->expectException(RuntimeException::class);
 
-        $this->createSchemaProvider(['withoutSchema'])->read();
+        $this
+            ->createSchemaProvider(['withoutSchema'])
+            ->read();
     }
 
     public function testReadFromOneProvider(): void
