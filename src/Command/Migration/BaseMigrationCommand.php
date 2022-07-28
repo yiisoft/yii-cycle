@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Command\Migration;
 
-use Cycle\Migrations\MigrationImage;
-use Spiral\Migrations\Exception\RepositoryException;
-use Spiral\Migrations\MigrationInterface;
-use Spiral\Migrations\State;
+use Cycle\Migrations\Exception\RepositoryException;
+use Cycle\Migrations\MigrationInterface;
+use Cycle\Migrations\State;
+use Cycle\Schema\Generator\Migrations\MigrationImage;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;

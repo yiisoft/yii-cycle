@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Cycle\Exception;
 use LogicException;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
-class DuplicateRoleException extends LogicException implements FriendlyExceptionInterface
+final class DuplicateRoleException extends LogicException implements FriendlyExceptionInterface
 {
     public function __construct(string $role)
     {

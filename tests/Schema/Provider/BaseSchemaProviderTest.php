@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider;
 
-use Cycle\ORM\Schema;
+use Cycle\ORM\SchemaInterface as Schema;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;

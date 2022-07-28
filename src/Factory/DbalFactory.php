@@ -4,28 +4,22 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Factory;
 
+use Cycle\Database\Driver\Driver;
 use Exception;
+use Cycle\Database\Config\DatabaseConfig;
+use Cycle\Database\DatabaseManager;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
-use Spiral\Core\FactoryInterface;
-use Spiral\Database\Config\DatabaseConfig;
-use Spiral\Database\DatabaseManager;
-use Spiral\Database\Driver\Driver;
-use Yiisoft\Aliases\Aliases;
 
 final class DbalFactory
 {
-    /** @var array|DatabaseConfig */
-    private $dbalConfig;
-    /** @var LoggerInterface|string|null */
-    private $logger = null;
-    private ?ContainerInterface $container = null;
+    private array|DatabaseConfig $dbalConfig;
 
-    /**
-     * @param array|DatabaseConfig $config
-     */
-    public function __construct($config)
+    /** @var LoggerInterface|string|null */
+    private mixed $logger = null;
+
+    public function __construct(array|DatabaseConfig $config)
     {
         if (is_array($config) && array_key_exists('query-logger', $config)) {
             $this->logger = $config['query-logger'];
@@ -34,17 +28,14 @@ final class DbalFactory
         $this->dbalConfig = $config;
     }
 
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): DatabaseManager
     {
-        $this->container = $container;
-
         $dbal = new DatabaseManager(
-            $this->prepareConfig($this->dbalConfig),
-            $this->container->get(FactoryInterface::class)
+            $this->prepareConfig($this->dbalConfig)
         );
 
         if ($this->logger !== null) {
-            $logger = $this->prepareLogger($this->logger);
+            $logger = $this->prepareLogger($container, $this->logger);
             $dbal->setLogger($logger);
             /** Remove when issue is resolved {@link https://github.com/cycle/orm/issues/60} */
             $drivers = $dbal->getDrivers();
@@ -61,11 +52,10 @@ final class DbalFactory
      *
      * @return LoggerInterface
      */
-    private function prepareLogger($logger): LoggerInterface
+    private function prepareLogger(ContainerInterface $container, mixed $logger): LoggerInterface
     {
         if (is_string($logger)) {
-            /** @psalm-suppress PossiblyNullReference */
-            $logger = $this->container->get($logger);
+            $logger = $container->get($logger);
         }
         if (!$logger instanceof LoggerInterface) {
             throw new RuntimeException(
@@ -80,35 +70,12 @@ final class DbalFactory
      *
      * @return DatabaseConfig
      */
-    private function prepareConfig($config): DatabaseConfig
+    private function prepareConfig(array|DatabaseConfig $config): DatabaseConfig
     {
         if ($config instanceof DatabaseConfig) {
             return $config;
         }
-        if (isset($config['connections'])) {
-            // prepare connections
-            foreach ($config['connections'] as &$connection) {
-                $connection = $this->prepareConnection($connection);
-            }
-        }
 
         return new DatabaseConfig($config);
-    }
-
-    private function prepareConnection(array $connection): array
-    {
-        // if connection option contain alias in path
-        if (isset($connection['connection']) && preg_match('/^(?<proto>\w+:)?@/', $connection['connection'], $m)) {
-            $proto = $m['proto'];
-            $path = $this->getAlias(substr($connection['connection'], strlen($proto)));
-            $connection['connection'] = $proto . $path;
-        }
-        return $connection;
-    }
-
-    private function getAlias(string $alias): string
-    {
-        /** @psalm-suppress PossiblyNullReference */
-        return $this->container->get(Aliases::class)->get($alias);
     }
 }

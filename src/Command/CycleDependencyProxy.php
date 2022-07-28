@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Command;
 
+use Cycle\Database\DatabaseProviderInterface;
+use Cycle\Migrations\Config\MigrationConfig;
+use Cycle\Migrations\Migrator;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
-use Spiral\Database\DatabaseProviderInterface;
-use Spiral\Migrations\Config\MigrationConfig;
-use Spiral\Migrations\Migrator;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 

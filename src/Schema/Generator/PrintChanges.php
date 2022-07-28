@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Schema\Generator;
 
+use Cycle\Database\Schema\AbstractTable;
+use Cycle\Database\Schema\ComparatorInterface;
 use Cycle\Schema\GeneratorInterface;
 use Cycle\Schema\Registry;
-use Spiral\Database\Schema\AbstractTable;
-use Spiral\Database\Schema\ComparatorInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 final class PrintChanges implements GeneratorInterface

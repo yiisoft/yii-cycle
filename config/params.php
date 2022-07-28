@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-use Cycle\ORM\PromiseFactoryInterface;
 use Yiisoft\Yii\Cycle\Command\Schema;
 use Yiisoft\Yii\Cycle\Command\Migration;
+use Yiisoft\Yii\Cycle\Schema\Conveyor\CompositeSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 return [
@@ -44,14 +44,6 @@ return [
         ],
 
         /**
-         * Config for {@see \Yiisoft\Yii\Cycle\Factory\OrmFactory}
-         * Null, classname or {@see PromiseFactoryInterface} object.
-         *
-         * @link https://github.com/cycle/docs/blob/master/advanced/promise.md
-         */
-        'orm-promise-factory' => null,
-
-        /**
          * SchemaProvider list for {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}
          * Array of classname and {@see SchemaProviderInterface} object.
          * You can configure providers if you pass classname as key and parameters as array:
@@ -72,10 +64,13 @@ return [
         'schema-providers' => [],
 
         /**
-         * Config for {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor}
-         * Annotated entity directories list.
+         * Annotated/attributed entity directories list.
          * {@see \Yiisoft\Aliases\Aliases} are also supported.
          */
+        'entity-paths' => [],
+        'conveyor' => CompositeSchemaConveyor::class,
+
+        /** @deprecated use `entity-paths` key instead */
         'annotated-entity-paths' => [],
     ],
 ];

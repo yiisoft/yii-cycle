@@ -3,7 +3,7 @@
 Предпочтительнее установить этот пакет через [Composer](https://getcomposer.org/download/):
 
 ```bash
-composer require yiisoft/yii-cycle
+composer require yiisoft/yii-cycle "2.0.x-dev"
 ```
 
 ## Настройка
@@ -34,13 +34,12 @@ return [
             ],
             'connections' => [
                 // Пример настроек подключения к SQLite:
-                'sqlite' => [
-                    'driver' => \Spiral\Database\Driver\SQLite\SQLiteDriver::class,
-                    // Синтаксис подключения описан в https://www.php.net/manual/pdo.construct.php, смотрите DSN
-                    'connection' => 'sqlite:@runtime/database.db',
-                    'username' => '',
-                    'password' => '',
-                ]
+                'sqlite' => new \Cycle\Database\Config\SQLiteDriverConfig(
+                    connection: new \Cycle\Database\Config\SQLite\DsnConnectionConfig(
+                        // Синтаксис DSN описан в https://www.php.net/manual/pdo.construct.php
+                        database: 'sqlite:runtime/database.db'
+                    )
+                ),
             ],
         ],
 
@@ -51,13 +50,6 @@ return [
             'table' => 'migration',
             'safe' => false,
         ],
-
-        /**
-         * Конфиг для фабрики ORM {@see \Yiisoft\Yii\Cycle\Factory\OrmFactory}
-         * Указывается определение класса {@see \Cycle\ORM\PromiseFactoryInterface} или null.
-         * Документация: @link https://github.com/cycle/docs/blob/master/advanced/promise.md
-         */
-        'orm-promise-factory' => null,
 
         /**
          * Список поставщиков схемы БД для {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}
@@ -76,18 +68,25 @@ return [
         ],
 
         /**
-         * Настройка для класса {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor}
+         * Настройка для класса {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor}.
          * Здесь указывается список папок с сущностями.
          * В путях поддерживаются псевдонимы {@see \Yiisoft\Aliases\Aliases}.
          */
-        'annotated-entity-paths' => [
+        'entity-paths' => [
             '@src/Entity'
         ],
+        /**
+         * Реализация интерфейса {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface},
+         * определяющая источник данных о сущностях:
+         *  - `AnnotatedSchemaConveyor` - парсинг только аннотаций;
+         *  - `AttributedSchemaConveyor` - парсинг только атрибутов (в том числе и на PHP 7.4);
+         *  - `CompositeSchemaConveyor` - парсинг и аннотаций, и атрибутов.
+         */
+        'conveyor-class' => CompositedSchemaConveyor::class,
     ],
 ];
 ```
 
 Документация Cycle:
 
-- [Конфигурирование подключений](https://github.com/cycle/docs/blob/master/basic/connect.md)
-- [О Reference и Proxy](https://github.com/cycle/docs/blob/master/advanced/promise.md)
+- [Конфигурирование подключений](https://cycle-orm.dev/docs/database-configuration/2.x/en#installation-declare-connection)

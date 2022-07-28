@@ -3,7 +3,7 @@
 `EntityReader` является полезным инструментом для безопасной передачи select-запросов
 из репозитория в пользовательскую среду выполнения.
 Под select-запросом подразумевается экземпляр одного из
-классов: `\Cycle\ORM\Select` или `\Spiral\Database\Query\SelectQuery`.
+классов: `\Cycle\ORM\Select` или `\Cycle\Database\Query\SelectQuery`.
 
 Что нужно знать о `EntityReader`:
 
@@ -45,7 +45,7 @@ class ArticleRepository extends \Cycle\ORM\Select\Repository
     }
 }
 ```
-Рассмотрим примеры, как мы можем использовать EntityReader в постраничной разбивке.
+Рассмотрим примеры, как мы можем использовать `EntityReader` в постраничной разбивке.
 
 ```php
 /**

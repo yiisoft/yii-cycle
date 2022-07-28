@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Command\Migration;
 
+use Cycle\Migrations\MigrationInterface;
+use Cycle\Migrations\State;
 use Psr\EventDispatcher\EventDispatcherInterface;
-use Spiral\Migrations\MigrationInterface;
-use Spiral\Migrations\State;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -18,6 +18,7 @@ use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 final class DownCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/down';
+    protected static $defaultDescription = 'Rolls back the last applied migration';
 
     private EventDispatcherInterface $eventDispatcher;
 
@@ -25,12 +26,6 @@ final class DownCommand extends BaseMigrationCommand
     {
         $this->eventDispatcher = $eventDispatcher;
         parent::__construct($promise);
-    }
-
-    public function configure(): void
-    {
-        $this
-            ->setDescription('Rollback last migration');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -54,9 +49,11 @@ final class DownCommand extends BaseMigrationCommand
         if (!$migrator->getConfig()->isSafe()) {
             $output->writeln('<fg=yellow>Migration to be reverted:</>');
             $output->writeln('— <fg=cyan>' . $migration->getState()->getName() . '</>');
-            $question = new ConfirmationQuestion('Revert the above migration? (yes|no) ', false);
-            if (!$this->getHelper('question')->ask($input, $output, $question)) {
-                return ExitCode::OK;
+            if ($input->isInteractive()) {
+                $question = new ConfirmationQuestion('Revert the above migration? (yes|no) ', false);
+                if (!$this->getHelper('question')->ask($input, $output, $question)) {
+                    return ExitCode::OK;
+                }
             }
         }
 

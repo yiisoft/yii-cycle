@@ -19,9 +19,11 @@ class SchemaConveyorTest extends BaseConveyorTest
         $this->assertSame([
             'Cycle\Schema\Generator\ResetTables',
             'Cycle\Schema\Generator\GenerateRelations',
+            'Cycle\Schema\Generator\GenerateModifiers',
             'Cycle\Schema\Generator\ValidateEntities',
             'Cycle\Schema\Generator\RenderTables',
             'Cycle\Schema\Generator\RenderRelations',
+            'Cycle\Schema\Generator\RenderModifiers',
             'Cycle\Schema\Generator\GenerateTypecast',
         ], $generators);
     }
@@ -31,7 +33,7 @@ class SchemaConveyorTest extends BaseConveyorTest
         $conveyor = $this->createConveyor();
         $conveyor->addGenerator(
             $conveyor::STAGE_POSTPROCESS,
-            new class() {
+            new class () {
                 public function __invoke(): GeneratorInterface
                 {
                     return new FakeGenerator('FakeGenerator-from-invocable-object');
@@ -55,9 +57,11 @@ class SchemaConveyorTest extends BaseConveyorTest
             'Cycle\Schema\Generator\ResetTables',
             'FakeGenerator-object',
             'Cycle\Schema\Generator\GenerateRelations',
+            'Cycle\Schema\Generator\GenerateModifiers',
             'Cycle\Schema\Generator\ValidateEntities',
             'Cycle\Schema\Generator\RenderTables',
             'Cycle\Schema\Generator\RenderRelations',
+            'Cycle\Schema\Generator\RenderModifiers',
             \Cycle\Schema\Generator\SyncTables::class,
             'FakeGenerator-from-closure',
             'Cycle\Schema\Generator\GenerateTypecast',
@@ -79,9 +83,11 @@ class SchemaConveyorTest extends BaseConveyorTest
             'Cycle\Schema\Generator\ResetTables',
             \Cycle\Annotated\MergeIndexes::class,
             'Cycle\Schema\Generator\GenerateRelations',
+            'Cycle\Schema\Generator\GenerateModifiers',
             'Cycle\Schema\Generator\ValidateEntities',
             'Cycle\Schema\Generator\RenderTables',
             'Cycle\Schema\Generator\RenderRelations',
+            'Cycle\Schema\Generator\RenderModifiers',
             \Cycle\Schema\Generator\SyncTables::class,
             \Cycle\Schema\Generator\RenderTables::class,
             'Cycle\Schema\Generator\GenerateTypecast',

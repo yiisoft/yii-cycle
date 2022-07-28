@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Cycle\Exception;
 use Exception;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
-class EmptyEntityPathsException extends Exception implements FriendlyExceptionInterface
+final class EmptyEntityPathsException extends Exception implements FriendlyExceptionInterface
 {
     public function getName(): string
     {

@@ -3,7 +3,7 @@
 The preferred way to install this package is through [Composer](https://getcomposer.org/download/):
 
 ```bash
-composer require yiisoft/yii-cycle
+composer require yiisoft/yii-cycle "2.0.x-dev"
 ```
 
 ## Configuring package
@@ -33,13 +33,12 @@ return [
             ],
             'connections' => [
                 // Example SQLite connection:
-                'sqlite' => [
-                    'driver' => \Spiral\Database\Driver\SQLite\SQLiteDriver::class,
-                    // see https://www.php.net/manual/pdo.construct.php, DSN for connection syntax
-                    'connection' => 'sqlite:@runtime/database.db',
-                    'username' => '',
-                    'password' => '',
-                ]
+                'sqlite' => new \Cycle\Database\Config\SQLiteDriverConfig(
+                    connection: new \Cycle\Database\Config\SQLite\DsnConnectionConfig(
+                        // see https://www.php.net/manual/pdo.construct.php, DSN for connection syntax
+                        database: 'sqlite:runtime/database.db'
+                    )
+                ),
             ],
         ],
 
@@ -50,13 +49,6 @@ return [
             'table' => 'migration',
             'safe' => false,
         ],
-
-        /**
-         * {@see \Yiisoft\Yii\Cycle\Factory\OrmFactory} config 
-         * Either {@see \Cycle\ORM\PromiseFactoryInterface} implementation or null is specified.
-         * Docs: @link https://github.com/cycle/docs/blob/master/advanced/promise.md
-         */
-        'orm-promise-factory' => null,
 
         /**
          * A list of DB schema providers for {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}
@@ -75,17 +67,22 @@ return [
         ],
 
         /**
-         * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor} settings
+         * Option for {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor}.
          * A list of entity directories. You can use {@see \Yiisoft\Aliases\Aliases} in paths.
          */
-        'annotated-entity-paths' => [
+        'entity-paths' => [
             '@src/Entity'
         ],
+        /**
+         * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface} implementation class name.
+         * That implementation defines the entity data source: annotations, attributes or both.
+         * Can be `AnnotatedSchemaConveyor`, `AttributedSchemaConveyor` or `CompositeSchemaConveyor`
+         */
+        'conveyor-class' => CompositedSchemaConveyor::class,
     ],
 ];
 ```
 
 Read more in Cycle documentation:
 
-- [Connect to Database](https://github.com/cycle/docs/blob/master/basic/connect.md)
-- [References and Proxies](https://github.com/cycle/docs/blob/master/advanced/promise.md)
+- [Connect to Database](https://cycle-orm.dev/docs/database-configuration/2.x/en#installation-declare-connection)
