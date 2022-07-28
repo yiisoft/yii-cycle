@@ -27,7 +27,7 @@
         "cycle/schema-migrations-generator": "^2.0",
         "cycle/schema-renderer": "^1.0",
         "psr/event-dispatcher": "^1.0",
-        "psr/simple-cache": "^1.0",
+        "psr/simple-cache": "^1.0|^2.0|^3.0",
         "spiral/attributes": "^2.7",
         "yiisoft/aliases": "^1.1|^2.0",
         "yiisoft/data": "@dev",
@@ -74,6 +74,10 @@
         "test-watch": "phpunit-watcher watch"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "infection/extension-installer": true,
+            "composer/package-versions-deprecated": true
+        }
     }
 }
