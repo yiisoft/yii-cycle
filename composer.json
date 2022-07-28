@@ -27,7 +27,7 @@
         "cycle/orm": "^1.7",
         "cycle/schema-renderer": "^1.0",
         "psr/event-dispatcher": "^1.0",
-        "psr/simple-cache": "^1.0",
+        "psr/simple-cache": "^1.0|^2.0|^3.0",
         "spiral/attributes": "^2.7",
         "spiral/database": "^2.8",
         "yiisoft/aliases": "^1.1|^2.0",
