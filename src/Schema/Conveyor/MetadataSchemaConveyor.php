@@ -8,12 +8,14 @@ use Cycle\Annotated\Embeddings;
 use Cycle\Annotated\Entities;
 use Cycle\Annotated\MergeColumns;
 use Cycle\Annotated\MergeIndexes;
+use Cycle\Annotated\TableInheritance;
 use JetBrains\PhpStorm\ExpectedValues;
 use Spiral\Attributes\ReaderInterface;
 use Spiral\Tokenizer\ClassLocator;
 use Symfony\Component\Finder\Finder;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
+use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface as Conveyor;
 
 abstract class MetadataSchemaConveyor extends SchemaConveyor
 {
@@ -66,13 +68,15 @@ abstract class MetadataSchemaConveyor extends SchemaConveyor
         $reader = $this->getMetadataReader();
 
         // register embeddable entities
-        $this->conveyor[SchemaConveyor::STAGE_INDEX][] = new Embeddings($classLocator, $reader);
+        $this->conveyor[Conveyor::STAGE_INDEX][] = new Embeddings($classLocator, $reader);
         // register annotated entities
-        $this->conveyor[SchemaConveyor::STAGE_INDEX][] = new Entities($classLocator, $reader, $this->tableNaming);
+        $this->conveyor[Conveyor::STAGE_INDEX][] = new Entities($classLocator, $reader, $this->tableNaming);
+        // register STI/JTI
+        $this->conveyor[Conveyor::STAGE_INDEX][] = new TableInheritance($reader);
         // add @Table(columns) declarations
-        $this->conveyor[SchemaConveyor::STAGE_INDEX][] = new MergeColumns($reader);
+        $this->conveyor[Conveyor::STAGE_INDEX][] = new MergeColumns($reader);
         // add @Table(indexes) declarations
-        $this->conveyor[SchemaConveyor::STAGE_RENDER][] = new MergeIndexes($reader);
+        $this->conveyor[Conveyor::STAGE_RENDER][] = new MergeIndexes($reader);
 
         $this->isAddedMetadataGenerators = true;
     }
