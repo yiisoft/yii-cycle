@@ -7,7 +7,7 @@
 </p>
 
 Cycle is a PHP DataMapper ORM and Data Modelling engine designed to safely work
-in classic and daemonized PHP applications such as [RoadRunner](https://github.com/spiral/roadrunner).
+in classic and daemonized PHP applications such as [RoadRunner](https://github.com/roadrunner-server/roadrunner).
 This package provides a convenient way to integrate Cycle ORM v2 with Yii Framework.
 
 Read more in the [official documentation](https://cycle-orm.dev/docs/readme/2.x) \
