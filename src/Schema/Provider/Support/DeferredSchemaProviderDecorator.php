@@ -20,7 +20,7 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
     /**
      * @param $provider
      */
-    public function __construct(private ContainerInterface $container, private SchemaProviderInterface|string $provider, private ?\Yiisoft\Yii\Cycle\Schema\Provider\Support\DeferredSchemaProviderDecorator $nextProvider)
+    public function __construct(private ContainerInterface $container, private SchemaProviderInterface|string $provider, private ?self $nextProvider)
     {
     }
 

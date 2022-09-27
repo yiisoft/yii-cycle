@@ -10,7 +10,7 @@ final class CachedCount
 {
     private ?int $count = null;
 
-    public function __construct(private ?\Countable $collection)
+    public function __construct(private ?Countable $collection)
     {
     }
 

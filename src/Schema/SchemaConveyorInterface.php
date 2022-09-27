@@ -19,7 +19,7 @@ interface SchemaConveyorInterface
     // post processing
     public const STAGE_POSTPROCESS = 'postprocess';
 
-    public function addGenerator(string $stage, \Closure|\Cycle\Schema\GeneratorInterface|string $generator): void;
+    public function addGenerator(string $stage, Closure|GeneratorInterface|string $generator): void;
 
     /**
      * @throws BadGeneratorDeclarationException

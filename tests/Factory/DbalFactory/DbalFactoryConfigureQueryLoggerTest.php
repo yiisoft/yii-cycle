@@ -20,7 +20,7 @@ final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactoryTest
     /**
      * @param LoggerInterface|string $logger Classname or object
      */
-    protected function prepareLoggerFromDbalFactory(\Psr\Log\LoggerInterface|string $logger): ?LoggerInterface
+    protected function prepareLoggerFromDbalFactory(LoggerInterface|string $logger): ?LoggerInterface
     {
         $factory = (new DbalFactory([
             'query-logger' => $logger,

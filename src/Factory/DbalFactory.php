@@ -46,11 +46,9 @@ final class DbalFactory
     }
 
     /**
-     *
      * @throws Exception
-     *
      */
-    private function prepareLogger(ContainerInterface $container, \Psr\Log\LoggerInterface|string $logger): LoggerInterface
+    private function prepareLogger(ContainerInterface $container, LoggerInterface|string $logger): LoggerInterface
     {
         if (is_string($logger)) {
             $logger = $container->get($logger);
