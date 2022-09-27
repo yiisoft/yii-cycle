@@ -10,12 +10,10 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 final class SimpleCacheSchemaProvider implements SchemaProviderInterface
 {
     public const DEFAULT_KEY = 'Cycle-ORM-Schema';
-    private CacheInterface $cache;
     private string $key = self::DEFAULT_KEY;
 
-    public function __construct(CacheInterface $cache)
+    public function __construct(private CacheInterface $cache)
     {
-        $this->cache = $cache;
     }
 
     public function withConfig(array $config): self

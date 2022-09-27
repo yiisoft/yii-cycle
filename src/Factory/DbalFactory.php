@@ -46,13 +46,11 @@ final class DbalFactory
     }
 
     /**
-     * @param LoggerInterface|string $logger
      *
      * @throws Exception
      *
-     * @return LoggerInterface
      */
-    private function prepareLogger(ContainerInterface $container, mixed $logger): LoggerInterface
+    private function prepareLogger(ContainerInterface $container, \Psr\Log\LoggerInterface|string $logger): LoggerInterface
     {
         if (is_string($logger)) {
             $logger = $container->get($logger);
@@ -65,11 +63,6 @@ final class DbalFactory
         return $logger;
     }
 
-    /**
-     * @param array|DatabaseConfig $config
-     *
-     * @return DatabaseConfig
-     */
     private function prepareConfig(array|DatabaseConfig $config): DatabaseConfig
     {
         if ($config instanceof DatabaseConfig) {

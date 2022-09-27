@@ -14,17 +14,14 @@ class ConfigurableSchemaProvider implements SchemaProviderInterface
     public const EXCEPTION_ON_WRITE = 'exception_on_write';
     public const EXCEPTION_ON_CLEAR = 'exception_on_clear';
 
-    protected ?array $schema;
-
     private bool $writable = true;
     private bool $clearable = true;
     private bool $exceptionOnRead = false;
     private bool $exceptionOnWrite = false;
     private bool $exceptionOnClear = false;
 
-    public function __construct(?array $schema)
+    public function __construct(protected ?array $schema)
     {
-        $this->schema = $schema;
     }
 
     public function withConfig(array $config): self

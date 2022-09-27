@@ -14,7 +14,7 @@ final class BadGeneratorDeclarationException extends BadDeclarationException imp
      */
     public function __construct($argument)
     {
-        parent::__construct('Generator', GeneratorInterface::class, $argument);
+        parent::__construct(\Generator::class, GeneratorInterface::class, $argument);
     }
 
     public function getName(): string

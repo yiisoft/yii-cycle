@@ -12,13 +12,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 final class PrintChanges implements GeneratorInterface
 {
-    private OutputInterface $output;
-
     private array $changes = [];
 
-    public function __construct(OutputInterface $output)
+    public function __construct(private OutputInterface $output)
     {
-        $this->output = $output;
     }
 
     public function run(Registry $registry): Registry

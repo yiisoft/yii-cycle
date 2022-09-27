@@ -22,11 +22,8 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
     /** @var bool Throw exception if file not found */
     private bool $strict = false;
 
-    private Aliases $aliases;
-
-    public function __construct(Aliases $aliases)
+    public function __construct(private Aliases $aliases)
     {
-        $this->aliases = $aliases;
     }
 
     public function withConfig(array $config): self

@@ -30,11 +30,8 @@ class SchemaConveyor implements SchemaConveyorInterface
         ],
     ];
 
-    protected ContainerInterface $container;
-
-    public function __construct(ContainerInterface $container)
+    public function __construct(protected ContainerInterface $container)
     {
-        $this->container = $container;
     }
 
     public function addGenerator(string $stage, $generator): void

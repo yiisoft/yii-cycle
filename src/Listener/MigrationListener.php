@@ -9,11 +9,8 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 final class MigrationListener
 {
-    private SchemaProviderInterface $schemaProvider;
-
-    public function __construct(SchemaProviderInterface $schemaProvider)
+    public function __construct(private SchemaProviderInterface $schemaProvider)
     {
-        $this->schemaProvider = $schemaProvider;
     }
 
     public function onAfterMigrate(AfterMigrate $event): void

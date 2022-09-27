@@ -13,23 +13,15 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
  */
 final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
 {
-    private SchemaProviderInterface|string $provider;
     private array $config = [];
-    private ?self $nextProvider;
     private ?SchemaProviderInterface $latestProvider = null;
     private bool $resolved = false;
-    private ContainerInterface $container;
 
     /**
-     * @param ContainerInterface $container
      * @param $provider
-     * @param self|null $nextProvider
      */
-    public function __construct(ContainerInterface $container, SchemaProviderInterface|string $provider, ?self $nextProvider)
+    public function __construct(private ContainerInterface $container, private SchemaProviderInterface|string $provider, private ?\Yiisoft\Yii\Cycle\Schema\Provider\Support\DeferredSchemaProviderDecorator $nextProvider)
     {
-        $this->provider = $provider;
-        $this->container = $container;
-        $this->nextProvider = $nextProvider;
     }
 
     public function withConfig(array $config): self

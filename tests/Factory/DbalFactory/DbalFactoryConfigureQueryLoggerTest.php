@@ -19,10 +19,8 @@ final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactoryTest
 {
     /**
      * @param LoggerInterface|string $logger Classname or object
-     *
-     * @return LoggerInterface|null
      */
-    protected function prepareLoggerFromDbalFactory($logger): ?LoggerInterface
+    protected function prepareLoggerFromDbalFactory(\Psr\Log\LoggerInterface|string $logger): ?LoggerInterface
     {
         $factory = (new DbalFactory([
             'query-logger' => $logger,

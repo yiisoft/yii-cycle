@@ -46,7 +46,7 @@ abstract class BaseConveyorTest extends TestCase
     protected function getGeneratorClassList(SchemaConveyorInterface $conveyor): array
     {
         return array_map(
-            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
+            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : $value::class,
             $conveyor->getGenerators()
         );
     }
