@@ -17,14 +17,14 @@ class SchemaConveyorTest extends BaseConveyorTest
         $generators = $this->getGeneratorClassList($conveyor);
 
         $this->assertSame([
-            'Cycle\Schema\Generator\ResetTables',
-            'Cycle\Schema\Generator\GenerateRelations',
-            'Cycle\Schema\Generator\GenerateModifiers',
-            'Cycle\Schema\Generator\ValidateEntities',
-            'Cycle\Schema\Generator\RenderTables',
-            'Cycle\Schema\Generator\RenderRelations',
-            'Cycle\Schema\Generator\RenderModifiers',
-            'Cycle\Schema\Generator\GenerateTypecast',
+            \Cycle\Schema\Generator\ResetTables::class,
+            \Cycle\Schema\Generator\GenerateRelations::class,
+            \Cycle\Schema\Generator\GenerateModifiers::class,
+            \Cycle\Schema\Generator\ValidateEntities::class,
+            \Cycle\Schema\Generator\RenderTables::class,
+            \Cycle\Schema\Generator\RenderRelations::class,
+            \Cycle\Schema\Generator\RenderModifiers::class,
+            \Cycle\Schema\Generator\GenerateTypecast::class,
         ], $generators);
     }
 
@@ -40,31 +40,29 @@ class SchemaConveyorTest extends BaseConveyorTest
                 }
             }
         );
-        $conveyor->addGenerator($conveyor::STAGE_USERLAND, static function () {
-            return new FakeGenerator('FakeGenerator-from-closure');
-        });
+        $conveyor->addGenerator($conveyor::STAGE_USERLAND, static fn () => new FakeGenerator('FakeGenerator-from-closure'));
         $conveyor->addGenerator($conveyor::STAGE_RENDER, \Cycle\Schema\Generator\SyncTables::class);
         $conveyor->addGenerator($conveyor::STAGE_INDEX, new FakeGenerator('FakeGenerator-object'));
 
         // get generators list
         /** @var string[] $generators */
         $generators = array_map(
-            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
+            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : $value::class,
             $conveyor->getGenerators()
         );
 
         $this->assertSame([
-            'Cycle\Schema\Generator\ResetTables',
+            \Cycle\Schema\Generator\ResetTables::class,
             'FakeGenerator-object',
-            'Cycle\Schema\Generator\GenerateRelations',
-            'Cycle\Schema\Generator\GenerateModifiers',
-            'Cycle\Schema\Generator\ValidateEntities',
-            'Cycle\Schema\Generator\RenderTables',
-            'Cycle\Schema\Generator\RenderRelations',
-            'Cycle\Schema\Generator\RenderModifiers',
+            \Cycle\Schema\Generator\GenerateRelations::class,
+            \Cycle\Schema\Generator\GenerateModifiers::class,
+            \Cycle\Schema\Generator\ValidateEntities::class,
+            \Cycle\Schema\Generator\RenderTables::class,
+            \Cycle\Schema\Generator\RenderRelations::class,
+            \Cycle\Schema\Generator\RenderModifiers::class,
             \Cycle\Schema\Generator\SyncTables::class,
             'FakeGenerator-from-closure',
-            'Cycle\Schema\Generator\GenerateTypecast',
+            \Cycle\Schema\Generator\GenerateTypecast::class,
             'FakeGenerator-from-invocable-object',
         ], $generators);
     }
@@ -80,17 +78,17 @@ class SchemaConveyorTest extends BaseConveyorTest
         $generators = $this->getGeneratorClassList($conveyor);
 
         $this->assertSame([
-            'Cycle\Schema\Generator\ResetTables',
+            \Cycle\Schema\Generator\ResetTables::class,
             \Cycle\Annotated\MergeIndexes::class,
-            'Cycle\Schema\Generator\GenerateRelations',
-            'Cycle\Schema\Generator\GenerateModifiers',
-            'Cycle\Schema\Generator\ValidateEntities',
-            'Cycle\Schema\Generator\RenderTables',
-            'Cycle\Schema\Generator\RenderRelations',
-            'Cycle\Schema\Generator\RenderModifiers',
+            \Cycle\Schema\Generator\GenerateRelations::class,
+            \Cycle\Schema\Generator\GenerateModifiers::class,
+            \Cycle\Schema\Generator\ValidateEntities::class,
+            \Cycle\Schema\Generator\RenderTables::class,
+            \Cycle\Schema\Generator\RenderRelations::class,
+            \Cycle\Schema\Generator\RenderModifiers::class,
             \Cycle\Schema\Generator\SyncTables::class,
             \Cycle\Schema\Generator\RenderTables::class,
-            'Cycle\Schema\Generator\GenerateTypecast',
+            \Cycle\Schema\Generator\GenerateTypecast::class,
             \Cycle\Schema\Generator\GenerateTypecast::class,
         ], $generators);
     }

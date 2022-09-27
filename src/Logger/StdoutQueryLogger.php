@@ -20,19 +20,16 @@ class StdoutQueryLogger implements LoggerInterface
 {
     use LoggerTrait;
 
-    private bool $display;
+    private bool $display = true;
 
-    private int $countWrites;
-    private int $countReads;
+    private int $countWrites = 0;
+    private int $countReads = 0;
     private array $buffer = [];
     /** @var false|resource */
     private $fp;
 
     public function __construct()
     {
-        $this->display = true;
-        $this->countWrites = 0;
-        $this->countReads = 0;
         $this->fp = fopen('php://stdout', 'w');
     }
 
@@ -92,7 +89,7 @@ class StdoutQueryLogger implements LoggerInterface
         }
         try {
             fwrite($this->fp, "{$str}\n");
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             /** @psalm-suppress InvalidPropertyAssignmentValue */
             fclose($this->fp);
             $this->fp = false;

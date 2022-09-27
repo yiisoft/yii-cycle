@@ -14,8 +14,6 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 final class FromConveyorSchemaProvider implements SchemaProviderInterface
 {
-    private SchemaConveyorInterface $conveyor;
-    private DatabaseProviderInterface $dbal;
     /**
      * Additional generators when reading Schema
      *
@@ -23,10 +21,8 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
      */
     private array $generators = [];
 
-    public function __construct(SchemaConveyorInterface $conveyor, DatabaseProviderInterface $dbal)
+    public function __construct(private SchemaConveyorInterface $conveyor, private DatabaseProviderInterface $dbal)
     {
-        $this->conveyor = $conveyor;
-        $this->dbal = $dbal;
     }
 
     public function withConfig(array $config): self

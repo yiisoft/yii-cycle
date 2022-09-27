@@ -9,11 +9,9 @@ use Countable;
 final class CachedCount
 {
     private ?int $count = null;
-    private ?Countable $collection;
 
-    public function __construct(Countable $collection)
+    public function __construct(private ?Countable $collection)
     {
-        $this->collection = $collection;
     }
 
     /**

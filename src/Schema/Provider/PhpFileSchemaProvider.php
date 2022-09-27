@@ -17,11 +17,8 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
     private string $file = '';
     private int $mode = self::MODE_READ_AND_WRITE;
 
-    private Aliases $aliases;
-
-    public function __construct(Aliases $aliases)
+    public function __construct(private Aliases $aliases)
     {
-        $this->aliases = $aliases;
     }
 
     public function withConfig(array $config): self
@@ -43,7 +40,7 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
     {
         if (!$this->isReadable()) {
             if ($nextProvider === null) {
-                throw new RuntimeException(__CLASS__ . ' can not read schema.');
+                throw new RuntimeException(self::class . ' can not read schema.');
             }
             $schema = null;
         } else {
@@ -94,7 +91,7 @@ final class PhpFileSchemaProvider implements SchemaProviderInterface
     {
         try {
             $this->removeFile();
-        } catch (\Throwable $e) {
+        } catch (\Throwable) {
             return false;
         }
         return true;

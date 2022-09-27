@@ -38,7 +38,7 @@ final class CumulativeException extends RuntimeException
                 ++$num,
                 $exception->getFile(),
                 $exception->getLine(),
-                get_class($exception),
+                $exception::class,
                 $exception->getCode(),
                 $exception->getMessage()
             );
