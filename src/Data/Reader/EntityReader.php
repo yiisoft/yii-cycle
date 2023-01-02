@@ -19,6 +19,12 @@ use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCollection;
 use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCount;
 use Yiisoft\Yii\Cycle\Data\Reader\Processor\QueryBuilderProcessor;
 
+/**
+ * @template TKey as array-key
+ * @template TValue as array|object
+ *
+ * @implements DataReaderInterface<TKey, TValue>
+ */
 final class EntityReader implements DataReaderInterface
 {
     private Select|SelectQuery $query;
@@ -60,7 +66,7 @@ final class EntityReader implements DataReaderInterface
     /**
      * @psalm-mutation-free
      */
-    public function withLimit(int $limit): self
+    public function withLimit(int $limit): static
     {
         if ($limit < 0) {
             throw new InvalidArgumentException('$limit must not be less than 0.');
@@ -76,7 +82,7 @@ final class EntityReader implements DataReaderInterface
     /**
      * @psalm-mutation-free
      */
-    public function withOffset(int $offset): self
+    public function withOffset(int $offset): static
     {
         $new = clone $this;
         if ($new->offset !== $offset) {
@@ -89,7 +95,7 @@ final class EntityReader implements DataReaderInterface
     /**
      * @psalm-mutation-free
      */
-    public function withSort(?Sort $sort): self
+    public function withSort(?Sort $sort): static
     {
         $new = clone $this;
         if ($new->sorting !== $sort) {
@@ -103,7 +109,7 @@ final class EntityReader implements DataReaderInterface
     /**
      * @psalm-mutation-free
      */
-    public function withFilter(FilterInterface $filter): self
+    public function withFilter(FilterInterface $filter): static
     {
         $new = clone $this;
         if ($new->filter !== $filter) {
@@ -117,7 +123,7 @@ final class EntityReader implements DataReaderInterface
     /**
      * @psalm-mutation-free
      */
-    public function withFilterProcessors(FilterProcessorInterface ...$filterProcessors): self
+    public function withFilterProcessors(FilterProcessorInterface ...$filterProcessors): static
     {
         $new = clone $this;
         /** @psalm-suppress ImpureMethodCall */
@@ -143,10 +149,7 @@ final class EntityReader implements DataReaderInterface
         return $this->itemsCache->getCollection();
     }
 
-    /**
-     * @return mixed
-     */
-    public function readOne()
+    public function readOne(): null|array|object
     {
         if (!$this->oneItemCache->isCollected()) {
             $item = $this->itemsCache->isCollected()
