@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Cycle\Command\Migration;
 use Cycle\Migrations\MigrationInterface;
 use Cycle\Migrations\State;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -50,8 +51,10 @@ final class DownCommand extends BaseMigrationCommand
             $output->writeln('<fg=yellow>Migration to be reverted:</>');
             $output->writeln('— <fg=cyan>' . $migration->getState()->getName() . '</>');
             if ($input->isInteractive()) {
+                /** @var QuestionHelper $qaHelper */
+                $qaHelper = $this->getHelper('question');
                 $question = new ConfirmationQuestion('Revert the above migration? (yes|no) ', false);
-                if (!$this->getHelper('question')->ask($input, $output, $question)) {
+                if (!$qaHelper->ask($input, $output, $question)) {
                     return ExitCode::OK;
                 }
             }

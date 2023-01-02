@@ -46,8 +46,9 @@ class StdoutQueryLogger implements LoggerInterface
         return $this->countReads;
     }
 
-    public function log($level, $message, array $context = []): void
+    public function log($level, string|\Stringable $message, array $context = []): void
     {
+        $message = (string) $message;
         if (!empty($context['elapsed'])) {
             $sql = strtolower($message);
             if (

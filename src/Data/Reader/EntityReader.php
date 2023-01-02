@@ -19,6 +19,12 @@ use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCollection;
 use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCount;
 use Yiisoft\Yii\Cycle\Data\Reader\Processor\QueryBuilderProcessor;
 
+/**
+ * @template TKey as array-key
+ * @template TValue as array|object
+ *
+ * @implements DataReaderInterface<TKey, TValue>
+ */
 final class EntityReader implements DataReaderInterface
 {
     private Select|SelectQuery $query;
@@ -143,9 +149,6 @@ final class EntityReader implements DataReaderInterface
         return $this->itemsCache->getCollection();
     }
 
-    /**
-     * @return mixed
-     */
     public function readOne(): null|array|object
     {
         if (!$this->oneItemCache->isCollected()) {
