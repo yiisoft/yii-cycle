@@ -52,6 +52,16 @@ final class OrmFactoryTest extends BaseOrmFactoryTest
         $this->assertInstanceOf(CustomArrayCollectionFactory::class, $customCollectionFactory);
     }
 
+    public function testDefineCustomCollectionFactoryAsDefaultOnly(): void
+    {
+        $factory = $this->makeFactory([
+            'default' => CustomArrayCollectionFactory::class,
+        ]);
+        $defaultCollectionFactory = $factory->collection();
+
+        $this->assertInstanceOf(CustomArrayCollectionFactory::class, $defaultCollectionFactory);
+    }
+
     public function testDefineWrongCollectionFactory(): void
     {
         $this->expectException(\Yiisoft\Yii\Cycle\Exception\ConfigException::class);
