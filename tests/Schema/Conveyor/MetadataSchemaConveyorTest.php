@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Schema\Conveyor;
 
 use Cycle\Annotated\Entities;
+use Cycle\Annotated\TableInheritance;
 use Cycle\Schema\Generator\GenerateModifiers;
 use Cycle\Schema\Generator\RenderModifiers;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
@@ -61,6 +62,7 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
             ResetTables::class,
             Embeddings::class,
             Entities::class,
+            TableInheritance::class,
             MergeColumns::class,
             GenerateRelations::class,
             GenerateModifiers::class,
@@ -84,6 +86,7 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
             ResetTables::class,
             Embeddings::class,
             Entities::class,
+            TableInheritance::class,
             MergeColumns::class,
             GenerateRelations::class,
             GenerateModifiers::class,
@@ -118,6 +121,7 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
             ResetTables::class,
             Embeddings::class,
             Entities::class,
+            TableInheritance::class,
             MergeColumns::class,
             GenerateRelations::class,
             GenerateModifiers::class,
