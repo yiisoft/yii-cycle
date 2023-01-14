@@ -13,8 +13,7 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
  */
 final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
 {
-    /** @var SchemaProviderInterface|string */
-    private $provider;
+    private SchemaProviderInterface|string $provider;
     private array $config = [];
     private ?self $nextProvider;
     private ?SchemaProviderInterface $latestProvider = null;
@@ -26,7 +25,7 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
      * @param $provider
      * @param self|null $nextProvider
      */
-    public function __construct(ContainerInterface $container, $provider, ?self $nextProvider)
+    public function __construct(ContainerInterface $container, SchemaProviderInterface|string $provider, ?self $nextProvider)
     {
         $this->provider = $provider;
         $this->container = $container;
@@ -41,13 +40,13 @@ final class DeferredSchemaProviderDecorator implements SchemaProviderInterface
         return $new;
     }
 
-    public function read(?SchemaProviderInterface $latestProvider = null): ?array
+    public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
-        $latestProvider ??= $this->latestProvider;
-        if ($latestProvider !== null && $this->nextProvider !== null) {
-            $nextProvider = $this->nextProvider->withLatestProvider($latestProvider);
+        $nextProvider ??= $this->latestProvider;
+        if ($nextProvider !== null && $this->nextProvider !== null) {
+            $nextProvider = $this->nextProvider->withLatestProvider($nextProvider);
         } else {
-            $nextProvider = $this->nextProvider ?? $latestProvider;
+            $nextProvider = $this->nextProvider ?? $nextProvider;
         }
         return $this->getProvider()->read($nextProvider);
     }

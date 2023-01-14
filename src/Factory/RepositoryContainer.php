@@ -8,8 +8,8 @@ use Cycle\ORM\ORMInterface;
 use Cycle\ORM\RepositoryInterface;
 use Cycle\ORM\SchemaInterface;
 use Psr\Container\ContainerInterface;
-use Yiisoft\Definitions\Exception\NotFoundException;
-use Yiisoft\Definitions\Exception\NotInstantiableClassException;
+use Yiisoft\Yii\Cycle\Exception\NotFoundException;
+use Yiisoft\Yii\Cycle\Exception\NotInstantiableClassException;
 
 use function is_string;
 
@@ -21,11 +21,12 @@ final class RepositoryContainer implements ContainerInterface
     private bool $rolesBuilt = false;
     private array $roles = [];
 
-    private array $instances;
+    private array $instances = [];
 
     public function __construct(ContainerInterface $rootContainer)
     {
         $this->rootContainer = $rootContainer;
+        $this->orm = $rootContainer->get(ORMInterface::class);
     }
 
     public function get($id)
@@ -39,10 +40,7 @@ final class RepositoryContainer implements ContainerInterface
         }
 
         if (!is_subclass_of($id, RepositoryInterface::class)) {
-            throw new NotInstantiableClassException(
-                $id,
-                sprintf('Can not instantiate "%s" because it is not a subclass of "%s".', $id, RepositoryInterface::class)
-            );
+            throw new NotInstantiableClassException($id);
         }
 
         throw new NotFoundException($id);
@@ -64,8 +62,6 @@ final class RepositoryContainer implements ContainerInterface
 
     private function makeRepositoryList(): void
     {
-        /** @var ORMInterface */
-        $this->orm = $this->rootContainer->get(ORMInterface::class);
         $schema = $this->orm->getSchema();
         $roles = [];
         foreach ($schema->getRoles() as $role) {
@@ -81,6 +77,9 @@ final class RepositoryContainer implements ContainerInterface
         }
     }
 
+    /**
+     * @psalm-param class-string $role
+     */
     private function makeRepository(string $role): RepositoryInterface
     {
         return $this->orm->getRepository($role);

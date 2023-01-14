@@ -8,6 +8,7 @@ use Cycle\Migrations\State;
 use Cycle\Schema\Compiler;
 use Cycle\Schema\Generator\Migrations\GenerateMigrations;
 use Cycle\Schema\Registry;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StreamableInputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -20,11 +21,7 @@ use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 final class GenerateCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/generate';
-
-    public function configure(): void
-    {
-        $this->setDescription('Generates a migration');
-    }
+    protected static $defaultDescription = 'Generates a migration';
 
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
@@ -66,6 +63,7 @@ final class GenerateCommand extends BaseMigrationCommand
                 '<info>If you want to create new empty migration, use <fg=yellow>migrate/create</></info>'
             );
 
+            /** @var QuestionHelper $qaHelper */
             $qaHelper = $this->getHelper('question');
 
             if ($input->isInteractive() && $input instanceof StreamableInputInterface) {

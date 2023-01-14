@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Cycle\Command\Migration;
 use Cycle\Migrations\MigrationInterface;
 use Cycle\Migrations\State;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
@@ -18,6 +19,7 @@ use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 final class UpCommand extends BaseMigrationCommand
 {
     protected static $defaultName = 'migrate/up';
+    protected static $defaultDescription = 'Executes all new migrations';
 
     private EventDispatcherInterface $eventDispatcher;
 
@@ -25,12 +27,6 @@ final class UpCommand extends BaseMigrationCommand
     {
         $this->eventDispatcher = $eventDispatcher;
         parent::__construct($promise);
-    }
-
-    public function configure(): void
-    {
-        $this
-            ->setDescription('Execute all new migrations');
     }
 
     protected function execute(InputInterface $input, OutputInterface $output): int
@@ -76,7 +72,9 @@ final class UpCommand extends BaseMigrationCommand
                     '? (yes|no) ',
                     false
                 );
-                if (!$this->getHelper('question')->ask($input, $output, $question)) {
+                /** @var QuestionHelper $qaHelper*/
+                $qaHelper = $this->getHelper('question');
+                if (!$qaHelper->ask($input, $output, $question)) {
                     return ExitCode::OK;
                 }
             }

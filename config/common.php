@@ -52,6 +52,11 @@ return [
 
     // Entity Manager
     EntityManagerInterface::class => Reference::to(EntityManager::class),
+    EntityManager::class => [
+        'reset' => function () {
+            $this->clean();
+        },
+    ],
 
     // Spiral Core Factory
     SpiralFactoryInterface::class => Reference::to(CycleDynamicFactory::class),
