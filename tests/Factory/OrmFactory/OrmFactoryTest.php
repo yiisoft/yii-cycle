@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Cycle\Tests\Factory\OrmFactory;
 
 use Cycle\ORM\Collection\CollectionFactoryInterface;
 use Cycle\ORM\FactoryInterface;
+use stdClass;
 use Yiisoft\Yii\Cycle\Tests\Factory\OrmFactory\Stub\CustomArrayCollectionFactory;
 
 final class OrmFactoryTest extends BaseOrmFactoryTest
@@ -49,5 +50,34 @@ final class OrmFactoryTest extends BaseOrmFactoryTest
 
         $this->assertInstanceOf(CustomArrayCollectionFactory::class, $defaultCollectionFactory);
         $this->assertInstanceOf(CustomArrayCollectionFactory::class, $customCollectionFactory);
+    }
+
+    public function testDefineWrongCollectionFactory(): void
+    {
+        $this->expectException(\Yiisoft\Yii\Cycle\Exception\ConfigException::class);
+        $this->expectExceptionMessage(
+            'Collection factory `custom` should be instance of '
+            . 'Cycle\ORM\Collection\CollectionFactoryInterface or its declaration. '
+            . 'Instance of stdClass was received instead.',
+        );
+
+        $this->makeFactory([
+            'factories' => [
+                'custom' => stdClass::class,
+            ],
+        ]);
+    }
+
+    public function testDefineWrongDefaultCollectionFactory(): void
+    {
+        $this->expectException(\Yiisoft\Yii\Cycle\Exception\ConfigException::class);
+        $this->expectExceptionMessage('Default collection factory `wrong` not found.');
+
+        $this->makeFactory([
+            'default' => 'wrong',
+            'factories' => [
+                'custom' => CustomArrayCollectionFactory::class,
+            ],
+        ]);
     }
 }
