@@ -8,6 +8,10 @@ use Exception;
 
 class BadDeclarationException extends Exception
 {
+    /**
+     * @param non-empty-string $parameter
+     * @param class-string $class
+     */
     public function __construct(string $parameter, string $class, mixed $argument)
     {
         $type = \is_object($argument)
