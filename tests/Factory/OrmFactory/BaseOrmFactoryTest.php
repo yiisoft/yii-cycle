@@ -6,9 +6,7 @@ namespace Yiisoft\Yii\Cycle\Tests\Factory\OrmFactory;
 
 use Cycle\Database\DatabaseManager;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\NullLogger;
 use Spiral\Core\FactoryInterface;
 use Yiisoft\Injector\Injector;
