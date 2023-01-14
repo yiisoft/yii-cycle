@@ -82,8 +82,7 @@ final class FromFilesSchemaProvider implements SchemaProviderInterface
     private function readFiles(): Generator
     {
         foreach ($this->files as $path) {
-            // Todo: make better path normalization
-            $path = str_replace('\\', '/', $path);
+            $path = \str_replace('\\', '/', $path);
             if (!Glob::isDynamic($path)) {
                 yield $this->loadFile($path);
                 continue;
