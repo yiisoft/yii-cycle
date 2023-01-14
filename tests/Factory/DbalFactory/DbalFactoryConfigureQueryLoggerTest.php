@@ -11,9 +11,9 @@ use RuntimeException;
 use stdClass;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
-use Yiisoft\Yii\Cycle\Tests\Factory\DbalFactory\Stub\FakeConnectionConfig;
-use Yiisoft\Yii\Cycle\Tests\Factory\DbalFactory\Stub\FakeDriver;
-use Yiisoft\Yii\Cycle\Tests\Factory\DbalFactory\Stub\FakeDriverConfig;
+use Yiisoft\Yii\Cycle\Tests\Stub\FakeConnectionConfig;
+use Yiisoft\Yii\Cycle\Tests\Stub\FakeDriver;
+use Yiisoft\Yii\Cycle\Tests\Stub\FakeDriverConfig;
 
 final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactoryTest
 {

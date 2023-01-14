@@ -6,19 +6,32 @@ namespace Yiisoft\Yii\Cycle\Factory;
 
 use Cycle\Database\DatabaseManager;
 use Cycle\ORM\Collection\CollectionFactoryInterface;
+use Cycle\ORM\Factory;
 use Cycle\ORM\FactoryInterface;
 use Spiral\Core\FactoryInterface as SpiralFactoryInterface;
 use Yiisoft\Injector\Injector;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 use Yiisoft\Yii\Cycle\Exception\ConfigException;
 
+/**
+ * The factory for the ORM Factory {@see FactoryInterface}.
+ *
+ * @psalm-type CollectionsConfig = array{
+ *     default?: string|null,
+ *     factories?: array<non-empty-string, class-string<CollectionFactoryInterface>>
+ * }
+ */
 final class OrmFactory
 {
-    private array $config;
+    /** @var CollectionsConfig */
+    private array $collectionsConfig;
 
-    public function __construct(array $config)
+    /**
+     * @param CollectionsConfig $collectionsConfig
+     */
+    public function __construct(array $collectionsConfig)
     {
-        $this->config = $config;
+        $this->collectionsConfig = $collectionsConfig;
     }
 
     /**
@@ -31,11 +44,10 @@ final class OrmFactory
     ): FactoryInterface {
         // Manage collection factory list
         $cfgPath = ['yiisoft/yii-cycle', 'collections'];
-
         try {
             // Resolve collection factories
             $factories = [];
-            foreach ($this->config['factories'] ?? [] as $alias => $definition) {
+            foreach ($this->collectionsConfig['factories'] ?? [] as $alias => $definition) {
                 $factories[$alias] = $injector->make($definition);
                 if (!$factories[$alias] instanceof CollectionFactoryInterface) {
                     $cfgPath[] = 'factories';
@@ -48,7 +60,7 @@ final class OrmFactory
             }
 
             // Resolve default collection factory
-            $default = $this->config['default'] ?? null;
+            $default = $this->collectionsConfig['default'] ?? null;
             if ($default !== null) {
                 if (!\array_key_exists($default, $factories)) {
                     if (!\is_a($default, CollectionFactoryInterface::class, true)) {
@@ -64,7 +76,7 @@ final class OrmFactory
             throw new ConfigException($cfgPath, $e->getMessage(), 0, $e);
         }
 
-        $result = new \Cycle\ORM\Factory($dbal, null, $factory, $default);
+        $result = new Factory($dbal, null, $factory, $default);
         // attach collection factories
         foreach ($factories as $alias => $collectionFactory) {
             $result = $result->withCollectionFactory($alias, $collectionFactory);
