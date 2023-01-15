@@ -24,8 +24,8 @@ abstract class BaseConveyorTest extends TestCase
             [stdClass::class, '#Instance of ' . stdClass::class . '[\s\w]+instead#'],
             [new DateTimeImmutable(), '#Instance of ' . DateTimeImmutable::class . ' [\s\w]+instead#'],
             [fn () => new DateTime(), '#Instance of ' . DateTime::class . ' [\s\w]+instead#'],
-            [null, '#NULL [\s\w]+instead#'],
-            [42, '#Integer [\s\w]+instead#'],
+            [null, '#Null [\s\w]+instead#'],
+            [42, '#Int [\s\w]+instead#'],
         ];
     }
 

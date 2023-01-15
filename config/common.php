@@ -7,7 +7,6 @@ use Cycle\Database\DatabaseProviderInterface;
 use Cycle\ORM\Entity\Behavior\EventDrivenCommandGenerator as BehaviorsHandler;
 use Cycle\ORM\EntityManager;
 use Cycle\ORM\EntityManagerInterface;
-use Cycle\ORM\Factory;
 use Cycle\ORM\FactoryInterface as CycleFactoryInterface;
 use Cycle\ORM\ORM;
 use Cycle\ORM\ORMInterface;
@@ -19,7 +18,9 @@ use Yiisoft\Definitions\Reference;
 use Yiisoft\Yii\Cycle\Exception\SchemaWasNotProvidedException;
 use Yiisoft\Yii\Cycle\Factory\CycleDynamicFactory;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
+use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\CompositeSchemaConveyor;
+use Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
@@ -57,12 +58,11 @@ return [
     SpiralFactoryInterface::class => Reference::to(CycleDynamicFactory::class),
 
     // Factory for Cycle ORM
-    CycleFactoryInterface::class => static function (DatabaseManager $dbal, SpiralFactoryInterface $factory) {
-        return new Factory($dbal, null, $factory);
-    },
+    // todo: move to separated class
+    CycleFactoryInterface::class => new OrmFactory($params['yiisoft/yii-cycle']['collections'] ?? []),
 
     // Schema
-    SchemaInterface::class => static fn (SchemaProviderInterface $schemaProvider) => new Schema(
+    SchemaInterface::class => static fn (SchemaProviderInterface $schemaProvider): SchemaInterface => new Schema(
         $schemaProvider->read() ?? throw new SchemaWasNotProvidedException()
     ),
 
@@ -75,11 +75,16 @@ return [
     SchemaConveyorInterface::class => static function (ContainerInterface $container) use (&$params) {
         /** @var SchemaConveyorInterface $conveyor */
         $conveyor = $container->get($params['yiisoft/yii-cycle']['conveyor'] ?? CompositeSchemaConveyor::class);
-        if (\array_key_exists('annotated-entity-paths', $params['yiisoft/yii-cycle'])) {
-            $conveyor->addEntityPaths($params['yiisoft/yii-cycle']['annotated-entity-paths']);
-        }
-        if (\array_key_exists('entity-paths', $params['yiisoft/yii-cycle'])) {
-            $conveyor->addEntityPaths($params['yiisoft/yii-cycle']['entity-paths']);
+
+        if ($conveyor instanceof MetadataSchemaConveyor) {
+            // deprecated option
+            if (\array_key_exists('annotated-entity-paths', $params['yiisoft/yii-cycle'])) {
+                $conveyor->addEntityPaths($params['yiisoft/yii-cycle']['annotated-entity-paths']);
+            }
+            // actual option
+            if (\array_key_exists('entity-paths', $params['yiisoft/yii-cycle'])) {
+                $conveyor->addEntityPaths($params['yiisoft/yii-cycle']['entity-paths']);
+            }
         }
         return $conveyor;
     },
