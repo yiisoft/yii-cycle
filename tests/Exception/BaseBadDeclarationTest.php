@@ -16,10 +16,10 @@ abstract class BaseBadDeclarationTest extends TestCase
     public function ArgumentValueProvider(): array
     {
         return [
-            [null, 'NULL'],
-            [42, 'Integer'],
+            [null, 'Null'],
+            [42, 'Int'],
             [new \DateTimeImmutable(), 'Instance of DateTimeImmutable'],
-            [STDIN, 'Resource'],
+            [STDIN, 'Resource \\(stream\\)'],
             [[], 'Array'],
         ];
     }
