@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Data\Reader\Processor;
 
-use Yiisoft\Data\Reader\Filter\FilterProcessorInterface;
+use InvalidArgumentException;
+use Yiisoft\Data\Reader\FilterHandlerInterface;
 
-abstract class CompareProcessor implements QueryBuilderProcessor, FilterProcessorInterface
+abstract class CompareProcessor implements QueryBuilderProcessor, FilterHandlerInterface
 {
     protected function validateArguments(array $arguments): void
     {
         if (count($arguments) !== 2) {
-            throw new \InvalidArgumentException('$arguments should contain exactly two elements.');
+            throw new InvalidArgumentException('$arguments should contain exactly two elements.');
         }
     }
 
