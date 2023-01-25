@@ -26,7 +26,9 @@ use function is_string;
  */
 final class OrmFactory
 {
-    /** @var CollectionsConfig */
+    /**
+     * @psalm-var CollectionsConfig
+     */
     private array $collectionsConfig;
 
     /**
@@ -70,7 +72,7 @@ final class OrmFactory
                         $cfgPath[] = 'default';
                         throw new RuntimeException(\sprintf('Default collection factory `%s` not found.', $default));
                     }
-                    $default = is_string($default) ? $injector->make($default) : $default;
+                    $default = $injector->make($default);
                 } else {
                     $default = $factories[$default];
                 }
