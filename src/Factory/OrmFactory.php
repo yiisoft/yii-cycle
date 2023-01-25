@@ -14,8 +14,6 @@ use Yiisoft\Injector\Injector;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 use Yiisoft\Yii\Cycle\Exception\ConfigException;
 
-use function is_string;
-
 /**
  * The factory for the ORM Factory {@see FactoryInterface}.
  *
