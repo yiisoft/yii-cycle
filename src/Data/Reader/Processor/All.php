@@ -13,19 +13,19 @@ final class All extends GroupProcessor
         return 'and';
     }
 
-    public function getAsWhereArguments(array $arguments, array $processors): array
+    public function getAsWhereArguments(array $arguments, array $handlers): array
     {
         $this->validateArguments($arguments);
         return [
-            static function (QueryBuilder $select) use ($arguments, $processors) {
+            static function (QueryBuilder $select) use ($arguments, $handlers) {
                 foreach ($arguments[0] as $subFilter) {
                     $operation = array_shift($subFilter);
-                    $processor = $processors[$operation] ?? null;
-                    if ($processor === null) {
+                    $handler = $handlers[$operation] ?? null;
+                    if ($handler === null) {
                         throw new \RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
                     }
-                    /* @var $processor QueryBuilderProcessor */
-                    $select->where(...$processor->getAsWhereArguments($subFilter, $processors));
+                    /* @var $handler QueryBuilderProcessor */
+                    $select->where(...$handler->getAsWhereArguments($subFilter, $handlers));
                 }
             },
         ];

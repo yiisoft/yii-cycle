@@ -16,7 +16,7 @@ abstract class CompareProcessor implements QueryBuilderProcessor, FilterHandlerI
         }
     }
 
-    public function getAsWhereArguments(array $arguments, array $processors): array
+    public function getAsWhereArguments(array $arguments, array $handlers): array
     {
         $this->validateArguments($arguments);
         [$field, $value] = $arguments;

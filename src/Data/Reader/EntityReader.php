@@ -216,9 +216,9 @@ final class EntityReader implements DataReaderInterface
             if (!array_key_exists($operation, $this->filterHandlers)) {
                 throw new RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
             }
-            /** @psalm-var QueryBuilderProcessor $processor */
-            $processor = $this->filterHandlers[$operation];
-            $select->where(...$processor->getAsWhereArguments($arguments, $this->filterHandlers));
+            /** @psalm-var QueryBuilderProcessor $handler */
+            $handler = $this->filterHandlers[$operation];
+            $select->where(...$handler->getAsWhereArguments($arguments, $this->filterHandlers));
         };
     }
 

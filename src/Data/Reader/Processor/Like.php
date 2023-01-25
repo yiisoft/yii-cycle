@@ -14,7 +14,7 @@ final class Like implements QueryBuilderProcessor, FilterHandlerInterface
         return 'like';
     }
 
-    public function getAsWhereArguments(array $arguments, array $processors): array
+    public function getAsWhereArguments(array $arguments, array $handlers): array
     {
         if (count($arguments) !== 2) {
             throw new InvalidArgumentException('$arguments should contain exactly two elements.');
