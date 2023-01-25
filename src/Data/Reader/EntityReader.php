@@ -123,11 +123,11 @@ final class EntityReader implements DataReaderInterface
     /**
      * @psalm-mutation-free
      */
-    public function withFilterHandlers(FilterHandlerInterface ...$iterableFilterHandlers): static
+    public function withFilterHandlers(FilterHandlerInterface ...$filterHandlers): static
     {
         $new = clone $this;
         /** @psalm-suppress ImpureMethodCall */
-        $new->setFilterHandlers(...$iterableFilterHandlers);
+        $new->setFilterHandlers(...$filterHandlers);
         /** @psalm-suppress ImpureMethodCall */
         $new->resetCountCache();
         $new->itemsCache = new CachedCollection();
