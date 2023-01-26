@@ -4,19 +4,20 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Data\Reader\Processor;
 
-use Yiisoft\Data\Reader\Filter\FilterProcessorInterface;
+use InvalidArgumentException;
+use Yiisoft\Data\Reader\FilterHandlerInterface;
 
-final class Like implements QueryBuilderProcessor, FilterProcessorInterface
+final class Like implements QueryBuilderProcessor, FilterHandlerInterface
 {
     public function getOperator(): string
     {
         return 'like';
     }
 
-    public function getAsWhereArguments(array $arguments, array $processors): array
+    public function getAsWhereArguments(array $arguments, array $handlers): array
     {
         if (count($arguments) !== 2) {
-            throw new \InvalidArgumentException('$arguments should contain exactly two elements.');
+            throw new InvalidArgumentException('$arguments should contain exactly two elements.');
         }
 
         [$field, $value] = $arguments;

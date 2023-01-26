@@ -12,8 +12,8 @@ use Generator;
 use InvalidArgumentException;
 use RuntimeException;
 use Yiisoft\Data\Reader\DataReaderInterface;
-use Yiisoft\Data\Reader\Filter\FilterInterface;
-use Yiisoft\Data\Reader\Filter\FilterProcessorInterface;
+use Yiisoft\Data\Reader\FilterHandlerInterface;
+use Yiisoft\Data\Reader\FilterInterface;
 use Yiisoft\Data\Reader\Sort;
 use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCollection;
 use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCount;
@@ -35,8 +35,8 @@ final class EntityReader implements DataReaderInterface
     private CachedCount $countCache;
     private CachedCollection $itemsCache;
     private CachedCollection $oneItemCache;
-    /** @var FilterProcessorInterface[]|QueryBuilderProcessor[] */
-    private array $filterProcessors = [];
+    /** @var FilterHandlerInterface[]|QueryBuilderProcessor[] */
+    private array $filterHandlers = [];
 
     public function __construct(Select|SelectQuery $query)
     {
@@ -44,7 +44,7 @@ final class EntityReader implements DataReaderInterface
         $this->countCache = new CachedCount($this->query);
         $this->itemsCache = new CachedCollection();
         $this->oneItemCache = new CachedCollection();
-        $this->setFilterProcessors(
+        $this->setFilterHandlers(
             new Processor\All(),
             new Processor\Any(),
             new Processor\Equals(),
@@ -123,11 +123,11 @@ final class EntityReader implements DataReaderInterface
     /**
      * @psalm-mutation-free
      */
-    public function withFilterProcessors(FilterProcessorInterface ...$filterProcessors): static
+    public function withFilterHandlers(FilterHandlerInterface ...$filterHandlers): static
     {
         $new = clone $this;
         /** @psalm-suppress ImpureMethodCall */
-        $new->setFilterProcessors(...$filterProcessors);
+        $new->setFilterHandlers(...$filterHandlers);
         /** @psalm-suppress ImpureMethodCall */
         $new->resetCountCache();
         $new->itemsCache = new CachedCollection();
@@ -177,15 +177,15 @@ final class EntityReader implements DataReaderInterface
         return (string)($query instanceof Select ? $query->buildQuery() : $query);
     }
 
-    private function setFilterProcessors(FilterProcessorInterface ...$filterProcessors): void
+    private function setFilterHandlers(FilterHandlerInterface ...$filterHandlers): void
     {
-        $processors = [];
-        foreach ($filterProcessors as $filterProcessor) {
-            if ($filterProcessor instanceof QueryBuilderProcessor) {
-                $processors[$filterProcessor->getOperator()] = $filterProcessor;
+        $handlers = [];
+        foreach ($filterHandlers as $filterHandler) {
+            if ($filterHandler instanceof QueryBuilderProcessor) {
+                $handlers[$filterHandler->getOperator()] = $filterHandler;
             }
         }
-        $this->filterProcessors = array_merge($this->filterProcessors, $processors);
+        $this->filterHandlers = array_merge($this->filterHandlers, $handlers);
     }
 
     private function buildSelectQuery(): SelectQuery|Select
@@ -209,16 +209,16 @@ final class EntityReader implements DataReaderInterface
     private function makeFilterClosure(FilterInterface $filter): Closure
     {
         return function (QueryBuilder $select) use ($filter) {
-            $filterArray = $filter->toArray();
+            $filterArray = $filter->toCriteriaArray();
             $operation = array_shift($filterArray);
             $arguments = $filterArray;
 
-            if (!array_key_exists($operation, $this->filterProcessors)) {
+            if (!array_key_exists($operation, $this->filterHandlers)) {
                 throw new RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
             }
-            /** @psalm-var QueryBuilderProcessor $processor */
-            $processor = $this->filterProcessors[$operation];
-            $select->where(...$processor->getAsWhereArguments($arguments, $this->filterProcessors));
+            /** @psalm-var QueryBuilderProcessor $handler */
+            $handler = $this->filterHandlers[$operation];
+            $select->where(...$handler->getAsWhereArguments($arguments, $this->filterHandlers));
         };
     }
 

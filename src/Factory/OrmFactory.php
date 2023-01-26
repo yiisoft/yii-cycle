@@ -8,6 +8,7 @@ use Cycle\Database\DatabaseManager;
 use Cycle\ORM\Collection\CollectionFactoryInterface;
 use Cycle\ORM\Factory;
 use Cycle\ORM\FactoryInterface;
+use RuntimeException;
 use Spiral\Core\FactoryInterface as SpiralFactoryInterface;
 use Yiisoft\Injector\Injector;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
@@ -23,7 +24,9 @@ use Yiisoft\Yii\Cycle\Exception\ConfigException;
  */
 final class OrmFactory
 {
-    /** @var CollectionsConfig */
+    /**
+     * @psalm-var CollectionsConfig
+     */
     private array $collectionsConfig;
 
     /**
@@ -65,9 +68,9 @@ final class OrmFactory
                 if (!\array_key_exists($default, $factories)) {
                     if (!\is_a($default, CollectionFactoryInterface::class, true)) {
                         $cfgPath[] = 'default';
-                        throw new \RuntimeException(\sprintf('Default collection factory `%s` not found.', $default));
+                        throw new RuntimeException(\sprintf('Default collection factory `%s` not found.', $default));
                     }
-                    $default = \is_string($default) ? $injector->make($default) : $default;
+                    $default = $injector->make($default);
                 } else {
                     $default = $factories[$default];
                 }
