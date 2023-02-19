@@ -64,10 +64,10 @@
         },
         "config-plugin": {
             "params": "params.php",
-            "common": "common.php",
-            "console": "console.php",
+            "di": "di.php",
+            "di-console": "di-console.php",
             "events-console": "events-console.php",
-            "delegates": "delegates.php"
+            "di-delegates": "di-delegates.php"
         }
     },
     "scripts": {
