@@ -9,7 +9,7 @@ use Yiisoft\Yii\Cycle\Exception\DuplicateRoleException;
 use Yiisoft\Yii\Cycle\Schema\Provider\Support\MergeSchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 
-final class MergeSchemaProviderTest extends BaseProviderCollectorTest
+final class MergeSchemaProviderTest extends BaseProviderCollector
 {
     protected const READ_CONFIG = [
         [ArraySchemaProvider::class, self::SCHEMA_PART_1],

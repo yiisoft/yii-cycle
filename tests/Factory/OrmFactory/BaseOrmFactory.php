@@ -22,7 +22,7 @@ use Yiisoft\Yii\Cycle\Tests\Stub\FakeDriverConfig;
 /**
  * @psalm-import-type CollectionsConfig from OrmFactory
  */
-abstract class BaseOrmFactoryTest extends TestCase
+abstract class BaseOrmFactory extends TestCase
 {
     protected ContainerInterface $container;
 

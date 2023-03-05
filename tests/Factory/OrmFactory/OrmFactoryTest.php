@@ -9,7 +9,7 @@ use Cycle\ORM\FactoryInterface;
 use stdClass;
 use Yiisoft\Yii\Cycle\Tests\Factory\OrmFactory\Stub\CustomArrayCollectionFactory;
 
-final class OrmFactoryTest extends BaseOrmFactoryTest
+final class OrmFactoryTest extends BaseOrmFactory
 {
     /**
      * Factory for ORM Factory just works

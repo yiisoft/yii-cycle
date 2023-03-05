@@ -10,12 +10,12 @@ use RuntimeException;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 use Yiisoft\Yii\Cycle\Exception\CumulativeException;
-use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProviderTest;
+use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ConfigurableSchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\SameOriginProvider;
 
-abstract class BaseProviderCollectorTest extends BaseSchemaProviderTest
+abstract class BaseProviderCollector extends BaseSchemaProvider
 {
     protected const ANOTHER_SCHEMA = [
         'post' => [

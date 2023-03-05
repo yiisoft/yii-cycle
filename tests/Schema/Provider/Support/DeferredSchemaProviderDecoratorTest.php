@@ -9,12 +9,12 @@ use Psr\Container\ContainerInterface;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Schema\Provider\Support\DeferredSchemaProviderDecorator;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
-use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProviderTest;
+use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ConfigurableSchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\SameOriginProvider;
 
-final class DeferredSchemaProviderDecoratorTest extends BaseSchemaProviderTest
+final class DeferredSchemaProviderDecoratorTest extends BaseSchemaProvider
 {
     protected const READ_CONFIG = self::READ_CONFIG_SCHEMA;
     protected const ANOTHER_SCHEMA = [

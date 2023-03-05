@@ -14,7 +14,7 @@ use Yiisoft\Test\Support\Container\Exception\NotFoundException;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Factory\CycleDynamicFactory;
 
-abstract class BaseDbalFactoryTest extends TestCase
+abstract class BaseDbalFactory extends TestCase
 {
     protected const ALIASES = [
         '@test' => 'test',

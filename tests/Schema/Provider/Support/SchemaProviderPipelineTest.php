@@ -7,7 +7,7 @@ namespace Yiisoft\Yii\Cycle\Tests\Schema\Provider\Support;
 use Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 
-final class SchemaProviderPipelineTest extends BaseProviderCollectorTest
+final class SchemaProviderPipelineTest extends BaseProviderCollector
 {
     protected const READ_CONFIG = [
         ArraySchemaProvider::class => self::READ_CONFIG_SCHEMA,

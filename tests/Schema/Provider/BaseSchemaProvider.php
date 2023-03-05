@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 
-abstract class BaseSchemaProviderTest extends TestCase
+abstract class BaseSchemaProvider extends TestCase
 {
     protected const READ_CONFIG = [];
     protected const READ_CONFIG_SCHEMA = [

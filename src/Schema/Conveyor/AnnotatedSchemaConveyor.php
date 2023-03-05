@@ -19,7 +19,6 @@ final class AnnotatedSchemaConveyor extends MetadataSchemaConveyor
              *
              * @psalm-suppress DeprecatedMethod
              */
-            AnnotationRegistry::registerLoader('class_exists');
             $this->isAutoloadRegistered = true;
         }
 

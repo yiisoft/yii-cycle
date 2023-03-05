@@ -15,7 +15,7 @@ use Yiisoft\Yii\Cycle\Tests\Stub\FakeConnectionConfig;
 use Yiisoft\Yii\Cycle\Tests\Stub\FakeDriver;
 use Yiisoft\Yii\Cycle\Tests\Stub\FakeDriverConfig;
 
-final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactoryTest
+final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactory
 {
     /**
      * @param LoggerInterface|string $logger Classname or object
