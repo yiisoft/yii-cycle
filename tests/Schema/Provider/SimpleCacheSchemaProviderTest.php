@@ -11,7 +11,7 @@ use Yiisoft\Test\Support\SimpleCache\SimpleCacheActionLogger;
 use Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 
-final class SimpleCacheSchemaProviderTest extends BaseSchemaProviderTest
+final class SimpleCacheSchemaProviderTest extends BaseSchemaProvider
 {
     protected const READ_CONFIG = ['key' => self::CACHE_KEY];
     private const CACHE_KEY = 'test-cycle-schema-cache-key';

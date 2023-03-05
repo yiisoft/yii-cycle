@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Schema\Conveyor;
 
-use Doctrine\Common\Annotations\AnnotationRegistry;
 use Spiral\Attributes\AnnotationReader;
 
 final class AnnotatedSchemaConveyor extends MetadataSchemaConveyor
@@ -19,7 +18,6 @@ final class AnnotatedSchemaConveyor extends MetadataSchemaConveyor
              *
              * @psalm-suppress DeprecatedMethod
              */
-            AnnotationRegistry::registerLoader('class_exists');
             $this->isAutoloadRegistered = true;
         }
 

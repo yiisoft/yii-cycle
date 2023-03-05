@@ -8,7 +8,7 @@ use Cycle\Schema\GeneratorInterface;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyor;
 use Yiisoft\Yii\Cycle\Tests\Schema\Conveyor\Stub\FakeGenerator;
 
-class SchemaConveyorTest extends BaseConveyorTest
+class SchemaConveyorTest extends BaseConveyor
 {
     public function testDefaultGeneratorsList(): void
     {

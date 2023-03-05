@@ -10,14 +10,14 @@ use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Exception\DuplicateRoleException;
 use Yiisoft\Yii\Cycle\Exception\SchemaFileNotFoundException;
 use Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider;
-use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProviderTest;
+use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProvider;
 
-class FromFilesSchemaProviderTest extends BaseSchemaProviderTest
+class FromFilesSchemaProviderTest extends BaseSchemaProvider
 {
     protected const READ_CONFIG = ['files' => ['@dir/schema1.php']];
     protected const READ_CONFIG_SCHEMA = ['user' => []];
 
-    public function EmptyConfigProvider(): array
+    public static function EmptyConfigProvider(): array
     {
         return [
             [
@@ -50,7 +50,7 @@ class FromFilesSchemaProviderTest extends BaseSchemaProviderTest
         $schemaProvider->withConfig(['files' => '@dir/schema1.php']);
     }
 
-    public function FileListBadValuesProvider(): array
+    public static function FileListBadValuesProvider(): array
     {
         return [
             [null],

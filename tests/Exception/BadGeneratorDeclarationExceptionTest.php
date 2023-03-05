@@ -8,7 +8,7 @@ use Cycle\Schema\GeneratorInterface;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 
-final class BadGeneratorDeclarationExceptionTest extends BaseBadDeclarationTest
+final class BadGeneratorDeclarationExceptionTest extends BaseBadDeclaration
 {
     private const GENERATOR_INTERFACE = GeneratorInterface::class;
 

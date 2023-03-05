@@ -8,10 +8,10 @@ use InvalidArgumentException;
 use RuntimeException;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Schema\Provider\PhpFileSchemaProvider;
-use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProviderTest;
+use Yiisoft\Yii\Cycle\Tests\Schema\Provider\BaseSchemaProvider;
 use Yiisoft\Yii\Cycle\Tests\Schema\Stub\ArraySchemaProvider;
 
-final class PhpFileSchemaProviderTest extends BaseSchemaProviderTest
+final class PhpFileSchemaProviderTest extends BaseSchemaProvider
 {
     protected const READ_CONFIG = ['file' => '@dir/simple_schema.php'];
     protected const READ_CONFIG_SCHEMA = ['user' => []];

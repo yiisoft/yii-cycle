@@ -22,7 +22,7 @@ use Cycle\Annotated\Embeddings;
 use Cycle\Schema\Generator\ResetTables;
 use Cycle\Schema\Generator\SyncTables;
 
-class MetadataSchemaConveyorTest extends BaseConveyorTest
+class MetadataSchemaConveyorTest extends BaseConveyor
 {
     final public function testGetTableNamingDefault(): void
     {
@@ -31,7 +31,7 @@ class MetadataSchemaConveyorTest extends BaseConveyorTest
         $this->assertSame(Entities::TABLE_NAMING_SINGULAR, $conveyor->getTableNaming());
     }
 
-    final public function tableNamingProvider(): array
+    final public static function tableNamingProvider(): array
     {
         return [
             [Entities::TABLE_NAMING_PLURAL],

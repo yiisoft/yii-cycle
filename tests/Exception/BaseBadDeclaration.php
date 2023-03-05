@@ -7,13 +7,13 @@ namespace Yiisoft\Yii\Cycle\Tests\Exception;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 
-abstract class BaseBadDeclarationTest extends TestCase
+abstract class BaseBadDeclaration extends TestCase
 {
     private const RECEIVED_PATTERN = '/%s was received instead\\./';
 
     abstract protected function prepareException($argument): BadDeclarationException;
 
-    public function ArgumentValueProvider(): array
+    public static function ArgumentValueProvider(): array
     {
         return [
             [null, 'Null'],

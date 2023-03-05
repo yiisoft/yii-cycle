@@ -16,9 +16,9 @@ use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Tests\Schema\Conveyor\Stub\FakeGenerator;
 
-abstract class BaseConveyorTest extends TestCase
+abstract class BaseConveyor extends TestCase
 {
-    public function badGeneratorProvider(): array
+    public static function badGeneratorProvider(): array
     {
         return [
             [stdClass::class, '#Instance of ' . stdClass::class . '[\s\w]+instead#'],
