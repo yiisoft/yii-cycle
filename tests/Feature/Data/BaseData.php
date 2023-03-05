@@ -7,6 +7,8 @@ namespace Yiisoft\Yii\Cycle\Tests\Feature\Data;
 use Cycle\Database\Database;
 use Cycle\Database\DatabaseManager;
 use Cycle\Database\DatabaseProviderInterface;
+use Cycle\ORM\EntityManager;
+use Cycle\ORM\EntityManagerInterface;
 use Cycle\ORM\Mapper\StdMapper;
 use Cycle\ORM\ORM;
 use Cycle\ORM\ORMInterface;
@@ -114,6 +116,8 @@ class BaseData extends TestCase
             DatabaseProviderInterface::class, DatabaseManager::class =>
                 $this->dbal ??= (new DbalFactory($this->dbalConfig()))($this->container),
             ORMInterface::class, ORM::class, => $this->orm ??= $this->createOrm(),
+            EntityManagerInterface::class, EntityManager::class =>
+                new EntityManager($this->container->get(ORMInterface::class)),
             default => throw new \RuntimeException("Unknown service ID: $id"),
         });
 

@@ -10,7 +10,7 @@ use Yiisoft\Yii\Cycle\Data\Reader\EntityReader;
 /**
  * @covers EntityReader
  */
-class EntityReaderTest extends BaseData
+final class EntityReaderTest extends BaseData
 {
     /**
      * Test {@see EntityReader::readOne()}
