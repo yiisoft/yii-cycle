@@ -8,7 +8,7 @@ use Yiisoft\Data\Reader\Sort;
 use Yiisoft\Yii\Cycle\Data\Reader\EntityReader;
 
 /**
- * @covers EntityReader
+ * @covers \Yiisoft\Yii\Cycle\Data\Reader\EntityReader
  */
 final class EntityReaderTest extends BaseData
 {

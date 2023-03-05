@@ -9,7 +9,7 @@ use Yiisoft\Yii\Cycle\Data\Reader\EntityReader;
 use Yiisoft\Yii\Cycle\Data\Writer\EntityWriter;
 
 /**
- * @covers EntityWriter
+ * @covers \Yiisoft\Yii\Cycle\Data\Writer\EntityWriter
  */
 final class EntityWriterTest extends BaseData
 {
