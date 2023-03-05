@@ -36,7 +36,7 @@ return [
                 'sqlite' => new \Cycle\Database\Config\SQLiteDriverConfig(
                     connection: new \Cycle\Database\Config\SQLite\DsnConnectionConfig(
                         // Lee https://www.php.net/manual/pdo.construct.php, para la sintaxis de conexión DSN.
-                        database: 'sqlite:runtime/database.db'
+                        dsn: 'sqlite:runtime/database.db'
                     )
                 ),
             ],
