@@ -39,7 +39,7 @@ final class EntityReaderTest extends BaseData
 
         $result = $reader->read();
         self::assertEquals(
-            \array_map(static fn(array $data): \stdClass => (object) $data, self::FIXTURES_USER),
+            \array_map(static fn (array $data): \stdClass => (object) $data, self::FIXTURES_USER),
             $result,
         );
     }
@@ -59,7 +59,7 @@ final class EntityReaderTest extends BaseData
 
         $result = $reader->read();
         self::assertEquals(
-            \array_map(static fn(array $data): object => (object) $data, \array_reverse(self::FIXTURES_USER)),
+            \array_map(static fn (array $data): object => (object) $data, \array_reverse(self::FIXTURES_USER)),
             $result,
         );
         self::assertSame('-id', $reader->getSort()->getOrderAsString());

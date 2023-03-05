@@ -112,7 +112,7 @@ class BaseData extends TestCase
             CycleDynamicFactory::class => &$factory,
             Injector::class => &$injector,
             SchemaInterface::class => $this->createSchema(),
-        ], fn(string $id) => match ($id) {
+        ], fn (string $id) => match ($id) {
             DatabaseProviderInterface::class, DatabaseManager::class =>
                 $this->dbal ??= (new DbalFactory($this->dbalConfig()))($this->container),
             ORMInterface::class, ORM::class, => $this->orm ??= $this->createOrm(),
@@ -155,14 +155,14 @@ class BaseData extends TestCase
                     // property => column
                     'id' => 'id',
                     'email' => 'email',
-                    'balance' => 'balance'
+                    'balance' => 'balance',
                 ],
                 SchemaInterface::TYPECAST => [
                     'id' => 'int',
-                    'balance' => 'float'
+                    'balance' => 'float',
                 ],
-                SchemaInterface::RELATIONS => []
-            ]
+                SchemaInterface::RELATIONS => [],
+            ],
         ]);
     }
 }
