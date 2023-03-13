@@ -22,9 +22,9 @@
     "require": {
         "php": "^8.0",
         "cycle/annotated": "^3.2.1",
-        "cycle/migrations": "^3.1.1",
+        "cycle/migrations": "^4.0.0",
         "cycle/orm": "^2.2.2",
-        "cycle/schema-migrations-generator": "^2.0",
+        "cycle/schema-migrations-generator": "^2.1",
         "cycle/schema-renderer": "^1.2",
         "psr/event-dispatcher": "^1.0",
         "psr/simple-cache": "^2.0|^3.0",
