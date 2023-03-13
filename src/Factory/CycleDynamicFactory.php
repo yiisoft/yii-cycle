@@ -16,7 +16,7 @@ final class CycleDynamicFactory implements FactoryInterface
         $this->injector = $injector;
     }
 
-    public function make(string $alias, array $parameters = [])
+    public function make(string $alias, array $parameters = []): mixed
     {
         /** @psalm-var class-string $alias */
         return $this->injector->make($alias, $parameters);
