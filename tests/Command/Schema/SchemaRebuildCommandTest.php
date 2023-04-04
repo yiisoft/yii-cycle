@@ -11,7 +11,7 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Schema\SchemaRebuildCommand;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
-class SchemaRebuildCommandTest extends TestCase
+final class SchemaRebuildCommandTest extends TestCase
 {
     public function testExecute()
     {
