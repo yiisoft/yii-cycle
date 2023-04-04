@@ -14,7 +14,7 @@ use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Schema\SchemaCommand;
 
-class SchemaCommandTest extends TestCase
+final class SchemaCommandTest extends TestCase
 {
     private OutputInterface $output;
 
