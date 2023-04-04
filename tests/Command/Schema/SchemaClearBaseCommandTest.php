@@ -13,7 +13,7 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Schema\SchemaClearCommand;
 use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
-class SchemaClearBaseCommandTest extends TestCase
+final class SchemaClearBaseCommandTest extends TestCase
 {
     public function testExecute(): void
     {
