@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace Yiisoft\Yii\Cycle\Tests\Command\Schema;
 
 use PHPUnit\Framework\TestCase;
@@ -24,7 +26,7 @@ final class SchemaRebuildCommandTest extends TestCase
 
         $command = new SchemaRebuildCommand($promise);
 
-        $code = $command->run(new ArrayInput([]), new BufferedOutput);
+        $code = $command->run(new ArrayInput([]), new BufferedOutput());
 
         $this->assertEquals(ExitCode::OK, $code);
     }

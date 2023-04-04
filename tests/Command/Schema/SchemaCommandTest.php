@@ -20,7 +20,7 @@ final class SchemaCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->output = new class extends Output {
+        $this->output = new class () extends Output {
             private string $buffer = '';
 
             protected function doWrite(string $message, bool $newline): void
