@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Data\Reader\Processor;
+namespace Yiisoft\Yii\Cycle\Data\Reader\Filter;
 
-final class GreaterThan extends CompareProcessor
+final class GreaterThan extends Compare
 {
     public function getOperator(): string
     {

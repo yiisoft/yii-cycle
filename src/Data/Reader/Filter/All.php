@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Data\Reader\Processor;
+namespace Yiisoft\Yii\Cycle\Data\Reader\Filter;
 
 use Cycle\ORM\Select\QueryBuilder;
 
-final class All extends GroupProcessor
+final class All extends Group
 {
     public function getOperator(): string
     {
@@ -24,7 +24,7 @@ final class All extends GroupProcessor
                     if ($handler === null) {
                         throw new \RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
                     }
-                    /* @var $handler QueryBuilderProcessor */
+                    /* @var $handler QueryBuilderFilter */
                     $select->where(...$handler->getAsWhereArguments($subFilter, $handlers));
                 }
             },
