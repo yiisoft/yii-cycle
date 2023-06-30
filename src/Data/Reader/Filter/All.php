@@ -6,7 +6,7 @@ namespace Yiisoft\Yii\Cycle\Data\Reader\Filter;
 
 use Cycle\ORM\Select\QueryBuilder;
 
-final class All extends Group
+final class AllHandler extends Group
 {
     public function getOperator(): string
     {
