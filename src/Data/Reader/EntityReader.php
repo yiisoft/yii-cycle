@@ -18,7 +18,6 @@ use Yiisoft\Data\Reader\Sort;
 use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCollection;
 use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCount;
 use Yiisoft\Yii\Cycle\Data\Reader\FilterHandler\QueryBuilderFilterHandler;
-use Yiisoft\Yii\Cycle\Data\Reader\Processor\QueryBuilderProcessor;
 
 /**
  * @template TKey as array-key
@@ -36,7 +35,7 @@ final class EntityReader implements DataReaderInterface
     private CachedCount $countCache;
     private CachedCollection $itemsCache;
     private CachedCollection $oneItemCache;
-    /** @var FilterHandlerInterface[]|QueryBuilderProcessor[] */
+    /** @var FilterHandlerInterface[]|QueryBuilderFilterHandler[] */
     private array $filterHandlers = [];
 
     public function __construct(Select|SelectQuery $query)
