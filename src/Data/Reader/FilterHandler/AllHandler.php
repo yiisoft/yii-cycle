@@ -2,15 +2,16 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Data\Reader\Processor;
+namespace Yiisoft\Yii\Cycle\Data\Reader\FilterHandler;
 
 use Cycle\ORM\Select\QueryBuilder;
+use Yiisoft\Data\Reader\Filter\All;
 
-final class Any extends GroupProcessor
+final class AllHandler extends GroupHandler
 {
     public function getOperator(): string
     {
-        return 'or';
+        return All::getOperator();
     }
 
     public function getAsWhereArguments(array $arguments, array $handlers): array
@@ -24,8 +25,8 @@ final class Any extends GroupProcessor
                     if ($handler === null) {
                         throw new \RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
                     }
-                    /* @var $handler QueryBuilderProcessor */
-                    $select->orWhere(...$handler->getAsWhereArguments($subFilter, $handlers));
+                    /* @var $handler QueryBuilderFilterHandler */
+                    $select->where(...$handler->getAsWhereArguments($subFilter, $handlers));
                 }
             },
         ];

@@ -2,16 +2,17 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Data\Reader\Processor;
+namespace Yiisoft\Yii\Cycle\Data\Reader\FilterHandler;
 
 use InvalidArgumentException;
+use Yiisoft\Data\Reader\Filter\Like;
 use Yiisoft\Data\Reader\FilterHandlerInterface;
 
-final class Like implements QueryBuilderProcessor, FilterHandlerInterface
+final class LikeHandler implements QueryBuilderFilterHandler, FilterHandlerInterface
 {
     public function getOperator(): string
     {
-        return 'like';
+        return Like::getOperator();
     }
 
     public function getAsWhereArguments(array $arguments, array $handlers): array
@@ -22,6 +23,6 @@ final class Like implements QueryBuilderProcessor, FilterHandlerInterface
 
         [$field, $value] = $arguments;
 
-        return [$field, $this->getOperator(), $value];
+        return [$field, 'like', $value];
     }
 }

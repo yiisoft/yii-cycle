@@ -2,13 +2,15 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Data\Reader\Processor;
+namespace Yiisoft\Yii\Cycle\Data\Reader\FilterHandler;
 
 use InvalidArgumentException;
 use Yiisoft\Data\Reader\FilterHandlerInterface;
 
-abstract class CompareProcessor implements QueryBuilderProcessor, FilterHandlerInterface
+abstract class CompareHandler implements QueryBuilderFilterHandler, FilterHandlerInterface
 {
+    abstract protected function getSymbol(): string;
+
     protected function validateArguments(array $arguments): void
     {
         if (count($arguments) !== 2) {
@@ -21,6 +23,6 @@ abstract class CompareProcessor implements QueryBuilderProcessor, FilterHandlerI
         $this->validateArguments($arguments);
         [$field, $value] = $arguments;
 
-        return [$field, $this->getOperator(), $value];
+        return [$field, $this->getSymbol(), $value];
     }
 }

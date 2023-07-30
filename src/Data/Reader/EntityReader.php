@@ -17,6 +17,7 @@ use Yiisoft\Data\Reader\FilterInterface;
 use Yiisoft\Data\Reader\Sort;
 use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCollection;
 use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCount;
+use Yiisoft\Yii\Cycle\Data\Reader\FilterHandler\QueryBuilderFilterHandler;
 use Yiisoft\Yii\Cycle\Data\Reader\Processor\QueryBuilderProcessor;
 
 /**
@@ -45,15 +46,15 @@ final class EntityReader implements DataReaderInterface
         $this->itemsCache = new CachedCollection();
         $this->oneItemCache = new CachedCollection();
         $this->setFilterHandlers(
-            new Processor\All(),
-            new Processor\Any(),
-            new Processor\Equals(),
-            new Processor\GreaterThan(),
-            new Processor\GreaterThanOrEqual(),
-            new Processor\In(),
-            new Processor\LessThan(),
-            new Processor\LessThanOrEqual(),
-            new Processor\Like(),
+            new FilterHandler\AllHandler(),
+            new FilterHandler\AnyHandler(),
+            new FilterHandler\EqualsHandler(),
+            new FilterHandler\GreaterThanHandler(),
+            new FilterHandler\GreaterThanOrEqualHandler(),
+            new FilterHandler\InHandler(),
+            new FilterHandler\LessThanHandler(),
+            new FilterHandler\LessThanOrEqualHandler(),
+            new FilterHandler\LikeHandler(),
             // new Processor\Not()
         );
     }
@@ -181,7 +182,7 @@ final class EntityReader implements DataReaderInterface
     {
         $handlers = [];
         foreach ($filterHandlers as $filterHandler) {
-            if ($filterHandler instanceof QueryBuilderProcessor) {
+            if ($filterHandler instanceof QueryBuilderFilterHandler) {
                 $handlers[$filterHandler->getOperator()] = $filterHandler;
             }
         }
@@ -216,7 +217,7 @@ final class EntityReader implements DataReaderInterface
             if (!array_key_exists($operation, $this->filterHandlers)) {
                 throw new RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
             }
-            /** @psalm-var QueryBuilderProcessor $handler */
+            /** @var QueryBuilderFilterHandler $handler */
             $handler = $this->filterHandlers[$operation];
             $select->where(...$handler->getAsWhereArguments($arguments, $this->filterHandlers));
         };
