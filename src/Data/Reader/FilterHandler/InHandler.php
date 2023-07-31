@@ -8,6 +8,7 @@ use Cycle\Database\Injection\Parameter;
 use InvalidArgumentException;
 use Yiisoft\Data\Reader\FilterHandlerInterface;
 use Yiisoft\Data\Reader\Filter\In;
+use Yiisoft\Yii\Cycle\Data\Reader\QueryBuilderFilterHandler;
 
 final class InHandler implements QueryBuilderFilterHandler, FilterHandlerInterface
 {

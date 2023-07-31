@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Cycle\Data\Reader\FilterHandler;
 
 use Cycle\ORM\Select\QueryBuilder;
 use Yiisoft\Data\Reader\Filter\All;
+use Yiisoft\Yii\Cycle\Data\Reader\QueryBuilderFilterHandler;
 
 final class AllHandler extends GroupHandler
 {
@@ -25,7 +26,7 @@ final class AllHandler extends GroupHandler
                     if ($handler === null) {
                         throw new \RuntimeException(sprintf('Filter operator "%s" is not supported.', $operation));
                     }
-                    /* @var $handler QueryBuilderFilterHandler */
+                    /** @var QueryBuilderFilterHandler $handler */
                     $select->where(...$handler->getAsWhereArguments($subFilter, $handlers));
                 }
             },

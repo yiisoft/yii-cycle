@@ -6,6 +6,7 @@ namespace Yiisoft\Yii\Cycle\Data\Reader\FilterHandler;
 
 use InvalidArgumentException;
 use Yiisoft\Data\Reader\FilterHandlerInterface;
+use Yiisoft\Yii\Cycle\Data\Reader\QueryBuilderFilterHandler;
 
 abstract class CompareHandler implements QueryBuilderFilterHandler, FilterHandlerInterface
 {

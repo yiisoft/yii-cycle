@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Cycle\Data\Reader\FilterHandler;
 use InvalidArgumentException;
 use Yiisoft\Data\Reader\Filter\Like;
 use Yiisoft\Data\Reader\FilterHandlerInterface;
+use Yiisoft\Yii\Cycle\Data\Reader\QueryBuilderFilterHandler;
 
 final class LikeHandler implements QueryBuilderFilterHandler, FilterHandlerInterface
 {

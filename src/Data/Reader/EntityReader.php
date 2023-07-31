@@ -17,7 +17,6 @@ use Yiisoft\Data\Reader\FilterInterface;
 use Yiisoft\Data\Reader\Sort;
 use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCollection;
 use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCount;
-use Yiisoft\Yii\Cycle\Data\Reader\FilterHandler\QueryBuilderFilterHandler;
 
 /**
  * @template TKey as array-key

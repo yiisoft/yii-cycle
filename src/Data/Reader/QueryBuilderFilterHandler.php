@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Data\Reader\FilterHandler;
+namespace Yiisoft\Yii\Cycle\Data\Reader;
 
 interface QueryBuilderFilterHandler
 {
