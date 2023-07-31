@@ -2,17 +2,18 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Data\Reader\Processor;
+namespace Yiisoft\Yii\Cycle\Data\Reader\FilterHandler;
 
-use Cycle\Database\Injection\Parameter;
 use InvalidArgumentException;
+use Yiisoft\Data\Reader\Filter\Like;
 use Yiisoft\Data\Reader\FilterHandlerInterface;
+use Yiisoft\Yii\Cycle\Data\Reader\QueryBuilderFilterHandler;
 
-final class In implements QueryBuilderProcessor, FilterHandlerInterface
+final class LikeHandler implements QueryBuilderFilterHandler, FilterHandlerInterface
 {
     public function getOperator(): string
     {
-        return 'in';
+        return Like::getOperator();
     }
 
     public function getAsWhereArguments(array $arguments, array $handlers): array
@@ -23,6 +24,6 @@ final class In implements QueryBuilderProcessor, FilterHandlerInterface
 
         [$field, $value] = $arguments;
 
-        return [$field, $this->getOperator(), new Parameter($value)];
+        return [$field, 'like', $value];
     }
 }
