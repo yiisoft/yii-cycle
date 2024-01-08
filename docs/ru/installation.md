@@ -14,6 +14,7 @@ composer require yiisoft/yii-cycle "2.0.x-dev"
 ```php
 <?php
 use Cycle\Schema\Generator;
+use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
 
 return [
     // Общий конфиг Cycle
@@ -78,11 +79,11 @@ return [
         /**
          * Реализация интерфейса {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface},
          * определяющая источник данных о сущностях:
-         *  - `AnnotatedSchemaConveyor` - парсинг только аннотаций;
          *  - `AttributedSchemaConveyor` - парсинг только атрибутов (в том числе и на PHP 7.4);
+         *  - `AnnotatedSchemaConveyor` - парсинг только аннотаций;
          *  - `CompositeSchemaConveyor` - парсинг и аннотаций, и атрибутов.
          */
-        'conveyor-class' => CompositedSchemaConveyor::class,
+        'conveyor-class' => AttributedSchemaConveyor::class,
     ],
 ];
 ```

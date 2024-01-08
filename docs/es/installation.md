@@ -13,6 +13,7 @@ Si utiliza `yiisoft/config`, la configuración de `yisoft/yii-cycle` se debe esp
 ```php
 <?php
 use Cycle\Schema\Generator;
+use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
 
 return [
     // Configuración de Cycle común
@@ -76,9 +77,9 @@ return [
         /**
          * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface} Implementación del class name.
          * Esa implementación define la fuente de datos de la entidad: anotaciones, atributos o ambos.
-         * Pueden ser `AnnotatedSchemaConveyor`, `AttributedSchemaConveyor` o `CompositeSchemaConveyor`
+         * Pueden ser `AttributedSchemaConveyor`, `AnnotatedSchemaConveyor` o `CompositeSchemaConveyor`
          */
-        'conveyor-class' => CompositedSchemaConveyor::class,
+        'conveyor-class' => AttributedSchemaConveyor::class,
     ],
 ];
 ```
