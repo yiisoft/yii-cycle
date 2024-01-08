@@ -7,12 +7,12 @@ namespace Yiisoft\Yii\Cycle\Tests\Command\Schema;
 use Cycle\ORM\SchemaInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
-use Symfony\Component\Console\Output\Output;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Schema\SchemaCommand;
+use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeOutput;
 
 final class SchemaCommandTest extends TestCase
 {
@@ -20,23 +20,7 @@ final class SchemaCommandTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->output = new class () extends Output {
-            private string $buffer = '';
-
-            protected function doWrite(string $message, bool $newline): void
-            {
-                $this->buffer .= $message;
-
-                if ($newline) {
-                    $this->buffer .= \PHP_EOL;
-                }
-            }
-
-            public function getBuffer(): string
-            {
-                return $this->buffer;
-            }
-        };
+        $this->output = new FakeOutput();
     }
 
     public function testExecuteUndefinedRoles(): void
@@ -59,13 +43,7 @@ final class SchemaCommandTest extends TestCase
         $schema = $this->getMockBuilder(SchemaInterface::class)->getMock();
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
         $schema->expects($this->any())->method('define')->willReturnCallback(
-            function (string $role, int $property) {
-                if ($property === SchemaInterface::ROLE) {
-                    return $role;
-                }
-
-                return null;
-            }
+            fn (string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null
         );
 
         $container = new SimpleContainer([SchemaInterface::class => $schema]);
