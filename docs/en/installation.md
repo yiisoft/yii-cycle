@@ -13,6 +13,7 @@ If you use Yii with `composer-config-plugin`, Yii-Cycle settings could be specif
 ```php
 <?php
 use Cycle\Schema\Generator;
+use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
 
 return [
     // Common Cycle config
@@ -76,9 +77,9 @@ return [
         /**
          * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface} implementation class name.
          * That implementation defines the entity data source: annotations, attributes or both.
-         * Can be `AnnotatedSchemaConveyor`, `AttributedSchemaConveyor` or `CompositeSchemaConveyor`
+         * Can be `AttributedSchemaConveyor`, `AnnotatedSchemaConveyor` or `CompositeSchemaConveyor`
          */
-        'conveyor-class' => CompositedSchemaConveyor::class,
+        'conveyor-class' => AttributedSchemaConveyor::class,
     ],
 ];
 ```
