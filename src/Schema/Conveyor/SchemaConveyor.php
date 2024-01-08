@@ -23,6 +23,7 @@ class SchemaConveyor implements SchemaConveyorInterface
             Generator\RenderTables::class,      // declare table schemas
             Generator\RenderRelations::class,   // declare relation keys and indexes
             Generator\RenderModifiers::class,   // render all schema modifiers
+            Generator\ForeignKeys::class,       // define foreign key constraints
         ],
         self::STAGE_USERLAND => [],
         self::STAGE_POSTPROCESS => [
