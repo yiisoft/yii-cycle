@@ -2,11 +2,12 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Tests\Feature\Data;
+namespace Yiisoft\Yii\Cycle\Tests\Feature\Data\Writer;
 
 use Cycle\ORM\EntityManagerInterface;
 use Yiisoft\Yii\Cycle\Data\Reader\EntityReader;
 use Yiisoft\Yii\Cycle\Data\Writer\EntityWriter;
+use Yiisoft\Yii\Cycle\Tests\Feature\Data\BaseData;
 
 /**
  * @covers \Yiisoft\Yii\Cycle\Data\Writer\EntityWriter
