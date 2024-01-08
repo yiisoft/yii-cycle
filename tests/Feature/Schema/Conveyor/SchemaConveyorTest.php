@@ -4,6 +4,17 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Feature\Schema\Conveyor;
 
+use Cycle\Annotated\MergeIndexes;
+use Cycle\Schema\Generator\ForeignKeys;
+use Cycle\Schema\Generator\GenerateModifiers;
+use Cycle\Schema\Generator\GenerateRelations;
+use Cycle\Schema\Generator\GenerateTypecast;
+use Cycle\Schema\Generator\RenderModifiers;
+use Cycle\Schema\Generator\RenderRelations;
+use Cycle\Schema\Generator\RenderTables;
+use Cycle\Schema\Generator\ResetTables;
+use Cycle\Schema\Generator\SyncTables;
+use Cycle\Schema\Generator\ValidateEntities;
 use Cycle\Schema\GeneratorInterface;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyor;
 use Yiisoft\Yii\Cycle\Tests\Feature\Schema\Conveyor\Stub\FakeGenerator;
@@ -17,14 +28,15 @@ class SchemaConveyorTest extends BaseConveyor
         $generators = $this->getGeneratorClassList($conveyor);
 
         $this->assertSame([
-            'Cycle\Schema\Generator\ResetTables',
-            'Cycle\Schema\Generator\GenerateRelations',
-            'Cycle\Schema\Generator\GenerateModifiers',
-            'Cycle\Schema\Generator\ValidateEntities',
-            'Cycle\Schema\Generator\RenderTables',
-            'Cycle\Schema\Generator\RenderRelations',
-            'Cycle\Schema\Generator\RenderModifiers',
-            'Cycle\Schema\Generator\GenerateTypecast',
+            ResetTables::class,
+            GenerateRelations::class,
+            GenerateModifiers::class,
+            ValidateEntities::class,
+            RenderTables::class,
+            RenderRelations::class,
+            RenderModifiers::class,
+            ForeignKeys::class,
+            GenerateTypecast::class,
         ], $generators);
     }
 
@@ -43,7 +55,7 @@ class SchemaConveyorTest extends BaseConveyor
         $conveyor->addGenerator($conveyor::STAGE_USERLAND, static function () {
             return new FakeGenerator('FakeGenerator-from-closure');
         });
-        $conveyor->addGenerator($conveyor::STAGE_RENDER, \Cycle\Schema\Generator\SyncTables::class);
+        $conveyor->addGenerator($conveyor::STAGE_RENDER, SyncTables::class);
         $conveyor->addGenerator($conveyor::STAGE_INDEX, new FakeGenerator('FakeGenerator-object'));
 
         // get generators list
@@ -54,17 +66,18 @@ class SchemaConveyorTest extends BaseConveyor
         );
 
         $this->assertSame([
-            'Cycle\Schema\Generator\ResetTables',
+            ResetTables::class,
             'FakeGenerator-object',
-            'Cycle\Schema\Generator\GenerateRelations',
-            'Cycle\Schema\Generator\GenerateModifiers',
-            'Cycle\Schema\Generator\ValidateEntities',
-            'Cycle\Schema\Generator\RenderTables',
-            'Cycle\Schema\Generator\RenderRelations',
-            'Cycle\Schema\Generator\RenderModifiers',
-            \Cycle\Schema\Generator\SyncTables::class,
+            GenerateRelations::class,
+            GenerateModifiers::class,
+            ValidateEntities::class,
+            RenderTables::class,
+            RenderRelations::class,
+            RenderModifiers::class,
+            ForeignKeys::class,
+            SyncTables::class,
             'FakeGenerator-from-closure',
-            'Cycle\Schema\Generator\GenerateTypecast',
+            GenerateTypecast::class,
             'FakeGenerator-from-invocable-object',
         ], $generators);
     }
@@ -72,26 +85,27 @@ class SchemaConveyorTest extends BaseConveyor
     public function testAddCustomGeneratorObject(): void
     {
         $conveyor = $this->createConveyor();
-        $conveyor->addGenerator($conveyor::STAGE_POSTPROCESS, \Cycle\Schema\Generator\GenerateTypecast::class);
-        $conveyor->addGenerator($conveyor::STAGE_USERLAND, \Cycle\Schema\Generator\RenderTables::class);
-        $conveyor->addGenerator($conveyor::STAGE_RENDER, \Cycle\Schema\Generator\SyncTables::class);
-        $conveyor->addGenerator($conveyor::STAGE_INDEX, \Cycle\Annotated\MergeIndexes::class);
+        $conveyor->addGenerator($conveyor::STAGE_POSTPROCESS, GenerateTypecast::class);
+        $conveyor->addGenerator($conveyor::STAGE_USERLAND, RenderTables::class);
+        $conveyor->addGenerator($conveyor::STAGE_RENDER, SyncTables::class);
+        $conveyor->addGenerator($conveyor::STAGE_INDEX, MergeIndexes::class);
 
         $generators = $this->getGeneratorClassList($conveyor);
 
         $this->assertSame([
-            'Cycle\Schema\Generator\ResetTables',
-            \Cycle\Annotated\MergeIndexes::class,
-            'Cycle\Schema\Generator\GenerateRelations',
-            'Cycle\Schema\Generator\GenerateModifiers',
-            'Cycle\Schema\Generator\ValidateEntities',
-            'Cycle\Schema\Generator\RenderTables',
-            'Cycle\Schema\Generator\RenderRelations',
-            'Cycle\Schema\Generator\RenderModifiers',
-            \Cycle\Schema\Generator\SyncTables::class,
-            \Cycle\Schema\Generator\RenderTables::class,
-            'Cycle\Schema\Generator\GenerateTypecast',
-            \Cycle\Schema\Generator\GenerateTypecast::class,
+            ResetTables::class,
+            MergeIndexes::class,
+            GenerateRelations::class,
+            GenerateModifiers::class,
+            ValidateEntities::class,
+            RenderTables::class,
+            RenderRelations::class,
+            RenderModifiers::class,
+            ForeignKeys::class,
+            SyncTables::class,
+            RenderTables::class,
+            GenerateTypecast::class,
+            GenerateTypecast::class,
         ], $generators);
     }
 

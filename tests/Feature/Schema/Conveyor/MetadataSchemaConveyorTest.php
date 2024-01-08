@@ -9,6 +9,7 @@ use Cycle\Annotated\Entities;
 use Cycle\Annotated\MergeColumns;
 use Cycle\Annotated\MergeIndexes;
 use Cycle\Annotated\TableInheritance;
+use Cycle\Schema\Generator\ForeignKeys;
 use Cycle\Schema\Generator\GenerateModifiers;
 use Cycle\Schema\Generator\GenerateRelations;
 use Cycle\Schema\Generator\GenerateTypecast;
@@ -70,6 +71,7 @@ class MetadataSchemaConveyorTest extends BaseConveyor
             RenderTables::class,
             RenderRelations::class,
             RenderModifiers::class,
+            ForeignKeys::class,
             MergeIndexes::class,
             GenerateTypecast::class,
         ], $generators);
@@ -78,7 +80,7 @@ class MetadataSchemaConveyorTest extends BaseConveyor
     final public function testAddCustomGenerator(): void
     {
         $conveyor = $this->createConveyor();
-        $conveyor->addGenerator($conveyor::STAGE_USERLAND, \Cycle\Schema\Generator\SyncTables::class);
+        $conveyor->addGenerator($conveyor::STAGE_USERLAND, SyncTables::class);
 
         $generators = $this->getGeneratorClassList($conveyor);
 
@@ -94,6 +96,7 @@ class MetadataSchemaConveyorTest extends BaseConveyor
             RenderTables::class,
             RenderRelations::class,
             RenderModifiers::class,
+            ForeignKeys::class,
             MergeIndexes::class,
             SyncTables::class,
             GenerateTypecast::class,
@@ -129,6 +132,7 @@ class MetadataSchemaConveyorTest extends BaseConveyor
             RenderTables::class,
             RenderRelations::class,
             RenderModifiers::class,
+            ForeignKeys::class,
             MergeIndexes::class,
             GenerateTypecast::class,
         ], $generators);
