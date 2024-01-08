@@ -68,9 +68,9 @@ abstract class BaseOrmFactory extends TestCase
     protected function makeFactory(array $collectionsConfig = []): \Cycle\ORM\FactoryInterface
     {
         return (new OrmFactory($collectionsConfig))(
-            $this->container->get(\Cycle\Database\DatabaseManager::class),
-            $this->container->get(\Spiral\Core\FactoryInterface::class),
-            $this->container->get(\Yiisoft\Injector\Injector::class),
+            $this->container->get(DatabaseManager::class),
+            $this->container->get(FactoryInterface::class),
+            $this->container->get(Injector::class),
         );
     }
 }
