@@ -11,34 +11,30 @@ use Yiisoft\Yii\Cycle\Data\Reader\FilterHandler;
 use Yiisoft\Yii\Cycle\Tests\Feature\Data\BaseData;
 
 /**
- * @covers \Yiisoft\Yii\Cycle\Data\Reader\EntityReader
+ * @coversDefaultClass \Yiisoft\Yii\Cycle\Data\Reader\EntityReader
  */
 final class EntityReaderTest extends BaseData
 {
     /**
-     * Test {@see EntityReader::readOne()}
+     * @covers ::readOne
      */
     public function testReadOne(): void
     {
         $this->fillFixtures();
 
-        $reader = new EntityReader(
-            $this->select('user'),
-        );
+        $reader = new EntityReader($this->select('user'));
 
         self::assertEquals(self::FIXTURES_USER[0], (array)$reader->readOne());
     }
 
     /**
-     * Test {@see EntityReader::read()}
+     * @covers ::read
      */
     public function testRead(): void
     {
         $this->fillFixtures();
 
-        $reader = new EntityReader(
-            $this->select('user'),
-        );
+        $reader = new EntityReader($this->select('user'));
 
         $result = $reader->read();
         self::assertEquals(
@@ -48,7 +44,7 @@ final class EntityReaderTest extends BaseData
     }
 
     /**
-     * Test {@see EntityReader::withSort()}
+     * @covers ::withSort
      */
     public function testWithSort(): void
     {
@@ -69,21 +65,20 @@ final class EntityReaderTest extends BaseData
     }
 
     /**
-     * Test {@see EntityReader::count()}
+     * @covers ::count
      */
     public function testCount(): void
     {
         $this->fillFixtures();
 
-        $reader = new EntityReader(
-            $this->select('user'),
-        );
+        $reader = new EntityReader($this->select('user'));
 
         self::assertSame(count(self::FIXTURES_USER), $reader->count());
     }
 
     /**
-     * Test {@see EntityReader::count()} with limit. The limit option mustn't affect the count result.
+     * @covers ::count
+     * The limit option mustn't affect the count result.
      */
     public function testCountWithLimit(): void
     {
@@ -97,7 +92,7 @@ final class EntityReaderTest extends BaseData
     }
 
     /**
-     * Test {@see EntityReader::withLimit()}
+     * @covers ::withLimit
      */
     public function testLimit(): void
     {
@@ -115,7 +110,7 @@ final class EntityReaderTest extends BaseData
     }
 
     /**
-     * Test {@see EntityReader::withLimit()}
+     * @covers ::withLimit
      */
     public function testLimitException(): void
     {
@@ -124,7 +119,8 @@ final class EntityReaderTest extends BaseData
     }
 
     /**
-     * Test {@see EntityReader::withLimit()} and {@see EntityReader::withOffset()}
+     * @covers ::withLimit
+     * @covers ::withOffset
      */
     public function testLimitOffset(): void
     {
@@ -142,7 +138,7 @@ final class EntityReaderTest extends BaseData
     }
 
     /**
-     * Test {@see EntityReader::withFilter()}
+     * @covers ::withFilter
      */
     public function testFilter(): void
     {
@@ -154,7 +150,7 @@ final class EntityReaderTest extends BaseData
     }
 
     /**
-     * Test {@see EntityReader::withFilterHandlers()}
+     * @covers ::withFilterHandlers
      */
     public function testFilterHandlers(): void
     {
@@ -181,6 +177,9 @@ final class EntityReaderTest extends BaseData
         self::assertEquals($default + ['custom' => $custom], $ref->getValue($reader));
     }
 
+    /**
+     * @covers ::getSql
+     */
     public function testGetSql(): void
     {
         $expected = 'SELECT "user"."id" AS "c0", "user"."email" AS "c1", "user"."balance" AS "c2"
