@@ -15,7 +15,6 @@ use function is_string;
 
 final class RepositoryContainer implements ContainerInterface
 {
-    private ContainerInterface $rootContainer;
     private ORMInterface $orm;
 
     private bool $rolesBuilt = false;
@@ -25,7 +24,6 @@ final class RepositoryContainer implements ContainerInterface
 
     public function __construct(ContainerInterface $rootContainer)
     {
-        $this->rootContainer = $rootContainer;
         $this->orm = $rootContainer->get(ORMInterface::class);
     }
 

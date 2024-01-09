@@ -35,7 +35,6 @@ final class DownCommand extends BaseMigrationCommand
         // check any executed migration
         foreach (array_reverse($migrations) as $migration) {
             if ($migration->getState()->getStatus() === State::STATUS_EXECUTED) {
-                $exist = true;
                 break;
             }
         }
@@ -62,7 +61,7 @@ final class DownCommand extends BaseMigrationCommand
 
         $this->eventDispatcher->dispatch(new BeforeMigrate());
         try {
-            $migrator->rollback();
+            $migration = $migrator->rollback();
             if (!$migration instanceof MigrationInterface) {
                 throw new \Exception('Migration not found');
             }

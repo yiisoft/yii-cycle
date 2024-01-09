@@ -63,10 +63,10 @@ final class GenerateCommand extends BaseMigrationCommand
                 '<info>If you want to create new empty migration, use <fg=yellow>migrate/create</></info>'
             );
 
-            /** @var QuestionHelper $qaHelper */
-            $qaHelper = $this->getHelper('question');
-
             if ($input->isInteractive() && $input instanceof StreamableInputInterface) {
+                /** @var QuestionHelper $qaHelper */
+                $qaHelper = $this->getHelper('question');
+
                 $question = new ConfirmationQuestion('Would you like to create empty migration right now? (Y/n)', true);
                 $answer = $qaHelper->ask($input, $output, $question);
                 if (!$answer) {
