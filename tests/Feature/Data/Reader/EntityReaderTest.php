@@ -174,6 +174,7 @@ final class EntityReaderTest extends BaseData
 
         $reader = new EntityReader($this->select('user'));
         $ref = new \ReflectionProperty(EntityReader::class, 'filterHandlers');
+        $ref->setAccessible(true);
 
         self::assertEquals($default, $ref->getValue($reader));
         $reader = $reader->withFilterHandlers($custom);
