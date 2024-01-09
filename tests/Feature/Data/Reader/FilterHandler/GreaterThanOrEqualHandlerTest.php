@@ -15,7 +15,7 @@ final class GreaterThanOrEqualHandlerTest extends BaseData
         $this->fillFixtures();
 
         $reader = (new EntityReader($this->select('user')))
-            ->withFilter((new GreaterThanOrEqual('balance', 500)));
+            ->withFilter(new GreaterThanOrEqual('balance', 500));
 
         $this->assertEquals([(object)self::FIXTURES_USER[3]], $reader->read());
     }

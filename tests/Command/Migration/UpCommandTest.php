@@ -69,8 +69,10 @@ final class UpCommandTest extends TestCase
                 'databases' => ['default' => ['connection' => 'sqlite']],
                 'connections' => [
                     'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
-                ]
-            ])), $repository);
+                ],
+            ])),
+            $repository
+        );
         $migrator->configure();
 
         $output = new FakeOutput();

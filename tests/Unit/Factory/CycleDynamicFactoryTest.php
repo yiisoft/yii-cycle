@@ -16,7 +16,7 @@ final class CycleDynamicFactoryTest extends TestCase
     public function testMake(): void
     {
         $factory = new CycleDynamicFactory(new Injector(new SimpleContainer([
-            ConnectionConfig::class => $this->createMock(ConnectionConfig::class)
+            ConnectionConfig::class => $this->createMock(ConnectionConfig::class),
         ])));
 
         $this->assertInstanceOf(

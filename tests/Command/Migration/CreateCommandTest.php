@@ -36,7 +36,8 @@ final class CreateCommandTest extends TestCase
             ->with(
                 'testDatabase_foo',
                 $this->callback(static fn (string $name): bool => \str_contains($name, 'OrmTestDatabase')),
-                $this->callback(static fn (string $name): bool =>
+                $this->callback(
+                    static fn (string $name): bool =>
                     \str_contains($name, 'OrmTestDatabase') &&
                     \str_contains($name, 'namespace Test\\Migration') &&
                     \str_contains($name, 'use Cycle\\Migrations\\Migration') &&

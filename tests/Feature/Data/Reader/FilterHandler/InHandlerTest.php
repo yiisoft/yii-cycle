@@ -14,7 +14,7 @@ final class InHandlerTest extends BaseData
     {
         $this->fillFixtures();
 
-        $reader = (new EntityReader($this->select('user')))->withFilter((new In('id', [2, 3])));
+        $reader = (new EntityReader($this->select('user')))->withFilter(new In('id', [2, 3]));
 
         $this->assertEquals([(object)self::FIXTURES_USER[1], (object)self::FIXTURES_USER[2]], $reader->read());
     }

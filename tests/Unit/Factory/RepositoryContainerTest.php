@@ -26,7 +26,7 @@ final class RepositoryContainerTest extends TestCase
             'foo' => [
                 Schema::ENTITY => FakeEntity::class,
                 Schema::REPOSITORY => FakeRepository::class,
-            ]
+            ],
         ]);
     }
 
@@ -44,7 +44,7 @@ final class RepositoryContainerTest extends TestCase
     public function testGetNotInstantiableClassException(): void
     {
         $container = new RepositoryContainer(new SimpleContainer([
-            ORMInterface::class => $this->createMock(ORMInterface::class)
+            ORMInterface::class => $this->createMock(ORMInterface::class),
         ]));
 
         $this->expectException(NotInstantiableClassException::class);

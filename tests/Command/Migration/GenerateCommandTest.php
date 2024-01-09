@@ -40,8 +40,10 @@ final class GenerateCommandTest extends TestCase
                 'databases' => ['default' => ['connection' => 'sqlite']],
                 'connections' => [
                     'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
-                ]
-            ])), $repository);
+                ],
+            ])),
+            $repository
+        );
         $migrator->configure();
 
         $output = new FakeOutput();
@@ -67,8 +69,10 @@ final class GenerateCommandTest extends TestCase
                 'databases' => ['default' => ['connection' => 'sqlite']],
                 'connections' => [
                     'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
-                ]
-            ])), $repository);
+                ],
+            ])),
+            $repository
+        );
         $migrator->configure();
 
         $output = new FakeOutput();
@@ -109,8 +113,10 @@ final class GenerateCommandTest extends TestCase
                 'databases' => ['default' => ['connection' => 'sqlite']],
                 'connections' => [
                     'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
-                ]
-            ])), $repository);
+                ],
+            ])),
+            $repository
+        );
         $migrator->configure();
 
         $output = new FakeOutput();

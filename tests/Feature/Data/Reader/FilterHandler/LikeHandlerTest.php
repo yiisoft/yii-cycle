@@ -14,7 +14,7 @@ final class LikeHandlerTest extends BaseData
     {
         $this->fillFixtures();
 
-        $reader = (new EntityReader($this->select('user')))->withFilter((new Like('email', 'seed@%')));
+        $reader = (new EntityReader($this->select('user')))->withFilter(new Like('email', 'seed@%'));
 
         $this->assertEquals([(object)self::FIXTURES_USER[2]], $reader->read());
     }

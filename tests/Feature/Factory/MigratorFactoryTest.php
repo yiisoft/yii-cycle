@@ -35,7 +35,7 @@ final class MigratorFactoryTest extends TestCase
         $migrator = $factory(new SimpleContainer([
             MigrationConfig::class => $defaultConfig,
             DatabaseManager::class => $db,
-            FactoryInterface::class => $this->createMock(FactoryInterface::class)
+            FactoryInterface::class => $this->createMock(FactoryInterface::class),
         ]));
 
         $configRef = new \ReflectionProperty($migrator, 'config');
