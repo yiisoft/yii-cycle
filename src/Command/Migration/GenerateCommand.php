@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Cycle\Command\Migration;
 use Cycle\Migrations\State;
 use Cycle\Schema\Compiler;
 use Cycle\Schema\Generator\Migrations\GenerateMigrations;
+use Cycle\Schema\Generator\PrintChanges;
 use Cycle\Schema\Registry;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,7 +16,6 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Yiisoft\Yii\Console\ExitCode;
-use Yiisoft\Yii\Cycle\Schema\Generator\PrintChanges;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
 final class GenerateCommand extends BaseMigrationCommand
