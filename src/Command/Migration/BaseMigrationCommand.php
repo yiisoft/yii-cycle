@@ -41,10 +41,14 @@ abstract class BaseMigrationCommand extends Command
 
         $migrationSkeleton = new MigrationImage($this->promise->getMigrationConfig(), $database);
         $migrationSkeleton->setName($name);
+
+        $className = $migrationSkeleton->getClass()->getName();
+        \assert($className !== null);
+
         try {
             $migrationFile = $migrator->getRepository()->registerMigration(
                 $migrationSkeleton->buildFileName(),
-                $migrationSkeleton->getClass()->getName(),
+                $className,
                 $migrationSkeleton->getFile()->render()
             );
         } catch (RepositoryException $e) {
