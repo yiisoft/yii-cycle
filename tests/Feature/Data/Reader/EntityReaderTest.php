@@ -92,6 +92,18 @@ final class EntityReaderTest extends BaseData
     }
 
     /**
+     * @covers ::count
+     */
+    public function testCountWithFilter(): void
+    {
+        $this->fillFixtures();
+
+        $reader = (new EntityReader($this->select('user')))->withFilter(new Equals('id', 2));
+
+        self::assertSame(1, $reader->count());
+    }
+
+    /**
      * @covers ::withLimit
      */
     public function testLimit(): void
