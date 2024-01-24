@@ -15,13 +15,13 @@ use Cycle\Migrations\RepositoryInterface;
 use Cycle\Migrations\State;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\GenerateCommand;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeMigration;
-use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeOutput;
 
 final class GenerateCommandTest extends TestCase
 {
@@ -46,7 +46,7 @@ final class GenerateCommandTest extends TestCase
         );
         $migrator->configure();
 
-        $output = new FakeOutput();
+        $output = new BufferedOutput();
         $command = new GenerateCommand(new CycleDependencyProxy(new SimpleContainer([
             Migrator::class => $migrator,
             MigrationConfig::class => new MigrationConfig(),
@@ -54,7 +54,7 @@ final class GenerateCommandTest extends TestCase
         $code = $command->run(new ArrayInput([]), $output);
 
         $this->assertSame(ExitCode::OK, $code);
-        $this->assertStringContainsString('Outstanding migrations found, run `migrate/up` first.', $output->getBuffer());
+        $this->assertStringContainsString('Outstanding migrations found, run `migrate/up` first.', $output->fetch());
     }
 
     public function testExecuteWithoutChanges(): void
@@ -75,7 +75,7 @@ final class GenerateCommandTest extends TestCase
         );
         $migrator->configure();
 
-        $output = new FakeOutput();
+        $output = new BufferedOutput();
         $command = new GenerateCommand(new CycleDependencyProxy(new SimpleContainer([
             Migrator::class => $migrator,
             MigrationConfig::class => new MigrationConfig(),
@@ -87,11 +87,13 @@ final class GenerateCommandTest extends TestCase
         $input->setInteractive(false);
         $code = $command->run($input, $output);
 
+        $result = $output->fetch();
+
         $this->assertSame(ExitCode::OK, $code);
-        $this->assertStringContainsString('Added 0 file(s)', $output->getBuffer());
+        $this->assertStringContainsString('Added 0 file(s)', $result);
         $this->assertStringContainsString(
             'If you want to create new empty migration, use migrate/create',
-            $output->getBuffer()
+            $result
         );
     }
 
@@ -119,7 +121,7 @@ final class GenerateCommandTest extends TestCase
         );
         $migrator->configure();
 
-        $output = new FakeOutput();
+        $output = new BufferedOutput();
         $command = new GenerateCommand(new CycleDependencyProxy(new SimpleContainer([
             Migrator::class => $migrator,
             MigrationConfig::class => new MigrationConfig(),
@@ -131,8 +133,10 @@ final class GenerateCommandTest extends TestCase
         $input->setInteractive(false);
         $code = $command->run($input, $output);
 
+        $result = $output->fetch();
+
         $this->assertSame(ExitCode::OK, $code);
-        $this->assertStringContainsString('Added 1 file(s)', $output->getBuffer());
-        $this->assertStringContainsString('test', $output->getBuffer());
+        $this->assertStringContainsString('Added 1 file(s)', $result);
+        $this->assertStringContainsString('test', $result);
     }
 }
