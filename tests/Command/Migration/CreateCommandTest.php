@@ -11,11 +11,11 @@ use Cycle\Migrations\Migrator;
 use Cycle\Migrations\RepositoryInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\CreateCommand;
-use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeOutput;
 
 final class CreateCommandTest extends TestCase
 {
@@ -57,10 +57,10 @@ final class CreateCommandTest extends TestCase
             MigrationConfig::class => $config,
         ])));
 
-        $output = new FakeOutput();
+        $output = new BufferedOutput();
         $code = $command->run(new ArrayInput(['name' => 'foo']), $output);
 
         $this->assertSame(ExitCode::OK, $code);
-        $this->assertStringContainsString('New migration file has been created', $output->getBuffer());
+        $this->assertStringContainsString('New migration file has been created', $output->fetch());
     }
 }
