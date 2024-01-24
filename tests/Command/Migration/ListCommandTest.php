@@ -14,12 +14,12 @@ use Cycle\Migrations\RepositoryInterface;
 use Cycle\Migrations\State;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\ListCommand;
 use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeMigration;
-use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeOutput;
 
 final class ListCommandTest extends TestCase
 {
@@ -44,7 +44,7 @@ final class ListCommandTest extends TestCase
         );
         $migrator->configure();
 
-        $output = new FakeOutput();
+        $output = new BufferedOutput();
         $command = new ListCommand(
             new CycleDependencyProxy(new SimpleContainer([
                 Migrator::class => $migrator,
@@ -53,8 +53,10 @@ final class ListCommandTest extends TestCase
         );
         $code = $command->run(new ArrayInput([]), $output);
 
+        $result = $output->fetch();
+
         $this->assertSame(ExitCode::OK, $code);
-        $this->assertStringContainsString('Total 1 migration(s) found', $output->getBuffer());
-        $this->assertStringContainsString('test [pending]', $output->getBuffer());
+        $this->assertStringContainsString('Total 1 migration(s) found', $result);
+        $this->assertStringContainsString('test [pending]', $result);
     }
 }

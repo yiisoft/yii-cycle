@@ -16,6 +16,7 @@ use Cycle\Migrations\State;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Console\ExitCode;
@@ -23,7 +24,6 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\DownCommand;
 use Yiisoft\Yii\Cycle\Command\Migration\UpCommand;
 use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeMigration;
-use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeOutput;
 
 final class DownCommandTest extends TestCase
 {
@@ -38,7 +38,7 @@ final class DownCommandTest extends TestCase
             $repository
         );
 
-        $output = new FakeOutput();
+        $output = new BufferedOutput();
         $command = new DownCommand(
             new CycleDependencyProxy(new SimpleContainer([
                 Migrator::class => $migrator,
@@ -49,7 +49,7 @@ final class DownCommandTest extends TestCase
         $code = $command->run(new ArrayInput([]), $output);
 
         $this->assertSame(ExitCode::OK, $code);
-        $this->assertStringContainsString('No migration found for rollback', $output->getBuffer());
+        $this->assertStringContainsString('No migration found for rollback', $output->fetch());
     }
 
     public function testExecute(): void
@@ -84,11 +84,13 @@ final class DownCommandTest extends TestCase
         $command->run($input, new NullOutput());
 
         $command = new DownCommand($promise, $this->createMock(EventDispatcherInterface::class));
-        $output = new FakeOutput();
+        $output = new BufferedOutput();
         $code = $command->run($input, $output);
 
+        $result = $output->fetch();
+
         $this->assertSame(ExitCode::OK, $code);
-        $this->assertStringContainsString('Total 1 migration(s) found', $output->getBuffer());
-        $this->assertStringContainsString('test: pending', $output->getBuffer());
+        $this->assertStringContainsString('Total 1 migration(s) found', $result);
+        $this->assertStringContainsString('test: pending', $result);
     }
 }

@@ -16,12 +16,12 @@ use Cycle\Migrations\State;
 use PHPUnit\Framework\TestCase;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\BufferedOutput;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\UpCommand;
 use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeMigration;
-use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeOutput;
 
 final class UpCommandTest extends TestCase
 {
@@ -38,7 +38,7 @@ final class UpCommandTest extends TestCase
             $repository
         );
 
-        $output = new FakeOutput();
+        $output = new BufferedOutput();
         $command = new UpCommand(
             new CycleDependencyProxy(new SimpleContainer([
                 Migrator::class => $migrator,
@@ -49,7 +49,7 @@ final class UpCommandTest extends TestCase
         $code = $command->run(new ArrayInput([]), $output);
 
         $this->assertSame(ExitCode::OK, $code);
-        $this->assertStringContainsString('No migration found for execute', $output->getBuffer());
+        $this->assertStringContainsString('No migration found for execute', $output->fetch());
     }
 
     public function testExecute(): void
@@ -75,7 +75,7 @@ final class UpCommandTest extends TestCase
         );
         $migrator->configure();
 
-        $output = new FakeOutput();
+        $output = new BufferedOutput();
         $command = new UpCommand(
             new CycleDependencyProxy(new SimpleContainer([
                 Migrator::class => $migrator,
@@ -88,8 +88,10 @@ final class UpCommandTest extends TestCase
         $input->setInteractive(false);
         $code = $command->run($input, $output);
 
+        $result = $output->fetch();
+
         $this->assertSame(ExitCode::OK, $code);
-        $this->assertStringContainsString('Migration to be applied:', $output->getBuffer());
-        $this->assertStringContainsString('test: executed', $output->getBuffer());
+        $this->assertStringContainsString('Migration to be applied:', $result);
+        $this->assertStringContainsString('test: executed', $result);
     }
 }
