@@ -12,8 +12,12 @@ final class SchemaMerger
     {
         $schema = null;
         foreach ($parts as $part) {
-            if (empty($part)) {
-                $schema ??= $part;
+            if ($part === null) {
+                continue;
+            }
+
+            if ($schema === null) {
+                $schema = $part;
                 continue;
             }
             foreach ($part as $role => $body) {
@@ -21,7 +25,7 @@ final class SchemaMerger
                     $schema[] = $body;
                     continue;
                 }
-                if ($schema !== null && array_key_exists($role, $schema)) {
+                if (array_key_exists($role, $schema)) {
                     if ($schema[$role] === $body) {
                         continue;
                     }

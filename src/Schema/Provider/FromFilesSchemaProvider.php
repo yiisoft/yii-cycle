@@ -18,7 +18,7 @@ use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
  */
 final class FromFilesSchemaProvider implements SchemaProviderInterface
 {
-    /** @var array Schema files */
+    /** @var array<string> Schema files */
     private array $files = [];
 
     /** @var bool Throw exception if file not found */

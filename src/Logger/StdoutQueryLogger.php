@@ -124,10 +124,10 @@ class StdoutQueryLogger implements LoggerInterface
     {
         $query = strtolower($query);
         return
-            strpos($query, 'tc.constraint_name') ||
-            strpos($query, 'pg_indexes') ||
-            strpos($query, 'pg_constraint') ||
-            strpos($query, 'information_schema') ||
-            strpos($query, 'pg_class');
+            \str_contains($query, 'tc.constraint_name') ||
+            \str_contains($query, 'pg_indexes') ||
+            \str_contains($query, 'pg_constraint') ||
+            \str_contains($query, 'information_schema') ||
+            \str_contains($query, 'pg_class');
     }
 }

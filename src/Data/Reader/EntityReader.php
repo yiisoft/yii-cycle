@@ -115,6 +115,7 @@ final class EntityReader implements DataReaderInterface
             $new->filter = $filter;
             $new->itemsCache = new CachedCollection();
             $new->oneItemCache = new CachedCollection();
+            /** @psalm-suppress ImpureMethodCall */
             $new->resetCountCache();
         }
         return $new;
