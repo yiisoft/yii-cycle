@@ -11,7 +11,7 @@ final class CompareHandlerTest extends TestCase
 {
     public function testValidateArgumentsException(): void
     {
-        $handler = new class extends CompareHandler {
+        $handler = new class () extends CompareHandler {
             public function getOperator(): string
             {
             }

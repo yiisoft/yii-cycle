@@ -19,9 +19,9 @@ final class ListCommandTest extends TestCase
     public function testExecute(): void
     {
         $repository = $this->createMock(RepositoryInterface::class);
-        $repository->expects($this->exactly(1))->method('getMigrations')->willReturn([$this->migration()]);
+        $repository->expects($this->exactly(1))->method('getMigrations')->willReturn([self::migration()]);
 
-        $migrator = $this->migrator(new MigrationConfig(), $repository);
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $output = new BufferedOutput();

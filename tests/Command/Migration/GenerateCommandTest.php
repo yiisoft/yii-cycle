@@ -26,9 +26,9 @@ final class GenerateCommandTest extends TestCase
     public function testExecuteWithOutstandingMigrations(): void
     {
         $repository = $this->createMock(RepositoryInterface::class);
-        $repository->expects($this->exactly(1))->method('getMigrations')->willReturn([$this->migration()]);
+        $repository->expects($this->exactly(1))->method('getMigrations')->willReturn([self::migration()]);
 
-        $migrator = $this->migrator(new MigrationConfig(), $repository);
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $output = new BufferedOutput();
@@ -48,7 +48,7 @@ final class GenerateCommandTest extends TestCase
         $repository = $this->createMock(RepositoryInterface::class);
         $repository->expects($this->exactly(2))->method('getMigrations')->willReturn([]);
 
-        $migrator = $this->migrator(new MigrationConfig(), $repository);
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $output = new BufferedOutput();
@@ -77,10 +77,10 @@ final class GenerateCommandTest extends TestCase
         $repository = $this->createMock(RepositoryInterface::class);
         $repository->expects($this->exactly(2))->method('getMigrations')->willReturnOnConsecutiveCalls(
             [],
-            [$this->migration()]
+            [self::migration()]
         );
 
-        $migrator = $this->migrator(new MigrationConfig(), $repository);
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $output = new BufferedOutput();
@@ -130,7 +130,7 @@ final class GenerateCommandTest extends TestCase
                 )
             );
 
-        $migrator = $this->migrator($config, $repository);
+        $migrator = self::migrator($config, $repository);
         $migrator->configure();
 
         $output = new BufferedOutput();
@@ -177,7 +177,7 @@ final class GenerateCommandTest extends TestCase
         $repository->expects($this->exactly(2))->method('getMigrations')->willReturn([]);
         $repository->expects($this->never())->method('registerMigration');
 
-        $migrator = $this->migrator(new MigrationConfig(), $repository);
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $output = new BufferedOutput();

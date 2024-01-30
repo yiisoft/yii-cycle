@@ -49,7 +49,7 @@ final class CreateCommandTest extends TestCase
 
         $command = new CreateCommand(new CycleDependencyProxy(new SimpleContainer([
             DatabaseProviderInterface::class => $databaseProvider,
-            Migrator::class => $this->migrator($config, $repository),
+            Migrator::class => self::migrator($config, $repository),
             MigrationConfig::class => $config,
         ])));
 
@@ -72,7 +72,7 @@ final class CreateCommandTest extends TestCase
 
         $command = new CreateCommand(new CycleDependencyProxy(new SimpleContainer([
             DatabaseProviderInterface::class => $this->createMock(DatabaseProviderInterface::class),
-            Migrator::class => $this->migrator($config, $repository),
+            Migrator::class => self::migrator($config, $repository),
             MigrationConfig::class => $config,
         ])));
 

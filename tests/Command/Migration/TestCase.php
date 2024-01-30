@@ -36,8 +36,7 @@ abstract class TestCase extends BaseTestCase
     protected static function migration(): FakeMigration
     {
         $migration = new FakeMigration();
-        $migration = $migration->withState(new State('test', new \DateTimeImmutable(), State::STATUS_PENDING));
 
-        return $migration;
+        return $migration->withState(new State('test', new \DateTimeImmutable(), State::STATUS_PENDING));
     }
 }

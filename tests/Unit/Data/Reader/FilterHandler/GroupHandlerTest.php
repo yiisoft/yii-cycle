@@ -14,7 +14,7 @@ final class GroupHandlerTest extends TestCase
      */
     public function testInvalidArgumentsException(array $arguments, string $error): void
     {
-        $handler = new class extends GroupHandler {
+        $handler = new class () extends GroupHandler {
             public function getOperator(): string
             {
             }

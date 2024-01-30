@@ -20,7 +20,7 @@ final class NotFoundExceptionTest extends TestCase
             $exception->getMessage()
         );
         $this->assertSame(0, $exception->getCode());
-        $this->assertNull( $exception->getPrevious());
+        $this->assertNull($exception->getPrevious());
     }
 
     public function testFriendly(): void

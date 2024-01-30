@@ -27,7 +27,7 @@ final class UpCommandTest extends TestCase
         $repository = $this->createMock(RepositoryInterface::class);
         $repository->expects($this->once())->method('getMigrations')->willReturn([]);
 
-        $migrator = $this->migrator($config, $repository);
+        $migrator = self::migrator($config, $repository);
 
         $output = new BufferedOutput();
         $command = new UpCommand(
@@ -48,9 +48,9 @@ final class UpCommandTest extends TestCase
         $config = new MigrationConfig(['safe' => true]);
 
         $repository = $this->createMock(RepositoryInterface::class);
-        $repository->expects($this->exactly(3))->method('getMigrations')->willReturn([$this->migration()]);
+        $repository->expects($this->exactly(3))->method('getMigrations')->willReturn([self::migration()]);
 
-        $migrator = $this->migrator(new MigrationConfig(), $repository);
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $output = new BufferedOutput();
@@ -83,7 +83,7 @@ final class UpCommandTest extends TestCase
         $repository = $this->createMock(RepositoryInterface::class);
         $repository->expects($this->once())->method('getMigrations')->willReturn($migrations);
 
-        $migrator = $this->migrator(new MigrationConfig(), $repository);
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $output = new BufferedOutput();

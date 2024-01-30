@@ -31,7 +31,7 @@ final class DownCommandTest extends TestCase
         $output = new BufferedOutput();
         $command = new DownCommand(
             new CycleDependencyProxy(new SimpleContainer([
-                Migrator::class => $this->migrator(new MigrationConfig(), $repository),
+                Migrator::class => self::migrator(new MigrationConfig(), $repository),
                 MigrationConfig::class => new MigrationConfig(),
             ])),
             $this->createMock(EventDispatcherInterface::class)
@@ -45,13 +45,13 @@ final class DownCommandTest extends TestCase
     public function testExecute(): void
     {
         $repository = $this->createMock(RepositoryInterface::class);
-        $repository->expects($this->exactly(5))->method('getMigrations')->willReturn([$this->migration()]);
+        $repository->expects($this->exactly(5))->method('getMigrations')->willReturn([self::migration()]);
 
-        $migrator = $this->migrator(new MigrationConfig(), $repository);
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $promise = new CycleDependencyProxy(new SimpleContainer([
-            DatabaseProviderInterface::class => $this->databaseManager(),
+            DatabaseProviderInterface::class => self::databaseManager(),
             Migrator::class => $migrator,
             MigrationConfig::class => new MigrationConfig(),
         ]));
@@ -75,7 +75,7 @@ final class DownCommandTest extends TestCase
 
     public function testMigrationNotFoundException(): void
     {
-        $migration = $this->migration();
+        $migration = self::migration();
 
         $repository = $this->createMock(RepositoryInterface::class);
         $repository
@@ -83,11 +83,11 @@ final class DownCommandTest extends TestCase
             ->method('getMigrations')
             ->willReturn([$migration], [$migration], [$migration], [$migration], []);
 
-        $migrator = $this->migrator(new MigrationConfig(), $repository);
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $promise = new CycleDependencyProxy(new SimpleContainer([
-            DatabaseProviderInterface::class => $this->databaseManager(),
+            DatabaseProviderInterface::class => self::databaseManager(),
             Migrator::class => $migrator,
             MigrationConfig::class => new MigrationConfig(),
         ]));
@@ -108,13 +108,13 @@ final class DownCommandTest extends TestCase
     public function testAbortRollback(): void
     {
         $repository = $this->createMock(RepositoryInterface::class);
-        $repository->expects($this->exactly(4))->method('getMigrations')->willReturn([$this->migration()]);
+        $repository->expects($this->exactly(4))->method('getMigrations')->willReturn([self::migration()]);
 
-        $migrator = $this->migrator(new MigrationConfig(), $repository);
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $promise = new CycleDependencyProxy(new SimpleContainer([
-            DatabaseProviderInterface::class => $this->databaseManager(),
+            DatabaseProviderInterface::class => self::databaseManager(),
             Migrator::class => $migrator,
             MigrationConfig::class => new MigrationConfig(),
         ]));

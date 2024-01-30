@@ -109,8 +109,8 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
                 SchemaInterface::SCOPE => null,
                 SchemaInterface::TYPECAST => ['id' => 'int', 'createdAt' => 'datetime'],
                 SchemaInterface::SCHEMA => [],
-                SchemaInterface::TYPECAST_HANDLER => null
-            ]
+                SchemaInterface::TYPECAST_HANDLER => null,
+            ],
         ], $provider->read());
     }
 
@@ -156,4 +156,3 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
         $this->assertNotSame($schemaProvider1, $schemaProvider2);
     }
 }
-

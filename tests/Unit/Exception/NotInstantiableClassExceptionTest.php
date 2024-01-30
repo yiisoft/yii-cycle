@@ -16,12 +16,13 @@ final class NotInstantiableClassExceptionTest extends TestCase
         $exception = new NotInstantiableClassException(\stdClass::class);
 
         $this->assertInstanceOf(\Exception::class, $exception);
-        $this->assertSame(\sprintf('Can not instantiate "%s" because it is not a subclass of "%s".',
+        $this->assertSame(\sprintf(
+            'Can not instantiate "%s" because it is not a subclass of "%s".',
             \stdClass::class,
             RepositoryInterface::class
         ), $exception->getMessage());
         $this->assertSame(0, $exception->getCode());
-        $this->assertNull( $exception->getPrevious());
+        $this->assertNull($exception->getPrevious());
     }
 
     public function testFriendly(): void
