@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Feature\Data\Reader;
 
+use Yiisoft\Data\Reader\Filter\All;
 use Yiisoft\Data\Reader\Filter\Equals;
 use Yiisoft\Data\Reader\Sort;
+use Yiisoft\Yii\Cycle\Data\Reader\Cache\CachedCollection;
 use Yiisoft\Yii\Cycle\Data\Reader\EntityReader;
 use Yiisoft\Yii\Cycle\Data\Reader\FilterHandler;
 use Yiisoft\Yii\Cycle\Tests\Feature\Data\BaseData;
@@ -25,6 +27,47 @@ final class EntityReaderTest extends BaseData
         $reader = new EntityReader($this->select('user'));
 
         self::assertEquals(self::FIXTURES_USER[0], (array)$reader->readOne());
+    }
+
+    /**
+     * @covers ::readOne
+     */
+    public function testReadOneFromItemsCache(): void
+    {
+        $this->fillFixtures();
+
+        $reader = (new EntityReader($this->select('user')))->withLimit(3);
+
+        $ref = (new \ReflectionProperty($reader, 'itemsCache'));
+        $ref->setAccessible(true);
+
+        self::assertFalse($ref->getValue($reader)->isCollected());
+        $reader->read();
+
+        self::assertTrue($ref->getValue($reader)->isCollected());
+
+        self::assertEquals(self::FIXTURES_USER[0], (array)$reader->readOne());
+        self::assertEquals($ref->getValue($reader)->getCollection()[0], $reader->readOne());
+    }
+
+    /**
+     * @covers ::getIterator
+     */
+    public function testGetIterator(): void
+    {
+        $this->fillFixtures();
+
+        $reader = (new EntityReader($this->select('user')))->withLimit(1);
+        self::assertEquals(self::FIXTURES_USER[0], (array) \iterator_to_array($reader->getIterator())[0]);
+
+        $ref = (new \ReflectionProperty($reader, 'itemsCache'));
+        $ref->setAccessible(true);
+
+        $cache = new CachedCollection();
+        $cache->setCollection([['foo' => 'bar']]);
+        $ref->setValue($reader, $cache);
+
+        self::assertSame(['foo' => 'bar'], (array) \iterator_to_array($reader->getIterator())[0]);
     }
 
     /**
@@ -62,6 +105,23 @@ final class EntityReaderTest extends BaseData
             $result,
         );
         self::assertSame('-id', $reader->getSort()->getOrderAsString());
+    }
+
+    /**
+     * @covers ::getSort
+     */
+    public function testGetSort(): void
+    {
+        $this->fillFixtures();
+
+        $reader = (new EntityReader($this->select('user')));
+
+        self::assertNull($reader->getSort());
+
+        $sort = Sort::only(['id'])->withOrderString('-id');
+        $reader = $reader->withSort($sort);
+
+        self::assertSame($sort, $reader->getSort());
     }
 
     /**
@@ -203,5 +263,15 @@ final class EntityReaderTest extends BaseData
             \preg_replace('/\s+/', '', $expected),
             \preg_replace('/\s+/', '', $reader->getSql())
         );
+    }
+
+    public function testMakeFilterClosureException(): void
+    {
+        $this->expectException(\RuntimeException::class);
+        $this->expectExceptionMessage('Filter operator "?" is not supported.');
+        (new EntityReader($this->select('user')))->withFilter((new All())->withCriteriaArray([
+            ['?', 'balance', '100.0'],
+            ['=', 'email', 'seed@beat'],
+        ]))->getSql();
     }
 }

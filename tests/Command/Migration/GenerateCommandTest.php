@@ -4,53 +4,39 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Command\Migration;
 
-use Cycle\Database\Config\DatabaseConfig;
-use Cycle\Database\Config\SQLite\MemoryConnectionConfig;
-use Cycle\Database\Config\SQLiteDriverConfig;
-use Cycle\Database\DatabaseManager;
+use Cycle\Database\DatabaseInterface;
 use Cycle\Database\DatabaseProviderInterface;
 use Cycle\Migrations\Config\MigrationConfig;
 use Cycle\Migrations\Migrator;
 use Cycle\Migrations\RepositoryInterface;
-use Cycle\Migrations\State;
-use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
+use Symfony\Component\Console\Question\ConfirmationQuestion;
+use Symfony\Component\Console\Question\Question;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\GenerateCommand;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
-use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeMigration;
 
 final class GenerateCommandTest extends TestCase
 {
     public function testExecuteWithOutstandingMigrations(): void
     {
-        $migration = new FakeMigration();
-        $migration = $migration->withState(new State('test', new \DateTimeImmutable(), State::STATUS_PENDING));
-
         $repository = $this->createMock(RepositoryInterface::class);
-        $repository->expects($this->exactly(1))->method('getMigrations')->willReturn([$migration]);
+        $repository->expects($this->exactly(1))->method('getMigrations')->willReturn([self::migration()]);
 
-        $migrator = new Migrator(
-            new MigrationConfig(),
-            new DatabaseManager(new DatabaseConfig([
-                'default' => 'default',
-                'databases' => ['default' => ['connection' => 'sqlite']],
-                'connections' => [
-                    'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
-                ],
-            ])),
-            $repository
-        );
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $output = new BufferedOutput();
-        $command = new GenerateCommand(new CycleDependencyProxy(new SimpleContainer([
-            Migrator::class => $migrator,
-            MigrationConfig::class => new MigrationConfig(),
-        ])));
+        $command = $this->createCommand(
+            $migrator,
+            $this->createMock(DatabaseProviderInterface::class),
+            new MigrationConfig()
+        );
         $code = $command->run(new ArrayInput([]), $output);
 
         $this->assertSame(ExitCode::OK, $code);
@@ -62,26 +48,15 @@ final class GenerateCommandTest extends TestCase
         $repository = $this->createMock(RepositoryInterface::class);
         $repository->expects($this->exactly(2))->method('getMigrations')->willReturn([]);
 
-        $migrator = new Migrator(
-            new MigrationConfig(),
-            new DatabaseManager(new DatabaseConfig([
-                'default' => 'default',
-                'databases' => ['default' => ['connection' => 'sqlite']],
-                'connections' => [
-                    'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
-                ],
-            ])),
-            $repository
-        );
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $output = new BufferedOutput();
-        $command = new GenerateCommand(new CycleDependencyProxy(new SimpleContainer([
-            Migrator::class => $migrator,
-            MigrationConfig::class => new MigrationConfig(),
-            SchemaConveyorInterface::class => $this->createMock(SchemaConveyorInterface::class),
-            DatabaseProviderInterface::class => $this->createMock(DatabaseProviderInterface::class),
-        ])));
+        $command = $this->createCommand(
+            $migrator,
+            $this->createMock(DatabaseProviderInterface::class),
+            new MigrationConfig()
+        );
 
         $input = new ArrayInput([]);
         $input->setInteractive(false);
@@ -99,35 +74,21 @@ final class GenerateCommandTest extends TestCase
 
     public function testExecute(): void
     {
-        $migration = new FakeMigration();
-        $migration = $migration->withState(new State('test', new \DateTimeImmutable(), State::STATUS_PENDING));
-
         $repository = $this->createMock(RepositoryInterface::class);
         $repository->expects($this->exactly(2))->method('getMigrations')->willReturnOnConsecutiveCalls(
             [],
-            [$migration]
+            [self::migration()]
         );
 
-        $migrator = new Migrator(
-            new MigrationConfig(),
-            new DatabaseManager(new DatabaseConfig([
-                'default' => 'default',
-                'databases' => ['default' => ['connection' => 'sqlite']],
-                'connections' => [
-                    'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
-                ],
-            ])),
-            $repository
-        );
+        $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
         $output = new BufferedOutput();
-        $command = new GenerateCommand(new CycleDependencyProxy(new SimpleContainer([
-            Migrator::class => $migrator,
-            MigrationConfig::class => new MigrationConfig(),
-            SchemaConveyorInterface::class => $this->createMock(SchemaConveyorInterface::class),
-            DatabaseProviderInterface::class => $this->createMock(DatabaseProviderInterface::class),
-        ])));
+        $command = $this->createCommand(
+            $migrator,
+            $this->createMock(DatabaseProviderInterface::class),
+            new MigrationConfig()
+        );
 
         $input = new ArrayInput([]);
         $input->setInteractive(false);
@@ -138,5 +99,136 @@ final class GenerateCommandTest extends TestCase
         $this->assertSame(ExitCode::OK, $code);
         $this->assertStringContainsString('Added 1 file(s)', $result);
         $this->assertStringContainsString('test', $result);
+    }
+
+    public function testExecuteWithoutChangesWithCreatingNewMigration(): void
+    {
+        $config = new MigrationConfig(['namespace' => 'Test\\Migration']);
+
+        $database = $this->createMock(DatabaseInterface::class);
+        $database->expects($this->once())->method('getName')->willReturn('testDatabase');
+
+        $databaseProvider = $this->createMock(DatabaseProviderInterface::class);
+        $databaseProvider->expects($this->once())->method('database')->willReturn($database);
+
+        $repository = $this->createMock(RepositoryInterface::class);
+        $repository->expects($this->exactly(2))->method('getMigrations')->willReturn([]);
+        $repository
+            ->expects($this->once())
+            ->method('registerMigration')
+            ->with(
+                'testDatabase_foo',
+                $this->callback(static fn (string $class): bool => \str_contains($class, 'OrmTestDatabase')),
+                $this->callback(
+                    static fn (string $body): bool =>
+                        \str_contains($body, 'OrmTestDatabase') &&
+                        \str_contains($body, 'namespace Test\\Migration') &&
+                        \str_contains($body, 'use Cycle\\Migrations\\Migration') &&
+                        \str_contains($body, 'protected const DATABASE = \'testDatabase\'') &&
+                        \str_contains($body, 'public function up(): void') &&
+                        \str_contains($body, 'public function down(): void')
+                )
+            );
+
+        $migrator = self::migrator($config, $repository);
+        $migrator->configure();
+
+        $output = new BufferedOutput();
+        $command = $this->createCommand($migrator, $databaseProvider, $config);
+
+        $input = new ArrayInput([]);
+        $input->setInteractive(true);
+
+        $series = [
+            [[$input, $output, new ConfirmationQuestion(
+                'Would you like to create empty migration right now? (Y/n)',
+                true
+            )], true],
+            [[$input, $output, new Question('Please enter an unique name for the new migration: ')], 'foo'],
+        ];
+        $helper = $this->createMock(QuestionHelper::class);
+        $helper
+            ->expects($this->exactly(2))
+            ->method('ask')
+            ->willReturnCallback(function (mixed ...$args) use (&$series) {
+                [$expectedArgs, $return] = \array_shift($series);
+                $this->assertEquals($expectedArgs, $args);
+
+                return $return;
+            });
+
+        $command->setHelperSet(new HelperSet(['question' => $helper]));
+
+        $code = $command->run($input, $output);
+
+        $result = $output->fetch();
+
+        $this->assertSame(ExitCode::OK, $code);
+        $this->assertStringContainsString('Added 0 file(s)', $result);
+        $this->assertStringContainsString(
+            'If you want to create new empty migration, use migrate/create',
+            $result
+        );
+    }
+
+    public function testExecuteWithoutChangesWithCreatingNewMigrationEmptyName(): void
+    {
+        $repository = $this->createMock(RepositoryInterface::class);
+        $repository->expects($this->exactly(2))->method('getMigrations')->willReturn([]);
+        $repository->expects($this->never())->method('registerMigration');
+
+        $migrator = self::migrator(new MigrationConfig(), $repository);
+        $migrator->configure();
+
+        $output = new BufferedOutput();
+        $command = $this->createCommand(
+            $migrator,
+            $this->createMock(DatabaseProviderInterface::class),
+            new MigrationConfig()
+        );
+
+        $input = new ArrayInput([]);
+        $input->setInteractive(true);
+
+        $series = [
+            [[$input, $output, new ConfirmationQuestion(
+                'Would you like to create empty migration right now? (Y/n)',
+                true
+            )], true],
+            [[$input, $output, new Question('Please enter an unique name for the new migration: ')], ''],
+        ];
+        $helper = $this->createMock(QuestionHelper::class);
+        $helper
+            ->expects($this->exactly(2))
+            ->method('ask')
+            ->willReturnCallback(function (mixed ...$args) use (&$series) {
+                [$expectedArgs, $return] = \array_shift($series);
+                $this->assertEquals($expectedArgs, $args);
+
+                return $return;
+            });
+
+        $command->setHelperSet(new HelperSet(['question' => $helper]));
+
+        $code = $command->run($input, $output);
+
+        $result = $output->fetch();
+
+        $this->assertSame(ExitCode::OK, $code);
+        $this->assertStringContainsString('Added 0 file(s)', $result);
+        $this->assertStringContainsString('You entered an empty name. Exit', $result);
+    }
+
+    private function createCommand(
+        Migrator $migrator,
+        DatabaseProviderInterface $dbProvider,
+        MigrationConfig $config
+    ): GenerateCommand {
+        return new GenerateCommand(new CycleDependencyProxy(new SimpleContainer([
+            Migrator::class => $migrator,
+            MigrationConfig::class => $config,
+            SchemaConveyorInterface::class => $this->createMock(SchemaConveyorInterface::class),
+            DatabaseProviderInterface::class => $dbProvider,
+        ])));
     }
 }
