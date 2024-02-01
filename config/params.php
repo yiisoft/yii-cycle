@@ -2,10 +2,11 @@
 
 declare(strict_types=1);
 
+use Cycle\Schema\Provider\SchemaProviderInterface;
+use Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use Yiisoft\Yii\Cycle\Command\Schema;
 use Yiisoft\Yii\Cycle\Command\Migration;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\CompositeSchemaConveyor;
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 return [
     // Console commands
@@ -44,7 +45,7 @@ return [
         ],
 
         /**
-         * SchemaProvider list for {@see \Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline}
+         * SchemaProvider list for {@see SchemaProviderPipeline}
          * Array of classname and {@see SchemaProviderInterface} object.
          * You can configure providers if you pass classname as key and parameters as array:
          * [

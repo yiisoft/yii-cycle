@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Unit\Listener\Stub;
 
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
+use Cycle\Schema\Provider\SchemaProviderInterface;
 
 class CallingSpyProvider implements SchemaProviderInterface
 {

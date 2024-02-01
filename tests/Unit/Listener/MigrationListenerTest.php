@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Unit\Listener;
 
+use Cycle\Schema\Provider\SchemaProviderInterface;
+use Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Listener\MigrationListener;
-use Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline;
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 use Yiisoft\Yii\Cycle\Tests\Unit\Listener\Stub\CallingSpyProvider;
 
-class MigrationListenerTest extends TestCase
+final class MigrationListenerTest extends TestCase
 {
     private function prepareSchemaProvider(array $providers = []): SchemaProviderInterface
     {

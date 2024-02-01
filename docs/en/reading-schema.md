@@ -7,10 +7,10 @@ Since a schema is built from an array of a certain structure, we can store it ei
 You can display currently used schema by executing `cycle/schema` command.
 
 In `yii-cycle` package schema can be built from multiple sources represented by multiple providers implementing
-`SchemaProviderInterface`. 
+`Cycle\Schema\Provider\SchemaProviderInterface`. 
 
-In order to use multiple schema providers in turn, grouping `SchemaProviderPipeline` provider is used.
-You can configure this provider in `schema-providers` section of a `config/params.php` file.
+In order to use multiple schema providers in turn, grouping `Cycle\Schema\Provider\Support\SchemaProviderPipeline`
+provider is used. You can configure this provider in `schema-providers` section of a `config/params.php` file.
 Arrage schema providers in such an order, that caching providers are at the top of the list, 
 and origin schema providers at the end. 
 
@@ -30,14 +30,14 @@ using annotations it is a good idea to use schema cache.
 
 ## Schema cache
 
-Reading and writing a schema from and to cache happens in `SimpleCacheSchemaProvider`.
+Reading and writing a schema from and to cache happens in `Cycle\Schema\Provider\SimpleCacheSchemaProvider`.
 
 Place it to the beginning of providers list to make the process of obtaining a schema significantly faster.
 
 ## File-based schema
 
 If you want to avoid annotations, you can describe a schema in a PHP file.
-Use `FromFilesSchemaProvider` to load a schema:
+Use `Cycle\Schema\Provider\FromFilesSchemaProvider` to load a schema:
 
 ```php
 # config/common.php
@@ -45,7 +45,7 @@ Use `FromFilesSchemaProvider` to load a schema:
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
+            \Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
                 'files' => '@runtime/schema.php'
             ]
         ],
@@ -88,7 +88,7 @@ But in case of loading multiple files, it may take extra time to merge them.
 
 ## Building DB schema from different providers
 
-To merge schema parts obtained from different providers, use `MergeSchemaProvider`.
+To merge schema parts obtained from different providers, use `Cycle\Schema\Provider\Support\MergeSchemaProvider`.
 
 ```php
 # runtime/schema.php
@@ -97,11 +97,11 @@ return [
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Yiisoft\Yii\Cycle\Schema\Provider\Support\MergeSchemaProvider::class => [
+            \Cycle\Schema\Provider\Support\MergeSchemaProvider::class => [
                 // You can specify the provider class as the key and the configuration as the value.
-                \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
+                \Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
                 // The provider and its configuration can be passed as an array.
-                [\Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
+                [\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
                 // When defining the dependency as a string, make sure the container provides
                 // the already configured provider.
                 \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider::class,
@@ -132,8 +132,8 @@ migrations based on them. For production use schema could be moved into a file.
 
 ### `PhpFileSchemaProvider` Provider
 
-Unlike `FromFilesSchemaProvider`, the `PhpFileSchemaProvider` works with only one file. but, `PhpFileSchemaProvider`
-can not only read schema, but also save it.
+Unlike `FromFilesSchemaProvider`, the `Cycle\Schema\Provider\PhpFileSchemaProvider` works with only one file. but, 
+`PhpFileSchemaProvider` can not only read schema, but also save it.
 
 In the mode of reading and writing a schema file, the `PhpFileSchemaProvider` provider works similarly to the cache, with
 the only difference is that saved result (schema file), can be saved in codebase.

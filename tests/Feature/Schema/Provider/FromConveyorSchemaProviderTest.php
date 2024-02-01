@@ -23,12 +23,12 @@ use Cycle\Schema\Generator\RenderTables;
 use Cycle\Schema\Generator\ResetTables;
 use Cycle\Schema\Generator\ValidateEntities;
 use Cycle\Schema\GeneratorInterface;
+use Cycle\Schema\Provider\SchemaProviderInterface;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 use Yiisoft\Yii\Cycle\Tests\Feature\Schema\Provider\Stub\FakePost;
 use Yiisoft\Yii\Cycle\Tests\Feature\Schema\Stub\ArraySchemaProvider;
 

@@ -7,10 +7,10 @@ Dado que el esquema se construye a partir de un arreglo con una estructura defin
 Puede mostrar el esquema utilizado actualmente ejecutando el comando `cycle/schema`.
 
 En el paquete `yiisoft/yii-cycle` el esquema puede ser construido desde múltiples fuentes representadas por múltiples proveedores que implementan
-`SchemaProviderInterface`.
+`Cycle\Schema\Provider\SchemaProviderInterface`.
 
-Para utilizar varios proveedores de esquemas, se utiliza el proveedor `SchemaProviderPipeline` de agrupación.
-Puede configurar este proveedor en la sección `schema-providers` en el archivo `config/params.php`.
+Para utilizar varios proveedores de esquemas, se utiliza el proveedor `Cycle\Schema\Provider\Support\SchemaProviderPipeline`
+de agrupación. Puede configurar este proveedor en la sección `schema-providers` en el archivo `config/params.php`.
 Los proveedores de esquemas deben estar organizados de la siguiente manera, los proveedores de caché deben estar al principio de la lista y los proveedores de esquemas de origen al final.
 
 
@@ -29,14 +29,14 @@ usar anotaciones es una buena idea usar el caché de esquemas.
 
 ## Esquemas desde caché
 
-La lectura y escritura de un esquema desde y hacia la caché ocurre en `SimpleCacheSchemaProvider`.
+La lectura y escritura de un esquema desde y hacia la caché ocurre en `Cycle\Schema\Provider\SimpleCacheSchemaProvider`.
 
 Debe indicarse al principio de la lista de proveedores para que el proceso de obtención de un esquema sea significativamente más rápido.
 
 ## Esquemas basados en archivos
 
 Si quiere evitar las anotaciones, puede describir un esquema en un archivo PHP.
-Utilice `FromFilesSchemaProvider` para cargar un esquema:
+Utilice `Cycle\Schema\Provider\FromFilesSchemaProvider` para cargar un esquema:
 
 ```php
 # config/common.php
@@ -44,7 +44,7 @@ Utilice `FromFilesSchemaProvider` para cargar un esquema:
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
+            \Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
                 'files' => '@runtime/schema.php'
             ]
         ],
@@ -87,7 +87,7 @@ En el caso de que se carguen varios archivos, puede tardar más tiempo en fusion
 
 ## Construir el esquema de la base de datos a partir de diferentes proveedores
 
-Para fusionar partes del esquema obtenidas de diferentes proveedores, utilice `MergeSchemaProvider`.
+Para fusionar partes del esquema obtenidas de diferentes proveedores, utilice `Cycle\Schema\Provider\Support\MergeSchemaProvider`.
 
 ```php
 # runtime/schema.php
@@ -96,11 +96,11 @@ return [
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Yiisoft\Yii\Cycle\Schema\Provider\Support\MergeSchemaProvider::class => [
+            \Cycle\Schema\Provider\Support\MergeSchemaProvider::class => [
                 // Puede especificar la clase de proveedor como clave y la configuración como valor.
-                \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
+                \Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
                 // El proveedor y su configuración pueden pasarse como un array.
-                [\Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
+                [\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
                 // Al definir la dependencia como una cadena, asegúrese de que el contenedor proporciona
                 // el proveedor ya configurado.
                 \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider::class,
@@ -130,8 +130,8 @@ migraciones basadas en ellas. Para el uso en producción, el esquema puede ser t
 
 ### Provider `PhpFileSchemaProvider`
 
-A diferencia de `FromFilesSchemaProvider`, el archivo `PhpFileSchemaProvider` trabaja con un solo archivo de esquema `PhpFileSchemaProvider`
-no sólo puede leer el esquema, sino también guardarlo.
+A diferencia de `FromFilesSchemaProvider`, el archivo `Cycle\Schema\Provider\PhpFileSchemaProvider` trabaja con un solo
+archivo de esquema `PhpFileSchemaProvider` no sólo puede leer el esquema, sino también guardarlo.
 
 En el modo de lectura y escritura un archivo de esquema que utilice el proveedor `PhpFileSchemaProvider`, funcionara de forma similar a la caché, con
 la única diferencia que el resultado guardado (archivo de esquema), puede ser guardado en codebase.

@@ -12,6 +12,9 @@ use Cycle\ORM\ORM;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\Schema;
 use Cycle\ORM\SchemaInterface;
+use Cycle\Schema\Provider\Path\ResolverInterface;
+use Cycle\Schema\Provider\SchemaProviderInterface;
+use Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use Psr\Container\ContainerInterface;
 use Spiral\Core\FactoryInterface as SpiralFactoryInterface;
 use Yiisoft\Definitions\Reference;
@@ -21,9 +24,8 @@ use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\CompositeSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor;
-use Yiisoft\Yii\Cycle\Schema\Provider\Support\SchemaProviderPipeline;
+use Yiisoft\Yii\Cycle\Schema\Provider\Path\AliasesResolver;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 /**
  * @var array $params
@@ -70,6 +72,7 @@ return [
     SchemaProviderInterface::class => static function (ContainerInterface $container) use (&$params) {
         return (new SchemaProviderPipeline($container))->withConfig($params['yiisoft/yii-cycle']['schema-providers']);
     },
+    ResolverInterface::class => Reference::to(AliasesResolver::class),
 
     // Schema Conveyor
     SchemaConveyorInterface::class => static function (ContainerInterface $container) use (&$params) {
