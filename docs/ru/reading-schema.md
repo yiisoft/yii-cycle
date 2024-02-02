@@ -91,7 +91,7 @@ return [
 
 ## Сборка схемы по частям из разных поставщиков
 
-Для того, чтобы объединить получаемые из разных поставщиков части схемы в одну, используйте `Cycle\Schema\Provider\Support\MergeSchemaProvider`.
+Для того, чтобы объединить получаемые из разных поставщиков части схемы в одну, используйте `Cycle\Schema\Provider\MergeSchemaProvider`.
 
 ```php
 # Файл config/common.php
@@ -100,7 +100,7 @@ return [
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Cycle\Schema\Provider\Support\MergeSchemaProvider::class => [
+            \Cycle\Schema\Provider\MergeSchemaProvider::class => [
                 // Вы можете указать класс поставщика в качестве ключа, а конфигурацию в качестве значения.
                 \Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
                 // Поставщик и его конфигурация могут быть переданы в виде массива.

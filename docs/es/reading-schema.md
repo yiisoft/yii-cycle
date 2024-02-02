@@ -87,7 +87,7 @@ En el caso de que se carguen varios archivos, puede tardar más tiempo en fusion
 
 ## Construir el esquema de la base de datos a partir de diferentes proveedores
 
-Para fusionar partes del esquema obtenidas de diferentes proveedores, utilice `Cycle\Schema\Provider\Support\MergeSchemaProvider`.
+Para fusionar partes del esquema obtenidas de diferentes proveedores, utilice `Cycle\Schema\Provider\MergeSchemaProvider`.
 
 ```php
 # runtime/schema.php
@@ -96,7 +96,7 @@ return [
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Cycle\Schema\Provider\Support\MergeSchemaProvider::class => [
+            \Cycle\Schema\Provider\MergeSchemaProvider::class => [
                 // Puede especificar la clase de proveedor como clave y la configuración como valor.
                 \Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
                 // El proveedor y su configuración pueden pasarse como un array.

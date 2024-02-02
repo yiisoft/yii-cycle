@@ -88,7 +88,7 @@ But in case of loading multiple files, it may take extra time to merge them.
 
 ## Building DB schema from different providers
 
-To merge schema parts obtained from different providers, use `Cycle\Schema\Provider\Support\MergeSchemaProvider`.
+To merge schema parts obtained from different providers, use `Cycle\Schema\Provider\MergeSchemaProvider`.
 
 ```php
 # runtime/schema.php
@@ -97,7 +97,7 @@ return [
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Cycle\Schema\Provider\Support\MergeSchemaProvider::class => [
+            \Cycle\Schema\Provider\MergeSchemaProvider::class => [
                 // You can specify the provider class as the key and the configuration as the value.
                 \Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
                 // The provider and its configuration can be passed as an array.
