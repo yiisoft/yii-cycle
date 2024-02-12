@@ -15,6 +15,7 @@ use Psr\Log\LogLevel;
  * @package Yiisoft\Yii\Cycle\Logger
  *
  * @deprecated In the future StdoutLogger will be removed (when we will have debug-tools)
+ * @codeCoverageIgnore
  */
 class StdoutQueryLogger implements LoggerInterface
 {

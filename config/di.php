@@ -20,6 +20,7 @@ use Psr\Container\ContainerInterface;
 use Spiral\Core\FactoryInterface as SpiralFactoryInterface;
 use Spiral\Files\FilesInterface;
 use Yiisoft\Aliases\Aliases;
+use Yiisoft\Definitions\DynamicReference;
 use Yiisoft\Definitions\Reference;
 use Yiisoft\Yii\Cycle\Exception\SchemaWasNotProvidedException;
 use Yiisoft\Yii\Cycle\Factory\CycleDynamicFactory;
@@ -81,12 +82,14 @@ return [
     },
 
     // PhpFileSchemaProvider
-    PhpFileSchemaProvider::class => static function (Aliases $aliases, ContainerInterface $container) {
-        return new PhpFileSchemaProvider(
-            static fn (string $path): string => $aliases->get($path),
-            $container->has(FilesInterface::class) ? $container->get(FilesInterface::class) : null
-        );
-    },
+    PhpFileSchemaProvider::class => [
+        '__construct()' => [
+            DynamicReference::to(
+                static fn (Aliases $aliases): \Closure => static fn (string $path): string => $aliases->get($path)
+            ),
+            Reference::optional(FilesInterface::class),
+        ],
+    ],
 
     // Schema Conveyor
     SchemaConveyorInterface::class => static function (ContainerInterface $container) use (&$params) {

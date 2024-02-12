@@ -10,6 +10,7 @@ use Cycle\Database\Config\SQLiteDriverConfig;
 use Cycle\Database\DatabaseManager;
 use Cycle\Database\DatabaseProviderInterface;
 use Cycle\ORM\Mapper\Mapper;
+use Cycle\ORM\Schema\GeneratedField;
 use Cycle\ORM\SchemaInterface;
 use Cycle\ORM\Select\Repository;
 use Cycle\ORM\Select\Source;
@@ -110,6 +111,9 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
                 SchemaInterface::TYPECAST => ['id' => 'int', 'createdAt' => 'datetime'],
                 SchemaInterface::SCHEMA => [],
                 SchemaInterface::TYPECAST_HANDLER => null,
+                SchemaInterface::GENERATED_FIELDS => [
+                    'id' => GeneratedField::ON_INSERT,
+                ],
             ],
         ], $provider->read());
     }
