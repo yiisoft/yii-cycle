@@ -10,11 +10,11 @@ use Cycle\Migrations\Migrator;
 use Cycle\Migrations\RepositoryInterface;
 use Cycle\ORM\ORMInterface;
 use Cycle\ORM\SchemaInterface;
+use Cycle\Schema\Provider\SchemaProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 final class CycleDependencyProxyTest extends TestCase
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Feature\Schema\Stub;
 
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
+use Cycle\Schema\Provider\SchemaProviderInterface;
 
 final class ArraySchemaProvider implements SchemaProviderInterface
 {
@@ -17,8 +17,6 @@ final class ArraySchemaProvider implements SchemaProviderInterface
 
     /**
      * @param array $config will replace the schema
-     *
-     * @return $this
      */
     public function withConfig(array $config): self
     {
@@ -32,7 +30,7 @@ final class ArraySchemaProvider implements SchemaProviderInterface
         if ($this->schema !== null) {
             return $this->schema;
         }
-        $this->schema = $nextProvider === null ? null : $nextProvider->read();
+        $this->schema = $nextProvider?->read();
         return $this->schema;
     }
 

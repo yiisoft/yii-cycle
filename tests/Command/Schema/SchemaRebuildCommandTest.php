@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Command\Schema;
 
+use Cycle\Schema\Provider\SchemaProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
@@ -11,7 +12,6 @@ use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Schema\SchemaRebuildCommand;
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 
 final class SchemaRebuildCommandTest extends TestCase
 {

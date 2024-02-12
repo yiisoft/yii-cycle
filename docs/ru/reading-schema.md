@@ -8,12 +8,12 @@ Cycle ORM в своей работе полагается на схему — о
 Посмотреть используемую в вашем проекте схему вы можете с помощью консольной команды `cycle/schema`.
 
 В пакете `yii-cycle` схему из разных источников предоставляют разные поставщики, реализующие интерфейс
-`SchemaProviderInterface`. 
+`Cycle\Schema\Provider\SchemaProviderInterface`. 
 
 Для того, чтобы последовательно использовать несколько поставщиков схемы, используется группирующий поставщик
-`SchemaProviderPipeline`, который можно сконфигурировать в секции `schema-providers` файла `config/params.php`.
-Выстраивайте поставщиков схемы в таком порядке, чтобы кеширующие поставщики были в начале списка, а первичные источники
-схемы в конце.
+`Cycle\Schema\Provider\Support\SchemaProviderPipeline`, который можно сконфигурировать в секции `schema-providers`
+файла `config/params.php`. Выстраивайте поставщиков схемы в таком порядке, чтобы кеширующие поставщики были в начале
+списка, а первичные источники схемы в конце.
 
 ## Схема из аннотаций сущностей
 
@@ -30,14 +30,14 @@ Cycle ORM в своей работе полагается на схему — о
 
 ## Кеширование схемы
 
-Запись и чтение схемы в кеш осуществляет поставщик `SimpleCacheSchemaProvider`.
+Запись и чтение схемы в кеш осуществляет поставщик `Cycle\Schema\Provider\SimpleCacheSchemaProvider`.
 
 Разместите его в начале списка поставщиков, чтобы значительно ускорить процесс получения схемы.
 
 ## Схема в файле
 
 Если вы желаете избежать использования аннотаций для описания схемы, то можно описать её в PHP-файле.
-Воспользуйтесь поставщиком `FromFilesSchemaProvider` для загрузки схемы из PHP-файла:
+Воспользуйтесь поставщиком `Cycle\Schema\Provider\FromFilesSchemaProvider` для загрузки схемы из PHP-файла:
 
 ```php
 # Файл config/common.php
@@ -46,7 +46,7 @@ return [
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
+            \Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
                 'files' => ['@runtime/schema.php']
             ]
         ],
@@ -91,7 +91,7 @@ return [
 
 ## Сборка схемы по частям из разных поставщиков
 
-Для того, чтобы объединить получаемые из разных поставщиков части схемы в одну, используйте `MergeSchemaProvider`.
+Для того, чтобы объединить получаемые из разных поставщиков части схемы в одну, используйте `Cycle\Schema\Provider\MergeSchemaProvider`.
 
 ```php
 # Файл config/common.php
@@ -100,11 +100,11 @@ return [
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Yiisoft\Yii\Cycle\Schema\Provider\Support\MergeSchemaProvider::class => [
+            \Cycle\Schema\Provider\MergeSchemaProvider::class => [
                 // Вы можете указать класс поставщика в качестве ключа, а конфигурацию в качестве значения.
-                \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
+                \Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
                 // Поставщик и его конфигурация могут быть переданы в виде массива.
-                [\Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
+                [\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
                 // При указании зависимости в виде строки убедитесь, что контейнер предоставит
                 // уже сконфигурированного поставщика.
                 \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider::class,
@@ -136,8 +136,8 @@ cycle/schema/php @runtime/schema.php
 
 ### Поставщик PhpFileSchemaProvider
 
-В отличие от `FromFilesSchemaProvider`, поставщик `PhpFileSchemaProvider` работает только с одним файлом. Но схему он
-может не только читать, но и записывать.
+В отличие от `FromFilesSchemaProvider`, поставщик `Cycle\Schema\Provider\PhpFileSchemaProvider` работает только с одним
+файлом. Но схему он может не только читать, но и записывать.
 
 В режиме чтения и записи файла схемы, поставщик `PhpFileSchemaProvider` работает аналогично кешу. В режиме только записи
 схема из поставщика, следующего за `PhpFileSchemaProvider`, только записывается в файл.

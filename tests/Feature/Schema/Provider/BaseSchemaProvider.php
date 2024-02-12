@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Feature\Schema\Provider;
 
 use Cycle\ORM\SchemaInterface as Schema;
+use Cycle\Schema\Provider\SchemaProviderInterface;
 use PHPUnit\Framework\TestCase;
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 use Yiisoft\Yii\Cycle\Tests\Feature\Schema\Stub\ArraySchemaProvider;
 
 abstract class BaseSchemaProvider extends TestCase

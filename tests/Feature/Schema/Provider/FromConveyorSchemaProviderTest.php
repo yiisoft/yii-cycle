@@ -10,6 +10,7 @@ use Cycle\Database\Config\SQLiteDriverConfig;
 use Cycle\Database\DatabaseManager;
 use Cycle\Database\DatabaseProviderInterface;
 use Cycle\ORM\Mapper\Mapper;
+use Cycle\ORM\Schema\GeneratedField;
 use Cycle\ORM\SchemaInterface;
 use Cycle\ORM\Select\Repository;
 use Cycle\ORM\Select\Source;
@@ -23,12 +24,12 @@ use Cycle\Schema\Generator\RenderTables;
 use Cycle\Schema\Generator\ResetTables;
 use Cycle\Schema\Generator\ValidateEntities;
 use Cycle\Schema\GeneratorInterface;
+use Cycle\Schema\Provider\SchemaProviderInterface;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
-use Yiisoft\Yii\Cycle\Schema\SchemaProviderInterface;
 use Yiisoft\Yii\Cycle\Tests\Feature\Schema\Provider\Stub\FakePost;
 use Yiisoft\Yii\Cycle\Tests\Feature\Schema\Stub\ArraySchemaProvider;
 
@@ -110,6 +111,9 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
                 SchemaInterface::TYPECAST => ['id' => 'int', 'createdAt' => 'datetime'],
                 SchemaInterface::SCHEMA => [],
                 SchemaInterface::TYPECAST_HANDLER => null,
+                SchemaInterface::GENERATED_FIELDS => [
+                    'id' => GeneratedField::ON_INSERT,
+                ],
             ],
         ], $provider->read());
     }

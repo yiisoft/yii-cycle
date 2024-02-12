@@ -96,4 +96,22 @@ final class SchemaPhpCommandTest extends TestCase
 
         \unlink($file);
     }
+
+    public function testExecuteDirectoryNotFoundException(): void
+    {
+        $file = \dirname(__DIR__) . '/Stub/Foo/schema.php';
+
+        $schema = $this->createMock(SchemaInterface::class);
+        $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
+        $schema->expects($this->any())->method('define')->willReturnCallback(
+            fn (string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null
+        );
+
+        $container = new SimpleContainer([SchemaInterface::class => $schema]);
+        $promise = new CycleDependencyProxy($container);
+        $command = new SchemaPhpCommand(new Aliases(), $promise);
+
+        $this->expectException(\RuntimeException::class);
+        $command->run(new ArrayInput(['file' => $file]), $this->output);
+    }
 }
