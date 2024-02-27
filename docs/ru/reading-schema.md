@@ -41,14 +41,14 @@ Cycle ORM в своей работе полагается на схему — о
 
 ```php
 # Файл config/common.php
+use Cycle\Schema\Provider\FromFilesSchemaProvider;
+
 return [
     // ...
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
-                'files' => ['@runtime/schema.php']
-            ]
+            FromFilesSchemaProvider::class => FromFilesSchemaProvider::config(fiels: ['@runtime/schema.php']),
         ],
     ]
 ];
@@ -102,8 +102,11 @@ return [
         'schema-providers' => [
             \Cycle\Schema\Provider\MergeSchemaProvider::class => [
                 // Вы можете указать класс поставщика в качестве ключа, а конфигурацию в качестве значения.
+                // Для генерирования массива конфигурации вы можете использовать статический метод `config()`
+                // класса поставщика. В этом случае будет доступен автокомплит.
                 \Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
-                // Поставщик и его конфигурация могут быть переданы в виде массива.
+                // Если вам нужно использовать несколько одноименных поставщиков схемы,
+                // поставщик и его конфигурация могут быть переданы в виде массива из двух элементов.
                 [\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
                 // При указании зависимости в виде строки убедитесь, что контейнер предоставит
                 // уже сконфигурированного поставщика.

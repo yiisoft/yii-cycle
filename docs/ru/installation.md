@@ -3,7 +3,7 @@
 Предпочтительнее установить этот пакет через [Composer](https://getcomposer.org/download/):
 
 ```bash
-composer require yiisoft/yii-cycle "2.0.x-dev"
+composer require yiisoft/yii-cycle
 ```
 
 ## Настройка
@@ -14,18 +14,17 @@ composer require yiisoft/yii-cycle "2.0.x-dev"
 ```php
 <?php
 use Cycle\Schema\Generator;
+use Cycle\Schema\Provider\FromFilesSchemaProvider;
+use Cycle\Schema\Provider\SimpleCacheSchemaProvider;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
+use Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider;
 
 return [
     // Общий конфиг Cycle
     'yiisoft/yii-cycle' => [
         // Конфиг Cycle DBAL
         'dbal' => [
-            /**
-             * Логгер SQL запросов
-             * Вы можете использовать класс {@see \Yiisoft\Yii\Cycle\Logger\StdoutQueryLogger}, чтобы выводить SQL лог
-             * в stdout, или любой другой PSR-совместимый логгер
-             */
+            // PSR-3 совместимый логгер SQL запросов
             'query-logger' => null,
             // БД по умолчанию (из списка 'databases')
             'default' => 'default',
@@ -59,13 +58,13 @@ return [
          * указывая имя класса поставщика в качестве ключа элемента, а конфиг в виде массива элемента:
          */
         'schema-providers' => [
-            \Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class => [
-                'key' => 'my-custom-cache-key'
-            ],
-            \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
-                'files' => ['@runtime/cycle-schema.php']
-            ],
-            \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider::class,
+            SimpleCacheSchemaProvider::class => SimpleCacheSchemaProvider::config(
+                key: 'my-custom-cache-key'
+            ),
+            FromFilesSchemaProvider::class => FromFilesSchemaProvider::config(
+                files: ['@runtime/cycle-schema.php'],
+            ),
+            FromConveyorSchemaProvider::class,
         ],
 
         /**

@@ -40,15 +40,17 @@ Utilice `Cycle\Schema\Provider\FromFilesSchemaProvider` para cargar un esquema:
 
 ```php
 # config/common.php
-[
+use Cycle\Schema\Provider\FromFilesSchemaProvider;
+
+return [
+    // ...
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
-                'files' => '@runtime/schema.php'
-            ]
+            FromFilesSchemaProvider::class => FromFilesSchemaProvider::config(fiels: ['@runtime/schema.php']),
         ],
     ]
+];
 ```
 
 ```php
@@ -98,8 +100,11 @@ return [
         'schema-providers' => [
             \Cycle\Schema\Provider\MergeSchemaProvider::class => [
                 // Puede especificar la clase de proveedor como clave y la configuración como valor.
+                // Para generar un arreglo de configuración, puede utilizar el método estático `config()` de
+                // la clase del proveedor. En este caso, estará disponible el autocompletado.
                 \Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
-                // El proveedor y su configuración pueden pasarse como un array.
+                // Si necesita utilizar varios proveedores de esquemas con el mismo nombre,
+                // el proveedor y su configuración se pueden pasar como un arreglo de dos elementos.
                 [\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
                 // Al definir la dependencia como una cadena, asegúrese de que el contenedor proporciona
                 // el proveedor ya configurado.

@@ -41,15 +41,17 @@ Use `Cycle\Schema\Provider\FromFilesSchemaProvider` to load a schema:
 
 ```php
 # config/common.php
-[
+use Cycle\Schema\Provider\FromFilesSchemaProvider;
+
+return [
+    // ...
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
-                'files' => '@runtime/schema.php'
-            ]
+            FromFilesSchemaProvider::class => FromFilesSchemaProvider::config(fiels: ['@runtime/schema.php']),
         ],
     ]
+];
 ```
 
 ```php
@@ -99,8 +101,11 @@ return [
         'schema-providers' => [
             \Cycle\Schema\Provider\MergeSchemaProvider::class => [
                 // You can specify the provider class as the key and the configuration as the value.
+                // To generate a configuration array, you can use the static method `config()` of the
+                // provider class. In this case, autocomplete will be available.
                 \Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
-                // The provider and its configuration can be passed as an array.
+                // If you need to use multiple identically named schema providers,
+                // the provider and its configuration can be passed as an array of two elements.
                 [\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
                 // When defining the dependency as a string, make sure the container provides
                 // the already configured provider.
