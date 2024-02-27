@@ -27,7 +27,7 @@ use Cycle\Schema\GeneratorInterface;
 use Cycle\Schema\Provider\SchemaProviderInterface;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Test\Support\Container\SimpleContainer;
-use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
+use Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Tests\Feature\Schema\Provider\Stub\FakePost;
@@ -90,7 +90,7 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
 
     public function testReadFromConveyor(): void
     {
-        $attributed = new AttributedSchemaConveyor($this->container);
+        $attributed = new MetadataSchemaConveyor($this->container);
         $attributed->addEntityPaths([__DIR__ . '/Stub']);
 
         $provider = $this->createSchemaProvider(conveyor: $attributed, dbal: $this->dbal);
@@ -124,7 +124,7 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
             mkdir(__DIR__ . '/Stub/Foo', 0777, true);
         }
 
-        $attributed = new AttributedSchemaConveyor($this->container);
+        $attributed = new MetadataSchemaConveyor($this->container);
         $attributed->addEntityPaths([__DIR__ . '/Stub/Foo']);
 
         $provider = $this->createSchemaProvider(conveyor: $attributed, dbal: $this->dbal);

@@ -15,7 +15,6 @@ If you use Yii with `composer-config-plugin`, Yii-Cycle settings could be specif
 use Cycle\Schema\Generator;
 use Cycle\Schema\Provider\FromFilesSchemaProvider;
 use Cycle\Schema\Provider\SimpleCacheSchemaProvider;
-use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider;
 
 return [
@@ -67,18 +66,12 @@ return [
         ],
 
         /**
-         * Option for {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor}.
+         * Option for {@see \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider}.
          * A list of entity directories. You can use {@see \Yiisoft\Aliases\Aliases} in paths.
          */
         'entity-paths' => [
             '@src/Entity'
         ],
-        /**
-         * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface} implementation class name.
-         * That implementation defines the entity data source: annotations, attributes or both.
-         * Can be `AttributedSchemaConveyor`, `AnnotatedSchemaConveyor` or `CompositeSchemaConveyor`
-         */
-        'conveyor-class' => AttributedSchemaConveyor::class,
     ],
 ];
 ```

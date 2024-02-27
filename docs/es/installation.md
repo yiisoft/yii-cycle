@@ -15,7 +15,6 @@ Si utiliza `yiisoft/config`, la configuración de `yisoft/yii-cycle` se debe esp
 use Cycle\Schema\Generator;
 use Cycle\Schema\Provider\FromFilesSchemaProvider;
 use Cycle\Schema\Provider\SimpleCacheSchemaProvider;
-use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider;
 
 return [
@@ -67,18 +66,12 @@ return [
         ],
 
         /**
-         * Opción para {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor}.
+         * Opción para {@see \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider}.
          * Una lista de directorios de entidades. Puede utilizar {@see \Yiisoft\Aliases\Aliases} en las rutas.
          */
         'entity-paths' => [
             '@src/Entity'
         ],
-        /**
-         * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface} Implementación del class name.
-         * Esa implementación define la fuente de datos de la entidad: anotaciones, atributos o ambos.
-         * Pueden ser `AttributedSchemaConveyor`, `AnnotatedSchemaConveyor` o `CompositeSchemaConveyor`
-         */
-        'conveyor-class' => AttributedSchemaConveyor::class,
     ],
 ];
 ```

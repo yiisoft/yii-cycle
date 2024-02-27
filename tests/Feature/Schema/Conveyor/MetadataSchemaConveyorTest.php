@@ -20,7 +20,6 @@ use Cycle\Schema\Generator\ResetTables;
 use Cycle\Schema\Generator\SyncTables;
 use Cycle\Schema\Generator\ValidateEntities;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
-use Yiisoft\Yii\Cycle\Schema\Conveyor\CompositeSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor;
 
 class MetadataSchemaConveyorTest extends BaseConveyor
@@ -143,7 +142,7 @@ class MetadataSchemaConveyorTest extends BaseConveyor
      */
     public function createConveyor(array $entityPaths = ['@test-dir']): MetadataSchemaConveyor
     {
-        $conveyor = new CompositeSchemaConveyor($this->prepareContainer());
+        $conveyor = new MetadataSchemaConveyor($this->prepareContainer());
         $conveyor->addEntityPaths($entityPaths);
 
         return $conveyor;

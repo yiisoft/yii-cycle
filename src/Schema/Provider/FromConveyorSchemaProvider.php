@@ -27,6 +27,17 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
     ) {
     }
 
+    /**
+     * @param list<Closure|GeneratorInterface|string> $generators
+     *        Additional {@see SchemaConveyorInterface::STAGE_USERLAND} generators
+     */
+    public static function config(array $generators): array
+    {
+        return [
+            'generators' => $generators,
+        ];
+    }
+
     public function withConfig(array $config): self
     {
         $new = clone $this;

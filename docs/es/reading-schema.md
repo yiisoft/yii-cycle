@@ -14,9 +14,9 @@ de agrupación. Puede configurar este proveedor en la sección `schema-providers
 Los proveedores de esquemas deben estar organizados de la siguiente manera, los proveedores de caché deben estar al principio de la lista y los proveedores de esquemas de origen al final.
 
 
-## Esquema basado en la anotación de entidades
+## Esquema basado en atributos de entidades
 
-Por defecto, el esquema se construye en base a las anotaciones que se encuentran en las entidades de su proyecto.
+Por defecto, el esquema se construye basado en los atributos que están en las entidades de su proyecto.
 
 Cuando se construye un esquema, los generadores se ejecutan secuencialmente. La secuencia se determina en una instancia de
 `SchemaConveyorInterface`. Puede insertar sus propios generadores dentro del transpotador, para ello debe especificarlos en
@@ -24,8 +24,9 @@ Cuando se construye un esquema, los generadores se ejecutan secuencialmente. La 
 
 Para obtener un esquema del transportador se usa la clase `FromConveyorSchemaProvider`.
 
-El proceso de construcción de esquemas a partir de anotaciones es relativamente pesado en términos de rendimiento. Por lo tanto, en caso de
-usar anotaciones es una buena idea usar el caché de esquemas.
+El proceso de construcción de esquemas a partir de atributos es relativamente pesado en términos de rendimiento. Por lo tanto, en caso de
+usar atributos es una buena idea usar el caché de esquemas.
+
 
 ## Esquemas desde caché
 
@@ -35,7 +36,7 @@ Debe indicarse al principio de la lista de proveedores para que el proceso de ob
 
 ## Esquemas basados en archivos
 
-Si quiere evitar las anotaciones, puede describir un esquema en un archivo PHP.
+Si quiere evitar las atributos, puede describir un esquema en un archivo PHP.
 Utilice `Cycle\Schema\Provider\FromFilesSchemaProvider` para cargar un esquema:
 
 ```php
@@ -115,7 +116,7 @@ return [
 ];
 ```
 
-## Pasar de las anotaciones al archivo
+## Pasar de las atributos al archivo
 
 ### Comando de consola
 

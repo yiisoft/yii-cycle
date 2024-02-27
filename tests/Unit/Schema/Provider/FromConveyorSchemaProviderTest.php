@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Unit\Schema\Provider;
 
 use Cycle\Database\DatabaseProviderInterface;
+use Cycle\Schema\Generator\Migrations\GenerateMigrations;
 use Cycle\Schema\GeneratorInterface;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider;
@@ -39,5 +40,12 @@ final class FromConveyorSchemaProviderTest extends TestCase
         );
 
         $this->assertFalse($provider->clear());
+    }
+
+    public function testConfig(): void
+    {
+        $config = FromConveyorSchemaProvider::config(generators: [GenerateMigrations::class]);
+
+        $this->assertSame(['generators' => [GenerateMigrations::class]], $config);
     }
 }

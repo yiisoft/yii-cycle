@@ -10,6 +10,7 @@ use Cycle\Annotated\MergeColumns;
 use Cycle\Annotated\MergeIndexes;
 use Cycle\Annotated\TableInheritance;
 use JetBrains\PhpStorm\ExpectedValues;
+use Spiral\Attributes\AttributeReader;
 use Spiral\Attributes\ReaderInterface;
 use Spiral\Tokenizer\ClassLocator;
 use Symfony\Component\Finder\Finder;
@@ -17,7 +18,7 @@ use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface as Conveyor;
 
-abstract class MetadataSchemaConveyor extends SchemaConveyor
+class MetadataSchemaConveyor extends SchemaConveyor
 {
     /** @var string[] */
     private array $entityPaths = [];
@@ -52,7 +53,10 @@ abstract class MetadataSchemaConveyor extends SchemaConveyor
         return parent::getGenerators();
     }
 
-    abstract protected function getMetadataReader(): ?ReaderInterface;
+    protected function getMetadataReader(): ?ReaderInterface
+    {
+        return new AttributeReader();
+    }
 
     /**
      * Add some generators in this conveyor into the INDEX stage

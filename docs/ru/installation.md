@@ -16,7 +16,6 @@ composer require yiisoft/yii-cycle
 use Cycle\Schema\Generator;
 use Cycle\Schema\Provider\FromFilesSchemaProvider;
 use Cycle\Schema\Provider\SimpleCacheSchemaProvider;
-use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
 use Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider;
 
 return [
@@ -75,14 +74,6 @@ return [
         'entity-paths' => [
             '@src/Entity'
         ],
-        /**
-         * Реализация интерфейса {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface},
-         * определяющая источник данных о сущностях:
-         *  - `AttributedSchemaConveyor` - парсинг только атрибутов (в том числе и на PHP 7.4);
-         *  - `AnnotatedSchemaConveyor` - парсинг только аннотаций;
-         *  - `CompositeSchemaConveyor` - парсинг и аннотаций, и атрибутов.
-         */
-        'conveyor-class' => AttributedSchemaConveyor::class,
     ],
 ];
 ```
