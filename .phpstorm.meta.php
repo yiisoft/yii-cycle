@@ -3,7 +3,7 @@
 namespace PHPSTORM_META {
 
     expectedArguments(
-        \Yiisoft\Yii\Cycle\Schema\Conveyor\AnnotatedSchemaConveyor::setTableNaming(),
+        \Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor::addGenerator(),
         0,
         argumentsSet('\Cycle\Annotated\Entities::TABLE_NAMINGS'),
     );

@@ -10,7 +10,7 @@ use Psr\Container\ContainerInterface;
 use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
-class SchemaConveyor implements SchemaConveyorInterface
+abstract class SchemaConveyor implements SchemaConveyorInterface
 {
     protected array $conveyor = [
         self::STAGE_INDEX => [

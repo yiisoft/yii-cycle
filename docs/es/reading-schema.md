@@ -14,9 +14,9 @@ de agrupación. Puede configurar este proveedor en la sección `schema-providers
 Los proveedores de esquemas deben estar organizados de la siguiente manera, los proveedores de caché deben estar al principio de la lista y los proveedores de esquemas de origen al final.
 
 
-## Esquema basado en la anotación de entidades
+## Esquema basado en atributos de entidades
 
-Por defecto, el esquema se construye en base a las anotaciones que se encuentran en las entidades de su proyecto.
+Por defecto, el esquema se construye basado en los atributos que están en las entidades de su proyecto.
 
 Cuando se construye un esquema, los generadores se ejecutan secuencialmente. La secuencia se determina en una instancia de
 `SchemaConveyorInterface`. Puede insertar sus propios generadores dentro del transpotador, para ello debe especificarlos en
@@ -24,8 +24,9 @@ Cuando se construye un esquema, los generadores se ejecutan secuencialmente. La 
 
 Para obtener un esquema del transportador se usa la clase `FromConveyorSchemaProvider`.
 
-El proceso de construcción de esquemas a partir de anotaciones es relativamente pesado en términos de rendimiento. Por lo tanto, en caso de
-usar anotaciones es una buena idea usar el caché de esquemas.
+El proceso de construcción de esquemas a partir de atributos es relativamente pesado en términos de rendimiento. Por lo tanto, en caso de
+usar atributos es una buena idea usar el caché de esquemas.
+
 
 ## Esquemas desde caché
 
@@ -35,20 +36,22 @@ Debe indicarse al principio de la lista de proveedores para que el proceso de ob
 
 ## Esquemas basados en archivos
 
-Si quiere evitar las anotaciones, puede describir un esquema en un archivo PHP.
+Si quiere evitar las atributos, puede describir un esquema en un archivo PHP.
 Utilice `Cycle\Schema\Provider\FromFilesSchemaProvider` para cargar un esquema:
 
 ```php
 # config/common.php
-[
+use Cycle\Schema\Provider\FromFilesSchemaProvider;
+
+return [
+    // ...
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
-                'files' => '@runtime/schema.php'
-            ]
+            FromFilesSchemaProvider::class => FromFilesSchemaProvider::config(fiels: ['@runtime/schema.php']),
         ],
     ]
+];
 ```
 
 ```php
@@ -98,8 +101,11 @@ return [
         'schema-providers' => [
             \Cycle\Schema\Provider\MergeSchemaProvider::class => [
                 // Puede especificar la clase de proveedor como clave y la configuración como valor.
+                // Para generar un arreglo de configuración, puede utilizar el método estático `config()` de
+                // la clase del proveedor. En este caso, estará disponible el autocompletado.
                 \Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
-                // El proveedor y su configuración pueden pasarse como un array.
+                // Si necesita utilizar varios proveedores de esquemas con el mismo nombre,
+                // el proveedor y su configuración se pueden pasar como un arreglo de dos elementos.
                 [\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
                 // Al definir la dependencia como una cadena, asegúrese de que el contenedor proporciona
                 // el proveedor ya configurado.
@@ -110,7 +116,7 @@ return [
 ];
 ```
 
-## Pasar de las anotaciones al archivo
+## Pasar de las atributos al archivo
 
 ### Comando de consola
 

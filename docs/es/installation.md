@@ -13,18 +13,16 @@ Si utiliza `yiisoft/config`, la configuración de `yisoft/yii-cycle` se debe esp
 ```php
 <?php
 use Cycle\Schema\Generator;
-use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
+use Cycle\Schema\Provider\FromFilesSchemaProvider;
+use Cycle\Schema\Provider\SimpleCacheSchemaProvider;
+use Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider;
 
 return [
     // Configuración de Cycle común
     'yiisoft/yii-cycle' => [
         // Configuración de Cycle DBAL
         'dbal' => [
-            /**
-             * SQL query logger
-             * Puedes usar la clase {@see \Yiisoft\Yii\Cycle\Logger\StdoutQueryLogger} para pasar el registro a
-             * stdout o cualquier logger PSR-compatible.
-             */
+            // PSR-3 SQL query logger
             'query-logger' => null,
             // Bases de datos por defecto (De la lista 'databases')
             'default' => 'default',
@@ -58,28 +56,22 @@ return [
          * y su configuración como valor:
          */
         'schema-providers' => [
-            \Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class => [
-                'key' => 'my-custom-cache-key'
-            ],
-            \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
-                'files' => ['@runtime/cycle-schema.php']
-            ],
-            \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider::class,
+            SimpleCacheSchemaProvider::class => SimpleCacheSchemaProvider::config(
+                key: 'my-custom-cache-key'
+            ),
+            FromFilesSchemaProvider::class => FromFilesSchemaProvider::config(
+                files: ['@runtime/cycle-schema.php'],
+            ),
+            FromConveyorSchemaProvider::class,
         ],
 
         /**
-         * Opción para {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor}.
+         * Opción para {@see \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider}.
          * Una lista de directorios de entidades. Puede utilizar {@see \Yiisoft\Aliases\Aliases} en las rutas.
          */
         'entity-paths' => [
             '@src/Entity'
         ],
-        /**
-         * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface} Implementación del class name.
-         * Esa implementación define la fuente de datos de la entidad: anotaciones, atributos o ambos.
-         * Pueden ser `AttributedSchemaConveyor`, `AnnotatedSchemaConveyor` o `CompositeSchemaConveyor`
-         */
-        'conveyor-class' => AttributedSchemaConveyor::class,
     ],
 ];
 ```

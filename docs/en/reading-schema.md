@@ -15,18 +15,18 @@ Arrage schema providers in such an order, that caching providers are at the top 
 and origin schema providers at the end. 
 
 
-## Entity annotation based schema
+## Entity attributes based schema
 
-By default, schema is built based on annotations that are in your project entities.
+By default, schema is built based on attributes that are in your project entities.
 
 When building a schema generators are executed sequentially. The sequence is determined in an instance of
 `SchemaConveyorInterface`. You can insert your own generators in this conveyor by defining them in
 `entity-paths` option of `config/params.php` file.
 
-In order to get a schema from conveyor `FromConveyorSchemaProvider` is used.
+To get a schema from conveyor `FromConveyorSchemaProvider` is used.
 
-The process of building schema from annotations is relatively heavy in terms of performance. Therefore, in case of
-using annotations it is a good idea to use schema cache.
+The process of building schema from attributes is relatively heavy in terms of performance. Therefore, in the case of
+using attributes, it is a good idea to use schema cache.
 
 ## Schema cache
 
@@ -36,20 +36,22 @@ Place it to the beginning of providers list to make the process of obtaining a s
 
 ## File-based schema
 
-If you want to avoid annotations, you can describe a schema in a PHP file.
+If you want to avoid attributes, you can describe a schema in a PHP file.
 Use `Cycle\Schema\Provider\FromFilesSchemaProvider` to load a schema:
 
 ```php
 # config/common.php
-[
+use Cycle\Schema\Provider\FromFilesSchemaProvider;
+
+return [
+    // ...
     'yiisoft/yii-cycle' => [
         // ...
         'schema-providers' => [
-            \Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
-                'files' => '@runtime/schema.php'
-            ]
+            FromFilesSchemaProvider::class => FromFilesSchemaProvider::config(fiels: ['@runtime/schema.php']),
         ],
     ]
+];
 ```
 
 ```php
@@ -99,8 +101,11 @@ return [
         'schema-providers' => [
             \Cycle\Schema\Provider\MergeSchemaProvider::class => [
                 // You can specify the provider class as the key and the configuration as the value.
+                // To generate a configuration array, you can use the static method `config()` of the
+                // provider class. In this case, autocomplete will be available.
                 \Cycle\Schema\Provider\FromFilesSchemaProvider::class => ['files' => ['@src/schema.php']],
-                // The provider and its configuration can be passed as an array.
+                // If you need to use multiple identically named schema providers,
+                // the provider and its configuration can be passed as an array of two elements.
                 [\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class, ['key' => 'cycle-schema']],
                 // When defining the dependency as a string, make sure the container provides
                 // the already configured provider.
@@ -111,7 +116,7 @@ return [
 ];
 ```
 
-## Switching from annotations to file
+## Switching from attributes to file
 
 ### Console command
 

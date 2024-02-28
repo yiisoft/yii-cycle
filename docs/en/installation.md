@@ -3,7 +3,7 @@
 The preferred way to install this package is through [Composer](https://getcomposer.org/download/):
 
 ```bash
-composer require yiisoft/yii-cycle "2.0.x-dev"
+composer require yiisoft/yii-cycle
 ```
 
 ## Configuring package
@@ -13,18 +13,16 @@ If you use Yii with `composer-config-plugin`, Yii-Cycle settings could be specif
 ```php
 <?php
 use Cycle\Schema\Generator;
-use Yiisoft\Yii\Cycle\Schema\Conveyor\AttributedSchemaConveyor;
+use Cycle\Schema\Provider\FromFilesSchemaProvider;
+use Cycle\Schema\Provider\SimpleCacheSchemaProvider;
+use Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider;
 
 return [
     // Common Cycle config
     'yiisoft/yii-cycle' => [
         // Cycle DBAL config
         'dbal' => [
-            /**
-             * SQL query logger
-             * You may use {@see \Yiisoft\Yii\Cycle\Logger\StdoutQueryLogger} class to pass log to
-             * stdout or any PSR-compatible logger
-             */
+             // PSR-3 compatible SQL query logger
             'query-logger' => null,
             // Default database (from 'databases' list)
             'default' => 'default',
@@ -58,28 +56,22 @@ return [
          * and its config as value:
          */
         'schema-providers' => [
-            \Yiisoft\Yii\Cycle\Schema\Provider\SimpleCacheSchemaProvider::class => [
-                'key' => 'my-custom-cache-key'
-            ],
-            \Yiisoft\Yii\Cycle\Schema\Provider\FromFilesSchemaProvider::class => [
-                'files' => ['@runtime/cycle-schema.php']
-            ],
-            \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider::class,
+            SimpleCacheSchemaProvider::class => SimpleCacheSchemaProvider::config(
+                key: 'my-custom-cache-key'
+            ),
+            FromFilesSchemaProvider::class => FromFilesSchemaProvider::config(
+                files: ['@runtime/cycle-schema.php'],
+            ),
+            FromConveyorSchemaProvider::class,
         ],
 
         /**
-         * Option for {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\MetadataSchemaConveyor}.
+         * Option for {@see \Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider}.
          * A list of entity directories. You can use {@see \Yiisoft\Aliases\Aliases} in paths.
          */
         'entity-paths' => [
             '@src/Entity'
         ],
-        /**
-         * {@see \Yiisoft\Yii\Cycle\Schema\Conveyor\SchemaConveyorInterface} implementation class name.
-         * That implementation defines the entity data source: annotations, attributes or both.
-         * Can be `AttributedSchemaConveyor`, `AnnotatedSchemaConveyor` or `CompositeSchemaConveyor`
-         */
-        'conveyor-class' => AttributedSchemaConveyor::class,
     ],
 ];
 ```

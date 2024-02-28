@@ -111,6 +111,6 @@ class SchemaConveyorTest extends BaseConveyor
 
     public function createConveyor(): SchemaConveyor
     {
-        return new SchemaConveyor($this->prepareContainer());
+        return new class ($this->prepareContainer()) extends SchemaConveyor {};
     }
 }

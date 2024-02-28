@@ -6,7 +6,6 @@ use Cycle\Schema\Provider\SchemaProviderInterface;
 use Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use Yiisoft\Yii\Cycle\Command\Schema;
 use Yiisoft\Yii\Cycle\Command\Migration;
-use Yiisoft\Yii\Cycle\Schema\Conveyor\CompositeSchemaConveyor;
 
 return [
     // Console commands
@@ -81,13 +80,9 @@ return [
         ],
 
         /**
-         * Annotated/attributed entity directories list.
+         * An attributed entity directory list.
          * {@see \Yiisoft\Aliases\Aliases} are also supported.
          */
         'entity-paths' => [],
-        'conveyor' => CompositeSchemaConveyor::class,
-
-        /** @deprecated use `entity-paths` key instead */
-        'annotated-entity-paths' => [],
     ],
 ];
