@@ -93,6 +93,6 @@ return [
     // Schema Conveyor
     SchemaConveyorInterface::class => [
         'class' => MetadataSchemaConveyor::class,
-        'addEntityPaths()' => $params['yiisoft/yii-cycle']['entity-paths'] ?? [],
+        'addEntityPaths()' => [$params['yiisoft/yii-cycle']['entity-paths'] ?? []],
     ],
 ];
