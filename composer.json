@@ -35,7 +35,8 @@
         "yiisoft/aliases": "^1.1|^2.0|^3.0",
         "yiisoft/friendly-exception": "^1.1",
         "yiisoft/injector": "^1.1",
-        "symfony/console": "^6.4"
+        "symfony/console": "^6.4",
+        "symfony/finder":"^5.4"
     },
     "require-dev": {
         "cycle/entity-behavior": "^1.0",
