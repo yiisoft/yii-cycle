@@ -32,8 +32,7 @@ final class OrmFactory
          * @psalm-var CollectionsConfig
          */
         private array $collectionsConfig
-    )
-    {
+    ) {
     }
 
     /**
