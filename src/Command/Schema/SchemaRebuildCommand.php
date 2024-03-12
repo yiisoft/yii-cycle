@@ -13,11 +13,9 @@ final class SchemaRebuildCommand extends Command
 {
     protected static $defaultName = 'cycle/schema/rebuild';
     protected static $defaultDescription = 'Rebuilds the database schema';
-    private CycleDependencyProxy $promise;
 
-    public function __construct(CycleDependencyProxy $promise)
+    public function __construct(private CycleDependencyProxy $promise)
     {
-        $this->promise = $promise;
         parent::__construct();
     }
 

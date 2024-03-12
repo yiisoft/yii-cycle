@@ -25,16 +25,15 @@ use Yiisoft\Yii\Cycle\Exception\ConfigException;
 final class OrmFactory
 {
     /**
-     * @psalm-var CollectionsConfig
-     */
-    private array $collectionsConfig;
-
-    /**
      * @param CollectionsConfig $collectionsConfig
      */
-    public function __construct(array $collectionsConfig)
+    public function __construct(
+        /**
+         * @psalm-var CollectionsConfig
+         */
+        private array $collectionsConfig
+    )
     {
-        $this->collectionsConfig = $collectionsConfig;
     }
 
     /**

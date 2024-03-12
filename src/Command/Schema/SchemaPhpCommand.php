@@ -18,13 +18,8 @@ final class SchemaPhpCommand extends Command
     protected static $defaultName = 'cycle/schema/php';
     protected static $defaultDescription = 'Saves the current schema in a PHP file';
 
-    private CycleDependencyProxy $promise;
-    private Aliases $aliases;
-
-    public function __construct(Aliases $aliases, CycleDependencyProxy $promise)
+    public function __construct(private Aliases $aliases, private CycleDependencyProxy $promise)
     {
-        $this->aliases = $aliases;
-        $this->promise = $promise;
         parent::__construct();
     }
 

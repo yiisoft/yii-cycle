@@ -14,17 +14,14 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
 abstract class BaseMigrationCommand extends Command
 {
-    protected CycleDependencyProxy $promise;
-
     protected const MIGRATION_STATUS = [
         State::STATUS_UNDEFINED => 'undefined',
         State::STATUS_PENDING => 'pending',
         State::STATUS_EXECUTED => 'executed',
     ];
 
-    public function __construct(CycleDependencyProxy $promise)
+    public function __construct(protected CycleDependencyProxy $promise)
     {
-        $this->promise = $promise;
         parent::__construct();
     }
 
@@ -62,8 +59,6 @@ abstract class BaseMigrationCommand extends Command
     }
 
     /**
-     * @param OutputInterface $output
-     *
      * @return MigrationInterface[]
      */
     protected function findMigrations(OutputInterface $output): array

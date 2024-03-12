@@ -11,11 +11,9 @@ class CallingSpyProvider implements SchemaProviderInterface
     private int $read = 0;
     private int $write = 0;
     private int $clear = 0;
-    private ?array $schema;
 
-    public function __construct(array $schema = null)
+    public function __construct(private ?array $schema = null)
     {
-        $this->schema = $schema;
     }
 
     public function withConfig(array $config): self

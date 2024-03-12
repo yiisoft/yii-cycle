@@ -20,11 +20,8 @@ final class DownCommand extends BaseMigrationCommand
     protected static $defaultName = 'migrate/down';
     protected static $defaultDescription = 'Rolls back the last applied migration';
 
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(CycleDependencyProxy $promise, EventDispatcherInterface $eventDispatcher)
+    public function __construct(CycleDependencyProxy $promise, private EventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
         parent::__construct($promise);
     }
 

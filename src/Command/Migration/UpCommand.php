@@ -20,11 +20,8 @@ final class UpCommand extends BaseMigrationCommand
     protected static $defaultName = 'migrate/up';
     protected static $defaultDescription = 'Executes all new migrations';
 
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(CycleDependencyProxy $promise, EventDispatcherInterface $eventDispatcher)
+    public function __construct(CycleDependencyProxy $promise, private EventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
         parent::__construct($promise);
     }
 
