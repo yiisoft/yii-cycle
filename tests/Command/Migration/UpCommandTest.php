@@ -8,13 +8,13 @@ use Cycle\Migrations\Config\MigrationConfig;
 use Cycle\Migrations\Migrator;
 use Cycle\Migrations\RepositoryInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Yiisoft\Test\Support\Container\SimpleContainer;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\UpCommand;
 
@@ -39,7 +39,7 @@ final class UpCommandTest extends TestCase
         );
         $code = $command->run(new ArrayInput([]), $output);
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('No migration found for execute', $output->fetch());
     }
 
@@ -68,7 +68,7 @@ final class UpCommandTest extends TestCase
 
         $result = $output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Migration to be applied:', $result);
         $this->assertStringContainsString('test: executed', $result);
     }
@@ -115,7 +115,7 @@ final class UpCommandTest extends TestCase
 
         $result = $output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString(
             \count($migrations) === 1 ? 'Migration to be applied:' : '2 migrations to be applied:',
             $result

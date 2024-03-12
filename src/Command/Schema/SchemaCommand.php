@@ -10,7 +10,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
 final class SchemaCommand extends Command
@@ -56,6 +55,6 @@ final class SchemaCommand extends Command
             $output->writeln(sprintf('<fg=red>Undefined roles: %s</>', implode(', ', $notFound)));
         }
 
-        return ExitCode::OK;
+        return self::SUCCESS;
     }
 }

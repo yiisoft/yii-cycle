@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Cycle\Command\Migration;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yiisoft\Yii\Console\ExitCode;
 
 final class CreateCommand extends BaseMigrationCommand
 {
@@ -27,6 +26,6 @@ final class CreateCommand extends BaseMigrationCommand
 
         $this->createEmptyMigration($output, $customName);
 
-        return ExitCode::OK;
+        return self::SUCCESS;
     }
 }

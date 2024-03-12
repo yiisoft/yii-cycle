@@ -10,10 +10,10 @@ use Cycle\Migrations\Config\MigrationConfig;
 use Cycle\Migrations\Exception\RepositoryException;
 use Cycle\Migrations\Migrator;
 use Cycle\Migrations\RepositoryInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Yiisoft\Test\Support\Container\SimpleContainer;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\CreateCommand;
 
@@ -56,7 +56,7 @@ final class CreateCommandTest extends TestCase
         $output = new BufferedOutput();
         $code = $command->run(new ArrayInput(['name' => 'foo']), $output);
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('New migration file has been created', $output->fetch());
     }
 
@@ -81,7 +81,7 @@ final class CreateCommandTest extends TestCase
 
         $result = $output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Can not create migration', $result);
         $this->assertStringContainsString('test', $result);
     }

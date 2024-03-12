@@ -7,10 +7,10 @@ namespace Yiisoft\Yii\Cycle\Tests\Command\Migration;
 use Cycle\Migrations\Config\MigrationConfig;
 use Cycle\Migrations\Migrator;
 use Cycle\Migrations\RepositoryInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Yiisoft\Test\Support\Container\SimpleContainer;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\ListCommand;
 
@@ -35,7 +35,7 @@ final class ListCommandTest extends TestCase
 
         $result = $output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Total 1 migration(s) found', $result);
         $this->assertStringContainsString('test [pending]', $result);
     }

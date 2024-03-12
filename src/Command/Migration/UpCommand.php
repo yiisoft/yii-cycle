@@ -11,7 +11,6 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
@@ -42,7 +41,7 @@ final class UpCommand extends BaseMigrationCommand
         }
         if (!$exist) {
             $output->writeln('<fg=red>No migration found for execute</>');
-            return ExitCode::OK;
+            return self::SUCCESS;
         }
 
         $migrator = $this->promise->getMigrator();
@@ -75,7 +74,7 @@ final class UpCommand extends BaseMigrationCommand
                 /** @var QuestionHelper $qaHelper*/
                 $qaHelper = $this->getHelper('question');
                 if (!$qaHelper->ask($input, $output, $question)) {
-                    return ExitCode::OK;
+                    return self::SUCCESS;
                 }
             }
         }
@@ -97,6 +96,6 @@ final class UpCommand extends BaseMigrationCommand
         } finally {
             $this->eventDispatcher->dispatch(new AfterMigrate());
         }
-        return ExitCode::OK;
+        return self::SUCCESS;
     }
 }

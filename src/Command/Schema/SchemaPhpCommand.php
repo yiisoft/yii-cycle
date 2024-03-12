@@ -11,7 +11,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
 final class SchemaPhpCommand extends Command
@@ -59,6 +58,6 @@ final class SchemaPhpCommand extends Command
         } else {
             $output->write($content);
         }
-        return ExitCode::OK;
+        return self::SUCCESS;
     }
 }

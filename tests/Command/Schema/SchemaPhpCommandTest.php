@@ -6,11 +6,11 @@ namespace Yiisoft\Yii\Cycle\Tests\Command\Schema;
 
 use Cycle\ORM\SchemaInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Test\Support\Container\SimpleContainer;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Schema\SchemaPhpCommand;
 
@@ -38,7 +38,7 @@ final class SchemaPhpCommandTest extends TestCase
         $code = $command->run(new ArrayInput([]), $this->output);
         $result = $this->output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Schema::ROLE => \'foo\'', $result);
         $this->assertStringContainsString('Schema::ROLE => \'bar\'', $result);
     }
@@ -60,7 +60,7 @@ final class SchemaPhpCommandTest extends TestCase
         $code = $command->run(new ArrayInput(['file' => $file]), $this->output);
         $result = $this->output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString(sprintf('Destination: %s', $file), $result);
 
         $this->assertStringContainsString('Schema::ROLE => \'foo\'', file_get_contents($file));
@@ -88,7 +88,7 @@ final class SchemaPhpCommandTest extends TestCase
         $code = $command->run(new ArrayInput(['file' => '@test/alias-schema.php']), $this->output);
         $result = $this->output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString(sprintf('Destination: %s', $file), $result);
 
         $this->assertStringContainsString('Schema::ROLE => \'foo\'', file_get_contents($file));

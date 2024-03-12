@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Cycle\Command\Schema;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
 final class SchemaClearCommand extends Command
@@ -26,6 +25,6 @@ final class SchemaClearCommand extends Command
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->promise->getSchemaProvider()->clear();
-        return ExitCode::OK;
+        return self::SUCCESS;
     }
 }
