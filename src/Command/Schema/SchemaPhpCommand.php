@@ -53,7 +53,7 @@ final class SchemaPhpCommand extends Command
                 throw new \RuntimeException("Directory {$dir} not found");
             }
             if (file_put_contents($file, $content) === false) {
-                return ExitCode::UNSPECIFIED_ERROR;
+                return self::FAILURE;
             }
         } else {
             $output->write($content);
