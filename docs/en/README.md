@@ -9,5 +9,10 @@ This package provides a convenient way to integrate it with Yii framework.
 
 - [Installation and configuring](installation.md)
 - [Console commands](console-commands.md)
-- [EntityReader](entity-reader.md)
 - [Reading DB schema](reading-schema.md)
+
+# Other packages
+
+There is also an additional package providing Cycle ORM query adapter for [Yii Data](https://github.com/yiisoft/data) 
+data providers - [Yii Data Cycle](https://github.com/yiisoft/data-cycle). You can use it independently or in combination 
+with this package.  
