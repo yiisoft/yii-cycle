@@ -14,5 +14,5 @@ This package provides a convenient way to integrate it with Yii framework.
 # Other packages
 
 There is also an additional package providing Cycle ORM query adapter for [Yii Data](https://github.com/yiisoft/data) 
-data providers - [Yii Data Cycle](https://github.com/yiisoft/data-cycle). You can use it independently or in combination 
-with this package.  
+called [Yii Data Cycle](https://github.com/yiisoft/data-cycle). You can use it independently or in combination with this 
+package.  
