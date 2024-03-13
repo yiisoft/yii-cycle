@@ -9,6 +9,7 @@ use Cycle\Migrations\Config\MigrationConfig;
 use Cycle\Migrations\Migrator;
 use Cycle\Migrations\RepositoryInterface;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -16,7 +17,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Output\NullOutput;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Yiisoft\Test\Support\Container\SimpleContainer;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\DownCommand;
 use Yiisoft\Yii\Cycle\Command\Migration\UpCommand;
@@ -38,7 +38,7 @@ final class DownCommandTest extends TestCase
         );
         $code = $command->run(new ArrayInput([]), $output);
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('No migration found for rollback', $output->fetch());
     }
 
@@ -68,7 +68,7 @@ final class DownCommandTest extends TestCase
 
         $result = $output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Total 1 migration(s) found', $result);
         $this->assertStringContainsString('test: pending', $result);
     }
@@ -143,7 +143,7 @@ final class DownCommandTest extends TestCase
 
         $result = $output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Total 1 migration(s) found', $result);
         $this->assertStringNotContainsString('test: pending', $result);
     }

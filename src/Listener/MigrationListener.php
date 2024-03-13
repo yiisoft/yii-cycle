@@ -10,7 +10,7 @@ use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 final class MigrationListener
 {
     public function __construct(
-        private SchemaProviderInterface $schemaProvider,
+        private readonly SchemaProviderInterface $schemaProvider,
     ) {
     }
 

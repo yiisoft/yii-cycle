@@ -7,18 +7,15 @@ namespace Yiisoft\Yii\Cycle\Command\Schema;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
 final class SchemaRebuildCommand extends Command
 {
     protected static $defaultName = 'cycle/schema/rebuild';
     protected static $defaultDescription = 'Rebuilds the database schema';
-    private CycleDependencyProxy $promise;
 
-    public function __construct(CycleDependencyProxy $promise)
+    public function __construct(private readonly CycleDependencyProxy $promise)
     {
-        $this->promise = $promise;
         parent::__construct();
     }
 
@@ -28,6 +25,6 @@ final class SchemaRebuildCommand extends Command
         $provider->clear();
         $provider->read();
 
-        return ExitCode::OK;
+        return self::SUCCESS;
     }
 }

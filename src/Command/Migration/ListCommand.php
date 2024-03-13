@@ -6,7 +6,6 @@ namespace Yiisoft\Yii\Cycle\Command\Migration;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Yiisoft\Yii\Console\ExitCode;
 
 final class ListCommand extends BaseMigrationCommand
 {
@@ -22,6 +21,6 @@ final class ListCommand extends BaseMigrationCommand
             $output->writeln('<fg=cyan>' . $state->getName() . '</> '
                 . '<fg=yellow>[' . (self::MIGRATION_STATUS[$state->getStatus()] ?? '?') . ']</>');
         }
-        return ExitCode::OK;
+        return self::SUCCESS;
     }
 }
