@@ -17,6 +17,8 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\UpCommand;
+use Yiisoft\Yii\Cycle\Event\AfterMigrate;
+use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 
 final class UpCommandTest extends TestCase
 {
@@ -53,17 +55,27 @@ final class UpCommandTest extends TestCase
         $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
-        $output = new BufferedOutput(decorated: true);
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher
+            ->expects($this->exactly(2))
+            ->method('dispatch')
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo(new BeforeMigrate()),
+                    $this->equalTo(new AfterMigrate()),
+                ),
+            );
         $command = new UpCommand(
             new CycleDependencyProxy(new SimpleContainer([
                 Migrator::class => $migrator,
                 MigrationConfig::class => $config,
             ])),
-            $this->createMock(EventDispatcherInterface::class)
+            $eventDispatcher,
         );
 
         $input = new ArrayInput([]);
         $input->setInteractive(false);
+        $output = new BufferedOutput(decorated: true);
         $code = $command->run($input, $output);
         $this->assertSame(Command::SUCCESS, $code);
 
