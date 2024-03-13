@@ -24,7 +24,7 @@ final class ListCommandTest extends TestCase
         $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
-        $output = new BufferedOutput();
+        $output = new BufferedOutput(decorated: true);
         $command = new ListCommand(
             new CycleDependencyProxy(new SimpleContainer([
                 Migrator::class => $migrator,
@@ -32,11 +32,11 @@ final class ListCommandTest extends TestCase
             ])),
         );
         $code = $command->run(new ArrayInput([]), $output);
-
-        $result = $output->fetch();
-
         $this->assertSame(Command::SUCCESS, $code);
-        $this->assertStringContainsString('Total 1 migration(s) found', $result);
-        $this->assertStringContainsString('test [pending]', $result);
+
+        $newLine = PHP_EOL;
+        $expectedOutput = "\033[32mTotal 1 migration(s) found in \033[39m$newLine" .
+            "\033[36mtest\033[39m \033[33m[pending]\033[39m$newLine";
+        $this->assertSame($expectedOutput, $output->fetch());
     }
 }
