@@ -54,7 +54,7 @@ abstract class BaseMigrationCommand extends Command
             return null;
         }
         $output->writeln('<info>New migration file has been created</info>');
-        $output->writeln("<fg=cyan>{$migrationFile}</>");
+        $output->writeln("<fg=cyan>$migrationFile</>");
         return $migrationSkeleton;
     }
 

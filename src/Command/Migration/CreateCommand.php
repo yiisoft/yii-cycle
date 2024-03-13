@@ -13,7 +13,7 @@ final class CreateCommand extends BaseMigrationCommand
     protected static $defaultName = 'migrate/create';
     protected static $defaultDescription = 'Creates an empty migration';
 
-    public function configure(): void
+    protected function configure(): void
     {
         $this->setHelp('This command allows you to create a custom migration')
              ->addArgument('name', InputArgument::REQUIRED, 'Migration name');
