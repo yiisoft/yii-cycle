@@ -17,7 +17,7 @@ final class SchemaCommand extends Command
     protected static $defaultName = 'cycle/schema';
     protected static $defaultDescription = 'Shown current schema';
 
-    public function __construct(private CycleDependencyProxy $promise)
+    public function __construct(private readonly CycleDependencyProxy $promise)
     {
         parent::__construct();
     }

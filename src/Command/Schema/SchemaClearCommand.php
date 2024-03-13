@@ -14,7 +14,7 @@ final class SchemaClearCommand extends Command
     protected static $defaultName = 'cycle/schema/clear';
     protected static $defaultDescription = 'Clears the current schema cache';
 
-    public function __construct(private CycleDependencyProxy $promise)
+    public function __construct(private readonly CycleDependencyProxy $promise)
     {
         parent::__construct();
     }

@@ -9,7 +9,7 @@ use Cycle\Schema\Registry;
 
 class FakeGenerator implements GeneratorInterface
 {
-    public function __construct(private string $originClass)
+    public function __construct(private readonly string $originClass)
     {
     }
 
