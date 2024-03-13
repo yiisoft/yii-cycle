@@ -23,9 +23,7 @@ Read more in the [official documentation](https://cycle-orm.dev/docs/readme/2.x)
 
 ## Documentation
 
-- [English](docs/en/guide)
-- [Russian](docs/ru/guide)
-- [Spanish](docs/es/guide)
+- Guide: [English](docs/en/guide), [Russian](docs/ru/guide), [Spanish](docs/es/guide)
 - [Internals](docs/internals.md)
 
 ## License
