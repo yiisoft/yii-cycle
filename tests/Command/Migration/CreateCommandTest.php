@@ -53,11 +53,13 @@ final class CreateCommandTest extends TestCase
             MigrationConfig::class => $config,
         ])));
 
-        $output = new BufferedOutput();
+        $output = new BufferedOutput(decorated: true);
         $code = $command->run(new ArrayInput(['name' => 'foo']), $output);
-
         $this->assertSame(Command::SUCCESS, $code);
-        $this->assertStringContainsString('New migration file has been created', $output->fetch());
+
+        $newLine = PHP_EOL;
+        $expectedOutput = "\033[32mNew migration file has been created\033[39m$newLine$newLine";
+        $this->assertSame($expectedOutput, $output->fetch());
     }
 
     public function testCreateEmptyMigrationException(): void
