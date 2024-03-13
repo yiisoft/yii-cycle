@@ -9,6 +9,7 @@ use Cycle\Database\DatabaseProviderInterface;
 use Cycle\Migrations\Config\MigrationConfig;
 use Cycle\Migrations\Migrator;
 use Cycle\Migrations\RepositoryInterface;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperSet;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\ArrayInput;
@@ -16,7 +17,6 @@ use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Yiisoft\Test\Support\Container\SimpleContainer;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\GenerateCommand;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
@@ -39,7 +39,7 @@ final class GenerateCommandTest extends TestCase
         );
         $code = $command->run(new ArrayInput([]), $output);
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Outstanding migrations found, run `migrate/up` first.', $output->fetch());
     }
 
@@ -64,7 +64,7 @@ final class GenerateCommandTest extends TestCase
 
         $result = $output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Added 0 file(s)', $result);
         $this->assertStringContainsString(
             'If you want to create new empty migration, use migrate/create',
@@ -96,7 +96,7 @@ final class GenerateCommandTest extends TestCase
 
         $result = $output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Added 1 file(s)', $result);
         $this->assertStringContainsString('test', $result);
     }
@@ -163,7 +163,7 @@ final class GenerateCommandTest extends TestCase
 
         $result = $output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Added 0 file(s)', $result);
         $this->assertStringContainsString(
             'If you want to create new empty migration, use migrate/create',
@@ -214,7 +214,7 @@ final class GenerateCommandTest extends TestCase
 
         $result = $output->fetch();
 
-        $this->assertSame(ExitCode::OK, $code);
+        $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Added 0 file(s)', $result);
         $this->assertStringContainsString('You entered an empty name. Exit', $result);
     }

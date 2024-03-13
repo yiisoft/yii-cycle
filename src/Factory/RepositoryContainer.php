@@ -15,7 +15,7 @@ use function is_string;
 
 final class RepositoryContainer implements ContainerInterface
 {
-    private ORMInterface $orm;
+    private readonly ORMInterface $orm;
 
     private bool $rolesBuilt = false;
     private array $roles = [];

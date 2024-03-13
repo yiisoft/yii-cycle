@@ -6,10 +6,10 @@ namespace Yiisoft\Yii\Cycle\Tests\Command\Schema;
 
 use Cycle\Schema\Provider\SchemaProviderInterface;
 use PHPUnit\Framework\TestCase;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Yiisoft\Test\Support\Container\SimpleContainer;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Schema\SchemaRebuildCommand;
 
@@ -28,6 +28,6 @@ final class SchemaRebuildCommandTest extends TestCase
 
         $code = $command->run(new ArrayInput([]), new BufferedOutput());
 
-        $this->assertEquals(ExitCode::OK, $code);
+        $this->assertEquals(Command::SUCCESS, $code);
     }
 }

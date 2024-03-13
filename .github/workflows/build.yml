@@ -10,6 +10,7 @@ on:
       - 'psalm.xml'
 
   push:
+    branches: ['master']
     paths-ignore:
       - 'docs/**'
       - 'README.md'
@@ -38,7 +39,6 @@ jobs:
           - windows-latest
 
         php:
-          - 8.0
           - 8.1
           - 8.2
           - 8.3

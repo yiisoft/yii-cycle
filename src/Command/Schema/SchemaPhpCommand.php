@@ -11,7 +11,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
 final class SchemaPhpCommand extends Command
@@ -19,13 +18,8 @@ final class SchemaPhpCommand extends Command
     protected static $defaultName = 'cycle/schema/php';
     protected static $defaultDescription = 'Saves the current schema in a PHP file';
 
-    private CycleDependencyProxy $promise;
-    private Aliases $aliases;
-
-    public function __construct(Aliases $aliases, CycleDependencyProxy $promise)
+    public function __construct(private readonly Aliases $aliases, private readonly CycleDependencyProxy $promise)
     {
-        $this->aliases = $aliases;
-        $this->promise = $promise;
         parent::__construct();
     }
 
@@ -54,11 +48,11 @@ final class SchemaPhpCommand extends Command
                 throw new \RuntimeException("Directory {$dir} not found");
             }
             if (file_put_contents($file, $content) === false) {
-                return ExitCode::UNSPECIFIED_ERROR;
+                return self::FAILURE;
             }
         } else {
             $output->write($content);
         }
-        return ExitCode::OK;
+        return self::SUCCESS;
     }
 }

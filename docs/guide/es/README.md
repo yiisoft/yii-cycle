@@ -8,5 +8,4 @@ Este paquete proporciona una manera conveniente de integrarlo con el framework Y
 
 - [Instalación y configuración](installation.md)
 - [Comandos de consola](console-commands.md)
-- [Clase EntityReader](entity-reader.md)
 - [Lectura del esquema de datos](reading-schema.md)

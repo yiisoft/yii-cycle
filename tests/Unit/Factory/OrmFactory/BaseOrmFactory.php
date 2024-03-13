@@ -62,9 +62,6 @@ abstract class BaseOrmFactory extends TestCase
         );
     }
 
-    /**
-     * @param array $collectionsConfig
-     */
     protected function makeFactory(array $collectionsConfig = []): \Cycle\ORM\FactoryInterface
     {
         return (new OrmFactory($collectionsConfig))(

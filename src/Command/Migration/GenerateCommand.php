@@ -15,7 +15,6 @@ use Symfony\Component\Console\Input\StreamableInputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
 final class GenerateCommand extends BaseMigrationCommand
@@ -31,7 +30,7 @@ final class GenerateCommand extends BaseMigrationCommand
         foreach ($listAfter as $migration) {
             if ($migration->getState()->getStatus() !== State::STATUS_EXECUTED) {
                 $output->writeln('<fg=red>Outstanding migrations found, run `migrate/up` first.</>');
-                return ExitCode::OK;
+                return self::SUCCESS;
             }
         }
         $conveyor = $this->promise->getSchemaConveyor();
@@ -70,19 +69,19 @@ final class GenerateCommand extends BaseMigrationCommand
                 $question = new ConfirmationQuestion('Would you like to create empty migration right now? (Y/n)', true);
                 $answer = $qaHelper->ask($input, $output, $question);
                 if (!$answer) {
-                    return ExitCode::OK;
+                    return self::SUCCESS;
                 }
                 // get the name for a new migration
                 $question = new Question('Please enter an unique name for the new migration: ');
                 $name = $qaHelper->ask($input, $output, $question);
                 if (empty($name)) {
                     $output->writeln('<fg=red>You entered an empty name. Exit</>');
-                    return ExitCode::OK;
+                    return self::SUCCESS;
                 }
                 // create an empty migration
                 $this->createEmptyMigration($output, $name);
             }
         }
-        return ExitCode::OK;
+        return self::SUCCESS;
     }
 }

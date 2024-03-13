@@ -14,7 +14,7 @@ use RuntimeException;
 
 final class DbalFactory
 {
-    private array|DatabaseConfig $dbalConfig;
+    private readonly array|DatabaseConfig $dbalConfig;
 
     /** @var LoggerInterface|string|null */
     private mixed $logger = null;

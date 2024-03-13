@@ -61,7 +61,7 @@ class SchemaConveyorTest extends BaseConveyor
         // get generators list
         /** @var string[] $generators */
         $generators = array_map(
-            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : get_class($value),
+            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : $value::class,
             $conveyor->getGenerators()
         );
 

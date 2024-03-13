@@ -15,7 +15,7 @@ class BadDeclarationException extends Exception
     public function __construct(string $parameter, string $class, mixed $argument)
     {
         $type = \is_object($argument)
-            ? 'Instance of ' . \get_class($argument)
+            ? 'Instance of ' . $argument::class
             : \ucfirst(\get_debug_type($argument));
         parent::__construct(\sprintf(
             '%s should be instance of %s or its declaration. %s was received instead.',

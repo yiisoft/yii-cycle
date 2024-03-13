@@ -11,7 +11,6 @@ use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
-use Yiisoft\Yii\Console\ExitCode;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
@@ -21,11 +20,8 @@ final class DownCommand extends BaseMigrationCommand
     protected static $defaultName = 'migrate/down';
     protected static $defaultDescription = 'Rolls back the last applied migration';
 
-    private EventDispatcherInterface $eventDispatcher;
-
-    public function __construct(CycleDependencyProxy $promise, EventDispatcherInterface $eventDispatcher)
+    public function __construct(CycleDependencyProxy $promise, private readonly EventDispatcherInterface $eventDispatcher)
     {
-        $this->eventDispatcher = $eventDispatcher;
         parent::__construct($promise);
     }
 
@@ -40,7 +36,7 @@ final class DownCommand extends BaseMigrationCommand
         }
         if (!isset($migration)) {
             $output->writeln('<fg=red>No migration found for rollback</>');
-            return ExitCode::OK;
+            return self::SUCCESS;
         }
 
         $migrator = $this->promise->getMigrator();
@@ -54,7 +50,7 @@ final class DownCommand extends BaseMigrationCommand
                 $qaHelper = $this->getHelper('question');
                 $question = new ConfirmationQuestion('Revert the above migration? (yes|no) ', false);
                 if (!$qaHelper->ask($input, $output, $question)) {
-                    return ExitCode::OK;
+                    return self::SUCCESS;
                 }
             }
         }
@@ -74,6 +70,6 @@ final class DownCommand extends BaseMigrationCommand
         } finally {
             $this->eventDispatcher->dispatch(new AfterMigrate());
         }
-        return ExitCode::OK;
+        return self::SUCCESS;
     }
 }
