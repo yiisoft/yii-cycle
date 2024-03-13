@@ -76,13 +76,13 @@ final class CreateCommandTest extends TestCase
             MigrationConfig::class => $config,
         ])));
 
-        $output = new BufferedOutput();
+        $output = new BufferedOutput(decorated: true);
         $code = $command->run(new ArrayInput(['name' => 'foo']), $output);
-
-        $result = $output->fetch();
-
         $this->assertSame(Command::SUCCESS, $code);
-        $this->assertStringContainsString('Can not create migration', $result);
-        $this->assertStringContainsString('test', $result);
+
+        $newLine = PHP_EOL;
+        $expectedOutput = "\033[33mCan not create migration\033[39m$newLine" .
+            "\033[31mtest\033[39m$newLine";
+        $this->assertSame($expectedOutput, $output->fetch());
     }
 }
