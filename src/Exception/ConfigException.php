@@ -13,7 +13,7 @@ class ConfigException extends Exception
      */
     public function __construct(array $section, string $message, int $code = 0, ?\Throwable $previous = null)
     {
-        $path = \implode('->', $section);
-        parent::__construct(\sprintf('Config error (%s): %s', $path, $message), $code, $previous);
+        $path = \implode(' -> ', $section);
+        parent::__construct(\sprintf('(%s): %s', $path, $message), $code, $previous);
     }
 }
