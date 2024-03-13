@@ -20,12 +20,12 @@ final class BadGeneratorDeclarationExceptionTest extends BaseBadDeclaration
     public function testDefaultState(): void
     {
         $exception = $this->prepareException(null);
-        $class = addslashes(self::GENERATOR_INTERFACE);
+        $class = self::GENERATOR_INTERFACE;
 
         $this->assertInstanceOf(\Throwable::class, $exception);
         $this->assertSame(0, $exception->getCode());
-        $this->assertMatchesRegularExpression(
-            "/Generator should be instance of {$class} or its declaration\\./",
+        $this->assertSame(
+            "Generator should be instance of $class or its declaration. Null was received instead.",
             $exception->getMessage()
         );
     }
@@ -35,7 +35,7 @@ final class BadGeneratorDeclarationExceptionTest extends BaseBadDeclaration
         $exception = $this->prepareException(null);
 
         $this->assertInstanceOf(FriendlyExceptionInterface::class, $exception);
-        $this->assertNotEmpty($exception->getName());
-        $this->assertNotEmpty($exception->getSolution());
+        $this->assertIsString($exception->getName());
+        $this->assertIsString($exception->getSolution());
     }
 }
