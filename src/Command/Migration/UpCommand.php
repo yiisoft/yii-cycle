@@ -76,7 +76,6 @@ final class UpCommand extends BaseMigrationCommand
             }
         }
 
-        $limit = PHP_INT_MAX;
         $this->eventDispatcher->dispatch(new BeforeMigrate());
         try {
             do {
@@ -89,7 +88,7 @@ final class UpCommand extends BaseMigrationCommand
                 $status = $state->getStatus();
                 $output->writeln('<fg=cyan>' . $state->getName() . '</>: '
                     . (self::MIGRATION_STATUS[$status] ?? $status));
-            } while (--$limit > 0);
+            } while (true);
         } finally {
             $this->eventDispatcher->dispatch(new AfterMigrate());
         }
