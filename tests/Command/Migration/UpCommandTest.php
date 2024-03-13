@@ -53,7 +53,7 @@ final class UpCommandTest extends TestCase
         $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
-        $output = new BufferedOutput();
+        $output = new BufferedOutput(decorated: true);
         $command = new UpCommand(
             new CycleDependencyProxy(new SimpleContainer([
                 Migrator::class => $migrator,
@@ -65,12 +65,14 @@ final class UpCommandTest extends TestCase
         $input = new ArrayInput([]);
         $input->setInteractive(false);
         $code = $command->run($input, $output);
-
-        $result = $output->fetch();
-
         $this->assertSame(Command::SUCCESS, $code);
-        $this->assertStringContainsString('Migration to be applied:', $result);
-        $this->assertStringContainsString('test: executed', $result);
+
+        $newLine = PHP_EOL;
+        $expectedOutput = "\033[32mTotal 1 migration(s) found in \033[39m$newLine" .
+            "\033[33mMigration to be applied:\033[39m$newLine" .
+            "— \033[36mtest\033[39m$newLine" .
+            "\033[36mtest\033[39m: executed$newLine";
+        $this->assertSame($expectedOutput, $output->fetch());
     }
 
     /**
