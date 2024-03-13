@@ -33,6 +33,10 @@ final class UpCommand extends BaseMigrationCommand
         foreach ($migrations as $migration) {
             if ($migration->getState()->getStatus() === State::STATUS_PENDING) {
                 $exist = true;
+                /**
+                 * @infection-ignore-all Break_
+                 * Replacing with `continue` works as well, but early exit was added for performance reasons.
+                 */
                 break;
             }
         }
