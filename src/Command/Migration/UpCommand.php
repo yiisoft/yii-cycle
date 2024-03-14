@@ -81,21 +81,21 @@ final class UpCommand extends BaseMigrationCommand
         }
 
         $this->eventDispatcher->dispatch(new BeforeMigrate());
-        try {
-            do {
-                $migration = $migrator->run();
-                if (!$migration instanceof MigrationInterface) {
-                    break;
-                }
 
-                $state = $migration->getState();
-                $status = $state->getStatus();
-                $output->writeln('<fg=cyan>' . $state->getName() . '</>: '
-                    . (self::MIGRATION_STATUS[$status] ?? $status));
-            } while (true);
-        } finally {
-            $this->eventDispatcher->dispatch(new AfterMigrate());
-        }
+        do {
+            $migration = $migrator->run();
+            if (!$migration instanceof MigrationInterface) {
+                break;
+            }
+
+            $state = $migration->getState();
+            $status = $state->getStatus();
+            $output->writeln('<fg=cyan>' . $state->getName() . '</>: '
+                . (self::MIGRATION_STATUS[$status] ?? $status));
+        } while (true);
+
+        $this->eventDispatcher->dispatch(new AfterMigrate());
+
         return self::SUCCESS;
     }
 }
