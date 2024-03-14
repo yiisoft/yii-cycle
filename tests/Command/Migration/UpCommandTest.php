@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Command\Migration;
 
 use Cycle\Migrations\Config\MigrationConfig;
+use Cycle\Migrations\Exception\MigrationException;
 use Cycle\Migrations\Migrator;
 use Cycle\Migrations\RepositoryInterface;
+use Cycle\Migrations\State;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperSet;
@@ -19,6 +21,7 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\UpCommand;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
+use Yiisoft\Yii\Cycle\Tests\Command\Stub\ErrorMigration;
 
 final class UpCommandTest extends TestCase
 {
@@ -141,5 +144,42 @@ final class UpCommandTest extends TestCase
     {
         yield [[self::migration()], 'Apply the above migration? (yes|no) '];
         yield [[self::migration(), self::migration()], 'Apply the above migrations? (yes|no) '];
+    }
+
+    public function testExecuteException(): void
+    {
+        $config = new MigrationConfig(['safe' => true]);
+
+        $repository = $this->createMock(RepositoryInterface::class);
+        $migration = (new ErrorMigration())
+            ->withState(new State('test', new \DateTimeImmutable(), State::STATUS_PENDING));
+        $repository->expects($this->exactly(2))->method('getMigrations')->willReturn([$migration]);
+
+        $migrator = self::migrator(new MigrationConfig(), $repository);
+        $migrator->configure();
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher
+            ->expects($this->exactly(2))
+            ->method('dispatch')
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo(new BeforeMigrate()),
+                    $this->equalTo(new AfterMigrate()),
+                ),
+            );
+        $command = new UpCommand(
+            new CycleDependencyProxy(new SimpleContainer([
+                Migrator::class => $migrator,
+                MigrationConfig::class => $config,
+            ])),
+            $eventDispatcher,
+        );
+
+        $input = new ArrayInput([]);
+        $input->setInteractive(false);
+
+        $this->expectException(MigrationException::class);
+        $command->run($input, new BufferedOutput());
     }
 }
