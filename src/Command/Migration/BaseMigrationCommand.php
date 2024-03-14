@@ -50,6 +50,11 @@ abstract class BaseMigrationCommand extends Command
             );
         } catch (RepositoryException $e) {
             $output->writeln('<fg=yellow>Can not create migration</>');
+            /**
+             * @infection-ignore-all
+             * ConcatOperandRemoval
+             * Removing closing tag works (probably it's automatically fixed by formatter), but makes no sense.
+             */
             $output->writeln('<fg=red>' . $e->getMessage() . '</>');
             return null;
         }
