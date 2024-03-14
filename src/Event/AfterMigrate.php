@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Event;
 
 /**
- * MigrationApplied event is raised right after one or more migrations was executed/rollback
+ * Raised right after one or more migrations have been executed/reverted.
  */
 final class AfterMigrate
 {
