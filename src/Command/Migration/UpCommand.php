@@ -33,6 +33,10 @@ final class UpCommand extends BaseMigrationCommand
         foreach ($migrations as $migration) {
             if ($migration->getState()->getStatus() === State::STATUS_PENDING) {
                 $exist = true;
+                /**
+                 * @infection-ignore-all Break_
+                 * Replacing with `continue` works as well, but early exit was added for performance reasons.
+                 */
                 break;
             }
         }
@@ -76,7 +80,6 @@ final class UpCommand extends BaseMigrationCommand
             }
         }
 
-        $limit = PHP_INT_MAX;
         $this->eventDispatcher->dispatch(new BeforeMigrate());
         try {
             do {
@@ -89,7 +92,7 @@ final class UpCommand extends BaseMigrationCommand
                 $status = $state->getStatus();
                 $output->writeln('<fg=cyan>' . $state->getName() . '</>: '
                     . (self::MIGRATION_STATUS[$status] ?? $status));
-            } while (--$limit > 0);
+            } while (true);
         } finally {
             $this->eventDispatcher->dispatch(new AfterMigrate());
         }

@@ -9,6 +9,7 @@ use Cycle\Database\Config\SQLite\MemoryConnectionConfig;
 use Cycle\Database\Config\SQLiteDriverConfig;
 use Cycle\Database\DatabaseManager;
 use Cycle\Migrations\Config\MigrationConfig;
+use Cycle\Migrations\MigrationInterface;
 use Cycle\Migrations\Migrator;
 use Cycle\Migrations\RepositoryInterface;
 use Cycle\Migrations\State;
@@ -33,10 +34,8 @@ abstract class TestCase extends BaseTestCase
         ]));
     }
 
-    protected static function migration(): FakeMigration
+    protected static function migration(): MigrationInterface
     {
-        $migration = new FakeMigration();
-
-        return $migration->withState(new State('test', new \DateTimeImmutable(), State::STATUS_PENDING));
+        return (new FakeMigration())->withState(new State('test', new \DateTimeImmutable(), State::STATUS_PENDING));
     }
 }

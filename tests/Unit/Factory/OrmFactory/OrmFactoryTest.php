@@ -66,7 +66,7 @@ final class OrmFactoryTest extends BaseOrmFactory
     {
         $this->expectException(\Yiisoft\Yii\Cycle\Exception\ConfigException::class);
         $this->expectExceptionMessage(
-            'Collection factory `custom` should be instance of '
+            '(yiisoft/yii-cycle -> collections -> factories): Collection factory `custom` should be instance of '
             . 'Cycle\ORM\Collection\CollectionFactoryInterface or its declaration. '
             . 'Instance of stdClass was received instead.',
         );
@@ -81,7 +81,9 @@ final class OrmFactoryTest extends BaseOrmFactory
     public function testDefineWrongDefaultCollectionFactory(): void
     {
         $this->expectException(\Yiisoft\Yii\Cycle\Exception\ConfigException::class);
-        $this->expectExceptionMessage('Default collection factory `wrong` not found.');
+        $this->expectExceptionMessage(
+            '(yiisoft/yii-cycle -> collections -> default): Default collection factory `wrong` not found.',
+        );
 
         $this->makeFactory([
             'default' => 'wrong',

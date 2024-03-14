@@ -63,14 +63,16 @@ final class DownCommandTest extends TestCase
         $command->run($input, new NullOutput());
 
         $command = new DownCommand($promise, $this->createMock(EventDispatcherInterface::class));
-        $output = new BufferedOutput();
+        $output = new BufferedOutput(decorated: true);
         $code = $command->run($input, $output);
-
-        $result = $output->fetch();
-
         $this->assertSame(Command::SUCCESS, $code);
-        $this->assertStringContainsString('Total 1 migration(s) found', $result);
-        $this->assertStringContainsString('test: pending', $result);
+
+        $newLine = PHP_EOL;
+        $expectedOutput = "\033[32mTotal 1 migration(s) found in \033[39m$newLine" .
+            "\033[33mMigration to be reverted:\033[39m$newLine" .
+            "— \033[36mtest\033[39m$newLine" .
+            "\033[36mtest\033[39m: pending$newLine";
+        $this->assertSame($expectedOutput, $output->fetch());
     }
 
     public function testMigrationNotFoundException(): void

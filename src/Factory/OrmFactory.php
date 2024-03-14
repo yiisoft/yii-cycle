@@ -70,7 +70,7 @@ final class OrmFactory
                 }
             }
         } catch (\Throwable $e) {
-            throw new ConfigException($cfgPath, $e->getMessage(), 0, $e);
+            throw new ConfigException($cfgPath, $e->getMessage());
         }
 
         $result = new Factory($dbal, null, $factory, $default);

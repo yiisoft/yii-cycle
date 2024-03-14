@@ -22,7 +22,7 @@ final class SchemaCommand extends Command
         parent::__construct();
     }
 
-    public function configure(): void
+    protected function configure(): void
     {
         $this->addArgument('role', InputArgument::OPTIONAL, 'Roles to display (separated by ",").');
     }

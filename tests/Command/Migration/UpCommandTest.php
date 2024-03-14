@@ -5,8 +5,10 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Command\Migration;
 
 use Cycle\Migrations\Config\MigrationConfig;
+use Cycle\Migrations\Exception\MigrationException;
 use Cycle\Migrations\Migrator;
 use Cycle\Migrations\RepositoryInterface;
+use Cycle\Migrations\State;
 use Psr\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Helper\HelperSet;
@@ -17,6 +19,9 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\UpCommand;
+use Yiisoft\Yii\Cycle\Event\AfterMigrate;
+use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
+use Yiisoft\Yii\Cycle\Tests\Command\Stub\ErrorMigration;
 
 final class UpCommandTest extends TestCase
 {
@@ -53,24 +58,36 @@ final class UpCommandTest extends TestCase
         $migrator = self::migrator(new MigrationConfig(), $repository);
         $migrator->configure();
 
-        $output = new BufferedOutput();
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher
+            ->expects($this->exactly(2))
+            ->method('dispatch')
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo(new BeforeMigrate()),
+                    $this->equalTo(new AfterMigrate()),
+                ),
+            );
         $command = new UpCommand(
             new CycleDependencyProxy(new SimpleContainer([
                 Migrator::class => $migrator,
                 MigrationConfig::class => $config,
             ])),
-            $this->createMock(EventDispatcherInterface::class)
+            $eventDispatcher,
         );
 
         $input = new ArrayInput([]);
         $input->setInteractive(false);
+        $output = new BufferedOutput(decorated: true);
         $code = $command->run($input, $output);
-
-        $result = $output->fetch();
-
         $this->assertSame(Command::SUCCESS, $code);
-        $this->assertStringContainsString('Migration to be applied:', $result);
-        $this->assertStringContainsString('test: executed', $result);
+
+        $newLine = PHP_EOL;
+        $expectedOutput = "\033[32mTotal 1 migration(s) found in \033[39m$newLine" .
+            "\033[33mMigration to be applied:\033[39m$newLine" .
+            "— \033[36mtest\033[39m$newLine" .
+            "\033[36mtest\033[39m: executed$newLine";
+        $this->assertSame($expectedOutput, $output->fetch());
     }
 
     /**
@@ -127,5 +144,42 @@ final class UpCommandTest extends TestCase
     {
         yield [[self::migration()], 'Apply the above migration? (yes|no) '];
         yield [[self::migration(), self::migration()], 'Apply the above migrations? (yes|no) '];
+    }
+
+    public function testExecuteException(): void
+    {
+        $config = new MigrationConfig(['safe' => true]);
+
+        $repository = $this->createMock(RepositoryInterface::class);
+        $migration = (new ErrorMigration())
+            ->withState(new State('test', new \DateTimeImmutable(), State::STATUS_PENDING));
+        $repository->expects($this->exactly(2))->method('getMigrations')->willReturn([$migration]);
+
+        $migrator = self::migrator(new MigrationConfig(), $repository);
+        $migrator->configure();
+
+        $eventDispatcher = $this->createMock(EventDispatcherInterface::class);
+        $eventDispatcher
+            ->expects($this->exactly(2))
+            ->method('dispatch')
+            ->with(
+                $this->logicalOr(
+                    $this->equalTo(new BeforeMigrate()),
+                    $this->equalTo(new AfterMigrate()),
+                ),
+            );
+        $command = new UpCommand(
+            new CycleDependencyProxy(new SimpleContainer([
+                Migrator::class => $migrator,
+                MigrationConfig::class => $config,
+            ])),
+            $eventDispatcher,
+        );
+
+        $input = new ArrayInput([]);
+        $input->setInteractive(false);
+
+        $this->expectException(MigrationException::class);
+        $command->run($input, new BufferedOutput());
     }
 }

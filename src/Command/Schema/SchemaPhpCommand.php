@@ -23,7 +23,7 @@ final class SchemaPhpCommand extends Command
         parent::__construct();
     }
 
-    public function configure(): void
+    protected function configure(): void
     {
         $this->addArgument('file', InputArgument::OPTIONAL, 'file');
     }
