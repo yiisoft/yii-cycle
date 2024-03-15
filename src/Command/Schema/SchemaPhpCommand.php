@@ -52,7 +52,7 @@ final class SchemaPhpCommand extends Command
             $result = file_put_contents($file, $content);
         } catch (Exception) {
             $result = false;
-        };
+        }
 
         if ($result === false) {
             $output->writeln('<fg=red>Failed to write content to file.</>');
