@@ -241,7 +241,7 @@ final class GenerateCommandTest extends TestCase
         $code = $commandTester->execute([], options: ['interactive' => true]);
         $this->assertSame(Command::SUCCESS, $code);
         $this->assertSame(
-            implode("\n", [
+            implode(PHP_EOL, [
                 'Added 0 file(s)',
                 'If you want to create new empty migration, use migrate/create',
                 'Would you like to create empty migration right now? (Y/n)',
