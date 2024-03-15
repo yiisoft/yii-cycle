@@ -97,7 +97,7 @@ final class SchemaPhpCommandTest extends TestCase
         \unlink($file);
     }
 
-    public function testExecuteDirectoryNotFoundException(): void
+    public function testExecuteWithWriteFileError(): void
     {
         $file = \dirname(__DIR__) . '/Stub/Foo/schema.php';
 
@@ -111,7 +111,12 @@ final class SchemaPhpCommandTest extends TestCase
         $promise = new CycleDependencyProxy($container);
         $command = new SchemaPhpCommand(new Aliases(), $promise);
 
-        $this->expectException(\RuntimeException::class);
-        $command->run(new ArrayInput(['file' => $file]), $this->output);
+        $code = $command->run(new ArrayInput(['file' => $file]), $this->output);
+        $this->assertSame(Command::FAILURE, $code);
+
+        $output = $this->output->fetch();
+        $this->assertStringContainsString('Destination:', $output);
+        $this->assertStringContainsString('tests/Command/Stub/Foo/schema.php', $output);
+        $this->assertStringContainsString('Failed to write content to file.', $output);
     }
 }
