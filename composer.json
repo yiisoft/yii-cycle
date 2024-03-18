@@ -57,6 +57,9 @@
         "yiisoft/di": "^1.2",
         "yiisoft/test-support": "^3.0"
     },
+    "suggest": {
+        "cycle/entity-behavior": "To use PHP attributes that add behaviors to Cycle ORM entities."
+    },
     "autoload": {
         "psr-4": {
             "Yiisoft\\Yii\\Cycle\\": "src"
