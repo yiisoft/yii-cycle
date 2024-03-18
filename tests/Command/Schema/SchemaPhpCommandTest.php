@@ -127,10 +127,11 @@ final class SchemaPhpCommandTest extends TestCase
 
         $output = $this->output->fetch();
         $this->assertStringContainsString('Destination:', $output);
-        $this->assertStringContainsString(
-            implode(DIRECTORY_SEPARATOR, ['tests', 'Command', 'Stub', 'Foo', 'schema.php']),
-            $output,
-        );
+
+        if (DIRECTORY_SEPARATOR === '/') {
+            $this->assertStringContainsString('/tests/Command/Stub/Foo/schema.php', $output);
+        }
+
         $this->assertStringContainsString('Destination directory', $output);
         $this->assertStringContainsString('not found', $output);
     }
@@ -154,10 +155,11 @@ final class SchemaPhpCommandTest extends TestCase
 
         $output = $this->output->fetch();
         $this->assertStringContainsString('Destination:', $output);
-        $this->assertStringContainsString(
-            implode(DIRECTORY_SEPARATOR, ['tests', 'Command', 'Stub', 'schema.php']),
-            $output,
-        );
+
+        if (DIRECTORY_SEPARATOR === '/') {
+            $this->assertStringContainsString('/tests/Command/Stub/Foo/schema.php', $output);
+        }
+
         $this->assertStringContainsString('Failed to write content to file.', $output);
     }
 }
