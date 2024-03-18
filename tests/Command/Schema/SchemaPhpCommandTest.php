@@ -116,7 +116,10 @@ final class SchemaPhpCommandTest extends TestCase
 
         $output = $this->output->fetch();
         $this->assertStringContainsString('Destination:', $output);
-        $this->assertStringContainsString('tests/Command/Stub/Foo/schema.php', $output);
+        $this->assertStringContainsString(
+            implode(DIRECTORY_SEPARATOR, ['tests', 'Command', 'Stub', 'Foo', 'schema.php']),
+            $output,
+        );
         $this->assertStringContainsString('Destination directory', $output);
         $this->assertStringContainsString('not found', $output);
     }
