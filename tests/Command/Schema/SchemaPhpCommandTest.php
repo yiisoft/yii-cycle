@@ -56,7 +56,7 @@ final class SchemaPhpCommandTest extends TestCase
 
     public function testExecuteWithFile(): void
     {
-        $file = \dirname(__DIR__) . '/Stub/schema.php';
+        $file = implode(DIRECTORY_SEPARATOR, [\dirname(__DIR__), 'Stub', 'schema.php']);
 
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
@@ -82,7 +82,7 @@ final class SchemaPhpCommandTest extends TestCase
 
     public function testExecuteWithFileAndAlias(): void
     {
-        $file = \dirname(__DIR__) . '/Stub/alias-schema.php';
+        $file = implode(DIRECTORY_SEPARATOR, [\dirname(__DIR__), 'Stub', 'alias-schema.php']);
 
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
@@ -93,7 +93,7 @@ final class SchemaPhpCommandTest extends TestCase
         $container = new SimpleContainer([SchemaInterface::class => $schema]);
         $promise = new CycleDependencyProxy($container);
         $command = new SchemaPhpCommand(new Aliases([
-            '@test' => \dirname(__DIR__) . '/Stub',
+            '@test' => \dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Stub',
         ]), $promise);
 
         $code = $command->run(new ArrayInput(['file' => '@test/alias-schema.php']), $this->output);
@@ -110,7 +110,7 @@ final class SchemaPhpCommandTest extends TestCase
 
     public function testExecuteWithMissingDirectory(): void
     {
-        $file = \dirname(__DIR__) . '/Stub/Foo/schema.php';
+        $file = implode(DIRECTORY_SEPARATOR, [\dirname(__DIR__), 'Stub', 'Foo', 'schema.php']);
 
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
@@ -137,7 +137,7 @@ final class SchemaPhpCommandTest extends TestCase
 
     public function testExecuteWithFileWriteError(): void
     {
-        $file = \dirname(__DIR__) . '/Stub/schema.php';
+        $file = implode(DIRECTORY_SEPARATOR, [\dirname(__DIR__), 'Stub', 'schema.php']);
 
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
