@@ -117,6 +117,7 @@ final class SchemaPhpCommandTest extends TestCase
         $output = $this->output->fetch();
         $this->assertStringContainsString('Destination:', $output);
         $this->assertStringContainsString('tests/Command/Stub/Foo/schema.php', $output);
-        $this->assertStringContainsString('Failed to write content to file.', $output);
+        $this->assertStringContainsString('Destination directory', $output);
+        $this->assertStringContainsString('not found', $output);
     }
 }

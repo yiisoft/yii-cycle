@@ -6,7 +6,6 @@ namespace Yiisoft\Yii\Cycle\Command\Schema;
 
 use Cycle\Schema\Renderer\PhpSchemaRenderer;
 use Cycle\Schema\Renderer\SchemaToArrayConverter;
-use Exception;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -48,13 +47,14 @@ final class SchemaPhpCommand extends Command
         $file = $this->aliases->get($file);
         $output->writeln("Destination: <fg=cyan>$file</>");
 
-        try {
-            $result = file_put_contents($file, $content);
-        } catch (Exception) {
-            $result = false;
+        $dir = dirname($file);
+        if (!is_dir($dir)) {
+            $output->writeln("Destination directory $dir not found.");
+
+            return self::FAILURE;
         }
 
-        if ($result === false) {
+        if (file_put_contents($file, $content) === false) {
             $output->writeln('<fg=red>Failed to write content to file.</>');
 
             return self::FAILURE;
