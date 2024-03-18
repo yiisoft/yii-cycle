@@ -96,7 +96,10 @@ final class SchemaPhpCommandTest extends TestCase
             '@test' => \dirname(__DIR__) . DIRECTORY_SEPARATOR . 'Stub',
         ]), $promise);
 
-        $code = $command->run(new ArrayInput(['file' => '@test/alias-schema.php']), $this->output);
+        $code = $command->run(
+            new ArrayInput(['file' => '@test' . DIRECTORY_SEPARATOR . 'alias-schema.php']),
+            $this->output,
+        );
         $result = $this->output->fetch();
 
         $this->assertSame(Command::SUCCESS, $code);
