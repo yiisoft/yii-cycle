@@ -28,6 +28,7 @@ jobs:
         ['ubuntu-latest']
       php: >-
         ['8.3']
+      extensions: uopz
       min-covered-msi: 100
     secrets:
       STRYKER_DASHBOARD_API_KEY: ${{ secrets.STRYKER_DASHBOARD_API_KEY }}

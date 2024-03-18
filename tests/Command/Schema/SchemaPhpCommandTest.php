@@ -21,6 +21,17 @@ final class SchemaPhpCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->output = new BufferedOutput();
+
+        if ($this->getName() === 'testExecuteWithFileWriteError') {
+            uopz_set_return('file_put_contents', static fn (): bool => false, true);
+        }
+    }
+
+    protected function tearDown(): void
+    {
+        if ($this->getName() === 'testExecuteWithFileWriteError') {
+            uopz_unset_return('file_put_contents');
+        }
     }
 
     public function testExecuteWithoutFile(): void
@@ -97,7 +108,7 @@ final class SchemaPhpCommandTest extends TestCase
         \unlink($file);
     }
 
-    public function testExecuteWithWriteFileError(): void
+    public function testExecuteWithMissingDirectory(): void
     {
         $file = \dirname(__DIR__) . '/Stub/Foo/schema.php';
 
@@ -122,5 +133,31 @@ final class SchemaPhpCommandTest extends TestCase
         );
         $this->assertStringContainsString('Destination directory', $output);
         $this->assertStringContainsString('not found', $output);
+    }
+
+    public function testExecuteWithFileWriteError(): void
+    {
+        $file = \dirname(__DIR__) . '/Stub/schema.php';
+
+        $schema = $this->createMock(SchemaInterface::class);
+        $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
+        $schema->expects($this->any())->method('define')->willReturnCallback(
+            fn (string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null
+        );
+
+        $container = new SimpleContainer([SchemaInterface::class => $schema]);
+        $promise = new CycleDependencyProxy($container);
+        $command = new SchemaPhpCommand(new Aliases(), $promise);
+
+        $code = $command->run(new ArrayInput(['file' => $file]), $this->output);
+        $this->assertSame(Command::FAILURE, $code);
+
+        $output = $this->output->fetch();
+        $this->assertStringContainsString('Destination:', $output);
+        $this->assertStringContainsString(
+            implode(DIRECTORY_SEPARATOR, ['tests', 'Command', 'Stub', 'schema.php']),
+            $output,
+        );
+        $this->assertStringContainsString('Failed to write content to file.', $output);
     }
 }
