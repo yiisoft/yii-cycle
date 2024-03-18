@@ -157,7 +157,7 @@ final class SchemaPhpCommandTest extends TestCase
         $this->assertStringContainsString('Destination:', $output);
 
         if (DIRECTORY_SEPARATOR === '/') {
-            $this->assertStringContainsString('/tests/Command/Stub/Foo/schema.php', $output);
+            $this->assertStringContainsString('/tests/Command/Stub/schema.php', $output);
         }
 
         $this->assertStringContainsString('Failed to write content to file.', $output);
