@@ -22,14 +22,14 @@ final class SchemaPhpCommandTest extends TestCase
     {
         $this->output = new BufferedOutput();
 
-        if ($this->getName() === 'testExecuteWithFileWriteError') {
+        if ($this->name() === 'testExecuteWithFileWriteError') {
             uopz_set_return('file_put_contents', static fn (): bool => false, true);
         }
     }
 
     protected function tearDown(): void
     {
-        if ($this->getName() === 'testExecuteWithFileWriteError') {
+        if ($this->name() === 'testExecuteWithFileWriteError') {
             uopz_unset_return('file_put_contents');
         }
     }
