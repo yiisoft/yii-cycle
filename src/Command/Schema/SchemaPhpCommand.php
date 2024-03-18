@@ -49,7 +49,7 @@ final class SchemaPhpCommand extends Command
 
         $dir = dirname($file);
         if (!is_dir($dir)) {
-            $output->writeln("Destination directory not found.");
+            $output->writeln('Destination directory not found.');
 
             return self::FAILURE;
         }
