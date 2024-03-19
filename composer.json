@@ -44,6 +44,7 @@
         "symfony/finder":"^5.4"
     },
     "require-dev": {
+        "ext-uopz": "*",
         "cycle/entity-behavior": "^1.0",
         "jetbrains/phpstorm-attributes": "^1.0",
         "maglnet/composer-require-checker": "^4.3",
@@ -64,7 +65,8 @@
     "autoload-dev": {
         "psr-4": {
             "Yiisoft\\Yii\\Cycle\\Tests\\": "tests"
-        }
+        },
+        "files": ["tests/bootstrap.php"]
     },
     "extra": {
         "branch-alias": {

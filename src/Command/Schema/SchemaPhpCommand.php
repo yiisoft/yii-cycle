@@ -38,23 +38,30 @@ final class SchemaPhpCommand extends Command
         $converter = new SchemaToArrayConverter();
         $schemaArray = $converter->convert($this->promise->getSchema());
 
-        $content = (new PhpSchemaRenderer())
-            ->render($schemaArray);
+        $content = (new PhpSchemaRenderer())->render($schemaArray);
 
-        if ($file !== null) {
-            $file = $this->aliases->get($file);
-            $output->writeln("Destination: <fg=cyan>{$file}</>");
-            // Dir exists
-            $dir = dirname($file);
-            if (!is_dir($dir)) {
-                throw new \RuntimeException("Directory {$dir} not found");
-            }
-            if (file_put_contents($file, $content) === false) {
-                return self::FAILURE;
-            }
-        } else {
+        if ($file === null) {
             $output->write($content);
+
+            return self::SUCCESS;
         }
+
+        $file = $this->aliases->get($file);
+        $output->writeln("Destination: <fg=cyan>$file</>");
+
+        $dir = dirname($file);
+        if (!is_dir($dir)) {
+            $output->writeln('Destination directory not found.');
+
+            return self::FAILURE;
+        }
+
+        if (file_put_contents($file, $content) === false) {
+            $output->writeln('<fg=red>Failed to write content to file.</>');
+
+            return self::FAILURE;
+        }
+
         return self::SUCCESS;
     }
 }

@@ -16,6 +16,7 @@ use Symfony\Component\Console\Input\ArrayInput;
 use Symfony\Component\Console\Output\BufferedOutput;
 use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
+use Symfony\Component\Console\Tester\CommandTester;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\GenerateCommand;
@@ -217,6 +218,36 @@ final class GenerateCommandTest extends TestCase
         $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Added 0 file(s)', $result);
         $this->assertStringContainsString('You entered an empty name. Exit', $result);
+    }
+
+    public function testExecuteWithoutConfirmation(): void
+    {
+        $repository = $this->createMock(RepositoryInterface::class);
+        $repository->expects($this->exactly(2))->method('getMigrations')->willReturn([]);
+
+        $migrator = self::migrator(new MigrationConfig(), $repository);
+        $migrator->configure();
+
+        $command = $this->createCommand(
+            $migrator,
+            $this->createMock(DatabaseProviderInterface::class),
+            new MigrationConfig(),
+        );
+
+        $commandTester = new CommandTester($command);
+        $command->setHelperSet(new HelperSet(['question' => new QuestionHelper()]));
+        $commandTester->setInputs(['no']);
+
+        $code = $commandTester->execute([], options: ['interactive' => true]);
+        $this->assertSame(Command::SUCCESS, $code);
+        $this->assertSame(
+            implode(PHP_EOL, [
+                'Added 0 file(s)',
+                'If you want to create new empty migration, use migrate/create',
+                'Would you like to create empty migration right now? (Y/n)',
+            ]),
+            $commandTester->getDisplay(),
+        );
     }
 
     private function createCommand(
