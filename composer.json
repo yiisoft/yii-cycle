@@ -17,7 +17,6 @@
         "irc": "irc://irc.freenode.net/yii",
         "source": "https://github.com/yiisoft/yii-cycle"
     },
-    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": "^8.1",
