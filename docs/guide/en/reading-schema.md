@@ -7,11 +7,11 @@ Since a schema is built from an array of a certain structure, we can store it ei
 You can display currently used schema by executing `cycle/schema` command.
 
 In `yii-cycle` package schema can be built from multiple sources represented by multiple providers implementing
-`Cycle\Schema\Provider\SchemaProviderInterface`. 
+`Cycle\Schema\Provider\SchemaProviderInterface`.
 
 In order to use multiple schema providers in turn, grouping `Cycle\Schema\Provider\Support\SchemaProviderPipeline`
 provider is used. You can configure this provider in `schema-providers` section of a `config/params.php` file.
-Arrage schema providers in such an order, that caching providers are at the top of the list, 
+Arrage schema providers in such an order, that caching providers are at the top of the list,
 and origin schema providers at the end.
 
 ## Entity attributes based schema
@@ -75,11 +75,11 @@ return [
 ];
 ```
 
-Note that: 
+Note that:
 
 1. `FromFilesSchemaProvider` loads a schema from PHP-files via `include`. That requires security precautions.
    Make sure you store schema file in a safe path restricted from users.
-2. You can specify multiple schema files, which will be merged into one schema. 
+2. You can specify multiple schema files, which will be merged into one schema.
 Exception will be thrown in case of collision of roles.
 
 3. Thanks to internal cache, loading schema from a PHP-file is so fast that you can skip an external cache at all.
@@ -122,7 +122,6 @@ return [
 In order to export schema as PHP file `cycle/schema/php` command could be used.
 Specify a file name as an argument and schema will be written into it:
 
-
 ```bash
 cycle/schema/php @runtime/schema.php
 ```
@@ -136,7 +135,7 @@ migrations based on them. For production use schema could be moved into a file.
 
 ### `PhpFileSchemaProvider` Provider
 
-Unlike `FromFilesSchemaProvider`, the `Cycle\Schema\Provider\PhpFileSchemaProvider` works with only one file. but, 
+Unlike `FromFilesSchemaProvider`, the `Cycle\Schema\Provider\PhpFileSchemaProvider` works with only one file. But,
 `PhpFileSchemaProvider` can not only read schema, but also save it.
 
 In the mode of reading and writing a schema file, the `PhpFileSchemaProvider` provider works similarly to the cache, with

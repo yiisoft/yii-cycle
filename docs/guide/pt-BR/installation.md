@@ -1,14 +1,14 @@
-# Installation
+# Instalação
 
-The preferred way to install this package is through [Composer](https://getcomposer.org/download/):
+A forma preferida de instalar este pacote é através do [Composer](https://getcomposer.org/download/):
 
 ```bash
-composer require yiisoft/yii-cycle
+compositor requer yiisoft/yii-cycle
 ```
 
-## Configuring package
+## Configurando o pacote
 
-If you use Yii with `composer-config-plugin`, Yii-Cycle settings could be specified in `config/params.php`:
+Se você usa Yii com `composer-config-plugin`, as configurações do Yii-Cycle podem ser especificadas em `config/params.php`:
 
 ```php
 use Cycle\Schema\Generator;
@@ -75,6 +75,6 @@ return [
 ];
 ```
 
-Read more in Cycle documentation:
+Leia mais na documentação do Cycle:
 
-- [Connect to Database](https://cycle-orm.dev/docs/database-configuration/2.x/en#installation-declare-connection)
+- [Conectar ao banco de dados](https://cycle-orm.dev/docs/database-configuration/2.x/en#installation-declare-connection)
