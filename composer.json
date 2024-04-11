@@ -8,7 +8,7 @@
         "orm",
         "migrations"
     ],
-    "homepage": "http://www.yiiframework.com/",
+    "homepage": "https://www.yiiframework.com/",
     "license": "BSD-3-Clause",
     "support": {
         "issues": "https://github.com/yiisoft/yii-cycle/issues?state=open",
