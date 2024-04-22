@@ -2,7 +2,7 @@
 
 The preferred way to install this package is through [Composer](https://getcomposer.org/download/):
 
-```bash
+```shell
 composer require yiisoft/yii-cycle
 ```
 

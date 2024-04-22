@@ -13,7 +13,6 @@ Para utilizar varios proveedores de esquemas, se utiliza el proveedor `Cycle\Sch
 de agrupación. Puede configurar este proveedor en la sección `schema-providers` en el archivo `config/params.php`.
 Los proveedores de esquemas deben estar organizados de la siguiente manera, los proveedores de caché deben estar al principio de la lista y los proveedores de esquemas de origen al final.
 
-
 ## Esquema basado en atributos de entidades
 
 Por defecto, el esquema se construye basado en los atributos que están en las entidades de su proyecto.
@@ -26,7 +25,6 @@ Para obtener un esquema del transportador se usa la clase `FromConveyorSchemaPro
 
 El proceso de construcción de esquemas a partir de atributos es relativamente pesado en términos de rendimiento. Por lo tanto, en caso de
 usar atributos es una buena idea usar el caché de esquemas.
-
 
 ## Esquemas desde caché
 
@@ -123,7 +121,7 @@ return [
 Para exportar el esquema como archivo `PHP` se puede utilizar el comando `cycle/schema/php`.
 Especifique el nombre del archivo como argumento y el esquema se escribirá en él:
 
-```bash
+```shell
 cycle/schema/php @runtime/schema.php
 ```
 
