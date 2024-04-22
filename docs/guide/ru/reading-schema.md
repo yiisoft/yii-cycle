@@ -8,7 +8,7 @@ Cycle ORM в своей работе полагается на схему — о
 Посмотреть используемую в вашем проекте схему вы можете с помощью консольной команды `cycle/schema`.
 
 В пакете `yii-cycle` схему из разных источников предоставляют разные поставщики, реализующие интерфейс
-`Cycle\Schema\Provider\SchemaProviderInterface`. 
+`Cycle\Schema\Provider\SchemaProviderInterface`.
 
 Для того, чтобы последовательно использовать несколько поставщиков схемы, используется группирующий поставщик
 `Cycle\Schema\Provider\Support\SchemaProviderPipeline`, который можно сконфигурировать в секции `schema-providers`
@@ -124,7 +124,7 @@ return [
 Для экспорта схемы в виде PHP можно воспользоваться консольной командой `cycle/schema/php`.
 Укажите первым параметром имя файла и схема запишется в него:
 
-```bash
+```shell
 cycle/schema/php @runtime/schema.php
 ```
 
