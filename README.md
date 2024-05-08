@@ -6,12 +6,6 @@
     <br>
 </p>
 
-Cycle is a PHP DataMapper ORM and Data Modelling engine designed to safely work
-in classic and daemonized PHP applications such as [RoadRunner](https://github.com/roadrunner-server/roadrunner).
-This package provides a convenient way to integrate Cycle ORM v2 with Yii Framework.
-
-Read more in the [official documentation](https://cycle-orm.dev/docs/readme/2.x)
-
 [![Latest Stable Version](https://poser.pugx.org/yiisoft/yii-cycle/v/stable.png)](https://packagist.org/packages/yiisoft/yii-cycle)
 [![Total Downloads](https://poser.pugx.org/yiisoft/yii-cycle/downloads.png)](https://packagist.org/packages/yiisoft/yii-cycle)
 [![Build Status](https://github.com/yiisoft/yii-cycle/workflows/build/badge.svg)](https://github.com/yiisoft/yii-cycle/actions?query=workflow%3Abuild)
@@ -20,10 +14,19 @@ Read more in the [official documentation](https://cycle-orm.dev/docs/readme/2.x)
 [![static analysis](https://github.com/yiisoft/yii-cycle/workflows/static%20analysis/badge.svg)](https://github.com/yiisoft/yii-cycle/actions?query=workflow%3A%22static+analysis%22)
 [![type-coverage](https://shepherd.dev/github/yiisoft/yii-cycle/coverage.svg)](https://shepherd.dev/github/yiisoft/yii-cycle)
 
+Cycle is a PHP DataMapper ORM and Data Modelling engine designed to safely work
+in classic and daemonized PHP applications such as [RoadRunner](https://github.com/roadrunner-server/roadrunner).
+This package provides a convenient way to integrate Cycle ORM v2 with Yii Framework.
+
+Read more in the [official documentation](https://cycle-orm.dev/docs/readme/2.x)
+
 ## Documentation
 
-- Guide: [English](docs/guide/en), [Russian](docs/guide/ru), [Spanish](docs/guide/es)
+- Guide: [English](docs/guide/en/README.md), [Português - Brasil](docs/guide/pt-BR/README.md), [Русский](docs/guide/ru/README.md), [Spanish](docs/guide/es/README.md)
 - [Internals](docs/internals.md)
+
+If you need help or have a question, the [Yii Forum](https://forum.yiiframework.com/c/yii-3-0/63) is a good place for that.
+You may also check out other [Yii Community Resources](https://www.yiiframework.com/community).
 
 ## License
 
