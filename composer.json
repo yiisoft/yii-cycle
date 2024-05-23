@@ -12,11 +12,22 @@
     "license": "BSD-3-Clause",
     "support": {
         "issues": "https://github.com/yiisoft/yii-cycle/issues?state=open",
+        "source": "https://github.com/yiisoft/yii-cycle",
         "forum": "https://www.yiiframework.com/forum/",
         "wiki": "https://www.yiiframework.com/wiki/",
         "irc": "ircs://irc.libera.chat:6697/yii",
-        "source": "https://github.com/yiisoft/yii-cycle"
+        "chat": "https://t.me/yii3en"
     },
+    "funding": [
+        {
+            "type": "opencollective",
+            "url": "https://opencollective.com/yiisoft"
+        },
+        {
+            "type": "github",
+            "url": "https://github.com/sponsors/yiisoft"
+        }
+    ],
     "require": {
         "php": "^8.1",
         "cycle/annotated": "^3.5",
@@ -39,7 +50,7 @@
         "yiisoft/friendly-exception": "^1.1",
         "yiisoft/injector": "^1.1",
         "symfony/console": "^6.4",
-        "symfony/finder":"^5.4"
+        "symfony/finder": "^5.4"
     },
     "require-dev": {
         "ext-uopz": "*",
@@ -67,7 +78,9 @@
         "psr-4": {
             "Yiisoft\\Yii\\Cycle\\Tests\\": "tests"
         },
-        "files": ["tests/bootstrap.php"]
+        "files": [
+            "tests/bootstrap.php"
+        ]
     },
     "extra": {
         "branch-alias": {
