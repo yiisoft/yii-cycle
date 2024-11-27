@@ -13,7 +13,7 @@ interface SchemaConveyorInterface
     // declare entities and their fields
     public const string STAGE_INDEX = 'index';
     // render tables and relations
-    public const string gSTAGE_RENDER = 'render';
+    public const string STAGE_RENDER = 'render';
     // userland scripts
     public const string STAGE_USERLAND = 'userland';
     // post processing
