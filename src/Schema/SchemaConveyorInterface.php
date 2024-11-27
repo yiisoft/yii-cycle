@@ -11,13 +11,13 @@ use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 interface SchemaConveyorInterface
 {
     // declare entities and their fields
-    public const STAGE_INDEX = 'index';
+    public const string STAGE_INDEX = 'index';
     // render tables and relations
-    public const STAGE_RENDER = 'render';
+    public const string gSTAGE_RENDER = 'render';
     // userland scripts
-    public const STAGE_USERLAND = 'userland';
+    public const string STAGE_USERLAND = 'userland';
     // post processing
-    public const STAGE_POSTPROCESS = 'postprocess';
+    public const string STAGE_POSTPROCESS = 'postprocess';
 
     /**
      * @param self::STAGE_* $stage

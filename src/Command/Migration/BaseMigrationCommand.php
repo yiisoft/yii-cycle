@@ -14,7 +14,7 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
 abstract class BaseMigrationCommand extends Command
 {
-    protected const MIGRATION_STATUS = [
+    protected const array MIGRATION_STATUS = [
         State::STATUS_UNDEFINED => 'undefined',
         State::STATUS_PENDING => 'pending',
         State::STATUS_EXECUTED => 'executed',
