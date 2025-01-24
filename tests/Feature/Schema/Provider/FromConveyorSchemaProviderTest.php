@@ -108,7 +108,7 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
                 SchemaInterface::COLUMNS => ['id' => 'id', 'title' => 'title', 'createdAt' => 'created_at'],
                 SchemaInterface::RELATIONS => [],
                 SchemaInterface::SCOPE => null,
-                SchemaInterface::TYPECAST => ['id' => 'int', 'createdAt' => 'datetime'],
+                SchemaInterface::TYPECAST => ['id' => 'int', 'createdAt' => 'datetime', 'title' => 'string'],
                 SchemaInterface::SCHEMA => [],
                 SchemaInterface::TYPECAST_HANDLER => null,
                 SchemaInterface::GENERATED_FIELDS => [
