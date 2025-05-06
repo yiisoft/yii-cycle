@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Cycle\Command\Migration;
 use Cycle\Migrations\MigrationInterface;
 use Cycle\Migrations\State;
 use Psr\EventDispatcher\EventDispatcherInterface;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
@@ -15,16 +16,15 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 
+#[AsCommand('migrate/down', 'Rolls back the last applied migration')]
 final class DownCommand extends BaseMigrationCommand
 {
-    protected static $defaultName = 'migrate/down';
-    protected static $defaultDescription = 'Rolls back the last applied migration';
-
     public function __construct(CycleDependencyProxy $promise, private readonly EventDispatcherInterface $eventDispatcher)
     {
         parent::__construct($promise);
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $migrations = $this->findMigrations($output);

@@ -38,6 +38,7 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
         ];
     }
 
+    #[\Override]
     public function withConfig(array $config): self
     {
         $new = clone $this;
@@ -45,6 +46,7 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
         return $new;
     }
 
+    #[\Override]
     public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
         $generators = $this->getGenerators();
@@ -53,6 +55,7 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
         return count($schema) !== 0 || $nextProvider === null ? $schema : $nextProvider->read();
     }
 
+    #[\Override]
     public function clear(): bool
     {
         return false;

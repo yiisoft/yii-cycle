@@ -6,6 +6,8 @@ namespace Yiisoft\Yii\Cycle\Schema\Conveyor;
 
 use Cycle\Annotated\Embeddings;
 use Cycle\Annotated\Entities;
+use Cycle\Annotated\Locator\TokenizerEmbeddingLocator;
+use Cycle\Annotated\Locator\TokenizerEntityLocator;
 use Cycle\Annotated\MergeColumns;
 use Cycle\Annotated\MergeIndexes;
 use Cycle\Annotated\TableInheritance;
@@ -18,7 +20,7 @@ use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface as Conveyor;
 
-class MetadataSchemaConveyor extends SchemaConveyor
+final class MetadataSchemaConveyor extends SchemaConveyor
 {
     /** @var string[] */
     private array $entityPaths = [];
@@ -27,26 +29,27 @@ class MetadataSchemaConveyor extends SchemaConveyor
 
     private bool $isAddedMetadataGenerators = false;
 
-    final public function setTableNaming(
+    public function getTableNaming(): int
+    {
+        return $this->tableNaming;
+    }
+
+    public function setTableNaming(
         #[ExpectedValues(valuesFromClass: Entities::class)]
         int $type
     ): void {
         $this->tableNaming = $type;
     }
 
-    final public function getTableNaming(): int
-    {
-        return $this->tableNaming;
-    }
-
     /**
      * @param string[] $paths
      */
-    final public function addEntityPaths(array $paths): void
+    public function addEntityPaths(array $paths): void
     {
         $this->entityPaths = array_merge($this->entityPaths, $paths);
     }
 
+    #[\Override]
     public function getGenerators(): array
     {
         $this->addMetadataGenerators();
@@ -70,11 +73,13 @@ class MetadataSchemaConveyor extends SchemaConveyor
         $classLocator = $this->getEntityClassLocator();
 
         $reader = $this->getMetadataReader();
+        $tokenizerEmbeddingLocator = new TokenizerEmbeddingLocator($classLocator, $reader);
+        $tokenizerEntityLocator = new TokenizerEntityLocator($classLocator, $reader);
 
         // register embeddable entities
-        $this->conveyor[Conveyor::STAGE_INDEX][] = new Embeddings($classLocator, $reader);
+        $this->conveyor[Conveyor::STAGE_INDEX][] = new Embeddings($tokenizerEmbeddingLocator, $reader);
         // register annotated entities
-        $this->conveyor[Conveyor::STAGE_INDEX][] = new Entities($classLocator, $reader, $this->tableNaming);
+        $this->conveyor[Conveyor::STAGE_INDEX][] = new Entities($tokenizerEntityLocator, $reader, $this->tableNaming);
         // register STI/JTI
         $this->conveyor[Conveyor::STAGE_INDEX][] = new TableInheritance($reader);
         // add @Table(columns) declarations

@@ -9,6 +9,7 @@ use Cycle\Schema\Compiler;
 use Cycle\Schema\Generator\Migrations\GenerateMigrations;
 use Cycle\Schema\Generator\PrintChanges;
 use Cycle\Schema\Registry;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Helper\QuestionHelper;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\StreamableInputInterface;
@@ -17,11 +18,10 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
+#[AsCommand('migrate/generate', 'Generates a migration')]
 final class GenerateCommand extends BaseMigrationCommand
 {
-    protected static $defaultName = 'migrate/generate';
-    protected static $defaultDescription = 'Generates a migration';
-
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $migrator = $this->promise->getMigrator();

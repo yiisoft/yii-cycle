@@ -38,30 +38,6 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
     private SimpleContainer $container;
     private DatabaseManager $dbal;
 
-    protected function setUp(): void
-    {
-        $this->container = new SimpleContainer([
-            Aliases::class => new Aliases(),
-            ResetTables::class => new ResetTables(),
-            GenerateRelations::class => new GenerateRelations(),
-            GenerateModifiers::class => new GenerateModifiers(),
-            ValidateEntities::class => new ValidateEntities(),
-            RenderTables::class => new RenderTables(),
-            RenderRelations::class => new RenderRelations(),
-            RenderModifiers::class => new RenderModifiers(),
-            ForeignKeys::class => new ForeignKeys(),
-            GenerateTypecast::class => new GenerateTypecast(),
-        ]);
-
-        $this->dbal = new DatabaseManager(new DatabaseConfig([
-            'default' => 'default',
-            'databases' => ['default' => ['connection' => 'sqlite']],
-            'connections' => [
-                'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
-            ],
-        ]));
-    }
-
     public function testWithEmptyConfig(): void
     {
         $conveyor = $this->createMock(SchemaConveyorInterface::class);
@@ -108,7 +84,7 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
                 SchemaInterface::COLUMNS => ['id' => 'id', 'title' => 'title', 'createdAt' => 'created_at'],
                 SchemaInterface::RELATIONS => [],
                 SchemaInterface::SCOPE => null,
-                SchemaInterface::TYPECAST => ['id' => 'int', 'createdAt' => 'datetime'],
+                SchemaInterface::TYPECAST => ['id' => 'int', 'title' => 'string', 'createdAt' => 'datetime'],
                 SchemaInterface::SCHEMA => [],
                 SchemaInterface::TYPECAST_HANDLER => null,
                 SchemaInterface::GENERATED_FIELDS => [
@@ -139,10 +115,42 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
         }
     }
 
+    public function testWithConfigImmutability(): void
+    {
+        $schemaProvider1 = $this->createSchemaProvider();
+        $schemaProvider2 = $schemaProvider1->withConfig(self::READ_CONFIG);
+
+        $this->assertNotSame($schemaProvider1, $schemaProvider2);
+    }
+
+    protected function setUp(): void
+    {
+        $this->container = new SimpleContainer([
+            Aliases::class => new Aliases(),
+            ResetTables::class => new ResetTables(),
+            GenerateRelations::class => new GenerateRelations(),
+            GenerateModifiers::class => new GenerateModifiers(),
+            ValidateEntities::class => new ValidateEntities(),
+            RenderTables::class => new RenderTables(),
+            RenderRelations::class => new RenderRelations(),
+            RenderModifiers::class => new RenderModifiers(),
+            ForeignKeys::class => new ForeignKeys(),
+            GenerateTypecast::class => new GenerateTypecast(),
+        ]);
+
+        $this->dbal = new DatabaseManager(new DatabaseConfig([
+            'default' => 'default',
+            'databases' => ['default' => ['connection' => 'sqlite']],
+            'connections' => [
+                'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
+            ],
+        ]));
+    }
+
     protected function createSchemaProvider(
-        array $config = null,
-        SchemaConveyorInterface $conveyor = null,
-        DatabaseProviderInterface $dbal = null
+        ?array $config = null,
+        ?SchemaConveyorInterface $conveyor = null,
+        ?DatabaseProviderInterface $dbal = null
     ): SchemaProviderInterface {
         $provider = new FromConveyorSchemaProvider(
             $conveyor ?? $this->createMock(SchemaConveyorInterface::class),
@@ -150,13 +158,5 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
         );
 
         return $config === null ? $provider : $provider->withConfig($config);
-    }
-
-    public function testWithConfigImmutability(): void
-    {
-        $schemaProvider1 = $this->createSchemaProvider();
-        $schemaProvider2 = $schemaProvider1->withConfig(self::READ_CONFIG);
-
-        $this->assertNotSame($schemaProvider1, $schemaProvider2);
     }
 }

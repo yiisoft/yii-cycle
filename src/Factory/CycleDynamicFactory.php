@@ -13,6 +13,7 @@ final class CycleDynamicFactory implements FactoryInterface
     {
     }
 
+    #[\Override]
     public function make(string $alias, array $parameters = []): mixed
     {
         /** @psalm-var class-string $alias */
