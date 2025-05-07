@@ -83,7 +83,7 @@ return [
     PhpFileSchemaProvider::class => [
         '__construct()' => [
             DynamicReference::to(
-                static fn (Aliases $aliases): \Closure => static fn (string $path): string => $aliases->get($path)
+                static fn (Aliases $aliases): Closure => static fn (string $path): string => $aliases->get($path)
             ),
             Reference::optional(FilesInterface::class),
         ],

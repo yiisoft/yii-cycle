@@ -73,7 +73,7 @@ return [
             'default' => 'array',
             /** List of class names that implement {@see \Cycle\ORM\Collection\CollectionFactoryInterface} */
             'factories' => [
-                'array' => \Cycle\ORM\Collection\ArrayCollectionFactory::class,
+                'array' => Cycle\ORM\Collection\ArrayCollectionFactory::class,
                 // 'doctrine' => \Cycle\ORM\Collection\DoctrineCollectionFactory::class,
                 // 'illuminate' => \Cycle\ORM\Collection\IlluminateCollectionFactory::class,
             ],
