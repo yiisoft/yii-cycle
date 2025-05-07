@@ -10,13 +10,28 @@ use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 
 interface SchemaConveyorInterface
 {
-    // declare entities and their fields
+    /**
+     * Declare entities and their fields
+     * @psalm-suppress MissingClassConstType
+     */
     public const STAGE_INDEX = 'index';
-    // render tables and relations
+
+    /**
+     * Render tables and relations
+     * @psalm-suppress MissingClassConstType
+     */
     public const STAGE_RENDER = 'render';
-    // userland scripts
+
+    /**
+     * Userland scripts
+     * @psalm-suppress MissingClassConstType
+     */
     public const STAGE_USERLAND = 'userland';
-    // post processing
+
+    /**
+     * Post processing
+     * @psalm-suppress MissingClassConstType
+     */
     public const STAGE_POSTPROCESS = 'postprocess';
 
     /**

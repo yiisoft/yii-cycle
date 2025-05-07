@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace Yiisoft\Yii\Cycle\Tests\Command\Schema;
+namespace Yiisoft\Yii\Cycle\Tests\Command\Schema\SchemaPhpCommand;
 
 use Cycle\ORM\SchemaInterface;
 use PHPUnit\Framework\TestCase;
@@ -14,6 +14,8 @@ use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Schema\SchemaPhpCommand;
 
+use function dirname;
+
 final class SchemaPhpCommandTest extends TestCase
 {
     private BufferedOutput $output;
@@ -21,17 +23,6 @@ final class SchemaPhpCommandTest extends TestCase
     protected function setUp(): void
     {
         $this->output = new BufferedOutput();
-
-        if ($this->name() === 'testExecuteWithFileWriteError') {
-            uopz_set_return('file_put_contents', static fn (): bool => false, true);
-        }
-    }
-
-    protected function tearDown(): void
-    {
-        if ($this->name() === 'testExecuteWithFileWriteError') {
-            uopz_unset_return('file_put_contents');
-        }
     }
 
     public function testExecuteWithoutFile(): void
@@ -56,7 +47,7 @@ final class SchemaPhpCommandTest extends TestCase
 
     public function testExecuteWithFile(): void
     {
-        $file = \dirname(__DIR__) . '/Stub/schema.php';
+        $file = dirname(__DIR__, 2) . '/Stub/schema.php';
 
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
@@ -82,7 +73,7 @@ final class SchemaPhpCommandTest extends TestCase
 
     public function testExecuteWithFileAndAlias(): void
     {
-        $file = \dirname(__DIR__) . '/Stub/alias-schema.php';
+        $file = dirname(__DIR__, 2) . '/Stub/alias-schema.php';
 
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
@@ -93,7 +84,7 @@ final class SchemaPhpCommandTest extends TestCase
         $container = new SimpleContainer([SchemaInterface::class => $schema]);
         $promise = new CycleDependencyProxy($container);
         $command = new SchemaPhpCommand(new Aliases([
-            '@test' => \dirname(__DIR__) . '/Stub',
+            '@test' => dirname(__DIR__, 2) . '/Stub',
         ]), $promise);
 
         $code = $command->run(new ArrayInput(['file' => '@test/alias-schema.php']), $this->output);
@@ -110,7 +101,7 @@ final class SchemaPhpCommandTest extends TestCase
 
     public function testExecuteWithMissingDirectory(): void
     {
-        $file = \dirname(__DIR__) . '/Stub/Foo/schema.php';
+        $file = dirname(__DIR__, 2) . '/Stub/Foo/schema.php';
 
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
@@ -134,32 +125,5 @@ final class SchemaPhpCommandTest extends TestCase
 
         $this->assertStringContainsString('Destination directory', $output);
         $this->assertStringContainsString('not found', $output);
-    }
-
-    public function testExecuteWithFileWriteError(): void
-    {
-        $file = \dirname(__DIR__) . '/Stub/schema.php';
-
-        $schema = $this->createMock(SchemaInterface::class);
-        $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
-        $schema->expects($this->any())->method('define')->willReturnCallback(
-            fn (string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null
-        );
-
-        $container = new SimpleContainer([SchemaInterface::class => $schema]);
-        $promise = new CycleDependencyProxy($container);
-        $command = new SchemaPhpCommand(new Aliases(), $promise);
-
-        $code = $command->run(new ArrayInput(['file' => $file]), $this->output);
-        $this->assertSame(Command::FAILURE, $code);
-
-        $output = $this->output->fetch();
-        $this->assertStringContainsString('Destination:', $output);
-
-        if (DIRECTORY_SEPARATOR === '/') {
-            $this->assertStringContainsString('/tests/Command/Stub/schema.php', $output);
-        }
-
-        $this->assertStringContainsString('Failed to write content to file.', $output);
     }
 }
