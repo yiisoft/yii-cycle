@@ -14,10 +14,14 @@ use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Schema\SchemaPhpCommand;
 
+/**
+ * @requires OS Linux
+ */
 final class ExecuteWithFileWriteErrorTest extends TestCase
 {
     protected function setUp(): void
     {
+        chmod(__DIR__ . '/schema-0444.php', 0444);
         set_error_handler(static fn() => true, E_WARNING);
     }
 
@@ -26,9 +30,6 @@ final class ExecuteWithFileWriteErrorTest extends TestCase
         restore_error_handler();
     }
 
-    /**
-     * @requires OS Linux
-     */
     public function testBase(): void
     {
         $file = __DIR__ . '/schema-0444.php';
