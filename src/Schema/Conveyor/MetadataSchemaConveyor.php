@@ -20,7 +20,8 @@ use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface as Conveyor;
 
-final class MetadataSchemaConveyor extends SchemaConveyor
+/** @psalm-suppress ClassMustBeFinal */
+class MetadataSchemaConveyor extends SchemaConveyor
 {
     /** @var string[] */
     private array $entityPaths = [];
@@ -29,12 +30,12 @@ final class MetadataSchemaConveyor extends SchemaConveyor
 
     private bool $isAddedMetadataGenerators = false;
 
-    public function getTableNaming(): int
+    final public function getTableNaming(): int
     {
         return $this->tableNaming;
     }
 
-    public function setTableNaming(
+    final public function setTableNaming(
         #[ExpectedValues(valuesFromClass: Entities::class)]
         int $type
     ): void {
@@ -44,7 +45,7 @@ final class MetadataSchemaConveyor extends SchemaConveyor
     /**
      * @param string[] $paths
      */
-    public function addEntityPaths(array $paths): void
+    final public function addEntityPaths(array $paths): void
     {
         $this->entityPaths = array_merge($this->entityPaths, $paths);
     }
