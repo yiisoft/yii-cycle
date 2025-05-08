@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
-#[AsCommand('cycle/schema/clear', 'Clears the current schema cache')]
+#[AsCommand('cycle:schema:clear', 'Clears the current schema cache')]
 final class SchemaClearCommand extends Command
 {
     public function __construct(private readonly CycleDependencyProxy $promise)

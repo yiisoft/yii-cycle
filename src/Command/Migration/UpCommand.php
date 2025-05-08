@@ -16,7 +16,7 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 
-#[AsCommand('migrate/up', 'Executes all new migrations')]
+#[AsCommand('migrate:up', 'Executes all new migrations')]
 final class UpCommand extends BaseMigrationCommand
 {
     public function __construct(CycleDependencyProxy $promise, private readonly EventDispatcherInterface $eventDispatcher)

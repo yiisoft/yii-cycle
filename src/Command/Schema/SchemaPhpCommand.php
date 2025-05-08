@@ -14,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
-#[AsCommand('cycle/schema/php', 'Saves the current schema in a PHP file')]
+#[AsCommand('cycle:schema:php', 'Saves the current schema in a PHP file')]
 final class SchemaPhpCommand extends Command
 {
     public function __construct(

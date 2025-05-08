@@ -16,7 +16,7 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 
-#[AsCommand('migrate/down', 'Rolls back the last applied migration')]
+#[AsCommand('migrate:down', 'Rolls back the last applied migration')]
 final class DownCommand extends BaseMigrationCommand
 {
     public function __construct(CycleDependencyProxy $promise, private readonly EventDispatcherInterface $eventDispatcher)

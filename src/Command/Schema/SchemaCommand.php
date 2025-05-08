@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
-#[AsCommand('cycle/schema', 'Shown current schema')]
+#[AsCommand('cycle:schema', 'Shown current schema')]
 final class SchemaCommand extends Command
 {
     public function __construct(private readonly CycleDependencyProxy $promise)

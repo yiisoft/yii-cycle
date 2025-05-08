@@ -8,7 +8,7 @@ use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand('migrate/list', 'Prints list of all migrations')]
+#[AsCommand('migrate:list', 'Prints list of all migrations')]
 final class ListCommand extends BaseMigrationCommand
 {
     #[\Override]

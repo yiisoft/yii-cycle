@@ -9,7 +9,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-#[AsCommand('migrate/create', 'Creates an empty migration')]
+#[AsCommand('migrate:create', 'Creates an empty migration')]
 final class CreateCommand extends BaseMigrationCommand
 {
     #[\Override]

@@ -10,7 +10,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
-#[AsCommand('cycle/schema/rebuild', 'Rebuilds the database schema')]
+#[AsCommand('cycle:schema:rebuild', 'Rebuilds the database schema')]
 final class SchemaRebuildCommand extends Command
 {
     public function __construct(private readonly CycleDependencyProxy $promise)

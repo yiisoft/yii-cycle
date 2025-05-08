@@ -18,7 +18,7 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
-#[AsCommand('migrate/generate', 'Generates a migration')]
+#[AsCommand('migrate:generate', 'Generates a migration')]
 final class GenerateCommand extends BaseMigrationCommand
 {
     #[\Override]
