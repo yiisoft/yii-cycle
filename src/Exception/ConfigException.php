@@ -6,7 +6,7 @@ namespace Yiisoft\Yii\Cycle\Exception;
 
 use Exception;
 
-class ConfigException extends Exception
+final class ConfigException extends Exception
 {
     /**
      * @param string[] $section Config path

@@ -6,27 +6,28 @@ namespace Yiisoft\Yii\Cycle\Command\Schema;
 
 use Cycle\Schema\Renderer\OutputSchemaRenderer;
 use Cycle\Schema\Renderer\SchemaToArrayConverter;
+use Symfony\Component\Console\Attribute\AsCommand;
 use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
+#[AsCommand('cycle:schema', 'Shown current schema')]
 final class SchemaCommand extends Command
 {
-    protected static $defaultName = 'cycle/schema';
-    protected static $defaultDescription = 'Shown current schema';
-
     public function __construct(private readonly CycleDependencyProxy $promise)
     {
         parent::__construct();
     }
 
+    #[\Override]
     protected function configure(): void
     {
         $this->addArgument('role', InputArgument::OPTIONAL, 'Roles to display (separated by ",").');
     }
 
+    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var string|null $roleArgument */

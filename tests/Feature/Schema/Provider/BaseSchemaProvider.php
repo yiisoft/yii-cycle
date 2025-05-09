@@ -53,5 +53,5 @@ abstract class BaseSchemaProvider extends TestCase
         $this->assertSame(static::READ_CONFIG_SCHEMA, $result);
     }
 
-    abstract protected function createSchemaProvider(array $config = null): SchemaProviderInterface;
+    abstract protected function createSchemaProvider(?array $config = null): SchemaProviderInterface;
 }
