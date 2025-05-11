@@ -41,7 +41,6 @@
         "psr/container": "^2.0",
         "psr/event-dispatcher": "^1.0",
         "psr/log": "^3.0",
-        "psr/simple-cache": "^3.0",
         "spiral/attributes": "^3.1.8",
         "spiral/core": "^3.15.8",
         "spiral/tokenizer": "^3.15.8",
