@@ -6,7 +6,13 @@ namespace Yiisoft\Yii\Cycle\Exception;
 
 use Exception;
 
-final class ConfigException extends Exception
+/**
+ * @final Will be marked as final in next major version
+ * @psalm-suppress ClassMustBeFinal
+ *
+ * @todo Remove this note and make the class final
+ */
+class ConfigException extends Exception
 {
     /**
      * @param string[] $section Config path
