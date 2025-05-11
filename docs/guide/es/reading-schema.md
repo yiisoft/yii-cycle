@@ -4,7 +4,7 @@ Cycle ORM se basa en un esquema de base de datos, que implementa la interfaz `\C
 
 Dado que el esquema se construye a partir de un arreglo con una estructura definida, podemos almacenarlo en caché o en un archivo de texto.
 
-Puede mostrar el esquema utilizado actualmente ejecutando el comando `cycle/schema`.
+Puede mostrar el esquema utilizado actualmente ejecutando el comando `cycle:schema`.
 
 En el paquete `yiisoft/yii-cycle` el esquema puede ser construido desde múltiples fuentes representadas por múltiples proveedores que implementan
 `Cycle\Schema\Provider\SchemaProviderInterface`.
