@@ -20,7 +20,10 @@ use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface as Conveyor;
 
-/** @psalm-suppress ClassMustBeFinal */
+/**
+ * The class is left not final for expansion
+ * @psalm-suppress ClassMustBeFinal 
+ */
 class MetadataSchemaConveyor extends SchemaConveyor
 {
     /** @var string[] */
