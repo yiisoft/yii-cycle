@@ -22,7 +22,7 @@ use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface as Conveyor;
 
 /**
  * The class is left not final for expansion
- * @psalm-suppress ClassMustBeFinal 
+ * @psalm-suppress ClassMustBeFinal
  */
 class MetadataSchemaConveyor extends SchemaConveyor
 {

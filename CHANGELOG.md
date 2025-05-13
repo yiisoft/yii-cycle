@@ -2,7 +2,7 @@
 
 ## 1.0.1 under development
 
-- Chg #222: Change PHP constraint in composer.json to 8.1 - 8.4 (@dagpro)
+- Chg #222: Change PHP constraint in composer.json to `8.1 - 8.4` (@dagpro)
 - Bug #222: Explicitly mark nullable parameters (@dagpro)
 - Chg #222: Replace in the names of the console commands `/` with `:` (@dagpro)
 - Chg #222: Bump `cycle/annotated` version to `^4.2` (@dagpro)
@@ -18,7 +18,6 @@
 - Chg #222: Bump minimal version of `yiisoft/aliases` to `^3.0` (@dagpro)
 - Chg #222: Bump `symfony/console` version to `^6.4 || ^7.2` (@dagpro)
 - Chg #222: Bump `symfony/finder` version to `^6.4 || ^7.2` (@dagpro)
-- Chg #222: Add logical or constraint `vimeo/psalm` version to `^5.26.1 || ^6.8.9` (@dagpro)
 
 ## 1.0.0 March 21, 2024
 
