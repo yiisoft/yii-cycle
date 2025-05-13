@@ -52,9 +52,7 @@ class SchemaConveyorTest extends BaseConveyor
                 }
             }
         );
-        $conveyor->addGenerator($conveyor::STAGE_USERLAND, static function () {
-            return new FakeGenerator('FakeGenerator-from-closure');
-        });
+        $conveyor->addGenerator($conveyor::STAGE_USERLAND, static fn() => new FakeGenerator('FakeGenerator-from-closure'));
         $conveyor->addGenerator($conveyor::STAGE_RENDER, SyncTables::class);
         $conveyor->addGenerator($conveyor::STAGE_INDEX, new FakeGenerator('FakeGenerator-object'));
 

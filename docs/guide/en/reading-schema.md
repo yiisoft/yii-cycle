@@ -4,7 +4,7 @@ Cycle ORM relies on DB schema - object, that implement `\Cycle\ORM\SchemaInterfa
 
 Since a schema is built from an array of a certain structure, we can store it either in a cache or in a text file.
 
-You can display currently used schema by executing `cycle/schema` command.
+You can display currently used schema by executing `cycle:schema` command.
 
 In `yii-cycle` package schema can be built from multiple sources represented by multiple providers implementing
 `Cycle\Schema\Provider\SchemaProviderInterface`.

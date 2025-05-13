@@ -13,7 +13,7 @@ use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 final class NotInstantiableClassException extends Exception implements ContainerExceptionInterface, FriendlyExceptionInterface
 {
     #[Pure]
-    public function __construct(string $class, string $message = null, int $code = 0, Exception $previous = null)
+    public function __construct(string $class, ?string $message = null, int $code = 0, ?Exception $previous = null)
     {
         if ($message === null) {
             $message = sprintf(
@@ -25,11 +25,13 @@ final class NotInstantiableClassException extends Exception implements Container
         parent::__construct($message, $code, $previous);
     }
 
+    #[\Override]
     public function getSolution(): ?string
     {
         return 'Make sure that the class is instantiable and implements ' . RepositoryInterface::class;
     }
 
+    #[\Override]
     public function getName(): string
     {
         return 'Repository not instantiable';

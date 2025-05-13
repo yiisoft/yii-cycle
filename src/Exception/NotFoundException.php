@@ -12,7 +12,7 @@ use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 final class NotFoundException extends Exception implements NotFoundExceptionInterface, FriendlyExceptionInterface
 {
     #[Pure]
-    public function __construct(string $class, string $message = null, int $code = 0, Exception $previous = null)
+    public function __construct(string $class, ?string $message = null, int $code = 0, ?Exception $previous = null)
     {
         if ($message === null) {
             $message = sprintf('No definition or class found or resolvable for "%s".', $class);
@@ -20,11 +20,13 @@ final class NotFoundException extends Exception implements NotFoundExceptionInte
         parent::__construct($message, $code, $previous);
     }
 
+    #[\Override]
     public function getSolution(): ?string
     {
         return 'Check if the class exists or if the class is properly defined.';
     }
 
+    #[\Override]
     public function getName(): string
     {
         return 'Repository not found';

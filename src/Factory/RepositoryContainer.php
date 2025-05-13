@@ -27,6 +27,7 @@ final class RepositoryContainer implements ContainerInterface
         $this->orm = $rootContainer->get(ORMInterface::class);
     }
 
+    #[\Override]
     public function get($id)
     {
         if (isset($this->instances[$id])) {
@@ -44,6 +45,7 @@ final class RepositoryContainer implements ContainerInterface
         throw new NotFoundException($id);
     }
 
+    #[\Override]
     public function has($id): bool
     {
         if (!is_subclass_of($id, RepositoryInterface::class)) {

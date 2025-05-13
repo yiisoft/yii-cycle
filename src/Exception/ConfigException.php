@@ -6,6 +6,10 @@ namespace Yiisoft\Yii\Cycle\Exception;
 
 use Exception;
 
+/**
+ * @final Will be marked as final in next major version
+ * @todo Remove this note and make the class final
+ */
 class ConfigException extends Exception
 {
     /**

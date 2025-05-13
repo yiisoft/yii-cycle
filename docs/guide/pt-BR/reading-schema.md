@@ -4,7 +4,7 @@ O Cycle ORM depende do esquema do banco de dados - objeto, que implementa a inte
 
 Como um esquema é construído a partir de um array de uma determinada estrutura, podemos armazená-lo em cache ou em um arquivo de texto.
 
-Você pode exibir o esquema usado atualmente executando o comando `cycle/schema`.
+Você pode exibir o esquema usado atualmente executando o comando `cycle:schema`.
 
 No `yii-cycle` o esquema do pacote pode ser construído a partir de múltiplas fontes representadas por múltiplos provedores implementando
 `Cycle\Schema\Provider\SchemaProviderInterface`.

@@ -35,11 +35,13 @@ abstract class SchemaConveyor implements SchemaConveyorInterface
     {
     }
 
+    #[\Override]
     public function addGenerator(string $stage, $generator): void
     {
         $this->conveyor[$stage][] = $generator;
     }
 
+    #[\Override]
     public function getGenerators(): array
     {
         $result = [];

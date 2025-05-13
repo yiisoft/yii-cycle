@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 use Rector\CodeQuality\Rector\Class_\InlineConstructorDefaultToPropertyRector;
 use Rector\Config\RectorConfig;
-use Rector\Php74\Rector\Closure\ClosureToArrowFunctionRector;
+use Rector\Php81\Rector\FuncCall\NullToStrictStringFuncCallArgRector;
 
 return RectorConfig::configure()
     ->withPaths([
@@ -16,5 +16,5 @@ return RectorConfig::configure()
         InlineConstructorDefaultToPropertyRector::class,
     ])
     ->withSkip([
-        ClosureToArrowFunctionRector::class,
+        NullToStrictStringFuncCallArgRector::class,
     ]);
