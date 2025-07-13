@@ -11,6 +11,7 @@ use Cycle\Database\DatabaseManager;
 use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
+use Yiisoft\Definitions\Contract\DefinitionInterface;
 
 final class DbalFactory
 {
@@ -54,8 +55,10 @@ final class DbalFactory
      */
     private function prepareLogger(ContainerInterface $container, mixed $logger): LoggerInterface
     {
-        if (is_string($logger)) {
-            $logger = $container->get($logger);
+        if (is_string($this->logger)) {
+            $logger = $container->get($this->logger);
+        } elseif ($logger instanceof DefinitionInterface) {
+            $logger = $logger->resolve($container);
         }
         if (!$logger instanceof LoggerInterface) {
             throw new RuntimeException(
