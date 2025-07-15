@@ -11,15 +11,8 @@ use Psr\Log\LoggerInterface;
 
 final class DbalFactory
 {
-    private readonly array|DatabaseConfig $dbalConfig;
-
-    /** @var LoggerInterface|string|null */
-    private mixed $logger;
-
-    public function __construct(array|DatabaseConfig $config, ?LoggerInterface $logger = null)
+    public function __construct(private readonly array|DatabaseConfig $dbalConfig, private readonly mixed $logger = null)
     {
-        $this->dbalConfig = $config;
-        $this->logger = $logger;
     }
 
     public function create(): DatabaseManager
