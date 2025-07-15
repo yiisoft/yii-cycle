@@ -20,6 +20,7 @@ use Psr\Container\ContainerInterface;
 use Spiral\Core\FactoryInterface as SpiralFactoryInterface;
 use Spiral\Files\FilesInterface;
 use Yiisoft\Aliases\Aliases;
+use Yiisoft\Definitions\Contract\DefinitionInterface;
 use Yiisoft\Definitions\DynamicReference;
 use Yiisoft\Definitions\Reference;
 use Yiisoft\Yii\Cycle\Exception\SchemaWasNotProvidedException;
@@ -36,7 +37,22 @@ use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 return [
     // Cycle DBAL
     DatabaseProviderInterface::class => Reference::to(DatabaseManager::class),
-    DatabaseManager::class => new DbalFactory($params['yiisoft/yii-cycle']['dbal']),
+    DatabaseManager::class => static function (ContainerInterface $container) use (&$params) {
+        $config = $params['yiisoft/yii-cycle']['dbal'];
+        $logger = null;
+        if (is_array($config) && array_key_exists('query-logger', $config)) {
+            $logger = $config['query-logger'];
+            if ($logger !== null) {
+                if (is_string($logger)) {
+                    $logger = $container->get($logger);
+                } elseif ($logger instanceof DefinitionInterface) {
+                    $logger = $logger->resolve($container);
+                }
+            }
+        }
+
+        return (new DbalFactory($config, $logger))->create();
+    },
 
     // Cycle ORM
     ORMInterface::class => Reference::to(ORM::class),
