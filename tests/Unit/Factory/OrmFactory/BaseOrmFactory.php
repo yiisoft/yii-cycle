@@ -53,9 +53,7 @@ abstract class BaseOrmFactory extends TestCase
                                 driver: FakeDriver::class,
                             ),
                         ],
-                    ]))(
-                        $this->container,
-                    );
+                    ]))->create();
                 }
                 throw new NotFoundException($id);
             }
