@@ -7,7 +7,6 @@ namespace Yiisoft\Yii\Cycle\Factory;
 use Cycle\Database\Config\DatabaseConfig;
 use Cycle\Database\DatabaseManager;
 use Cycle\Database\Driver\Driver;
-use Psr\Log\LoggerInterface;
 
 final class DbalFactory
 {
