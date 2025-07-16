@@ -10,8 +10,10 @@ use Cycle\Database\Driver\Driver;
 
 final class DbalFactory
 {
-    public function __construct(private readonly array|DatabaseConfig $dbalConfig, private readonly mixed $logger = null)
-    {
+    public function __construct(
+        private readonly array|DatabaseConfig $dbalConfig,
+        private readonly mixed $logger = null
+    ) {
     }
 
     public function create(): DatabaseManager
