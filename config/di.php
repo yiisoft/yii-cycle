@@ -20,7 +20,7 @@ use Psr\Container\ContainerInterface;
 use Spiral\Core\FactoryInterface as SpiralFactoryInterface;
 use Spiral\Files\FilesInterface;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Definitions\Contract\DefinitionInterface;
+use Yiisoft\Definitions\Contract\ReferenceInterface;
 use Yiisoft\Definitions\DynamicReference;
 use Yiisoft\Definitions\Reference;
 use Yiisoft\Yii\Cycle\Exception\SchemaWasNotProvidedException;
@@ -45,7 +45,7 @@ return [
             if ($logger !== null) {
                 if (is_string($logger)) {
                     $logger = $container->get($logger);
-                } elseif ($logger instanceof DefinitionInterface) {
+                } elseif ($logger instanceof ReferenceInterface) {
                     $logger = $logger->resolve($container);
                 }
             }
