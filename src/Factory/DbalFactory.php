@@ -22,7 +22,7 @@ final class DbalFactory
             $this->prepareConfig($dbalConfig)
         );
 
-        if ($this->logger !== null && $loggingEnabled) {
+        if ($this->logger !== null && $loggingEnabled === true) {
             $logger = $this->logger;
             $dbal->setLogger($logger);
         }
