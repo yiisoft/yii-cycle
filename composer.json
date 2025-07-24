@@ -69,12 +69,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Yiisoft\\Yii\\Cycle\\": "src"
+            "Yiisoft\\Yii\\Cycle\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Yiisoft\\Yii\\Cycle\\Tests\\": "tests"
+            "Yiisoft\\Yii\\Cycle\\Tests\\": "tests/"
         }
     },
     "extra": {

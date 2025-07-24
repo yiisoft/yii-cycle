@@ -26,8 +26,8 @@ return [
     'yiisoft/yii-cycle' => [
         // DBAL config
         'dbal' => [
-            // SQL query logger. Definition of Psr\Log\LoggerInterface
-            'query-logger' => null,
+            // Whether to enable logging of all SQL queries to PSR logger.
+            'query-logging' => false,
             // Default database
             'default' => null,
             'aliases' => [],

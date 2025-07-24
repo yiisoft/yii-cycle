@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace Yiisoft\Yii\Cycle\Tests\Unit\Factory\DbalFactory;
 
-use Psr\Container\NotFoundExceptionInterface;
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
-use RuntimeException;
-use stdClass;
-use Yiisoft\Aliases\Aliases;
+use Yiisoft\Test\Support\Log\SimpleLogger;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeConnectionConfig;
 use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeDriver;
@@ -18,14 +14,14 @@ use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeDriverConfig;
 final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactory
 {
     /**
-     * @param LoggerInterface|string $logger Classname or object
+     * @param LoggerInterface|null $logger Classname or object
      *
      * @return LoggerInterface|null
      */
-    protected function prepareLoggerFromDbalFactory($logger): ?LoggerInterface
+    protected function prepareLoggerFromDbalFactory(?LoggerInterface $logger): ?LoggerInterface
     {
-        $factory = (new DbalFactory([
-            'query-logger' => $logger,
+        $factory = (new DbalFactory($logger))->create([
+            'query-logging' => true,
             'default' => 'default',
             'aliases' => [],
             'databases' => [
@@ -37,47 +33,16 @@ final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactory
                     driver: FakeDriver::class,
                 ),
             ],
-        ]))($this->container);
+        ]);
         return $factory->driver('fake')->getLogger();
     }
 
-    public function testLoggerDefinitionAsStringDefinition(): void
+    public function testLoggerDefinition(): void
     {
-        $nullLogger = $this->container->get(NullLogger::class);
+        $simpleLogger = $this->container->get(SimpleLogger::class);
 
-        $dbalLogger = $this->prepareLoggerFromDbalFactory(NullLogger::class);
+        $dbalLogger = $this->prepareLoggerFromDbalFactory($simpleLogger);
 
-        // Logger was got from the container
-        $this->assertSame($nullLogger, $dbalLogger);
-    }
-
-    public function testLoggerDefinitionAsObject(): void
-    {
-        $nullLogger = $this->container->get(NullLogger::class);
-
-        $dbalLogger = $this->prepareLoggerFromDbalFactory($nullLogger);
-
-        $this->assertSame($dbalLogger, $nullLogger);
-    }
-
-    public function testLoggerDefinitionAsInvalidDefinition(): void
-    {
-        $this->expectException(NotFoundExceptionInterface::class);
-
-        $this->prepareLoggerFromDbalFactory('Invalid definition');
-    }
-
-    public function testLoggerDefinitionAsInvalidClassName(): void
-    {
-        $this->expectException(RuntimeException::class);
-
-        $this->prepareLoggerFromDbalFactory(Aliases::class);
-    }
-
-    public function testLoggerDefinitionAsInvalidObject(): void
-    {
-        $this->expectException(RuntimeException::class);
-
-        $this->prepareLoggerFromDbalFactory(new stdClass());
+        $this->assertSame($dbalLogger, $simpleLogger);
     }
 }
