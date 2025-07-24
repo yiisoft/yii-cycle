@@ -37,21 +37,10 @@ use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 return [
     // Cycle DBAL
     DatabaseProviderInterface::class => Reference::to(DatabaseManager::class),
-    DatabaseManager::class => static function (ContainerInterface $container) use (&$params) {
+    DatabaseManager::class => static function (DbalFactory $dbalFactory) use (&$params) {
         $config = $params['yiisoft/yii-cycle']['dbal'];
-        $logger = null;
-        if (is_array($config) && array_key_exists('query-logger', $config)) {
-            $logger = $config['query-logger'];
-            if ($logger !== null) {
-                if (is_string($logger)) {
-                    $logger = $container->get($logger);
-                } elseif ($logger instanceof ReferenceInterface) {
-                    $logger = $logger->resolve($container);
-                }
-            }
-        }
 
-        return (new DbalFactory($config, $logger))->create();
+        return $dbalFactory->create($config);
     },
 
     // Cycle ORM

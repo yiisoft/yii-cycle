@@ -15,7 +15,7 @@ final class DbalFactoryTest extends BaseDbalFactory
     public function testPrepareConfig(): void
     {
         $config = [
-            'query-logger' => 'foo',
+            'query-logging' => true,
             'default' => 'default',
             'aliases' => [],
             'databases' => [
@@ -29,7 +29,7 @@ final class DbalFactoryTest extends BaseDbalFactory
             ],
         ];
 
-        $factory = new DbalFactory([]);
+        $factory = new DbalFactory();
         $ref = new \ReflectionMethod($factory, 'prepareConfig');
         $ref->setAccessible(true);
 

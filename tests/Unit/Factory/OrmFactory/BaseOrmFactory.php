@@ -40,8 +40,8 @@ abstract class BaseOrmFactory extends TestCase
                     return new CycleDynamicFactory($this->container->get(Injector::class));
                 }
                 if ($id === DatabaseManager::class) {
-                    return (new DbalFactory([
-                        'query-logger' => null,
+                    return (new DbalFactory())->create([
+                        'query-logging' => false,
                         'default' => 'default',
                         'aliases' => [],
                         'databases' => [
@@ -53,7 +53,7 @@ abstract class BaseOrmFactory extends TestCase
                                 driver: FakeDriver::class,
                             ),
                         ],
-                    ]))->create();
+                    ]);
                 }
                 throw new NotFoundException($id);
             }

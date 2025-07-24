@@ -6,12 +6,12 @@ namespace Yiisoft\Yii\Cycle\Tests\Unit\Factory\DbalFactory;
 
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use Psr\Log\NullLogger;
 use Spiral\Core\FactoryInterface;
 use Yiisoft\Aliases\Aliases;
 use Yiisoft\Injector\Injector;
 use Yiisoft\Test\Support\Container\Exception\NotFoundException;
 use Yiisoft\Test\Support\Container\SimpleContainer;
+use Yiisoft\Test\Support\Log\SimpleLogger;
 use Yiisoft\Yii\Cycle\Factory\CycleDynamicFactory;
 
 abstract class BaseDbalFactory extends TestCase
@@ -26,7 +26,7 @@ abstract class BaseDbalFactory extends TestCase
     {
         $this->container = new SimpleContainer(
             [
-                NullLogger::class => new NullLogger(),
+                SimpleLogger::class => new SimpleLogger(),
                 Aliases::class => new Aliases(self::ALIASES),
             ],
             function (string $id) {

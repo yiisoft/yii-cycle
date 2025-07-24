@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Unit\Factory\DbalFactory;
 
 use Psr\Log\LoggerInterface;
-use Psr\Log\NullLogger;
+use Yiisoft\Test\Support\Log\SimpleLogger;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeConnectionConfig;
 use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeDriver;
@@ -20,7 +20,8 @@ final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactory
      */
     protected function prepareLoggerFromDbalFactory(?LoggerInterface $logger): ?LoggerInterface
     {
-        $factory = (new DbalFactory([
+        $factory = (new DbalFactory($logger))->create([
+            'query-logging' => true,
             'default' => 'default',
             'aliases' => [],
             'databases' => [
@@ -32,16 +33,16 @@ final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactory
                     driver: FakeDriver::class,
                 ),
             ],
-        ], $logger))->create();
+        ]);
         return $factory->driver('fake')->getLogger();
     }
 
     public function testLoggerDefinition(): void
     {
-        $nullLogger = $this->container->get(NullLogger::class);
+        $simpleLogger = $this->container->get(SimpleLogger::class);
 
-        $dbalLogger = $this->prepareLoggerFromDbalFactory($nullLogger);
+        $dbalLogger = $this->prepareLoggerFromDbalFactory($simpleLogger);
 
-        $this->assertSame($dbalLogger, $nullLogger);
+        $this->assertSame($dbalLogger, $simpleLogger);
     }
 }
