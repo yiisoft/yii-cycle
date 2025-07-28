@@ -20,7 +20,6 @@ use Psr\Container\ContainerInterface;
 use Spiral\Core\FactoryInterface as SpiralFactoryInterface;
 use Spiral\Files\FilesInterface;
 use Yiisoft\Aliases\Aliases;
-use Yiisoft\Definitions\Contract\ReferenceInterface;
 use Yiisoft\Definitions\DynamicReference;
 use Yiisoft\Definitions\Reference;
 use Yiisoft\Yii\Cycle\Exception\SchemaWasNotProvidedException;
