@@ -15,10 +15,12 @@ final class DbalFactory
     ) {
     }
 
-    public function create(DatabaseConfig $dbalConfig): DatabaseManager
+    public function create(array|DatabaseConfig $dbalConfig): DatabaseManager
     {
         $loggingEnabled = $dbalConfig['query-logging'] ?? false;
-        $dbal = new DatabaseManager($dbalConfig);
+        $dbal = new DatabaseManager(
+            $this->prepareConfig($dbalConfig)
+        );
 
         if ($this->logger !== null && $loggingEnabled === true) {
             $logger = $this->logger;
@@ -26,5 +28,19 @@ final class DbalFactory
         }
 
         return $dbal;
+    }
+
+    /**
+     * @param array|DatabaseConfig $config
+     *
+     * @return DatabaseConfig
+     */
+    private function prepareConfig(array|DatabaseConfig $config): DatabaseConfig
+    {
+        if ($config instanceof DatabaseConfig) {
+            return $config;
+        }
+
+        return new DatabaseConfig($config);
     }
 }

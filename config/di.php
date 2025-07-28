@@ -2,7 +2,6 @@
 
 declare(strict_types=1);
 
-use Cycle\Database\Config\DatabaseConfig;
 use Cycle\Database\DatabaseManager;
 use Cycle\Database\DatabaseProviderInterface;
 use Cycle\ORM\Entity\Behavior\EventDrivenCommandGenerator as BehaviorsHandler;
@@ -40,9 +39,7 @@ return [
     DatabaseManager::class => static function (DbalFactory $dbalFactory) use (&$params) {
         $config = $params['yiisoft/yii-cycle']['dbal'];
 
-        return $dbalFactory->create(
-            $config instanceof DatabaseConfig ? $config : new DatabaseConfig($config)
-        );
+        return $dbalFactory->create($config);
     },
 
     // Cycle ORM
