@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Tests\Unit\Factory\DbalFactory;
 
 use Cycle\Database\Config\DatabaseConfig;
-use Cycle\Database\Database;
-use Cycle\Database\DatabaseManager;
 use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeConnectionConfig;
 use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeDriver;
