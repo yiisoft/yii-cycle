@@ -36,7 +36,11 @@ use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 return [
     // Cycle DBAL
     DatabaseProviderInterface::class => Reference::to(DatabaseManager::class),
-    DatabaseManager::class => new DbalFactory($params['yiisoft/yii-cycle']['dbal']),
+    DatabaseManager::class => static function (DbalFactory $dbalFactory) use (&$params) {
+        $config = $params['yiisoft/yii-cycle']['dbal'];
+
+        return $dbalFactory->create($config);
+    },
 
     // Cycle ORM
     ORMInterface::class => Reference::to(ORM::class),

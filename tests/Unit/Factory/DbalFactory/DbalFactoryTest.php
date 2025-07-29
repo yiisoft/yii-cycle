@@ -12,10 +12,10 @@ use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeDriverConfig;
 
 final class DbalFactoryTest extends BaseDbalFactory
 {
-    public function testPrepareConfig(): void
+    public function testCreate(): void
     {
         $config = [
-            'query-logger' => 'foo',
+            'query-logging' => true,
             'default' => 'default',
             'aliases' => [],
             'databases' => [
@@ -29,13 +29,10 @@ final class DbalFactoryTest extends BaseDbalFactory
             ],
         ];
 
-        $factory = new DbalFactory([]);
-        $ref = new \ReflectionMethod($factory, 'prepareConfig');
-        $ref->setAccessible(true);
+        $factory = new DbalFactory();
+        $dbal = $factory->create($config);
+        $dbalConfig = new DatabaseConfig($config);
 
-        $this->assertEquals(new DatabaseConfig($config), $ref->invoke($factory, $config));
-
-        $obj = new DatabaseConfig($config);
-        $this->assertSame($obj, $ref->invoke($factory, $obj));
+        $this->assertSame($dbal->database()->getName(), $dbalConfig->getDefaultDatabase());
     }
 }
