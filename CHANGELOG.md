@@ -18,6 +18,7 @@
 - Chg #222: Bump minimal version of `yiisoft/aliases` to `^3.0` (@dagpro)
 - Chg #222: Bump `symfony/console` version to `^6.4 || ^7.2` (@dagpro)
 - Chg #222: Bump `symfony/finder` version to `^6.4 || ^7.2` (@dagpro)
+- Chg #230: Finalize `ConfigException` (@rustamwin)
 
 ## 1.0.0 March 21, 2024
 
