@@ -29,5 +29,4 @@ final class DbalFactory
 
         return $dbal;
     }
-
 }
