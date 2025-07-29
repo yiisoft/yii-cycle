@@ -23,8 +23,8 @@ return [
     'yiisoft/yii-cycle' => [
         // Конфиг Cycle DBAL
         'dbal' => [
-            // PSR-3 совместимый логгер SQL запросов
-            'query-logger' => null,
+            // Включить ли логирование всех SQL-запросов в PSR-3 совместимый логгере.
+            'query-logging' => false,
             // БД по умолчанию (из списка 'databases')
             'default' => 'default',
             'aliases' => [],

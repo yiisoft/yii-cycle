@@ -21,8 +21,8 @@ return [
     'yiisoft/yii-cycle' => [
         // Cycle DBAL config
         'dbal' => [
-             // PSR-3 compatible SQL query logger
-            'query-logger' => null,
+            // Whether to enable logging of all SQL queries to PSR logger.
+            'query-logging' => false,
             // Default database (from 'databases' list)
             'default' => 'default',
             'aliases' => [],
