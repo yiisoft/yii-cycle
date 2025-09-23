@@ -41,7 +41,7 @@ final class GenerateCommandTest extends TestCase
         $code = $command->run(new ArrayInput([]), $output);
 
         $this->assertSame(Command::SUCCESS, $code);
-        $this->assertStringContainsString('Outstanding migrations found, run `migrate/up` first.', $output->fetch());
+        $this->assertStringContainsString('Outstanding migrations found, run `migrate:up` first.', $output->fetch());
     }
 
     public function testExecuteWithoutChanges(): void
@@ -68,7 +68,7 @@ final class GenerateCommandTest extends TestCase
         $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Added 0 file(s)', $result);
         $this->assertStringContainsString(
-            'If you want to create new empty migration, use migrate/create',
+            'If you want to create new empty migration, use migrate:create',
             $result
         );
     }
@@ -167,7 +167,7 @@ final class GenerateCommandTest extends TestCase
         $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString('Added 0 file(s)', $result);
         $this->assertStringContainsString(
-            'If you want to create new empty migration, use migrate/create',
+            'If you want to create new empty migration, use migrate:create',
             $result
         );
     }
@@ -243,7 +243,7 @@ final class GenerateCommandTest extends TestCase
         $this->assertSame(
             implode(PHP_EOL, [
                 'Added 0 file(s)',
-                'If you want to create new empty migration, use migrate/create',
+                'If you want to create new empty migration, use migrate:create',
                 'Would you like to create empty migration right now? (Y/n)',
             ]),
             $commandTester->getDisplay(),

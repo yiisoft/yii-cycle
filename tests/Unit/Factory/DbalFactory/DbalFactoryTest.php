@@ -31,7 +31,6 @@ final class DbalFactoryTest extends BaseDbalFactory
 
         $factory = new DbalFactory([]);
         $ref = new \ReflectionMethod($factory, 'prepareConfig');
-        $ref->setAccessible(true);
 
         $this->assertEquals(new DatabaseConfig($config), $ref->invoke($factory, $config));
 
