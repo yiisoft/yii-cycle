@@ -39,13 +39,10 @@ final class MigratorFactoryTest extends TestCase
         ]));
 
         $configRef = new \ReflectionProperty($migrator, 'config');
-        $configRef->setAccessible(true);
 
         $dbalRef = new \ReflectionProperty($migrator, 'dbal');
-        $dbalRef->setAccessible(true);
 
         $repositoryRef = new \ReflectionProperty($migrator, 'repository');
-        $repositoryRef->setAccessible(true);
 
         $this->assertTrue($db->database('default')->hasTable($defaultConfig->getTable()));
         $this->assertSame($defaultConfig, $configRef->getValue($migrator));

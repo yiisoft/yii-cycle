@@ -62,7 +62,6 @@ final class RepositoryContainerTest extends TestCase
 
         $container = new RepositoryContainer(new SimpleContainer([ORMInterface::class => $orm]));
         $instancesRef = new \ReflectionProperty($container, 'instances');
-        $instancesRef->setAccessible(true);
 
         $this->assertSame([], $instancesRef->getValue($container));
         $this->assertInstanceOf(FakeRepository::class, $container->get(FakeRepository::class));
@@ -79,7 +78,6 @@ final class RepositoryContainerTest extends TestCase
 
         $container = new RepositoryContainer(new SimpleContainer([ORMInterface::class => $orm]));
         $instancesRef = new \ReflectionProperty($container, 'instances');
-        $instancesRef->setAccessible(true);
 
         $this->assertSame([], $instancesRef->getValue($container));
         $repository = $container->get(FakeRepository::class);

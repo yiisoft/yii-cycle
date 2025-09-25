@@ -59,7 +59,6 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
         $provider = $provider->withConfig(['generators' => [$generator]]);
 
         $ref = new \ReflectionProperty($provider, 'generators');
-        $ref->setAccessible(true);
 
         $this->assertSame([$generator], $ref->getValue($provider));
     }

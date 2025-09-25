@@ -119,11 +119,11 @@ return [
 
 ### Comando do console
 
-Para exportar o esquema como arquivo PHP, o comando `cycle/schema/php` pode ser usado.
+Para exportar o esquema como arquivo PHP, o comando `cycle:schema:php` pode ser usado.
 Especifique um nome de arquivo como argumento e o esquema será gravado nele:
 
 ```shell
-cycle/schema/php @runtime/schema.php
+cycle:schema:php @runtime/schema.php
 ```
 
 O alias `@runtime` é substituído automaticamente. O esquema será exportado para o arquivo `schema.php`.

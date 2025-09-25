@@ -29,7 +29,7 @@ final class GenerateCommand extends BaseMigrationCommand
         $listAfter = $migrator->getMigrations();
         foreach ($listAfter as $migration) {
             if ($migration->getState()->getStatus() !== State::STATUS_EXECUTED) {
-                $output->writeln('<fg=red>Outstanding migrations found, run `migrate/up` first.</>');
+                $output->writeln('<fg=red>Outstanding migrations found, run `migrate:up` first.</>');
                 return self::SUCCESS;
             }
         }
@@ -59,7 +59,7 @@ final class GenerateCommand extends BaseMigrationCommand
             }
         } else {
             $output->writeln(
-                '<info>If you want to create new empty migration, use <fg=yellow>migrate/create</></info>'
+                '<info>If you want to create new empty migration, use <fg=yellow>migrate:create</></info>'
             );
 
             if ($input->isInteractive() && $input instanceof StreamableInputInterface) {

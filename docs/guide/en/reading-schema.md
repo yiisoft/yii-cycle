@@ -119,11 +119,11 @@ return [
 
 ### Console command
 
-In order to export schema as PHP file `cycle/schema/php` command could be used.
+In order to export schema as PHP file `cycle:schema:php` command could be used.
 Specify a file name as an argument and schema will be written into it:
 
 ```shell
-cycle/schema/php @runtime/schema.php
+cycle:schema:php @runtime/schema.php
 ```
 
 `@runtime` alias is replaced automatically. Schema will be exported into `schema.php` file.
