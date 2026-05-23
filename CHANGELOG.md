@@ -2,7 +2,7 @@
 
 ## 1.0.1 under development
 
-- Chg #222: Change PHP constraint in composer.json to `8.1 - 8.4` (@dagpro)
+- Chg #222, #233: Change PHP constraint in composer.json to `8.1 - 8.5` (@dagpro, @tapat4n)
 - Bug #222: Explicitly mark nullable parameters (@dagpro)
 - Chg #222, #231: Replace `/` with `:` in the console command names (@dagpro)
 - Chg #222: Bump `cycle/annotated` version to `^4.2` (@dagpro)

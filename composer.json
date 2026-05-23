@@ -29,7 +29,7 @@
         }
     ],
     "require": {
-        "php": "8.1 - 8.4",
+        "php": "8.1 - 8.5",
         "cycle/annotated": "^4.2",
         "cycle/database": "^2.11.3",
         "cycle/migrations": "^4.2.5",
