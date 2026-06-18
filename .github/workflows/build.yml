@@ -22,6 +22,9 @@ on:
 
 name: build
 
+permissions:
+  contents: read
+
 jobs:
   tests:
     name: PHP ${{ matrix.php }}-sqlite-${{ matrix.os }}
@@ -57,10 +60,12 @@ jobs:
 
     steps:
       - name: Checkout.
-        uses: actions/checkout@v3
+        uses: actions/checkout@f43a0e5ff2bd294095638e18286ca9a3d1956744
+        with:
+          persist-credentials: false
 
       - name: Install PHP with extensions.
-        uses: shivammathur/setup-php@v2
+        uses: shivammathur/setup-php@b604ade2a87db23f8871b7182e69ec5e75effb45
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
@@ -69,13 +74,13 @@ jobs:
           tools: composer:v2
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@v3
+        uses: ramsey/composer-install@a8d0d959dab41457692a5e2041bd9b757a119e3f
 
       - name: Run tests with phpunit with code coverage.
         run: vendor/bin/phpunit --coverage-clover=coverage.xml --colors=always
 
       - name: Upload coverage to Codecov.
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@ab904c41d6ece82784817410c45d8b8c02684457
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
