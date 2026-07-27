@@ -8,14 +8,15 @@ use Cycle\ORM\SchemaInterface as Schema;
 use Cycle\Schema\Provider\SchemaProviderInterface;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Cycle\Tests\Feature\Schema\Stub\ArraySchemaProvider;
+use stdClass;
 
 abstract class BaseSchemaProvider extends TestCase
 {
     protected const READ_CONFIG = [];
     protected const READ_CONFIG_SCHEMA = [
         'user' => [
-            Schema::ENTITY => \stdClass::class,
-            Schema::MAPPER => \stdClass::class,
+            Schema::ENTITY => stdClass::class,
+            Schema::MAPPER => stdClass::class,
             Schema::DATABASE => 'default',
             Schema::TABLE => 'user',
             Schema::PRIMARY_KEY => 'id',

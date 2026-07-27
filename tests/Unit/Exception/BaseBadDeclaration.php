@@ -6,19 +6,22 @@ namespace Yiisoft\Yii\Cycle\Tests\Unit\Exception;
 
 use PHPUnit\Framework\TestCase;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
+use DateTimeImmutable;
+
+use function sprintf;
+
+use const STDIN;
 
 abstract class BaseBadDeclaration extends TestCase
 {
     private const RECEIVED_PATTERN = '/%s was received instead\\./';
-
-    abstract protected function prepareException($argument): BadDeclarationException;
 
     public static function ArgumentValueProvider(): array
     {
         return [
             [null, 'Null'],
             [42, 'Int'],
-            [new \DateTimeImmutable(), 'Instance of DateTimeImmutable'],
+            [new DateTimeImmutable(), 'Instance of DateTimeImmutable'],
             [STDIN, 'Resource \\(stream\\)'],
             [[], 'Array'],
         ];
@@ -34,4 +37,6 @@ abstract class BaseBadDeclaration extends TestCase
 
         $this->assertMatchesRegularExpression($pattern, $exception->getMessage());
     }
+
+    abstract protected function prepareException($argument): BadDeclarationException;
 }

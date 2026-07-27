@@ -17,30 +17,6 @@ use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeDriverConfig;
 
 final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactory
 {
-    /**
-     * @param LoggerInterface|string $logger Classname or object
-     *
-     * @return LoggerInterface|null
-     */
-    protected function prepareLoggerFromDbalFactory($logger): ?LoggerInterface
-    {
-        $factory = (new DbalFactory([
-            'query-logger' => $logger,
-            'default' => 'default',
-            'aliases' => [],
-            'databases' => [
-                'default' => ['connection' => 'fake'],
-            ],
-            'connections' => [
-                'fake' => new FakeDriverConfig(
-                    connection: new FakeConnectionConfig(),
-                    driver: FakeDriver::class,
-                ),
-            ],
-        ]))($this->container);
-        return $factory->driver('fake')->getLogger();
-    }
-
     public function testLoggerDefinitionAsStringDefinition(): void
     {
         $nullLogger = $this->container->get(NullLogger::class);
@@ -79,5 +55,29 @@ final class DbalFactoryConfigureQueryLoggerTest extends BaseDbalFactory
         $this->expectException(RuntimeException::class);
 
         $this->prepareLoggerFromDbalFactory(new stdClass());
+    }
+
+    /**
+     * @param LoggerInterface|string $logger Classname or object
+     *
+     * @return LoggerInterface|null
+     */
+    protected function prepareLoggerFromDbalFactory($logger): ?LoggerInterface
+    {
+        $factory = (new DbalFactory([
+            'query-logger' => $logger,
+            'default' => 'default',
+            'aliases' => [],
+            'databases' => [
+                'default' => ['connection' => 'fake'],
+            ],
+            'connections' => [
+                'fake' => new FakeDriverConfig(
+                    connection: new FakeConnectionConfig(),
+                    driver: FakeDriver::class,
+                ),
+            ],
+        ]))($this->container);
+        return $factory->driver('fake')->getLogger();
     }
 }

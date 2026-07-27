@@ -14,6 +14,9 @@ use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Schema\SchemaPhpCommand;
 
+use const DIRECTORY_SEPARATOR;
+use const E_WARNING;
+
 /**
  * @requires OS Linux
  */
@@ -38,7 +41,7 @@ final class ExecuteWithFileWriteErrorTest extends TestCase
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
         $schema->expects($this->any())->method('define')->willReturnCallback(
-            fn(string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null
+            fn(string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null,
         );
 
         $container = new SimpleContainer([SchemaInterface::class => $schema]);

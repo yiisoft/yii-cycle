@@ -15,6 +15,7 @@ use Yiisoft\Yii\Cycle\Exception\NotInstantiableClassException;
 use Yiisoft\Yii\Cycle\Factory\RepositoryContainer;
 use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeEntity;
 use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeRepository;
+use ReflectionProperty;
 
 final class RepositoryContainerTest extends TestCase
 {
@@ -61,7 +62,7 @@ final class RepositoryContainerTest extends TestCase
             ->willReturn(new FakeRepository($this->createMock(Select::class)));
 
         $container = new RepositoryContainer(new SimpleContainer([ORMInterface::class => $orm]));
-        $instancesRef = new \ReflectionProperty($container, 'instances');
+        $instancesRef = new ReflectionProperty($container, 'instances');
 
         $this->assertSame([], $instancesRef->getValue($container));
         $this->assertInstanceOf(FakeRepository::class, $container->get(FakeRepository::class));
@@ -77,7 +78,7 @@ final class RepositoryContainerTest extends TestCase
             ->willReturn(new FakeRepository($this->createMock(Select::class)));
 
         $container = new RepositoryContainer(new SimpleContainer([ORMInterface::class => $orm]));
-        $instancesRef = new \ReflectionProperty($container, 'instances');
+        $instancesRef = new ReflectionProperty($container, 'instances');
 
         $this->assertSame([], $instancesRef->getValue($container));
         $repository = $container->get(FakeRepository::class);

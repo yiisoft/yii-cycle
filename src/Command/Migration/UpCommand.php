@@ -16,6 +16,8 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 
+use function count;
+
 #[AsCommand('migrate:up', 'Executes all new migrations')]
 final class UpCommand extends BaseMigrationCommand
 {
@@ -24,7 +26,6 @@ final class UpCommand extends BaseMigrationCommand
         parent::__construct($promise);
     }
 
-    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $migrations = $this->findMigrations($output);
@@ -44,9 +45,7 @@ final class UpCommand extends BaseMigrationCommand
             $output->writeln('<fg=red>No migration found for execute</>');
             return self::SUCCESS;
         }
-
         $migrator = $this->promise->getMigrator();
-
         // Confirm
         if (!$migrator->getConfig()->isSafe()) {
             $newMigrations = [];
@@ -57,20 +56,20 @@ final class UpCommand extends BaseMigrationCommand
             }
             $countNewMigrations = count($newMigrations);
             $output->writeln(
-                '<fg=yellow>' .
-                ($countNewMigrations === 1 ? 'Migration' : $countNewMigrations . ' migrations') .
-                ' ' .
-                'to be applied:</>'
+                '<fg=yellow>'
+                . ($countNewMigrations === 1 ? 'Migration' : $countNewMigrations . ' migrations')
+                . ' '
+                . 'to be applied:</>',
             );
             foreach ($newMigrations as $migration) {
                 $output->writeln('— <fg=cyan>' . $migration->getState()->getName() . '</>');
             }
             if ($input->isInteractive()) {
                 $question = new ConfirmationQuestion(
-                    'Apply the above ' .
-                    ($countNewMigrations === 1 ? 'migration' : 'migrations') .
-                    '? (yes|no) ',
-                    false
+                    'Apply the above '
+                    . ($countNewMigrations === 1 ? 'migration' : 'migrations')
+                    . '? (yes|no) ',
+                    false,
                 );
                 /** @var QuestionHelper $qaHelper*/
                 $qaHelper = $this->getHelper('question');
@@ -79,7 +78,6 @@ final class UpCommand extends BaseMigrationCommand
                 }
             }
         }
-
         $this->eventDispatcher->dispatch(new BeforeMigrate());
         try {
             do {

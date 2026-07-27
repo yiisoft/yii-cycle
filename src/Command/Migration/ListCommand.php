@@ -11,11 +11,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 #[AsCommand('migrate:list', 'Prints list of all migrations')]
 final class ListCommand extends BaseMigrationCommand
 {
-    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $list = $this->findMigrations($output);
-
         foreach ($list as $migration) {
             $state = $migration->getState();
             $output->writeln('<fg=cyan>' . $state->getName() . '</> '

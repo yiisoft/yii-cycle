@@ -18,7 +18,7 @@ final class MigrationConfigFactoryTest extends TestCase
 
         $this->assertEquals(
             new MigrationConfig(['directory' => 'test/foo/bar']),
-            $factory(new SimpleContainer([Aliases::class => new Aliases()]))
+            $factory(new SimpleContainer([Aliases::class => new Aliases()])),
         );
     }
 
@@ -28,7 +28,7 @@ final class MigrationConfigFactoryTest extends TestCase
 
         $this->assertEquals(
             new MigrationConfig(['directory' => 'src/test/app/foo/bar']),
-            $factory(new SimpleContainer([Aliases::class => new Aliases(['@test' => 'src/test/app'])]))
+            $factory(new SimpleContainer([Aliases::class => new Aliases(['@test' => 'src/test/app'])])),
         );
     }
 }

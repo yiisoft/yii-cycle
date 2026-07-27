@@ -22,6 +22,12 @@ use Yiisoft\Yii\Cycle\Command\Migration\UpCommand;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
 use Yiisoft\Yii\Cycle\Tests\Command\Stub\ErrorMigration;
+use DateTimeImmutable;
+use Traversable;
+
+use function count;
+
+use const PHP_EOL;
 
 final class UpCommandTest extends TestCase
 {
@@ -40,7 +46,7 @@ final class UpCommandTest extends TestCase
                 Migrator::class => $migrator,
                 MigrationConfig::class => $config,
             ])),
-            $this->createMock(EventDispatcherInterface::class)
+            $this->createMock(EventDispatcherInterface::class),
         );
         $code = $command->run(new ArrayInput([]), $output);
 
@@ -83,10 +89,10 @@ final class UpCommandTest extends TestCase
         $this->assertSame(Command::SUCCESS, $code);
 
         $newLine = PHP_EOL;
-        $expectedOutput = "\033[32mTotal 1 migration(s) found in \033[39m$newLine" .
-            "\033[33mMigration to be applied:\033[39m$newLine" .
-            "— \033[36mtest\033[39m$newLine" .
-            "\033[36mtest\033[39m: executed$newLine";
+        $expectedOutput = "\033[32mTotal 1 migration(s) found in \033[39m$newLine"
+            . "\033[33mMigration to be applied:\033[39m$newLine"
+            . "— \033[36mtest\033[39m$newLine"
+            . "\033[36mtest\033[39m: executed$newLine";
         $this->assertSame($expectedOutput, $output->fetch());
     }
 
@@ -109,7 +115,7 @@ final class UpCommandTest extends TestCase
                 Migrator::class => $migrator,
                 MigrationConfig::class => $config,
             ])),
-            $this->createMock(EventDispatcherInterface::class)
+            $this->createMock(EventDispatcherInterface::class),
         );
 
         $input = new ArrayInput([]);
@@ -122,7 +128,7 @@ final class UpCommandTest extends TestCase
             ->with(
                 $input,
                 $output,
-                $this->equalTo(new ConfirmationQuestion($question, false))
+                $this->equalTo(new ConfirmationQuestion($question, false)),
             )
             ->willReturn(false);
 
@@ -134,13 +140,13 @@ final class UpCommandTest extends TestCase
 
         $this->assertSame(Command::SUCCESS, $code);
         $this->assertStringContainsString(
-            \count($migrations) === 1 ? 'Migration to be applied:' : '2 migrations to be applied:',
-            $result
+            count($migrations) === 1 ? 'Migration to be applied:' : '2 migrations to be applied:',
+            $result,
         );
         $this->assertStringNotContainsString('test: executed', $result);
     }
 
-    public static function abortMigrationsDataProvider(): \Traversable
+    public static function abortMigrationsDataProvider(): Traversable
     {
         yield [[self::migration()], 'Apply the above migration? (yes|no) '];
         yield [[self::migration(), self::migration()], 'Apply the above migrations? (yes|no) '];
@@ -152,7 +158,7 @@ final class UpCommandTest extends TestCase
 
         $repository = $this->createMock(RepositoryInterface::class);
         $migration = (new ErrorMigration())
-            ->withState(new State('test', new \DateTimeImmutable(), State::STATUS_PENDING));
+            ->withState(new State('test', new DateTimeImmutable(), State::STATUS_PENDING));
         $repository->expects($this->exactly(2))->method('getMigrations')->willReturn([$migration]);
 
         $migrator = self::migrator(new MigrationConfig(), $repository);

@@ -7,6 +7,7 @@ namespace Yiisoft\Yii\Cycle\Tests\Unit\Exception;
 use Cycle\Schema\GeneratorInterface;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
+use Throwable;
 
 final class BadGeneratorDeclarationExceptionTest extends BaseBadDeclaration
 {
@@ -22,11 +23,11 @@ final class BadGeneratorDeclarationExceptionTest extends BaseBadDeclaration
         $exception = $this->prepareException(null);
         $class = self::GENERATOR_INTERFACE;
 
-        $this->assertInstanceOf(\Throwable::class, $exception);
+        $this->assertInstanceOf(Throwable::class, $exception);
         $this->assertSame(0, $exception->getCode());
         $this->assertSame(
             "Generator should be instance of $class or its declaration. Null was received instead.",
-            $exception->getMessage()
+            $exception->getMessage(),
         );
     }
 

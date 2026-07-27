@@ -12,6 +12,8 @@ use Yiisoft\Aliases\Aliases;
 use Yiisoft\Di\Container;
 use Yiisoft\Di\ContainerConfig;
 
+use function dirname;
+
 abstract class BaseTestCase extends TestCase
 {
     protected Container $container;
@@ -25,7 +27,7 @@ abstract class BaseTestCase extends TestCase
                 'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
             ],
         ]);
-        $diConfig = require \dirname(__DIR__, 4) . '/config/di.php';
+        $diConfig = require dirname(__DIR__, 4) . '/config/di.php';
         $diConfig[Aliases::class] = new Aliases(['@test' => __DIR__ . '/Stub']);
 
         $this->container = new Container(ContainerConfig::create()->withDefinitions($diConfig));

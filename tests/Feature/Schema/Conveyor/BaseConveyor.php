@@ -23,7 +23,7 @@ abstract class BaseConveyor extends TestCase
         return [
             [stdClass::class, '#Instance of ' . stdClass::class . '[\s\w]+instead#'],
             [new DateTimeImmutable(), '#Instance of ' . DateTimeImmutable::class . ' [\s\w]+instead#'],
-            [fn () => new DateTime(), '#Instance of ' . DateTime::class . ' [\s\w]+instead#'],
+            [fn() => new DateTime(), '#Instance of ' . DateTime::class . ' [\s\w]+instead#'],
             [null, '#Null [\s\w]+instead#'],
             [42, '#Int [\s\w]+instead#'],
         ];
@@ -46,8 +46,8 @@ abstract class BaseConveyor extends TestCase
     protected function getGeneratorClassList(SchemaConveyorInterface $conveyor): array
     {
         return array_map(
-            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : $value::class,
-            $conveyor->getGenerators()
+            fn($value) => $value instanceof FakeGenerator ? $value->originClass() : $value::class,
+            $conveyor->getGenerators(),
         );
     }
 

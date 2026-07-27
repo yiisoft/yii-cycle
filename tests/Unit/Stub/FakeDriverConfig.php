@@ -6,6 +6,4 @@ namespace Yiisoft\Yii\Cycle\Tests\Unit\Stub;
 
 use Cycle\Database\Config\DriverConfig;
 
-class FakeDriverConfig extends DriverConfig
-{
-}
+class FakeDriverConfig extends DriverConfig {}

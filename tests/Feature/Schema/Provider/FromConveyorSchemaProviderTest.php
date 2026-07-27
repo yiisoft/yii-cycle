@@ -32,11 +32,36 @@ use Yiisoft\Yii\Cycle\Schema\Provider\FromConveyorSchemaProvider;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 use Yiisoft\Yii\Cycle\Tests\Feature\Schema\Provider\Stub\FakePost;
 use Yiisoft\Yii\Cycle\Tests\Feature\Schema\Stub\ArraySchemaProvider;
+use ReflectionProperty;
 
 final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
 {
     private SimpleContainer $container;
     private DatabaseManager $dbal;
+
+    protected function setUp(): void
+    {
+        $this->container = new SimpleContainer([
+            Aliases::class => new Aliases(),
+            ResetTables::class => new ResetTables(),
+            GenerateRelations::class => new GenerateRelations(),
+            GenerateModifiers::class => new GenerateModifiers(),
+            ValidateEntities::class => new ValidateEntities(),
+            RenderTables::class => new RenderTables(),
+            RenderRelations::class => new RenderRelations(),
+            RenderModifiers::class => new RenderModifiers(),
+            ForeignKeys::class => new ForeignKeys(),
+            GenerateTypecast::class => new GenerateTypecast(),
+        ]);
+
+        $this->dbal = new DatabaseManager(new DatabaseConfig([
+            'default' => 'default',
+            'databases' => ['default' => ['connection' => 'sqlite']],
+            'connections' => [
+                'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
+            ],
+        ]));
+    }
 
     public function testWithEmptyConfig(): void
     {
@@ -58,7 +83,7 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
 
         $provider = $provider->withConfig(['generators' => [$generator]]);
 
-        $ref = new \ReflectionProperty($provider, 'generators');
+        $ref = new ReflectionProperty($provider, 'generators');
 
         $this->assertSame([$generator], $ref->getValue($provider));
     }
@@ -106,7 +131,7 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
 
         $this->assertEquals(
             self::READ_CONFIG_SCHEMA,
-            $provider->read(new ArraySchemaProvider(self::READ_CONFIG_SCHEMA))
+            $provider->read(new ArraySchemaProvider(self::READ_CONFIG_SCHEMA)),
         );
 
         if (is_dir(__DIR__ . '/Stub/Foo')) {
@@ -122,34 +147,10 @@ final class FromConveyorSchemaProviderTest extends BaseSchemaProvider
         $this->assertNotSame($schemaProvider1, $schemaProvider2);
     }
 
-    protected function setUp(): void
-    {
-        $this->container = new SimpleContainer([
-            Aliases::class => new Aliases(),
-            ResetTables::class => new ResetTables(),
-            GenerateRelations::class => new GenerateRelations(),
-            GenerateModifiers::class => new GenerateModifiers(),
-            ValidateEntities::class => new ValidateEntities(),
-            RenderTables::class => new RenderTables(),
-            RenderRelations::class => new RenderRelations(),
-            RenderModifiers::class => new RenderModifiers(),
-            ForeignKeys::class => new ForeignKeys(),
-            GenerateTypecast::class => new GenerateTypecast(),
-        ]);
-
-        $this->dbal = new DatabaseManager(new DatabaseConfig([
-            'default' => 'default',
-            'databases' => ['default' => ['connection' => 'sqlite']],
-            'connections' => [
-                'sqlite' => new SQLiteDriverConfig(connection: new MemoryConnectionConfig()),
-            ],
-        ]));
-    }
-
     protected function createSchemaProvider(
         ?array $config = null,
         ?SchemaConveyorInterface $conveyor = null,
-        ?DatabaseProviderInterface $dbal = null
+        ?DatabaseProviderInterface $dbal = null,
     ): SchemaProviderInterface {
         $provider = new FromConveyorSchemaProvider(
             $conveyor ?? $this->createMock(SchemaConveyorInterface::class),

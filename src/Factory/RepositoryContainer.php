@@ -12,6 +12,7 @@ use Yiisoft\Yii\Cycle\Exception\NotFoundException;
 use Yiisoft\Yii\Cycle\Exception\NotInstantiableClassException;
 
 use function is_string;
+use function count;
 
 final class RepositoryContainer implements ContainerInterface
 {
@@ -27,36 +28,29 @@ final class RepositoryContainer implements ContainerInterface
         $this->orm = $rootContainer->get(ORMInterface::class);
     }
 
-    #[\Override]
     public function get($id)
     {
         if (isset($this->instances[$id])) {
             return $this->instances[$id];
         }
-
         if ($this->has($id)) {
             return $this->instances[$id] = $this->makeRepository($this->roles[$id]);
         }
-
         if (!is_subclass_of($id, RepositoryInterface::class)) {
             throw new NotInstantiableClassException($id);
         }
-
         throw new NotFoundException($id);
     }
 
-    #[\Override]
     public function has($id): bool
     {
         if (!is_subclass_of($id, RepositoryInterface::class)) {
             return false;
         }
-
         if (!$this->rolesBuilt) {
             $this->makeRepositoryList();
             $this->rolesBuilt = true;
         }
-
         return isset($this->roles[$id]);
     }
 

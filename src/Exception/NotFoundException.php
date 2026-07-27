@@ -9,6 +9,8 @@ use JetBrains\PhpStorm\Pure;
 use Psr\Container\NotFoundExceptionInterface;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
+use function sprintf;
+
 final class NotFoundException extends Exception implements NotFoundExceptionInterface, FriendlyExceptionInterface
 {
     #[Pure]
@@ -20,13 +22,11 @@ final class NotFoundException extends Exception implements NotFoundExceptionInte
         parent::__construct($message, $code, $previous);
     }
 
-    #[\Override]
     public function getSolution(): ?string
     {
         return 'Check if the class exists or if the class is properly defined.';
     }
 
-    #[\Override]
     public function getName(): string
     {
         return 'Repository not found';

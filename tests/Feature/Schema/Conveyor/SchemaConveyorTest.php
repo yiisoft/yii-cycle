@@ -45,12 +45,12 @@ class SchemaConveyorTest extends BaseConveyor
         $conveyor = $this->createConveyor();
         $conveyor->addGenerator(
             $conveyor::STAGE_POSTPROCESS,
-            new class () {
+            new class {
                 public function __invoke(): GeneratorInterface
                 {
                     return new FakeGenerator('FakeGenerator-from-invocable-object');
                 }
-            }
+            },
         );
         $conveyor->addGenerator($conveyor::STAGE_USERLAND, static fn() => new FakeGenerator('FakeGenerator-from-closure'));
         $conveyor->addGenerator($conveyor::STAGE_RENDER, SyncTables::class);
@@ -59,8 +59,8 @@ class SchemaConveyorTest extends BaseConveyor
         // get generators list
         /** @var string[] $generators */
         $generators = array_map(
-            fn ($value) => $value instanceof FakeGenerator ? $value->originClass() : $value::class,
-            $conveyor->getGenerators()
+            fn($value) => $value instanceof FakeGenerator ? $value->originClass() : $value::class,
+            $conveyor->getGenerators(),
         );
 
         $this->assertSame([

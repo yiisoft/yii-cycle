@@ -10,6 +10,8 @@ use JetBrains\PhpStorm\Pure;
 use Psr\Container\ContainerExceptionInterface;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 
+use function sprintf;
+
 final class NotInstantiableClassException extends Exception implements ContainerExceptionInterface, FriendlyExceptionInterface
 {
     #[Pure]
@@ -19,19 +21,17 @@ final class NotInstantiableClassException extends Exception implements Container
             $message = sprintf(
                 'Can not instantiate "%s" because it is not a subclass of "%s".',
                 $class,
-                RepositoryInterface::class
+                RepositoryInterface::class,
             );
         }
         parent::__construct($message, $code, $previous);
     }
 
-    #[\Override]
     public function getSolution(): ?string
     {
         return 'Make sure that the class is instantiable and implements ' . RepositoryInterface::class;
     }
 
-    #[\Override]
     public function getName(): string
     {
         return 'Repository not instantiable';

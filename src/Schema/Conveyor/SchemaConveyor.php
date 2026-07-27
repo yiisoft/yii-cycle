@@ -10,6 +10,10 @@ use Psr\Container\ContainerInterface;
 use Yiisoft\Yii\Cycle\Exception\BadGeneratorDeclarationException;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
+use function is_callable;
+use function is_object;
+use function is_string;
+
 abstract class SchemaConveyor implements SchemaConveyorInterface
 {
     protected array $conveyor = [
@@ -31,17 +35,13 @@ abstract class SchemaConveyor implements SchemaConveyorInterface
         ],
     ];
 
-    public function __construct(protected ContainerInterface $container)
-    {
-    }
+    public function __construct(protected ContainerInterface $container) {}
 
-    #[\Override]
     public function addGenerator(string $stage, $generator): void
     {
         $this->conveyor[$stage][] = $generator;
     }
 
-    #[\Override]
     public function getGenerators(): array
     {
         $result = [];

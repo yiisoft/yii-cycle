@@ -18,13 +18,11 @@ final class SchemaRebuildCommand extends Command
         parent::__construct();
     }
 
-    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $provider = $this->promise->getSchemaProvider();
         $provider->clear();
         $provider->read();
-
         return self::SUCCESS;
     }
 }

@@ -53,7 +53,7 @@ final class CycleDependencyProxyTest extends TestCase
         $migrator = new Migrator(
             new MigrationConfig(),
             $this->createMock(DatabaseProviderInterface::class),
-            $this->createMock(RepositoryInterface::class)
+            $this->createMock(RepositoryInterface::class),
         );
         $container = $this->createMock(ContainerInterface::class);
         $container

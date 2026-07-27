@@ -11,8 +11,7 @@ final class MigrationListener
 {
     public function __construct(
         private readonly SchemaProviderInterface $schemaProvider,
-    ) {
-    }
+    ) {}
 
     public function onAfterMigrate(AfterMigrate $event): void
     {

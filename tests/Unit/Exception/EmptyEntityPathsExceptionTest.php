@@ -7,19 +7,15 @@ namespace Yiisoft\Yii\Cycle\Tests\Unit\Exception;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
+use Throwable;
 
 final class EmptyEntityPathsExceptionTest extends TestCase
 {
-    private function prepareException(): EmptyEntityPathsException
-    {
-        return new EmptyEntityPathsException();
-    }
-
     public function testDefaultState(): void
     {
         $exception = $this->prepareException();
 
-        $this->assertInstanceOf(\Throwable::class, $exception);
+        $this->assertInstanceOf(Throwable::class, $exception);
         $this->assertSame('', $exception->getMessage());
         $this->assertSame(0, $exception->getCode());
     }
@@ -31,5 +27,10 @@ final class EmptyEntityPathsExceptionTest extends TestCase
         $this->assertInstanceOf(FriendlyExceptionInterface::class, $exception);
         $this->assertNotEmpty($exception->getName());
         $this->assertNotEmpty($exception->getSolution());
+    }
+
+    private function prepareException(): EmptyEntityPathsException
+    {
+        return new EmptyEntityPathsException();
     }
 }

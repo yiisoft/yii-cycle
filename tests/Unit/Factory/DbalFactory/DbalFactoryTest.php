@@ -9,6 +9,7 @@ use Yiisoft\Yii\Cycle\Factory\DbalFactory;
 use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeConnectionConfig;
 use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeDriver;
 use Yiisoft\Yii\Cycle\Tests\Unit\Stub\FakeDriverConfig;
+use ReflectionMethod;
 
 final class DbalFactoryTest extends BaseDbalFactory
 {
@@ -30,7 +31,7 @@ final class DbalFactoryTest extends BaseDbalFactory
         ];
 
         $factory = new DbalFactory([]);
-        $ref = new \ReflectionMethod($factory, 'prepareConfig');
+        $ref = new ReflectionMethod($factory, 'prepareConfig');
 
         $this->assertEquals(new DatabaseConfig($config), $ref->invoke($factory, $config));
 

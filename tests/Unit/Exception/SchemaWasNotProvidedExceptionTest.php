@@ -7,19 +7,15 @@ namespace Yiisoft\Yii\Cycle\Tests\Unit\Exception;
 use PHPUnit\Framework\TestCase;
 use Yiisoft\FriendlyException\FriendlyExceptionInterface;
 use Yiisoft\Yii\Cycle\Exception\SchemaWasNotProvidedException;
+use Throwable;
 
 final class SchemaWasNotProvidedExceptionTest extends TestCase
 {
-    private function prepareException(): SchemaWasNotProvidedException
-    {
-        return new SchemaWasNotProvidedException();
-    }
-
     public function testDefaultState(): void
     {
         $exception = $this->prepareException();
 
-        $this->assertInstanceOf(\Throwable::class, $exception);
+        $this->assertInstanceOf(Throwable::class, $exception);
         $this->assertSame('Schema was not provided.', $exception->getMessage());
         $this->assertSame(0, $exception->getCode());
     }
@@ -31,5 +27,10 @@ final class SchemaWasNotProvidedExceptionTest extends TestCase
         $this->assertInstanceOf(FriendlyExceptionInterface::class, $exception);
         $this->assertNotEmpty($exception->getName());
         $this->assertNotEmpty($exception->getSolution());
+    }
+
+    private function prepareException(): SchemaWasNotProvidedException
+    {
+        return new SchemaWasNotProvidedException();
     }
 }

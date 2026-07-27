@@ -15,6 +15,7 @@ use Cycle\Migrations\RepositoryInterface;
 use Cycle\Migrations\State;
 use PHPUnit\Framework\TestCase as BaseTestCase;
 use Yiisoft\Yii\Cycle\Tests\Command\Stub\FakeMigration;
+use DateTimeImmutable;
 
 abstract class TestCase extends BaseTestCase
 {
@@ -36,6 +37,6 @@ abstract class TestCase extends BaseTestCase
 
     protected static function migration(): MigrationInterface
     {
-        return (new FakeMigration())->withState(new State('test', new \DateTimeImmutable(), State::STATUS_PENDING));
+        return (new FakeMigration())->withState(new State('test', new DateTimeImmutable(), State::STATUS_PENDING));
     }
 }

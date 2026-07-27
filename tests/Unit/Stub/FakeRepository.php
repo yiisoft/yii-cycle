@@ -6,6 +6,4 @@ namespace Yiisoft\Yii\Cycle\Tests\Unit\Stub;
 
 use Cycle\ORM\Select\Repository;
 
-final class FakeRepository extends Repository
-{
-}
+final class FakeRepository extends Repository {}

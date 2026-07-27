@@ -14,6 +14,8 @@ use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\ListCommand;
 
+use const PHP_EOL;
+
 final class ListCommandTest extends TestCase
 {
     public function testExecute(): void
@@ -35,8 +37,8 @@ final class ListCommandTest extends TestCase
         $this->assertSame(Command::SUCCESS, $code);
 
         $newLine = PHP_EOL;
-        $expectedOutput = "\033[32mTotal 1 migration(s) found in \033[39m$newLine" .
-            "\033[36mtest\033[39m \033[33m[pending]\033[39m$newLine";
+        $expectedOutput = "\033[32mTotal 1 migration(s) found in \033[39m$newLine"
+            . "\033[36mtest\033[39m \033[33m[pending]\033[39m$newLine";
         $this->assertSame($expectedOutput, $output->fetch());
     }
 }

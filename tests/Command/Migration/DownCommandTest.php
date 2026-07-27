@@ -20,6 +20,9 @@ use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\DownCommand;
 use Yiisoft\Yii\Cycle\Command\Migration\UpCommand;
+use Exception;
+
+use const PHP_EOL;
 
 final class DownCommandTest extends TestCase
 {
@@ -34,7 +37,7 @@ final class DownCommandTest extends TestCase
                 Migrator::class => self::migrator(new MigrationConfig(), $repository),
                 MigrationConfig::class => new MigrationConfig(),
             ])),
-            $this->createMock(EventDispatcherInterface::class)
+            $this->createMock(EventDispatcherInterface::class),
         );
         $code = $command->run(new ArrayInput([]), $output);
 
@@ -68,10 +71,10 @@ final class DownCommandTest extends TestCase
         $this->assertSame(Command::SUCCESS, $code);
 
         $newLine = PHP_EOL;
-        $expectedOutput = "\033[32mTotal 1 migration(s) found in \033[39m$newLine" .
-            "\033[33mMigration to be reverted:\033[39m$newLine" .
-            "— \033[36mtest\033[39m$newLine" .
-            "\033[36mtest\033[39m: pending$newLine";
+        $expectedOutput = "\033[32mTotal 1 migration(s) found in \033[39m$newLine"
+            . "\033[33mMigration to be reverted:\033[39m$newLine"
+            . "— \033[36mtest\033[39m$newLine"
+            . "\033[36mtest\033[39m: pending$newLine";
         $this->assertSame($expectedOutput, $output->fetch());
     }
 
@@ -102,7 +105,7 @@ final class DownCommandTest extends TestCase
 
         $command = new DownCommand($promise, $this->createMock(EventDispatcherInterface::class));
 
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessage('Migration not found');
         $command->run($input, new NullOutput());
     }
@@ -136,7 +139,7 @@ final class DownCommandTest extends TestCase
             ->with(
                 $input,
                 $output,
-                $this->equalTo(new ConfirmationQuestion('Revert the above migration? (yes|no) ', false))
+                $this->equalTo(new ConfirmationQuestion('Revert the above migration? (yes|no) ', false)),
             )
             ->willReturn(false);
 

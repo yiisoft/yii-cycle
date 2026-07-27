@@ -15,6 +15,9 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Schema\SchemaPhpCommand;
 
 use function dirname;
+use function sprintf;
+
+use const DIRECTORY_SEPARATOR;
 
 final class SchemaPhpCommandTest extends TestCase
 {
@@ -30,7 +33,7 @@ final class SchemaPhpCommandTest extends TestCase
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
         $schema->expects($this->any())->method('define')->willReturnCallback(
-            fn (string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null
+            fn(string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null,
         );
 
         $container = new SimpleContainer([SchemaInterface::class => $schema]);
@@ -52,7 +55,7 @@ final class SchemaPhpCommandTest extends TestCase
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
         $schema->expects($this->any())->method('define')->willReturnCallback(
-            fn (string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null
+            fn(string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null,
         );
 
         $container = new SimpleContainer([SchemaInterface::class => $schema]);
@@ -68,7 +71,7 @@ final class SchemaPhpCommandTest extends TestCase
         $this->assertStringContainsString('Schema::ROLE => \'foo\'', file_get_contents($file));
         $this->assertStringContainsString('Schema::ROLE => \'bar\'', file_get_contents($file));
 
-        \unlink($file);
+        unlink($file);
     }
 
     public function testExecuteWithFileAndAlias(): void
@@ -78,7 +81,7 @@ final class SchemaPhpCommandTest extends TestCase
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
         $schema->expects($this->any())->method('define')->willReturnCallback(
-            fn (string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null
+            fn(string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null,
         );
 
         $container = new SimpleContainer([SchemaInterface::class => $schema]);
@@ -96,7 +99,7 @@ final class SchemaPhpCommandTest extends TestCase
         $this->assertStringContainsString('Schema::ROLE => \'foo\'', file_get_contents($file));
         $this->assertStringContainsString('Schema::ROLE => \'bar\'', file_get_contents($file));
 
-        \unlink($file);
+        unlink($file);
     }
 
     public function testExecuteWithMissingDirectory(): void
@@ -106,7 +109,7 @@ final class SchemaPhpCommandTest extends TestCase
         $schema = $this->createMock(SchemaInterface::class);
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
         $schema->expects($this->any())->method('define')->willReturnCallback(
-            fn (string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null
+            fn(string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null,
         );
 
         $container = new SimpleContainer([SchemaInterface::class => $schema]);

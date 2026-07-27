@@ -10,9 +10,7 @@ use Yiisoft\Aliases\Aliases;
 
 final class MigrationConfigFactory
 {
-    public function __construct(private array $params)
-    {
-    }
+    public function __construct(private array $params) {}
 
     public function __invoke(ContainerInterface $container): MigrationConfig
     {

@@ -18,10 +18,11 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Symfony\Component\Console\Question\Question;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
+use function count;
+
 #[AsCommand('migrate:generate', 'Generates a migration')]
 final class GenerateCommand extends BaseMigrationCommand
 {
-    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $migrator = $this->promise->getMigrator();
@@ -34,22 +35,19 @@ final class GenerateCommand extends BaseMigrationCommand
             }
         }
         $conveyor = $this->promise->getSchemaConveyor();
-
         // migrations generator
         $conveyor->addGenerator(
             SchemaConveyorInterface::STAGE_USERLAND,
-            new GenerateMigrations($migrator->getRepository(), $this->promise->getMigrationConfig())
+            new GenerateMigrations($migrator->getRepository(), $this->promise->getMigrationConfig()),
         );
         // show DB changes
         $conveyor->addGenerator(SchemaConveyorInterface::STAGE_USERLAND, new PrintChanges($output));
         // compile schema and convert diffs to new migrations
         (new Compiler())->compile(new Registry($this->promise->getDatabaseProvider()), $conveyor->getGenerators());
-
         // compare migrations list before and after
         $listBefore = $migrator->getMigrations();
         $added = count($listBefore) - count($listAfter);
         $output->writeln("<info>Added {$added} file(s)</info>");
-
         // print added migrations
         if ($added > 0) {
             foreach ($listBefore as $migration) {
@@ -59,7 +57,7 @@ final class GenerateCommand extends BaseMigrationCommand
             }
         } else {
             $output->writeln(
-                '<info>If you want to create new empty migration, use <fg=yellow>migrate:create</></info>'
+                '<info>If you want to create new empty migration, use <fg=yellow>migrate:create</></info>',
             );
 
             if ($input->isInteractive() && $input instanceof StreamableInputInterface) {

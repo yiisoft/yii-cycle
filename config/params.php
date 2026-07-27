@@ -6,6 +6,9 @@ use Cycle\Schema\Provider\SchemaProviderInterface;
 use Cycle\Schema\Provider\Support\SchemaProviderPipeline;
 use Yiisoft\Yii\Cycle\Command\Migration;
 use Yiisoft\Yii\Cycle\Command\Schema;
+use Cycle\ORM\Collection\ArrayCollectionFactory;
+use Cycle\ORM\Collection\CollectionFactoryInterface;
+use Yiisoft\Aliases\Aliases;
 
 return [
     // Console commands
@@ -71,9 +74,9 @@ return [
         'collections' => [
             /** Default factory (class or name from the `factories` list below) or {@see null} */
             'default' => 'array',
-            /** List of class names that implement {@see \Cycle\ORM\Collection\CollectionFactoryInterface} */
+            /** List of class names that implement {@see CollectionFactoryInterface} */
             'factories' => [
-                'array' => Cycle\ORM\Collection\ArrayCollectionFactory::class,
+                'array' => ArrayCollectionFactory::class,
                 // 'doctrine' => \Cycle\ORM\Collection\DoctrineCollectionFactory::class,
                 // 'illuminate' => \Cycle\ORM\Collection\IlluminateCollectionFactory::class,
             ],
@@ -81,7 +84,7 @@ return [
 
         /**
          * An attributed entity directory list.
-         * {@see \Yiisoft\Aliases\Aliases} are also supported.
+         * {@see Aliases} are also supported.
          */
         'entity-paths' => [],
     ],

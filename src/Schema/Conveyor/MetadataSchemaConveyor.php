@@ -20,6 +20,8 @@ use Yiisoft\Aliases\Aliases;
 use Yiisoft\Yii\Cycle\Exception\EmptyEntityPathsException;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface as Conveyor;
 
+use function count;
+
 /**
  * The class is left not final for expansion
  * @psalm-suppress ClassMustBeFinal
@@ -40,7 +42,7 @@ class MetadataSchemaConveyor extends SchemaConveyor
 
     final public function setTableNaming(
         #[ExpectedValues(valuesFromClass: Entities::class)]
-        int $type
+        int $type,
     ): void {
         $this->tableNaming = $type;
     }
@@ -53,7 +55,6 @@ class MetadataSchemaConveyor extends SchemaConveyor
         $this->entityPaths = array_merge($this->entityPaths, $paths);
     }
 
-    #[\Override]
     public function getGenerators(): array
     {
         $this->addMetadataGenerators();

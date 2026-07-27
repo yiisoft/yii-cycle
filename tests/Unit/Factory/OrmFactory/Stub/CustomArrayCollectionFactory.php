@@ -7,6 +7,9 @@ namespace Yiisoft\Yii\Cycle\Tests\Unit\Factory\OrmFactory\Stub;
 use Cycle\ORM\Collection\CollectionFactoryInterface;
 use Cycle\ORM\Exception\CollectionFactoryException;
 use Yiisoft\Yii\Cycle\Factory\OrmFactory;
+use Traversable;
+
+use function is_array;
 
 /**
  * @psalm-import-type CollectionsConfig from OrmFactory
@@ -29,8 +32,8 @@ final class CustomArrayCollectionFactory implements CollectionFactoryInterface
     public function collect(iterable $data): array
     {
         return match (true) {
-            \is_array($data) => $data,
-            $data instanceof \Traversable => \iterator_to_array($data),
+            is_array($data) => $data,
+            $data instanceof Traversable => iterator_to_array($data),
             default => throw new CollectionFactoryException('Unsupported iterable type.'),
         };
     }

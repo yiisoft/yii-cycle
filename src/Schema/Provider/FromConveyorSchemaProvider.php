@@ -12,6 +12,8 @@ use Cycle\Schema\Provider\SchemaProviderInterface;
 use Cycle\Schema\Registry;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
+use function count;
+
 final class FromConveyorSchemaProvider implements SchemaProviderInterface
 {
     /**
@@ -24,8 +26,7 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
     public function __construct(
         private SchemaConveyorInterface $conveyor,
         private DatabaseProviderInterface $dbal,
-    ) {
-    }
+    ) {}
 
     /**
      * @param list<Closure|GeneratorInterface|string> $generators
@@ -38,7 +39,6 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
         ];
     }
 
-    #[\Override]
     public function withConfig(array $config): self
     {
         $new = clone $this;
@@ -46,16 +46,13 @@ final class FromConveyorSchemaProvider implements SchemaProviderInterface
         return $new;
     }
 
-    #[\Override]
     public function read(?SchemaProviderInterface $nextProvider = null): ?array
     {
         $generators = $this->getGenerators();
         $schema = (new Compiler())->compile(new Registry($this->dbal), $generators);
-
         return count($schema) !== 0 || $nextProvider === null ? $schema : $nextProvider->read();
     }
 
-    #[\Override]
     public function clear(): bool
     {
         return false;

@@ -12,6 +12,11 @@ use Psr\Container\ContainerInterface;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 
+use function array_key_exists;
+use function is_array;
+use function is_string;
+use function sprintf;
+
 final class DbalFactory
 {
     private readonly array|DatabaseConfig $dbalConfig;
@@ -31,7 +36,7 @@ final class DbalFactory
     public function __invoke(ContainerInterface $container): DatabaseManager
     {
         $dbal = new DatabaseManager(
-            $this->prepareConfig($this->dbalConfig)
+            $this->prepareConfig($this->dbalConfig),
         );
 
         if ($this->logger !== null) {
@@ -39,7 +44,7 @@ final class DbalFactory
             $dbal->setLogger($logger);
             /** Remove when issue is resolved {@link https://github.com/cycle/orm/issues/60} */
             $drivers = $dbal->getDrivers();
-            array_walk($drivers, static fn (Driver $driver) => $driver->setLogger($logger));
+            array_walk($drivers, static fn(Driver $driver) => $driver->setLogger($logger));
         }
 
         return $dbal;
@@ -59,7 +64,7 @@ final class DbalFactory
         }
         if (!$logger instanceof LoggerInterface) {
             throw new RuntimeException(
-                sprintf('Logger definition should be subclass of %s.', LoggerInterface::class)
+                sprintf('Logger definition should be subclass of %s.', LoggerInterface::class),
             );
         }
         return $logger;

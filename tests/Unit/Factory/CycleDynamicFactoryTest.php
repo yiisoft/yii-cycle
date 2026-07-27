@@ -21,7 +21,7 @@ final class CycleDynamicFactoryTest extends TestCase
 
         $this->assertInstanceOf(
             FakeDriverConfig::class,
-            $factory->make(FakeDriverConfig::class, ['driver' => 'foo'])
+            $factory->make(FakeDriverConfig::class, ['driver' => 'foo']),
         );
     }
 }
