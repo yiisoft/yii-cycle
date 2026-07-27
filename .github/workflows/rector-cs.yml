@@ -1,4 +1,4 @@
-name: rector-cs
+name: Rector + PHP CS Fixer
 
 on:
   pull_request:
