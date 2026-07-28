@@ -14,6 +14,7 @@ use PHPUnit\Framework\TestCase;
 use Spiral\Core\FactoryInterface;
 use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Factory\MigratorFactory;
+use ReflectionProperty;
 
 final class MigratorFactoryTest extends TestCase
 {
@@ -38,11 +39,11 @@ final class MigratorFactoryTest extends TestCase
             FactoryInterface::class => $this->createMock(FactoryInterface::class),
         ]));
 
-        $configRef = new \ReflectionProperty($migrator, 'config');
+        $configRef = new ReflectionProperty($migrator, 'config');
 
-        $dbalRef = new \ReflectionProperty($migrator, 'dbal');
+        $dbalRef = new ReflectionProperty($migrator, 'dbal');
 
-        $repositoryRef = new \ReflectionProperty($migrator, 'repository');
+        $repositoryRef = new ReflectionProperty($migrator, 'repository');
 
         $this->assertTrue($db->database('default')->hasTable($defaultConfig->getTable()));
         $this->assertSame($defaultConfig, $configRef->getValue($migrator));

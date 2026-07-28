@@ -25,7 +25,7 @@ final class FromConveyorSchemaProviderTest extends TestCase
 
         $provider = new FromConveyorSchemaProvider(
             $conveyor,
-            $this->createMock(DatabaseProviderInterface::class)
+            $this->createMock(DatabaseProviderInterface::class),
         );
         $provider = $provider->withConfig(['generators' => [$generator]]);
 
@@ -36,7 +36,7 @@ final class FromConveyorSchemaProviderTest extends TestCase
     {
         $provider = new FromConveyorSchemaProvider(
             $this->createMock(SchemaConveyorInterface::class),
-            $this->createMock(DatabaseProviderInterface::class)
+            $this->createMock(DatabaseProviderInterface::class),
         );
 
         $this->assertFalse($provider->clear());

@@ -7,6 +7,4 @@ namespace Yiisoft\Yii\Cycle\Event;
 /**
  * Raised right after one or more migrations have been executed/reverted.
  */
-final class BeforeMigrate
-{
-}
+final class BeforeMigrate {}

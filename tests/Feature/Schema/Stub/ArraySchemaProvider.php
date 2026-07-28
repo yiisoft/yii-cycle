@@ -8,9 +8,7 @@ use Cycle\Schema\Provider\SchemaProviderInterface;
 
 final class ArraySchemaProvider implements SchemaProviderInterface
 {
-    public function __construct(protected ?array $schema = null)
-    {
-    }
+    public function __construct(protected ?array $schema = null) {}
 
     /**
      * @param array $config will replace the schema

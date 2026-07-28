@@ -18,6 +18,8 @@
 - Chg #222: Bump minimal version of `yiisoft/aliases` to `^3.0` (@dagpro)
 - Chg #222: Bump `symfony/console` version to `^6.4 || ^7.2` (@dagpro)
 - Chg #222: Bump `symfony/finder` version to `^6.4 || ^7.2` (@dagpro)
+- Enh #244: Explicitly import classes and functions in "use" section (@vjik)
+- Enh #244: Remove `#[Override]` attribute from methods (@vjik)
 
 ## 1.0.0 March 21, 2024
 

@@ -15,9 +15,7 @@ use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
 final class CycleDependencyProxy
 {
-    public function __construct(private readonly ContainerInterface $container)
-    {
-    }
+    public function __construct(private readonly ContainerInterface $container) {}
 
     public function getDatabaseProvider(): DatabaseProviderInterface
     {

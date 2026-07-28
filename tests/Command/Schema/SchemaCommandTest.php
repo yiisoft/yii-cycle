@@ -42,7 +42,7 @@ final class SchemaCommandTest extends TestCase
         $schema = $this->getMockBuilder(SchemaInterface::class)->getMock();
         $schema->expects($this->any())->method('getRoles')->willReturn(['foo', 'bar']);
         $schema->expects($this->any())->method('define')->willReturnCallback(
-            fn (string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null
+            fn(string $role, int $property): ?string => $property === SchemaInterface::ROLE ? $role : null,
         );
 
         $container = new SimpleContainer([SchemaInterface::class => $schema]);

@@ -58,7 +58,7 @@ abstract class BaseOrmFactory extends TestCase
                     );
                 }
                 throw new NotFoundException($id);
-            }
+            },
         );
     }
 

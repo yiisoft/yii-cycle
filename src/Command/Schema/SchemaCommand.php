@@ -13,6 +13,9 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
+use function array_key_exists;
+use function sprintf;
+
 #[AsCommand('cycle:schema', 'Shown current schema')]
 final class SchemaCommand extends Command
 {
@@ -21,26 +24,22 @@ final class SchemaCommand extends Command
         parent::__construct();
     }
 
-    #[\Override]
     protected function configure(): void
     {
         $this->addArgument('role', InputArgument::OPTIONAL, 'Roles to display (separated by ",").');
     }
 
-    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         /** @var string|null $roleArgument */
         $roleArgument = $input->getArgument('role');
         $schema = $this->promise->getSchema();
         $roles = $roleArgument !== null ? explode(',', $roleArgument) : $schema->getRoles();
-
         $schemaArray = (new SchemaToArrayConverter())->convert($schema);
-
         $notFound = [];
         $found = [];
         foreach ($roles as $role) {
-            if (!\array_key_exists($role, $schemaArray)) {
+            if (!array_key_exists($role, $schemaArray)) {
                 $notFound[] = $role;
                 continue;
             }
@@ -48,11 +47,9 @@ final class SchemaCommand extends Command
         }
         $renderer = new OutputSchemaRenderer(OutputSchemaRenderer::FORMAT_CONSOLE_COLOR);
         $output->write($renderer->render($found));
-
         if ($notFound !== []) {
             $output->writeln(sprintf('<fg=red>Undefined roles: %s</>', implode(', ', $notFound)));
         }
-
         return self::SUCCESS;
     }
 }

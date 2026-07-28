@@ -13,6 +13,10 @@ use Spiral\Core\FactoryInterface as SpiralFactoryInterface;
 use Yiisoft\Injector\Injector;
 use Yiisoft\Yii\Cycle\Exception\BadDeclarationException;
 use Yiisoft\Yii\Cycle\Exception\ConfigException;
+use Throwable;
+
+use function array_key_exists;
+use function sprintf;
 
 /**
  * The factory for the ORM Factory {@see FactoryInterface}.
@@ -27,9 +31,7 @@ final class OrmFactory
     /**
      * @psalm-param CollectionsConfig $collectionsConfig
      */
-    public function __construct(private array $collectionsConfig)
-    {
-    }
+    public function __construct(private array $collectionsConfig) {}
 
     /**
      * @throws ConfigException
@@ -51,7 +53,7 @@ final class OrmFactory
                     throw new BadDeclarationException(
                         "Collection factory `$alias`",
                         CollectionFactoryInterface::class,
-                        $factories[$alias]
+                        $factories[$alias],
                     );
                 }
             }
@@ -59,17 +61,17 @@ final class OrmFactory
             // Resolve default collection factory
             $default = $this->collectionsConfig['default'] ?? null;
             if ($default !== null) {
-                if (!\array_key_exists($default, $factories)) {
-                    if (!\is_a($default, CollectionFactoryInterface::class, true)) {
+                if (!array_key_exists($default, $factories)) {
+                    if (!is_a($default, CollectionFactoryInterface::class, true)) {
                         $cfgPath[] = 'default';
-                        throw new RuntimeException(\sprintf('Default collection factory `%s` not found.', $default));
+                        throw new RuntimeException(sprintf('Default collection factory `%s` not found.', $default));
                     }
                     $default = $injector->make($default);
                 } else {
                     $default = $factories[$default];
                 }
             }
-        } catch (\Throwable $e) {
+        } catch (Throwable $e) {
             throw new ConfigException($cfgPath, $e->getMessage());
         }
 

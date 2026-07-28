@@ -14,13 +14,11 @@ final class SchemaWasNotProvidedException extends RuntimeException implements Fr
         parent::__construct('Schema was not provided.');
     }
 
-    #[\Override]
     public function getName(): string
     {
         return 'Current Schema for Cycle ORM was not provided';
     }
 
-    #[\Override]
     public function getSolution(): ?string
     {
         return 'Make sure a SchemaProvider is configured correctly.';

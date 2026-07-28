@@ -8,11 +8,7 @@ use Cycle\Migrations\Migration;
 
 final class FakeMigration extends Migration
 {
-    public function up(): void
-    {
-    }
+    public function up(): void {}
 
-    public function down(): void
-    {
-    }
+    public function down(): void {}
 }

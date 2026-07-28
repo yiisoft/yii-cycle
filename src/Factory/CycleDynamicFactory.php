@@ -9,11 +9,8 @@ use Yiisoft\Injector\Injector;
 
 final class CycleDynamicFactory implements FactoryInterface
 {
-    public function __construct(private readonly Injector $injector)
-    {
-    }
+    public function __construct(private readonly Injector $injector) {}
 
-    #[\Override]
     public function make(string $alias, array $parameters = []): mixed
     {
         /** @psalm-var class-string $alias */

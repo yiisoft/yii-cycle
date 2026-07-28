@@ -17,6 +17,8 @@ use Yiisoft\Test\Support\Container\SimpleContainer;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\CreateCommand;
 
+use const PHP_EOL;
+
 final class CreateCommandTest extends TestCase
 {
     public function testExecute(): void
@@ -35,16 +37,16 @@ final class CreateCommandTest extends TestCase
             ->method('registerMigration')
             ->with(
                 'testDatabase_foo',
-                $this->callback(static fn (string $class): bool => \str_contains($class, 'OrmTestDatabase')),
+                $this->callback(static fn(string $class): bool => str_contains($class, 'OrmTestDatabase')),
                 $this->callback(
-                    static fn (string $body): bool =>
-                    \str_contains($body, 'OrmTestDatabase') &&
-                    \str_contains($body, 'namespace Test\\Migration') &&
-                    \str_contains($body, 'use Cycle\\Migrations\\Migration') &&
-                    \str_contains($body, 'protected const DATABASE = \'testDatabase\'') &&
-                    \str_contains($body, 'public function up(): void') &&
-                    \str_contains($body, 'public function down(): void')
-                )
+                    static fn(string $body): bool
+                    => str_contains($body, 'OrmTestDatabase')
+                    && str_contains($body, 'namespace Test\\Migration')
+                    && str_contains($body, 'use Cycle\\Migrations\\Migration')
+                    && str_contains($body, 'protected const DATABASE = \'testDatabase\'')
+                    && str_contains($body, 'public function up(): void')
+                    && str_contains($body, 'public function down(): void'),
+                ),
             );
 
         $command = new CreateCommand(new CycleDependencyProxy(new SimpleContainer([
@@ -83,8 +85,8 @@ final class CreateCommandTest extends TestCase
         $this->assertSame(Command::SUCCESS, $code);
 
         $newLine = PHP_EOL;
-        $expectedOutput = "\033[33mCan not create migration\033[39m$newLine" .
-            "\033[31mtest\033[39m$newLine";
+        $expectedOutput = "\033[33mCan not create migration\033[39m$newLine"
+            . "\033[31mtest\033[39m$newLine";
         $this->assertSame($expectedOutput, $output->fetch());
     }
 }

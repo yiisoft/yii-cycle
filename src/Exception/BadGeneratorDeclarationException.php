@@ -17,13 +17,11 @@ final class BadGeneratorDeclarationException extends BadDeclarationException imp
         parent::__construct('Generator', GeneratorInterface::class, $argument);
     }
 
-    #[\Override]
     public function getName(): string
     {
         return 'Bad declaration of schema generator';
     }
 
-    #[\Override]
     public function getSolution(): ?string
     {
         return <<<SOLUTION

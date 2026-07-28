@@ -21,7 +21,7 @@ final class MigratorFactory
         $migrator = new Migrator(
             $migConf,
             $dbal,
-            new FileRepository($migConf, $container->get(FactoryInterface::class))
+            new FileRepository($migConf, $container->get(FactoryInterface::class)),
         );
         // Init migration table
         $migrator->configure();

@@ -15,6 +15,9 @@ use Symfony\Component\Console\Question\ConfirmationQuestion;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Event\AfterMigrate;
 use Yiisoft\Yii\Cycle\Event\BeforeMigrate;
+use Exception;
+
+use function sprintf;
 
 #[AsCommand('migrate:down', 'Rolls back the last applied migration')]
 final class DownCommand extends BaseMigrationCommand
@@ -24,7 +27,6 @@ final class DownCommand extends BaseMigrationCommand
         parent::__construct($promise);
     }
 
-    #[\Override]
     protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $migrations = $this->findMigrations($output);
@@ -38,9 +40,7 @@ final class DownCommand extends BaseMigrationCommand
             $output->writeln('<fg=red>No migration found for rollback</>');
             return self::SUCCESS;
         }
-
         $migrator = $this->promise->getMigrator();
-
         // Confirm
         if (!$migrator->getConfig()->isSafe()) {
             $output->writeln('<fg=yellow>Migration to be reverted:</>');
@@ -54,18 +54,17 @@ final class DownCommand extends BaseMigrationCommand
                 }
             }
         }
-
         $this->eventDispatcher->dispatch(new BeforeMigrate());
         try {
             $migration = $migrator->rollback();
             if (!$migration instanceof MigrationInterface) {
-                throw new \Exception('Migration not found');
+                throw new Exception('Migration not found');
             }
 
             $state = $migration->getState();
             $status = $state->getStatus();
             $output->writeln(
-                sprintf('<fg=cyan>%s</>: %s', $state->getName(), self::MIGRATION_STATUS[$status] ?? $status)
+                sprintf('<fg=cyan>%s</>: %s', $state->getName(), self::MIGRATION_STATUS[$status] ?? $status),
             );
         } finally {
             $this->eventDispatcher->dispatch(new AfterMigrate());

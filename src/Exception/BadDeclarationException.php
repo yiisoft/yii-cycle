@@ -6,6 +6,9 @@ namespace Yiisoft\Yii\Cycle\Exception;
 
 use Exception;
 
+use function is_object;
+use function sprintf;
+
 class BadDeclarationException extends Exception
 {
     /**
@@ -14,14 +17,14 @@ class BadDeclarationException extends Exception
      */
     public function __construct(string $parameter, string $class, mixed $argument)
     {
-        $type = \is_object($argument)
+        $type = is_object($argument)
             ? 'Instance of ' . $argument::class
-            : \ucfirst(\get_debug_type($argument));
-        parent::__construct(\sprintf(
+            : ucfirst(get_debug_type($argument));
+        parent::__construct(sprintf(
             '%s should be instance of %s or its declaration. %s was received instead.',
             $parameter,
             $class,
-            $type
+            $type,
         ));
     }
 }

@@ -34,7 +34,7 @@ abstract class BaseDbalFactory extends TestCase
                     return new CycleDynamicFactory(new Injector($this->container));
                 }
                 throw new NotFoundException($id);
-            }
+            },
         );
     }
 }

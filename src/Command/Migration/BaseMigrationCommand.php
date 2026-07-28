@@ -12,6 +12,10 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Output\OutputInterface;
 use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 
+use function assert;
+use function count;
+use function sprintf;
+
 abstract class BaseMigrationCommand extends Command
 {
     /**
@@ -31,7 +35,7 @@ abstract class BaseMigrationCommand extends Command
     protected function createEmptyMigration(
         OutputInterface $output,
         string $name,
-        ?string $database = null
+        ?string $database = null,
     ): ?MigrationImage {
         if ($database === null) {
             // get default database
@@ -43,13 +47,13 @@ abstract class BaseMigrationCommand extends Command
         $migrationSkeleton->setName($name);
 
         $className = $migrationSkeleton->getClass()->getName();
-        \assert($className !== null);
+        assert($className !== null);
 
         try {
             $migrationFile = $migrator->getRepository()->registerMigration(
                 $migrationSkeleton->buildFileName(),
                 $className,
-                $migrationSkeleton->getFile()->render()
+                $migrationSkeleton->getFile()->render(),
             );
         } catch (RepositoryException $e) {
             $output->writeln('<fg=yellow>Can not create migration</>');
@@ -76,8 +80,8 @@ abstract class BaseMigrationCommand extends Command
             sprintf(
                 '<info>Total %d migration(s) found in %s</info>',
                 count($list),
-                $this->promise->getMigrationConfig()->getDirectory()
-            )
+                $this->promise->getMigrationConfig()->getDirectory(),
+            ),
         );
         return $list;
     }

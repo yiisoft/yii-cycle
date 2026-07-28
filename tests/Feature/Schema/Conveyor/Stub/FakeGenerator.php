@@ -9,13 +9,9 @@ use Cycle\Schema\Registry;
 
 class FakeGenerator implements GeneratorInterface
 {
-    public function __construct(private readonly string $originClass)
-    {
-    }
+    public function __construct(private readonly string $originClass) {}
 
-    public function run(Registry $registry): Registry
-    {
-    }
+    public function run(Registry $registry): Registry {}
 
     public function originClass(): string
     {

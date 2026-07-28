@@ -23,7 +23,7 @@ class FakeDriver extends Driver
             $config,
             new SQLiteHandler(),
             new SQLiteCompiler('""'),
-            QueryBuilder::defaultBuilder()
+            QueryBuilder::defaultBuilder(),
         );
     }
 
@@ -37,13 +37,13 @@ class FakeDriver extends Driver
         return $this->logger;
     }
 
-    protected function mapException(Throwable $exception, string $query): StatementException
-    {
-        return new StatementException(new Exception(), 'fake query');
-    }
-
     public function getType(): string
     {
         return 'fake';
+    }
+
+    protected function mapException(Throwable $exception, string $query): StatementException
+    {
+        return new StatementException(new Exception(), 'fake query');
     }
 }

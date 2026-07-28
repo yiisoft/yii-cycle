@@ -22,6 +22,8 @@ use Yiisoft\Yii\Cycle\Command\CycleDependencyProxy;
 use Yiisoft\Yii\Cycle\Command\Migration\GenerateCommand;
 use Yiisoft\Yii\Cycle\Schema\SchemaConveyorInterface;
 
+use const PHP_EOL;
+
 final class GenerateCommandTest extends TestCase
 {
     public function testExecuteWithOutstandingMigrations(): void
@@ -36,7 +38,7 @@ final class GenerateCommandTest extends TestCase
         $command = $this->createCommand(
             $migrator,
             $this->createMock(DatabaseProviderInterface::class),
-            new MigrationConfig()
+            new MigrationConfig(),
         );
         $code = $command->run(new ArrayInput([]), $output);
 
@@ -56,7 +58,7 @@ final class GenerateCommandTest extends TestCase
         $command = $this->createCommand(
             $migrator,
             $this->createMock(DatabaseProviderInterface::class),
-            new MigrationConfig()
+            new MigrationConfig(),
         );
 
         $input = new ArrayInput([]);
@@ -69,7 +71,7 @@ final class GenerateCommandTest extends TestCase
         $this->assertStringContainsString('Added 0 file(s)', $result);
         $this->assertStringContainsString(
             'If you want to create new empty migration, use migrate:create',
-            $result
+            $result,
         );
     }
 
@@ -78,7 +80,7 @@ final class GenerateCommandTest extends TestCase
         $repository = $this->createMock(RepositoryInterface::class);
         $repository->expects($this->exactly(2))->method('getMigrations')->willReturnOnConsecutiveCalls(
             [],
-            [self::migration()]
+            [self::migration()],
         );
 
         $migrator = self::migrator(new MigrationConfig(), $repository);
@@ -88,7 +90,7 @@ final class GenerateCommandTest extends TestCase
         $command = $this->createCommand(
             $migrator,
             $this->createMock(DatabaseProviderInterface::class),
-            new MigrationConfig()
+            new MigrationConfig(),
         );
 
         $input = new ArrayInput([]);
@@ -119,16 +121,16 @@ final class GenerateCommandTest extends TestCase
             ->method('registerMigration')
             ->with(
                 'testDatabase_foo',
-                $this->callback(static fn (string $class): bool => \str_contains($class, 'OrmTestDatabase')),
+                $this->callback(static fn(string $class): bool => str_contains($class, 'OrmTestDatabase')),
                 $this->callback(
-                    static fn (string $body): bool =>
-                        \str_contains($body, 'OrmTestDatabase') &&
-                        \str_contains($body, 'namespace Test\\Migration') &&
-                        \str_contains($body, 'use Cycle\\Migrations\\Migration') &&
-                        \str_contains($body, 'protected const DATABASE = \'testDatabase\'') &&
-                        \str_contains($body, 'public function up(): void') &&
-                        \str_contains($body, 'public function down(): void')
-                )
+                    static fn(string $body): bool
+                        => str_contains($body, 'OrmTestDatabase')
+                        && str_contains($body, 'namespace Test\\Migration')
+                        && str_contains($body, 'use Cycle\\Migrations\\Migration')
+                        && str_contains($body, 'protected const DATABASE = \'testDatabase\'')
+                        && str_contains($body, 'public function up(): void')
+                        && str_contains($body, 'public function down(): void'),
+                ),
             );
 
         $migrator = self::migrator($config, $repository);
@@ -143,7 +145,7 @@ final class GenerateCommandTest extends TestCase
         $series = [
             [[$input, $output, new ConfirmationQuestion(
                 'Would you like to create empty migration right now? (Y/n)',
-                true
+                true,
             )], true],
             [[$input, $output, new Question('Please enter an unique name for the new migration: ')], 'foo'],
         ];
@@ -152,7 +154,7 @@ final class GenerateCommandTest extends TestCase
             ->expects($this->exactly(2))
             ->method('ask')
             ->willReturnCallback(function (mixed ...$args) use (&$series) {
-                [$expectedArgs, $return] = \array_shift($series);
+                [$expectedArgs, $return] = array_shift($series);
                 $this->assertEquals($expectedArgs, $args);
 
                 return $return;
@@ -168,7 +170,7 @@ final class GenerateCommandTest extends TestCase
         $this->assertStringContainsString('Added 0 file(s)', $result);
         $this->assertStringContainsString(
             'If you want to create new empty migration, use migrate:create',
-            $result
+            $result,
         );
     }
 
@@ -185,7 +187,7 @@ final class GenerateCommandTest extends TestCase
         $command = $this->createCommand(
             $migrator,
             $this->createMock(DatabaseProviderInterface::class),
-            new MigrationConfig()
+            new MigrationConfig(),
         );
 
         $input = new ArrayInput([]);
@@ -194,7 +196,7 @@ final class GenerateCommandTest extends TestCase
         $series = [
             [[$input, $output, new ConfirmationQuestion(
                 'Would you like to create empty migration right now? (Y/n)',
-                true
+                true,
             )], true],
             [[$input, $output, new Question('Please enter an unique name for the new migration: ')], ''],
         ];
@@ -203,7 +205,7 @@ final class GenerateCommandTest extends TestCase
             ->expects($this->exactly(2))
             ->method('ask')
             ->willReturnCallback(function (mixed ...$args) use (&$series) {
-                [$expectedArgs, $return] = \array_shift($series);
+                [$expectedArgs, $return] = array_shift($series);
                 $this->assertEquals($expectedArgs, $args);
 
                 return $return;
@@ -253,7 +255,7 @@ final class GenerateCommandTest extends TestCase
     private function createCommand(
         Migrator $migrator,
         DatabaseProviderInterface $dbProvider,
-        MigrationConfig $config
+        MigrationConfig $config,
     ): GenerateCommand {
         return new GenerateCommand(new CycleDependencyProxy(new SimpleContainer([
             Migrator::class => $migrator,

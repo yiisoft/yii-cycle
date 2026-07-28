@@ -5,6 +5,9 @@ declare(strict_types=1);
 namespace Yiisoft\Yii\Cycle\Exception;
 
 use Exception;
+use Throwable;
+
+use function sprintf;
 
 /**
  * @final Will be marked as final in next major version
@@ -15,9 +18,9 @@ class ConfigException extends Exception
     /**
      * @param string[] $section Config path
      */
-    public function __construct(array $section, string $message, int $code = 0, ?\Throwable $previous = null)
+    public function __construct(array $section, string $message, int $code = 0, ?Throwable $previous = null)
     {
-        $path = \implode(' -> ', $section);
-        parent::__construct(\sprintf('(%s): %s', $path, $message), $code, $previous);
+        $path = implode(' -> ', $section);
+        parent::__construct(sprintf('(%s): %s', $path, $message), $code, $previous);
     }
 }

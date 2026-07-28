@@ -40,14 +40,14 @@ return [
 
     // Cycle ORM
     ORMInterface::class => Reference::to(ORM::class),
-    ORM::class => static fn (
+    ORM::class => static fn(
         CycleFactoryInterface $factory,
         SchemaInterface $schema,
-        ContainerInterface $container
+        ContainerInterface $container,
     ) => new ORM(
         $factory,
         $schema,
-        \class_exists(BehaviorsHandler::class) ? new BehaviorsHandler($schema, $container) : null
+        class_exists(BehaviorsHandler::class) ? new BehaviorsHandler($schema, $container) : null,
     ),
 
     // Entity Manager
@@ -65,8 +65,8 @@ return [
     CycleFactoryInterface::class => new OrmFactory($params['yiisoft/yii-cycle']['collections'] ?? []),
 
     // Schema
-    SchemaInterface::class => static fn (SchemaProviderInterface $schemaProvider): SchemaInterface => new Schema(
-        $schemaProvider->read() ?? throw new SchemaWasNotProvidedException()
+    SchemaInterface::class => static fn(SchemaProviderInterface $schemaProvider): SchemaInterface => new Schema(
+        $schemaProvider->read() ?? throw new SchemaWasNotProvidedException(),
     ),
 
     // Schema provider
@@ -76,14 +76,14 @@ return [
 
     // FromFilesSchemaProvider
     FromFilesSchemaProvider::class => static function (Aliases $aliases) {
-        return new FromFilesSchemaProvider(static fn (string $path): string => $aliases->get($path));
+        return new FromFilesSchemaProvider(static fn(string $path): string => $aliases->get($path));
     },
 
     // PhpFileSchemaProvider
     PhpFileSchemaProvider::class => [
         '__construct()' => [
             DynamicReference::to(
-                static fn (Aliases $aliases): Closure => static fn (string $path): string => $aliases->get($path)
+                static fn(Aliases $aliases): Closure => $aliases->get(...),
             ),
             Reference::optional(FilesInterface::class),
         ],
