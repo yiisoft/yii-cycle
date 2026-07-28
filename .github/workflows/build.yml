@@ -55,12 +55,12 @@ jobs:
 
     steps:
       - name: Checkout.
-        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
         with:
           persist-credentials: false
 
       - name: Install PHP with extensions.
-        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240
+        uses: shivammathur/setup-php@f3e473d116dcccaddc5834248c87452386958240 # 2.37.2
         with:
           php-version: ${{ matrix.php }}
           extensions: ${{ env.EXTENSIONS }}
@@ -69,13 +69,13 @@ jobs:
           tools: composer:v2
 
       - name: Install Composer dependencies
-        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda
+        uses: ramsey/composer-install@65e4f84970763564f46a70b8a54b90d033b3bdda # 4.0.0
 
       - name: Run tests with phpunit with code coverage.
         run: vendor/bin/phpunit --coverage-clover=coverage.xml --colors=always
 
       - name: Upload coverage to Codecov.
-        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f
+        uses: codecov/codecov-action@fb8b3582c8e4def4969c97caa2f19720cb33a72f # v7.0.0
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
           files: ./coverage.xml
