@@ -43,11 +43,9 @@
         "psr/log": "^3.0",
         "spiral/attributes": "^3.1.8",
         "spiral/core": "^3.15.8",
-        "spiral/files": "^3.17",
         "spiral/tokenizer": "^3.15.8",
         "symfony/console": "^6.4 || ^7.2",
         "symfony/finder": "^6.4 || ^7.2",
-        "webmozart/glob": "^4.7",
         "yiisoft/aliases": "^3.0",
         "yiisoft/friendly-exception": "^1.1",
         "yiisoft/injector": "^1.1"

@@ -20,6 +20,7 @@
 - Chg #222: Bump `symfony/finder` version to `^6.4 || ^7.2` (@dagpro)
 - Enh #244: Explicitly import classes and functions in "use" section (@vjik)
 - Enh #244: Remove `#[Override]` attribute from methods (@vjik)
+- Enh #247: Remove unused `webmozart/glob` dependency (@vjik)
 
 ## 1.0.0 March 21, 2024
 
