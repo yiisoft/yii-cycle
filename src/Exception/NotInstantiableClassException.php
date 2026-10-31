@@ -17,13 +17,11 @@ final class NotInstantiableClassException extends Exception implements Container
     #[Pure]
     public function __construct(string $class, ?string $message = null, int $code = 0, ?Exception $previous = null)
     {
-        if ($message === null) {
-            $message = sprintf(
-                'Can not instantiate "%s" because it is not a subclass of "%s".',
-                $class,
-                RepositoryInterface::class,
-            );
-        }
+        $message ??= sprintf(
+            'Can not instantiate "%s" because it is not a subclass of "%s".',
+            $class,
+            RepositoryInterface::class,
+        );
         parent::__construct($message, $code, $previous);
     }
 

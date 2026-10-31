@@ -16,9 +16,7 @@ final class NotFoundException extends Exception implements NotFoundExceptionInte
     #[Pure]
     public function __construct(string $class, ?string $message = null, int $code = 0, ?Exception $previous = null)
     {
-        if ($message === null) {
-            $message = sprintf('No definition or class found or resolvable for "%s".', $class);
-        }
+        $message ??= sprintf('No definition or class found or resolvable for "%s".', $class);
         parent::__construct($message, $code, $previous);
     }
 
